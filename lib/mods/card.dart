@@ -7,11 +7,13 @@ class CardThemeMod extends ThemeMod {
     return themeData.copyWith(
       cardTheme: themeData.cardTheme.copyWith(
         elevation: 0,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(4),
         color: themeData.colorScheme.surface,
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: themeData.colorScheme.onSurface.withOpacity(0.5),
+            style: BorderStyle.solid,
+            strokeAlign: BorderSide.strokeAlignCenter,
+            color: themeData.colorScheme.onSurface.withOpacity(0.25),
             width: 1,
           ),
           borderRadius: BorderRadius.circular(4),

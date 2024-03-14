@@ -29,7 +29,9 @@ class HomeScreen extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => const ComponentScreen(
                   child: Card(
-                    child: Text("This is a card"),
+                    child: Text(
+                      "This is a card",
+                    ),
                   ),
                 ),
               ),

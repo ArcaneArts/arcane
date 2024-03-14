@@ -14,6 +14,11 @@ class GlobalThemeMod extends ThemeMod {
     for (var mod in mods) {
       themeData = mod.apply(themeData);
     }
-    return themeData;
+
+    return themeData.copyWith(
+        textTheme: themeData.textTheme.apply(
+      fontFamily: 'Geist',
+      package: 'arcane',
+    ));
   }
 }
