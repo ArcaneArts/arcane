@@ -1,6 +1,7 @@
 import 'package:arcane/extensions/theme_data.dart';
 import 'package:example/typography.dart';
 import 'package:example/widgets/buttons.dart';
+import 'package:example/widgets/navigations.dart';
 import 'package:example/widgets/selections.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,14 @@ class HomeScreen extends StatelessWidget {
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => const SelectionsPage(),
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('Navigations'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const NavigationsPage(),
               ),
             ),
           ),
