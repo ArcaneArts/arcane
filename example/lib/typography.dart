@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Typography extends StatelessWidget {
-  const Typography({super.key});
+class TypographyThing extends StatelessWidget {
+  const TypographyThing({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(

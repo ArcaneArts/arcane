@@ -1,11 +1,13 @@
 import 'package:arcane/api/theme_mod.dart';
 import 'package:arcane/mods/card.dart';
+import 'package:arcane/mods/text.dart';
 import 'package:flutter/material.dart';
 
 class GlobalThemeMod extends ThemeMod {
   List<ThemeMod> mods = [];
 
   void addDefaults() {
+    mods.add(TextThemeMod());
     mods.add(CardThemeMod());
   }
 
@@ -15,10 +17,6 @@ class GlobalThemeMod extends ThemeMod {
       themeData = mod.apply(themeData);
     }
 
-    return themeData.copyWith(
-        textTheme: themeData.textTheme.apply(
-      fontFamily: 'Geist',
-      package: 'arcane',
-    ));
+    return themeData;
   }
 }
