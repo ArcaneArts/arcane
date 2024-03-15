@@ -1,6 +1,8 @@
 import 'package:arcane/extensions/theme_data.dart';
 import 'package:example/typography.dart';
 import 'package:example/widgets/buttons.dart';
+import 'package:example/widgets/communications.dart';
+import 'package:example/widgets/containments.dart';
 import 'package:example/widgets/navigations.dart';
 import 'package:example/widgets/selections.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,22 @@ class HomeScreen extends StatelessWidget {
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => const NavigationsPage(),
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('Communications'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CommunicationsPage(),
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('Containments'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ContainmentsPage(),
               ),
             ),
           ),
