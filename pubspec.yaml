@@ -1,5 +1,5 @@
 name: arcane
-description: "UI Components"
+description: "Speeds up Flutter App Stuff"
 version: 1.0.0
 homepage: https://github.com/ArcaneArts/arcane
 environment:
@@ -8,15 +8,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fast_log: ^1.0.7
+  fire_crud: ^1.0.1
+  get: ^4.6.6
+  padded: ^1.0.1
+  precision_stopwatch: ^1.0.2
+  serviced: ^1.0.1
+  snackbar: ^1.0.2
+  throttled: ^1.0.1
+  toxic: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
 flutter:
-  fonts:
-    - family: GeistMono
-      fonts:
-        - asset: assets/fonts/geist-mono.ttf
-    - family: Geist
-      fonts:
-        - asset: assets/fonts/geist.ttf

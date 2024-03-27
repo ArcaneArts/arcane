@@ -1,2 +1,2 @@
 # arcane
-UI Components for Flutter
+Speeds up app development
