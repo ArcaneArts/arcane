@@ -1,6 +1,47 @@
 import 'package:arcane/arcane.dart';
 
 class ArcaneApp extends StatelessWidget {
+  final String title;
+  final Widget Function() home;
+  final Map<String, Widget Function()> pages;
+  final ThemeData lightTheme;
+  final ThemeData darkTheme;
+  final ThemeMode themeMode;
+  final ThemeData Function(ThemeData theme)? themeModifier;
+
+  const ArcaneApp({
+    super.key,
+    required this.home,
+    required this.title,
+    required this.lightTheme,
+    required this.darkTheme,
+    required this.pages,
+    this.themeModifier,
+    this.themeMode = ThemeMode.system,
+  });
+
+  @override
+  Widget build(BuildContext context) => GetMaterialApp(
+        title: title,
+        getPages: [
+          for (final entry in pages.entries)
+            GetPage(
+              name: entry.key,
+              page: entry.value,
+            ),
+          GetPage(
+            name: '/',
+            page: home,
+          ),
+        ],
+        initialRoute: "/",
+        theme: themeModifier?.call(lightTheme) ?? lightTheme,
+        darkTheme: themeModifier?.call(darkTheme) ?? darkTheme,
+        themeMode: themeMode,
+      );
+}
+
+class ArcaneGetMaterialApp extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
   final Widget? home;
@@ -55,7 +96,7 @@ class ArcaneApp extends StatelessWidget {
   final GetPage? unknownRoute;
   final bool useInheritedMediaQuery;
 
-  const ArcaneApp({
+  const ArcaneGetMaterialApp({
     super.key,
     this.navigatorKey,
     this.scaffoldMessengerKey,

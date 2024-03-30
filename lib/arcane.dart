@@ -11,3 +11,6 @@ export 'package:serviced/serviced.dart';
 export 'package:snackbar/snackbar.dart';
 export 'package:throttled/throttled.dart';
 export 'package:toxic/toxic.dart';
+
+export 'package:arcane/feature/application/arcane_app.dart';
+export 'package:arcane/feature/application/initializer.dart';
