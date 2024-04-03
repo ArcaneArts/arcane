@@ -1,12 +1,14 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/feature/login/screen/login.dart';
+import 'package:arcane/feature/login/screen/splash.dart';
+import 'package:get/get.dart';
 
-class ArcaneApp extends StatelessWidget {
+class ArcaneApp extends StatefulWidget {
   final String title;
   final Widget Function() home;
   final Map<String, Widget Function()> pages;
   final ThemeData lightTheme;
   final ThemeData darkTheme;
-  final ThemeMode themeMode;
   final ThemeData Function(ThemeData theme)? themeModifier;
 
   const ArcaneApp({
@@ -15,29 +17,49 @@ class ArcaneApp extends StatelessWidget {
     required this.title,
     required this.lightTheme,
     required this.darkTheme,
-    required this.pages,
+    this.pages = const {},
     this.themeModifier,
-    this.themeMode = ThemeMode.system,
   });
 
   @override
+  State<ArcaneApp> createState() => _ArcaneAppState();
+}
+
+class _ArcaneAppState extends State<ArcaneApp> {
+  @override
+  void initState() {
+    Arcane.app.updateTempContext(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => GetMaterialApp(
-        title: title,
+        title: widget.title,
         getPages: [
-          for (final entry in pages.entries)
+          for (final entry in widget.pages.entries)
             GetPage(
               name: entry.key,
               page: entry.value,
             ),
           GetPage(
             name: '/',
-            page: home,
+            page: widget.home,
+          ),
+          GetPage(
+            name: '/splash',
+            page: () => const SplashScreen(),
+          ),
+          GetPage(
+            name: '/login',
+            page: () => const LoginScreen(),
           ),
         ],
-        initialRoute: "/",
-        theme: themeModifier?.call(lightTheme) ?? lightTheme,
-        darkTheme: themeModifier?.call(darkTheme) ?? darkTheme,
-        themeMode: themeMode,
+        themeMode: Arcane.themeMode,
+        initialRoute: "/splash",
+        theme:
+            widget.themeModifier?.call(widget.lightTheme) ?? widget.lightTheme,
+        darkTheme:
+            widget.themeModifier?.call(widget.darkTheme) ?? widget.darkTheme,
       );
 }
 

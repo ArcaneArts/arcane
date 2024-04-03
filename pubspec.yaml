@@ -17,8 +17,41 @@ dependencies:
   snackbar: ^1.0.2
   throttled: ^1.0.1
   toxic: ^1.1.0
+  path_provider: ^2.1.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hydrated_bloc: ^9.1.5
+  synchronized: ^3.1.0+1
+  talker_dio_logger: ^2.4.0
+  dio: ^5.4.2+1
+  talker_http_logger: ^0.1.0-dev.1
+  http: ^1.2.1
+  http_interceptor: ^2.0.0-beta.8
+  talker_flutter: ^3.6.0
+  talker_bloc_logger: ^2.4.0
+  flutter_bloc: ^8.1.5
+  rxdart: ^0.27.7
+  flutter_native_splash: ^2.4.0
+  firebase_core: ^2.27.2
+  sign_in_with_apple: ^6.0.0
+  google_sign_in: ^6.2.1
+  firebase_auth: ^4.18.0
+  dialoger: ^1.0.0
+  crypto: ^3.0.3
+  provider: ^6.1.2
+  cloud_firestore: ^4.15.10
+  firebase_analytics: ^10.9.0
+  dart_mappable: ^4.2.1
+  flutter_svg: ^2.0.10+1
+  lzstring: ^2.0.0+2
+  universal_io: ^2.2.2
+  flyout: ^1.0.2
 dev_dependencies:
+  dart_mappable_builder: ^4.2.1
+  build_runner: ^2.4.8
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.2
 flutter:
+scripts:
+  update_json_models_force: flutter pub run build_runner build --delete-conflicting-outputs
