@@ -4,6 +4,7 @@ import 'package:serviced/serviced.dart';
 
 class WidgetsBindingService extends Service {
   late WidgetsBinding binding;
+  bool dropped = false;
 
   @override
   void onStart() {
@@ -13,6 +14,13 @@ class WidgetsBindingService extends Service {
 
   void dropSplash() {
     FlutterNativeSplash.remove();
+    dropped = true;
+  }
+
+  void dropIfUp() {
+    if (!dropped) {
+      dropSplash();
+    }
   }
 
   @override

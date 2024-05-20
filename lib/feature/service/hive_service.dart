@@ -1,9 +1,6 @@
-import 'package:fast_log/fast_log.dart';
-import 'package:flutter/foundation.dart';
+import 'package:arcane/arcane.dart';
 import 'package:hive/hive.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:serviced/serviced.dart';
 import 'package:synchronized/synchronized.dart';
 
 class HiveService extends StatelessService implements AsyncStartupTasked {
@@ -16,14 +13,9 @@ class HiveService extends StatelessService implements AsyncStartupTasked {
 
   @override
   Future<void> onStartupTask() async {
-    HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getTemporaryDirectory(),
-    );
-
     if (!kIsWeb) {
-      String path = (await getApplicationDocumentsDirectory()).path;
+      String path =
+          "${(await getApplicationDocumentsDirectory()).path}/${Arcane.app.application().title.toLowerCase()}";
       Hive.init(path);
       info("Initialized Native Hive storage location: $path");
     }

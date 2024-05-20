@@ -3,6 +3,22 @@ import 'package:example/firebase_options.dart';
 
 // Start the app by just calling Arcane with the required parameters.
 void main() => Arcane(
+      router: ArcaneRouter(routes: [
+        // Define our home screen subrouted with settings
+        const HomeScreen().subRoute([
+          // Define our settings subroute as /settings
+          const SettingsScreen().subRoute(
+            [
+              // Define our license viewer subroute as /settings/license
+              // Since LicenseViewerScreen overrides buildRoute this will handle ?license url stuff
+              const LicenseViewerScreen(
+                license: "unspecified",
+              ),
+            ],
+          ),
+        ])
+      ]),
+
       // Firebase options are required to initialize the app.
       // This is needed for the Firebase services to work.
       firebase: DefaultFirebaseOptions.currentPlatform,
@@ -75,23 +91,113 @@ void main() => Arcane(
         onUserPrivateUpdate: (userPrivate) {},
       ),
 
+      // Define themes
+      darkTheme: ThemeData.dark(),
+      lightTheme: ThemeData.light(),
+
       // This is where you finally create the application object itself
       application: () => ArcaneApp(
-        // Define your themes. Dont worry about theme system modes
-        darkTheme: ThemeData.dark(),
-        lightTheme: ThemeData.light(),
         title: "Example",
+        foregroundBuilder: (context, child) => child,
 
         // Define your home screen
         home: () => const HomeScreen(),
       ),
     );
 
-class HomeScreen extends StatelessWidget {
+// Some service that will run when arcane starts before the app runs
+class MyAppService extends StatelessService {}
+
+// A basic home screen. Note the ArcaneStatelessScreen it extends
+class HomeScreen extends ArcaneStatelessScreen {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold();
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text("Home"),
+          actions: [
+            IconButton(
+                onPressed: () =>
+                    const SettingsScreen().open(context), // open arcane screens
+                icon: const Icon(Icons.settings))
+          ],
+        ),
+      );
+
+  // We override toPath to let the router know where to find this screen
+  @override
+  String toPath() => "/";
 }
 
-class MyAppService extends StatelessService {}
+// The settings screen is the same but this time we make a stateful screen
+// its mostly the same really
+class SettingsScreen extends ArcaneStatefulScreen {
+  const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+
+  // Just define the settings path as /settings
+  @override
+  String toPath() => "/settings";
+}
+
+// The state is the same as any other state
+class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: ListView(
+          children: [
+            ...licenseTexts.keys.map((license) => ListTile(
+                  title: Text(license),
+                  onTap: () => LicenseViewerScreen(license: license)
+                      .open(context), // open arcane screen with params
+                ))
+          ],
+        ),
+      );
+}
+
+// This arcane screen has a parameter the license key
+// We need to do the following to make this parameter work:
+// 1. Define the toPath() method to include the license field as /settings/license?license=<LICENSE> so we can GO to it
+// 2. Define the buildRoute() method to build the screen based on a url such as /settings/license?license=MIT as LicenseViewerScreen(license: "MIT")
+class LicenseViewerScreen extends ArcaneStatelessScreen {
+  final String license;
+
+  const LicenseViewerScreen({super.key, required this.license});
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text("License"),
+        ),
+        body: Text(licenseTexts[license] ?? "Unknown license"),
+      );
+
+  // Step 1. We need to use withParams to add our params.
+  @override
+  String toPath() => withParams("/settings/license", {
+        "license": license,
+      });
+
+  // Step 2. We need to map the query params to the license key
+  @override
+  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+      ArcaneRoute(
+        // Use toRegistryPath here
+        path: toRegistryPath(),
+        // Build our screen with the params
+        builder: buildWithParams(
+            (params) => LicenseViewerScreen(license: params["license"]!)),
+        // Pass along subroutes
+        routes: subRoutes,
+      );
+}
+
+const Map<String, String> licenseTexts = {
+  "MIT": "MIT License text",
+  "Apache": "Apache License text",
+  "GPL": "GPL License text",
+};

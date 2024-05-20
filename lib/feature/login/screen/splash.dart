@@ -1,12 +1,29 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/feature/login/login_service.dart';
+import 'package:arcane/feature/login/screen/login.dart';
 import 'package:arcane/feature/service/user_service.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashScreen extends ArcaneStatefulScreen {
+  final String? redirect;
+
+  const SplashScreen({super.key, this.redirect});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
+
+  @override
+  String toPath() => withParams("/splash", {
+        if (redirect != null) "redirect": redirect!,
+      });
+
+  @override
+  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+      ArcaneRoute(
+        path: toRegistryPath(),
+        builder: buildWithParams(
+            (params) => SplashScreen(redirect: params["redirect"])),
+        routes: subRoutes,
+      );
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -20,14 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
               ?.call(svc<UserService>().uid());
           return v;
         }).then((value) {
-          Nav.home(Arcane.context);
-
+          Arcane.goHome(context);
           Arcane.app.events?.onLaunchComplete?.call();
         });
       } else {
         verbose("Not yet signed in. Going to login.");
-        Navigator.pushNamedAndRemoveUntil(
-            Arcane.context, "/login", (route) => false);
+        LoginScreen(
+          redirect: widget.redirect,
+        ).open(context);
       }
     });
 

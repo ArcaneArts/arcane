@@ -1,15 +1,11 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/feature/login/login_service.dart';
 import 'package:arcane/feature/service/hive_service.dart';
-import 'package:arcane/feature/service/http_service.dart';
 import 'package:arcane/feature/service/logging_service.dart';
 import 'package:arcane/feature/service/user_service.dart';
 import 'package:arcane/feature/service/widgets_binding_service.dart';
 import 'package:dialoger/dialoger.dart';
-import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:http_interceptor/http/intercepted_client.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 late final Arcane _app;
@@ -87,19 +83,32 @@ class ArcaneEvents {
 }
 
 class Arcane {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final ArcaneApp Function() application;
   final FirebaseOptions firebase;
   final ArcaneEvents? events;
   final ArcaneUserProvider users;
   final String? svgLogo;
+  final ArcaneRouter router;
+  final ThemeData? lightTheme;
+  final ThemeData? darkTheme;
+  final List<ThemeMod> themeMods;
+  final List<ThemeMod> darkThemeMods;
+  final List<ThemeMod> lightThemeMods;
   BuildContext? _tempContext;
 
   Arcane({
+    required this.router,
     required this.firebase,
     required this.application,
     required this.users,
     this.svgLogo,
     this.events,
+    this.lightTheme,
+    this.darkTheme,
+    this.themeMods = const [],
+    this.darkThemeMods = const [],
+    this.lightThemeMods = const [],
   }) {
     _app = this;
     _start();
@@ -124,7 +133,6 @@ class Arcane {
     services().register<WidgetsBindingService>(() => WidgetsBindingService(),
         lazy: false);
     services().register<HiveService>(() => HiveService(), lazy: false);
-    services().register<HTTPService>(() => HTTPService());
     services().register<UserService>(() => UserService());
     services().register<LoginService>(() => LoginService());
   }
@@ -145,14 +153,26 @@ class Arcane {
         });
       });
 
+  static GlobalKey<NavigatorState> get navKey => app.navigatorKey;
+
   static CollectionReference<Map<String, dynamic>> collection(String name) =>
       FirebaseFirestore.instance.collection(name);
+
+  static GoRouter buildRouterConfig() => app.router.buildConfiguration(navKey);
+
+  static void goHome(BuildContext context) =>
+      context.go(app.router.initialRoute);
+
+  static void goSplash(BuildContext context) => context.go("/splash");
+
+  static void goLogin(BuildContext context) => context.go("/login");
 
   static Talker get logger => talker;
 
   static Arcane get app => _app;
 
-  static BuildContext get context => Get.context ?? _app._tempContext!;
+  static BuildContext get context =>
+      navKey.currentContext ?? _app._tempContext!;
 
   static ThemeMode get themeMode =>
       ThemeMode.values
@@ -170,13 +190,10 @@ class Arcane {
 
   static LazyBox get cache => svc<HiveService>().cacheBox;
 
-  static Dio get dio => svc<HTTPService>().dio;
-
-  static InterceptedClient get http => svc<HTTPService>().client;
-
   static void dropSplash() => svc<WidgetsBindingService>().dropSplash();
 
   static void rebirth() => Arcane(
+        router: app.router,
         users: app.users,
         firebase: app.firebase,
         application: app.application,

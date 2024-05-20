@@ -33,6 +33,8 @@ class UserService extends StatelessService {
     _grabLastName = lastName;
   }
 
+  bool get bound => _bound;
+
   Future<void> bind(String uid) async {
     if (_bound) {
       return;

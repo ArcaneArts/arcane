@@ -1,9 +1,7 @@
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:serviced/serviced.dart';
-import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 Talker get talker => services().get<LoggingService>()._talker!;
@@ -25,24 +23,12 @@ class LoggingService extends Service {
           enabled: true,
           useConsoleLogs: true),
       logger: TalkerLogger(
-        settings: const TalkerLoggerSettings(
+        settings: TalkerLoggerSettings(
           enableColors: true,
           level: LogLevel.verbose,
         ),
       ),
     );
-
-    // Configure bloc observer to log to talker
-    Bloc.observer = TalkerBlocObserver(
-        talker: talker,
-        settings: const TalkerBlocLoggerSettings(
-          enabled: true,
-          printChanges: true,
-          printEventFullData: true,
-          printEvents: true,
-          printStateFullData: true,
-          printTransitions: true,
-        ));
 
     // Configure fast_log package to route to talker
     lDebugMode = true;

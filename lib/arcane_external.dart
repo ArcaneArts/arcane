@@ -7,6 +7,7 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_svg/flutter_svg.dart';
+export 'package:go_router/go_router.dart';
 export 'package:padded/padded.dart';
 export 'package:precision_stopwatch/precision_stopwatch.dart';
 export 'package:serviced/serviced.dart';

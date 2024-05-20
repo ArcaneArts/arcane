@@ -1,11 +1,13 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/feature/login/login_bloc.dart';
+import 'package:arcane/feature/login/screen/splash.dart';
 import 'package:arcane/feature/login/widget/login_content.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends ArcaneStatelessScreen {
+  final String? redirect;
+
+  const LoginScreen({super.key, this.redirect});
 
   @override
   Widget build(BuildContext context) => BlocConsumer<LoginBloc, LoginState>(
@@ -26,7 +28,34 @@ class LoginScreen extends StatelessWidget {
         if (state == LoginState.error) {
           snack("An error occurred while logging in. Please try again.");
         } else if (state == LoginState.success) {
-          Get.offAndToNamed("/splash");
+          if (redirect != null) {
+            try {
+              context.go(redirect!.fromRedirect);
+            } catch (e, es) {
+              error("Failed to decode redirect: $redirect");
+              error(e);
+              error(es);
+              SplashScreen(
+                redirect: redirect,
+              ).open(context);
+            }
+          } else {
+            const SplashScreen().open(context);
+          }
         }
       });
+
+  @override
+  String toPath() => withParams("/login", {
+        if (redirect != null) "redirect": redirect!,
+      });
+
+  @override
+  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+      ArcaneRoute(
+        path: toRegistryPath(),
+        builder: buildWithParams(
+            (params) => LoginScreen(redirect: params["redirect"])),
+        routes: subRoutes,
+      );
 }
