@@ -48,6 +48,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  bar:
+    dependency: transitive
+    description:
+      name: bar
+      sha256: bb69b7aaee95ed262cba8f3adbeb990423ff7700e127858e0ab4d38353c8be8d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   bloc:
     dependency: transitive
     description:
@@ -64,6 +72,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  change_case:
+    dependency: transitive
+    description:
+      name: change_case
+      sha256: "47c48c36f95f20c6d0ba03efabceff261d05026cca322cc2c4c01c343371b5bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   characters:
     dependency: transitive
     description:
@@ -128,6 +144,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  common_svgs:
+    dependency: "direct main"
+    description:
+      name: common_svgs
+      sha256: b31f6b3a8e6bf6bc4f12bbe7d9f582c14cfca4eb5955cf2f082134ab1ee95c21
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   cross_file:
     dependency: transitive
     description:
@@ -160,6 +184,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.2"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "365c771ac3b0e58845f39ec6deebc76e3276aa9922b0cc60840712094d9047ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.10"
   desktop_webview_auth:
     dependency: transitive
     description:
@@ -301,6 +333,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: transitive
+    description:
+      name: flutter_animate
+      sha256: "7c8a6594a9252dad30cc2ef16e33270b6248c4dedc3b3d06c86c4f3f4dc05ae5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.0"
   flutter_bloc:
     dependency: transitive
     description:
@@ -431,6 +471,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.4"
+  gsettings:
+    dependency: transitive
+    description:
+      name: gsettings
+      sha256: "1b0ce661f5436d2db1e51f3c4295a49849f03d304003a7ba177d01e3a858249c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.8"
   hive:
     dependency: transitive
     description:
@@ -575,6 +623,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  modern_titlebar_buttons:
+    dependency: transitive
+    description:
+      name: modern_titlebar_buttons
+      sha256: "2a65e63587e4f19d2adb6cfdf5c7465a4333f01828f874e40b7f41a8fe42cbfd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   nested:
     dependency: transitive
     description:
@@ -711,6 +767,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: "6ee02c8a1158e6dae7ca430da79436e3b1c9563c8cf02f524af997c201ac2b90"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.9"
   serviced:
     dependency: transitive
     description:
@@ -1004,6 +1068,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.1"
+  window_manager:
+    dependency: transitive
+    description:
+      name: window_manager
+      sha256: "8699323b30da4cdbe2aa2e7c9de567a6abd8a97d9a5c850a3c86dcd0b34bbfbf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.9"
   xdg_directories:
     dependency: transitive
     description:

@@ -15,7 +15,7 @@ class HiveService extends StatelessService implements AsyncStartupTasked {
   Future<void> onStartupTask() async {
     if (!kIsWeb) {
       String path =
-          "${(await getApplicationDocumentsDirectory()).path}/${Arcane.app.application().title.toLowerCase()}";
+          "${(await getApplicationDocumentsDirectory()).path}/${Arcane.app.title.toLowerCase()}";
       Hive.init(path);
       info("Initialized Native Hive storage location: $path");
     }

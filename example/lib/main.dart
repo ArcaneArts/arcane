@@ -1,8 +1,11 @@
 import 'package:arcane/arcane.dart';
+import 'package:common_svgs/common_svgs.dart';
 import 'package:example/firebase_options.dart';
+import 'package:window_manager/window_manager.dart';
 
 // Start the app by just calling Arcane with the required parameters.
 void main() => Arcane(
+      // Define app routes for navigation, uses goRouter but easier
       router: ArcaneRouter(routes: [
         // Define our home screen subrouted with settings
         const HomeScreen().subRoute([
@@ -25,7 +28,7 @@ void main() => Arcane(
 
       // Optionally provide a string representing an svg logo for your login
       // and other places. The [arcaneArtsLogo] is the default
-      svgLogo: arcaneArtsLogo,
+      svgLogo: svgArcaneArts,
 
       // Events are optional and can be used to run code before and after
       // Initialization phases
@@ -35,6 +38,9 @@ void main() => Arcane(
           // If you return a future, the app will wait for it to complete
           onPreInit: () {
             services().register<MyAppService>(() => MyAppService());
+          },
+          onWindowManagerShown: () {
+            // called when the window for window manager has appeared
           },
 
           // This is called after the app is initialized
@@ -95,9 +101,39 @@ void main() => Arcane(
       darkTheme: ThemeData.dark(),
       lightTheme: ThemeData.light(),
 
+      // Theme Mods. These are applied to both light and dark themes
+      themeMods: [
+        // Changes color scheme primary to red
+        (t) => t.copyWith(
+            colorScheme: t.colorScheme.copyWith(primary: Colors.red)),
+      ],
+
+      // These are applied lightTheme -> themeMods -> lightThemeMods
+      lightThemeMods: [
+        // force white theme card color to pitch white
+        (t) => t.copyWith(cardColor: Colors.white)
+      ],
+
+      // These are applied darkTheme -> themeMods -> darkThemeMods
+      darkThemeMods: [],
+
+      // App title defined here
+      title: "Example",
+
+      // For window manager, you can turn this off to "hide" on close
+      exitWindowOnClose: true,
+
+      // Override default window options for window manager
+      // most of these are already defined
+      // but you can override whatever you want here
+      windowOptions: const WindowOptions(size: Size(800, 600), center: true),
+
+      // For sign in with windows google
+      windowsGoogleSignInClientId: "YOUR_GOOGLE_SIGN_IN_CLIENT_ID",
+      windowsGoogleSignInRedirectUri: "YOUR_GOOGLE_SIGN_IN_REDIRECT_URI",
+
       // This is where you finally create the application object itself
       application: () => ArcaneApp(
-        title: "Example",
         foregroundBuilder: (context, child) => child,
 
         // Define your home screen

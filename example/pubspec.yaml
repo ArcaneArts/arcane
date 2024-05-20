@@ -5,6 +5,7 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.3.2 <4.0.0'
 dependencies:
+  common_svgs: ^1.0.2
   flutter:
     sdk: flutter
   arcane:

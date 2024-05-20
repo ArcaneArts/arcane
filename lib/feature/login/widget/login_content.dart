@@ -1,6 +1,7 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/feature/login/widget/apple_sign_in_button.dart';
 import 'package:arcane/feature/login/widget/google_sign_in_button.dart';
+import 'package:common_svgs/common_svgs.dart';
 
 class LoginContent extends StatelessWidget {
   const LoginContent({super.key});
@@ -23,7 +24,7 @@ class LoginContent extends StatelessWidget {
                   ).createShader(bounds);
                 },
                 child: SvgPicture.string(
-                  Arcane.app.svgLogo ?? arcaneArtsLogo,
+                  Arcane.app.svgLogo ?? svgArcaneArts,
                   width: 180,
                   height: 180,
                 ),
