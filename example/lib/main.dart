@@ -1,6 +1,9 @@
 import 'package:arcane/arcane.dart';
 import 'package:common_svgs/common_svgs.dart';
 import 'package:example/firebase_options.dart';
+import 'package:example/screen/home.dart';
+import 'package:example/screen/license.dart';
+import 'package:example/screen/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
 // Start the app by just calling Arcane with the required parameters.
@@ -134,106 +137,84 @@ void main() => Arcane(
 
       // This is where you finally create the application object itself
       application: () => ArcaneApp(
+        // Override the default app view. This is where the title bar is added, but instead use titleBar
         foregroundBuilder: (context, child) => child,
 
-        // Define your home screen
-        home: () => const HomeScreen(),
+        // Write a custom background underneath the foreground of the app (otherwise Unicorn vomit is used)
+        background: const OpalBackground(),
+
+        // Override the windowmanager titlebar
+        titleBar: ArcaneTitleBar(
+          title: const Text("Custom Title"),
+          leading: SvgPicture.string(
+            svgArcaneArts,
+            width: 28,
+            height: 28,
+          ),
+          theme: PlatformTheme.mac,
+        ),
       ),
     );
 
 // Some service that will run when arcane starts before the app runs
 class MyAppService extends StatelessService {}
 
-// A basic home screen. Note the ArcaneStatelessScreen it extends
-class HomeScreen extends ArcaneStatelessScreen {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text("Home"),
-          actions: [
-            IconButton(
-                onPressed: () =>
-                    const SettingsScreen().open(context), // open arcane screens
-                icon: const Icon(Icons.settings))
-          ],
+void mainButWithoutComments() => Arcane(
+      title: "Example",
+      firebase: DefaultFirebaseOptions.currentPlatform,
+      svgLogo: svgArcaneArts,
+      darkTheme: ThemeData.dark(),
+      lightTheme: ThemeData.light(),
+      lightThemeMods: [(t) => t.copyWith(cardColor: Colors.white)],
+      darkThemeMods: [],
+      exitWindowOnClose: true,
+      windowOptions: const WindowOptions(size: Size(800, 600), center: true),
+      windowsGoogleSignInClientId: "YOUR_GOOGLE_SIGN_IN_CLIENT_ID",
+      windowsGoogleSignInRedirectUri: "YOUR_GOOGLE_SIGN_IN_REDIRECT_URI",
+      router: ArcaneRouter(routes: [
+        const HomeScreen().subRoute([
+          const SettingsScreen().subRoute(
+            [
+              const LicenseViewerScreen(
+                license: "unspecified",
+              ),
+            ],
+          ),
+        ])
+      ]),
+      events: ArcaneEvents(
+        onPreInit: () {
+          services().register<MyAppService>(() => MyAppService());
+        },
+      ),
+      users: ArcaneUserProvider(
+        userRef: (uid) => "user/$uid".doc,
+        userCapabilitiesRef: (uid) => "user/$uid/data/capabilities".doc,
+        userPrivateRef: (uid) => "user/$uid/data/private".doc,
+        onCreateUserCapabilities: (u) => {},
+        onCreateUserPrivate: (u) => {},
+        onCreateUser: (u) => {
+          "firstName": u.firstName,
+          "lastName": u.lastName,
+          "email": u.email,
+          "uid": u.uid,
+        },
+      ),
+      themeMods: [
+        (t) => t.copyWith(
+            colorScheme: t.colorScheme.copyWith(primary: Colors.red)),
+      ],
+      application: () => ArcaneApp(
+        foregroundBuilder: (context, child) => child,
+        background: const OpalBackground(),
+        titleBar: ArcaneTitleBar(
+          title: const Text("Custom Title"),
+          leading: SvgPicture.string(
+            svgArcaneArts,
+            width: 28,
+            height: 28,
+          ),
+          theme: PlatformTheme.mac,
         ),
-      );
-
-  // We override toPath to let the router know where to find this screen
-  @override
-  String toPath() => "/";
-}
-
-// The settings screen is the same but this time we make a stateful screen
-// its mostly the same really
-class SettingsScreen extends ArcaneStatefulScreen {
-  const SettingsScreen({super.key});
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-
-  // Just define the settings path as /settings
-  @override
-  String toPath() => "/settings";
-}
-
-// The state is the same as any other state
-class _SettingsScreenState extends State<SettingsScreen> {
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: ListView(
-          children: [
-            ...licenseTexts.keys.map((license) => ListTile(
-                  title: Text(license),
-                  onTap: () => LicenseViewerScreen(license: license)
-                      .open(context), // open arcane screen with params
-                ))
-          ],
-        ),
-      );
-}
-
-// This arcane screen has a parameter the license key
-// We need to do the following to make this parameter work:
-// 1. Define the toPath() method to include the license field as /settings/license?license=<LICENSE> so we can GO to it
-// 2. Define the buildRoute() method to build the screen based on a url such as /settings/license?license=MIT as LicenseViewerScreen(license: "MIT")
-class LicenseViewerScreen extends ArcaneStatelessScreen {
-  final String license;
-
-  const LicenseViewerScreen({super.key, required this.license});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text("License"),
-        ),
-        body: Text(licenseTexts[license] ?? "Unknown license"),
-      );
-
-  // Step 1. We need to use withParams to add our params.
-  @override
-  String toPath() => withParams("/settings/license", {
-        "license": license,
-      });
-
-  // Step 2. We need to map the query params to the license key
-  @override
-  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
-      ArcaneRoute(
-        // Use toRegistryPath here
-        path: toRegistryPath(),
-        // Build our screen with the params
-        builder: buildWithParams(
-            (params) => LicenseViewerScreen(license: params["license"]!)),
-        // Pass along subroutes
-        routes: subRoutes,
-      );
-}
-
-const Map<String, String> licenseTexts = {
-  "MIT": "MIT License text",
-  "Apache": "Apache License text",
-  "GPL": "GPL License text",
-};
+      ),
+    );

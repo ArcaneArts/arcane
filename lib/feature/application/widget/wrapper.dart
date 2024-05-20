@@ -70,8 +70,7 @@ class OpalWrapperState extends State<OpalWrapper> {
                   Stack(
                     fit: StackFit.expand,
                     children: [
-                      widget.background ??
-                          OpalBackground(controller: controller),
+                      widget.background ?? const OpalBackground(),
                       widget.foregroundBuilder(
                           context,
                           widget.builder(context, controller.light,

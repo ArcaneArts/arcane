@@ -1,18 +1,20 @@
 import 'package:arcane/arcane.dart';
 
 class OpalBackground extends StatelessWidget {
-  final Opal controller;
-  const OpalBackground({super.key, required this.controller});
+  final Widget? child;
+
+  const OpalBackground({super.key, this.child});
 
   @override
   Widget build(BuildContext context) => AnimatedOpacity(
-      opacity: controller.backgroundOpacity.value,
+      opacity: Arcane.opal.backgroundOpacity.value,
       duration: const Duration(seconds: 1),
       curve: Curves.easeOutCirc,
-      child: UnicornVomit(
-        dark: controller.isDark(),
-        points: 3,
-        blendAmount: controller.themeColorMixture.value,
-        blendColor: controller.theme.colorScheme.primary,
-      ));
+      child: child ??
+          UnicornVomit(
+            dark: Arcane.opal.isDark(),
+            points: 3,
+            blendAmount: Arcane.opal.themeColorMixture.value,
+            blendColor: Arcane.opal.theme.colorScheme.primary,
+          ));
 }

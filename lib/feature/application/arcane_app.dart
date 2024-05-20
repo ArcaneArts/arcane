@@ -3,7 +3,6 @@ import 'package:arcane/arcane.dart';
 Widget _passthroughBuilder(BuildContext context, Widget child) => child;
 
 class ArcaneApp extends StatefulWidget {
-  final Widget Function() home;
   final Map<String, Widget Function()> pages;
   final ThemeData Function(ThemeData theme)? themeModifier;
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
@@ -35,7 +34,6 @@ class ArcaneApp extends StatefulWidget {
 
   const ArcaneApp(
       {super.key,
-      required this.home,
       this.titleBar,
       this.pages = const {},
       this.themeModifier,
