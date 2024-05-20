@@ -11,20 +11,35 @@ typedef ArcaneRoute = GoRoute;
 
 typedef ArcaneRouterWidgetBuilder = GoRouterWidgetBuilder;
 
+class OpalObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {}
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (previousRoute != null) {
+      Arcane.opal.setBackgroundSeed(previousRoute!.settings.name ?? "/");
+    }
+  }
+}
+
 class ArcaneRouter {
   final String initialRoute;
   final List<dynamic> routes;
   final GoRouterRedirect? redirect;
+  final List<NavigatorObserver> observers;
 
   const ArcaneRouter({
     this.redirect,
     this.initialRoute = '/',
+    this.observers = const [],
     this.routes = const [],
   });
 
   GoRouter buildConfiguration(GlobalKey<NavigatorState> key) => GoRouter(
         navigatorKey: key,
         initialLocation: initialRoute,
+        observers: [],
         routes: [
           ...routes.map(_buildRoute),
           _buildRoute(const LoginScreen()),
@@ -35,13 +50,14 @@ class ArcaneRouter {
           if ((!svc<LoginService>().isSignedIn() ||
                   !svc<UserService>().bound) &&
               !(uri.startsWith("/splash") || uri.startsWith("/login"))) {
-            return LoginScreen(redirect: uri).toPath();
+            return SplashScreen(redirect: uri).toPath();
           }
 
           if (svc<LoginService>().isSignedIn() && uri.startsWith("/login")) {
             return const SplashScreen().toPath();
           }
 
+          Arcane.opal.setBackgroundSeed(state.uri.toString());
           svc<WidgetsBindingService>().dropIfUp();
           return redirect?.call(context, state);
         },

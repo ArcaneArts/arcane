@@ -95,7 +95,10 @@ class Arcane {
   final List<ThemeMod> themeMods;
   final List<ThemeMod> darkThemeMods;
   final List<ThemeMod> lightThemeMods;
+  final String? windowsGoogleSignInClientId;
+  final String? windowsGoogleSignInRedirectUri;
   BuildContext? _tempContext;
+  Opal? _opalController;
 
   Arcane({
     required this.router,
@@ -104,6 +107,8 @@ class Arcane {
     required this.users,
     this.svgLogo,
     this.events,
+    this.windowsGoogleSignInClientId,
+    this.windowsGoogleSignInRedirectUri,
     this.lightTheme,
     this.darkTheme,
     this.themeMods = const [],
@@ -113,6 +118,10 @@ class Arcane {
     _app = this;
     _start();
   }
+
+  bool get canSignInWithGoogleOnWindows =>
+      windowsGoogleSignInClientId != null &&
+      windowsGoogleSignInRedirectUri != null;
 
   Future<void> _start() async {
     await _registerDefaultServices();
@@ -190,6 +199,8 @@ class Arcane {
 
   static LazyBox get cache => svc<HiveService>().cacheBox;
 
+  static Opal get opal => _app._opalController!;
+
   static void dropSplash() => svc<WidgetsBindingService>().dropSplash();
 
   static void rebirth() => Arcane(
@@ -200,6 +211,8 @@ class Arcane {
         events: app.events,
         svgLogo: app.svgLogo,
       );
+
+  void updateOpalController(Opal controller) => _opalController = controller;
 }
 
 String arcaneArtsLogo = '''

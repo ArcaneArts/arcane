@@ -41,10 +41,17 @@ class _SplashScreenState extends State<SplashScreen> {
           Arcane.app.events?.onLaunchComplete?.call();
         });
       } else {
-        verbose("Not yet signed in. Going to login.");
-        LoginScreen(
-          redirect: widget.redirect,
-        ).open(context);
+        svc<LoginService>().attemptAutoSignIn().then((value) {
+          if (value) {
+            Arcane.goHome(context);
+            Arcane.app.events?.onLaunchComplete?.call();
+          } else {
+            verbose("Not yet signed in. Going to login.");
+            LoginScreen(
+              redirect: widget.redirect,
+            ).open(context);
+          }
+        });
       }
     });
 
