@@ -215,8 +215,10 @@ class Arcane {
           .firstOrNull ??
       ThemeMode.system;
 
-  static set themeMode(ThemeMode mode) =>
-      box.put('_arcane_themeMode', mode.index);
+  static set themeMode(ThemeMode mode) {
+    box.put('_arcane_themeMode', mode.index);
+    opal.themeMode.value = mode;
+  }
 
   static Box get box => svc<HiveService>().dataBox;
 
