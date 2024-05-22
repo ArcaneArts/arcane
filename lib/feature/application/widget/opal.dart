@@ -9,6 +9,7 @@ class Opal {
   late ValueNotifier<List<ThemeMod>> darkThemeMods;
   late ValueNotifier<List<ThemeMod>> lightThemeMods;
   late ValueNotifier<double> backgroundOpacity;
+  late ValueNotifier<double> canvasOpacity;
   late ValueNotifier<double> themeColorMixture;
   late BehaviorSubject<String> _backgroundSeed;
 
@@ -20,9 +21,11 @@ class Opal {
     List<ThemeMod> lightThemeMods = const [],
     double themeColorMixture = 0.25,
     double backgroundOpacity = 0.15,
+    double canvasOpacity = 0.95,
     List<ThemeMod> themeMods = const [],
     required VoidCallback listener,
   }) {
+    this.canvasOpacity = ValueNotifier(canvasOpacity)..addListener(listener);
     this.darkThemeMods = ValueNotifier(darkThemeMods)..addListener(listener);
     this.lightThemeMods = ValueNotifier(lightThemeMods)..addListener(listener);
     this.lightThemeData = ValueNotifier(lightThemeData)..addListener(listener);

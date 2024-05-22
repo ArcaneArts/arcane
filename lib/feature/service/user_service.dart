@@ -90,7 +90,7 @@ class UserService extends StatelessService {
   String uid() => auth.FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> _ensureUser(String uid) async {
-    verbose("Ensuring User $uid");
+    verbose(Arcane.app.users.userRef(uid).path);
     DocumentSnapshot<Map<String, dynamic>> snap =
         await Arcane.app.users.userRef(uid).get();
 
