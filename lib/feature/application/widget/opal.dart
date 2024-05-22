@@ -19,23 +19,27 @@ class Opal {
     required ThemeMode themeMode,
     List<ThemeMod> darkThemeMods = const [],
     List<ThemeMod> lightThemeMods = const [],
-    double themeColorMixture = 0.25,
-    double backgroundOpacity = 0.15,
-    double canvasOpacity = 0.95,
+    double? themeColorMixture,
+    double? backgroundOpacity,
+    double? canvasOpacity,
     List<ThemeMod> themeMods = const [],
     required VoidCallback listener,
   }) {
-    this.canvasOpacity = ValueNotifier(canvasOpacity)..addListener(listener);
+    this.canvasOpacity =
+        ValueNotifier(canvasOpacity ?? Arcane.app.opalCanvasOpacity)
+          ..addListener(listener);
     this.darkThemeMods = ValueNotifier(darkThemeMods)..addListener(listener);
     this.lightThemeMods = ValueNotifier(lightThemeMods)..addListener(listener);
     this.lightThemeData = ValueNotifier(lightThemeData)..addListener(listener);
     this.darkThemeData = ValueNotifier(darkThemeData)..addListener(listener);
     this.themeMode = ValueNotifier(themeMode)..addListener(listener);
     this.themeMods = ValueNotifier(themeMods)..addListener(listener);
-    this.themeColorMixture = ValueNotifier(themeColorMixture)
-      ..addListener(listener);
-    this.backgroundOpacity = ValueNotifier(backgroundOpacity)
-      ..addListener(listener);
+    this.themeColorMixture =
+        ValueNotifier(themeColorMixture ?? Arcane.app.opalColorSpin)
+          ..addListener(listener);
+    this.backgroundOpacity =
+        ValueNotifier(backgroundOpacity ?? Arcane.app.opalBackgroundOpacity)
+          ..addListener(listener);
     _backgroundSeed = BehaviorSubject.seeded("/");
   }
 

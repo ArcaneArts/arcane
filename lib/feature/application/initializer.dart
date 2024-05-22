@@ -135,8 +135,16 @@ class Arcane {
   final String? windowsGoogleSignInRedirectUri;
   BuildContext? _tempContext;
   Opal? _opalController;
+  final double opalBackgroundOpacity;
+  final double opalCanvasOpacity;
+  final double opalColorSpin;
+  final int opalLights;
 
   Arcane({
+    this.opalBackgroundOpacity = 0.15,
+    this.opalCanvasOpacity = 0.95,
+    this.opalColorSpin = 0.15,
+    this.opalLights = 3,
     required this.title,
     this.exitWindowOnClose = true,
     required this.router,

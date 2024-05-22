@@ -7,9 +7,36 @@ import 'package:arcane/feature/login/screen/splash.dart';
 import 'package:arcane/feature/service/user_service.dart';
 import 'package:arcane/feature/service/widgets_binding_service.dart';
 
-typedef ArcaneRoute = GoRoute;
-
 typedef ArcaneRouterWidgetBuilder = GoRouterWidgetBuilder;
+
+class ArcaneRoute {
+  final String path;
+  final ArcaneRouterWidgetBuilder builder;
+  final List<ArcaneRoute> routes;
+
+  const ArcaneRoute({
+    required this.path,
+    required this.builder,
+    this.routes = const [],
+  });
+
+  GoRoute get goRoute => GoRoute(
+      path: path,
+      builder: builder,
+      routes: routes.map((e) => e.goRoute).toList(),
+      pageBuilder: (BuildContext context, GoRouterState state) =>
+          CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: builder(context, state),
+            transitionDuration: const Duration(milliseconds: 0),
+            reverseTransitionDuration: const Duration(milliseconds: 0),
+            transitionsBuilder: (BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child) =>
+                child,
+          ));
+}
 
 class OpalObserver extends NavigatorObserver {
   @override
@@ -41,12 +68,15 @@ class ArcaneRouter {
       return GoRouter(
         navigatorKey: key,
         initialLocation: "/splash",
-        observers: [],
+        observers: [
+          ...observers,
+          OpalObserver(),
+        ],
         routes: [
           ...routes.map(_buildRoute),
           _buildRoute(const LoginScreen(), topLevel: true),
           _buildRoute(const SplashScreen(), topLevel: true)
-        ],
+        ].map((e) => e.goRoute).toList(),
         redirect: (context, state) async {
           String uri = state.uri.toString();
           bool signedIn = svc<LoginService>().isSignedIn();

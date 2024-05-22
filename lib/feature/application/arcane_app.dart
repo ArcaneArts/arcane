@@ -54,7 +54,7 @@ class ArcaneApp extends StatefulWidget {
       this.checkerboardRasterCacheImages = false,
       this.checkerboardOffscreenLayers = false,
       this.showSemanticsDebugger = false,
-      this.debugShowCheckedModeBanner = true,
+      this.debugShowCheckedModeBanner = false,
       this.shortcuts,
       this.scrollBehavior,
       this.highContrastTheme,

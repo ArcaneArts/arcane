@@ -56,18 +56,23 @@ class _UnicornVomitState extends State<UnicornVomit>
       children: [
         MeshGradient(
             controller: controller,
-            options: MeshGradientOptions(noiseIntensity: 0.25, blend: 2)),
+            options: MeshGradientOptions(noiseIntensity: 0.3, blend: 3)),
       ],
     );
   }
 }
 
-List<UnicornVomitPoint> seedPoints(String seed, int count, bool dark,
-        Color blendColor, double blendAmount) =>
-    [
-      for (int i = 0; i < count; i++)
-        UnicornVomitPoint.fromSeed(seed, i, dark, blendColor, blendAmount)
-    ];
+List<UnicornVomitPoint> seedPoints(
+    String seed, int count, bool dark, Color blendColor, double blendAmount) {
+  List<UnicornVomitPoint> vps = [];
+
+  for (int i = 0; i < count; i++) {
+    vps.add(UnicornVomitPoint.fromSeed(seed, i, dark, blendColor, blendAmount,
+        vps.map((e) => e.position).toList()));
+  }
+
+  return vps;
+}
 
 class UnicornVomitPoint {
   final int index;
@@ -82,32 +87,59 @@ class UnicornVomitPoint {
     required this.dark,
   });
 
-  factory UnicornVomitPoint.fromSeed(
-      String seed, int key, bool dark, Color blendColor, double blendAmount) {
-    Random random = Random(seed.hashCode ^ (key * 395461));
+  factory UnicornVomitPoint.fromSeed(String seed, int key, bool dark,
+      Color blendColor, double blendAmount, List<Offset> existing) {
+    double coord(Random random) {
+      double g = random.nextDouble() * 0.25;
+
+      return random.nextBool() ? g : (1 - g);
+    }
+
+    Offset pos(Random random) {
+      if (random.nextBool()) {
+        return Offset(coord(random), random.nextDouble());
+      }
+
+      return Offset(random.nextDouble(), coord(random));
+    }
+
+    Offset best(Random random, List<Offset> existing) {
+      if (existing.isEmpty) {
+        return pos(random);
+      }
+
+      double furthest = 0;
+      Offset b = pos(random);
+
+      for (int i = 0; i < 3 + existing.length; i++) {
+        Offset n = pos(random);
+        double closest = 2;
+
+        for (final e in existing) {
+          double d = (e - n).distance;
+
+          if (d < closest) {
+            closest = d;
+          }
+        }
+
+        if (closest > furthest) {
+          furthest = closest;
+          b = n;
+        }
+      }
+
+      return b;
+    }
+
+    Random random =
+        Random(seed.hashCode ^ (key * 395461) ^ Arcane.app.title.hashCode);
     return UnicornVomitPoint(
         dark: dark,
         index: key,
-        position: Offset(random.nextDouble(), random.nextDouble()),
-        color: dark
-            ? Color.fromARGB(
-                255,
-                random.nextInt(255),
-                random.nextInt(255),
-                random.nextInt(255),
-              )
-                .darken(random.nextInt(30) + 25)
-                .saturate((random.nextInt(100) + 50).clamp(0, 100))
-                .mix(blendColor, (blendAmount * 100).clamp(0, 100).round())
-            : Color.fromARGB(
-                255,
-                random.nextInt(255),
-                random.nextInt(255),
-                random.nextInt(255),
-              )
-                .darken(random.nextInt(100))
-                .saturate(random.nextInt(25))
-                .mix(blendColor, (blendAmount * 100).clamp(0, 100).round()));
+        position: best(random, existing),
+        color: blendColor.spin(
+            (random.nextDouble() * blendAmount * 360) - (blendAmount * 180)));
   }
 
   AnimationSequence get animationSequence => AnimationSequence(

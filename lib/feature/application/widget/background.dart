@@ -20,9 +20,9 @@ class OpalBackground extends StatelessWidget {
           child: child ??
               UnicornVomit(
                 dark: Arcane.opal.isDark(),
-                points: 3,
+                points: Arcane.app.opalLights.clamp(2, 6),
                 blendAmount: Arcane.opal.themeColorMixture.value,
-                blendColor: Arcane.opal.theme.colorScheme.primary,
+                blendColor: Arcane.opal.theme.colorScheme.tertiary,
               ),
         ),
       );
