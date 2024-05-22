@@ -399,14 +399,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  get:
-    dependency: transitive
-    description:
-      name: get
-      sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.6.6"
   go_router:
     dependency: transitive
     description:
@@ -828,14 +820,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  snackbar:
-    dependency: transitive
-    description:
-      name: snackbar
-      sha256: "614c81d5d73e00eac5b89931e17b7cf2f103827941e222266f36701d5afa395f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   source_span:
     dependency: transitive
     description:

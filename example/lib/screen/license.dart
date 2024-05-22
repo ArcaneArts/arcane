@@ -32,10 +32,11 @@ class LicenseViewerScreen extends ArcaneStatelessScreen {
 
   // Step 2. We need to map the query params to the license key
   @override
-  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+  ArcaneRoute buildRoute(
+          {List<ArcaneRoute> subRoutes = const [], bool topLevel = false}) =>
       ArcaneRoute(
         // Use toRegistryPath here
-        path: toRegistryPath(),
+        path: toRegistryPath(topLevel: topLevel),
         // Build our screen with the params
         builder: buildWithParams(
             (params) => LicenseViewerScreen(license: params["license"]!)),

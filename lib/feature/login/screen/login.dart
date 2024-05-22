@@ -26,7 +26,9 @@ class LoginScreen extends ArcaneStatelessScreen {
                 ),
       listener: (context, state) {
         if (state == LoginState.error) {
-          snack("An error occurred while logging in. Please try again.");
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "An error occurred while logging in. Please try again.")));
         } else if (state == LoginState.success) {
           if (redirect != null) {
             try {
@@ -51,9 +53,10 @@ class LoginScreen extends ArcaneStatelessScreen {
       });
 
   @override
-  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+  ArcaneRoute buildRoute(
+          {List<ArcaneRoute> subRoutes = const [], bool topLevel = false}) =>
       ArcaneRoute(
-        path: toRegistryPath(),
+        path: toRegistryPath(topLevel: topLevel),
         builder: buildWithParams(
             (params) => LoginScreen(redirect: params["redirect"])),
         routes: subRoutes,

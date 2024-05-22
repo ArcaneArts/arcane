@@ -36,41 +36,63 @@ class ArcaneRouter {
     this.routes = const [],
   });
 
-  GoRouter buildConfiguration(GlobalKey<NavigatorState> key) => GoRouter(
+  GoRouter buildConfiguration(GlobalKey<NavigatorState> key) {
+    try {
+      return GoRouter(
         navigatorKey: key,
-        initialLocation: initialRoute,
+        initialLocation: "/splash",
         observers: [],
         routes: [
           ...routes.map(_buildRoute),
-          _buildRoute(const LoginScreen()),
-          _buildRoute(const SplashScreen())
+          _buildRoute(const LoginScreen(), topLevel: true),
+          _buildRoute(const SplashScreen(), topLevel: true)
         ],
-        redirect: (context, state) {
+        redirect: (context, state) async {
           String uri = state.uri.toString();
-          if ((!svc<LoginService>().isSignedIn() ||
-                  !svc<UserService>().bound) &&
+          bool signedIn = svc<LoginService>().isSignedIn();
+          bool bound = svc<UserService>().bound;
+
+          verbose("Signed In: $signedIn, Bound: $bound, URI: $uri");
+
+          if ((!signedIn || !bound) &&
               !(uri.startsWith("/splash") || uri.startsWith("/login"))) {
+            verbose(
+                "Redirect: $uri -> ${SplashScreen(redirect: uri).toPath()}");
             return SplashScreen(redirect: uri).toPath();
           }
 
-          if (svc<LoginService>().isSignedIn() && uri.startsWith("/login")) {
+          if (signedIn && uri.startsWith("/login")) {
+            verbose("Redirect: $uri -> ${const SplashScreen().toPath()}");
             return const SplashScreen().toPath();
           }
 
           Arcane.opal.setBackgroundSeed(state.uri.toString());
           svc<WidgetsBindingService>().dropIfUp();
-          return redirect?.call(context, state);
+          String? s = await redirect?.call(context, state);
+          if (s != null) {
+            verbose("Redirect: $uri -> $s");
+          }
+          return s;
         },
-      );
+      )..logRouter();
+    } catch (e, es) {
+      error(e);
+      error(es);
+    }
+
+    throw Exception("Failed to build router");
+  }
 
   static ArcaneRoute _buildRoute(
     dynamic route, {
     List<dynamic> children = const [],
+    bool topLevel = false,
   }) {
     if (route is ArcaneRoute) {
       return route;
     } else if (route is ArcaneRoutingScreen) {
-      return route.buildRoute(subRoutes: children.map(_buildRoute).toList());
+      return route.buildRoute(
+          subRoutes: children.map(_buildRoute).toList(), topLevel: topLevel);
     } else {
       throw Exception(
           'Invalid route type. Expected either ArcaneRoute, ArcaneStatelessScreen or ArcaneStatefulScreen');
@@ -101,8 +123,12 @@ mixin ArcaneRoutingScreen {
   /// In your route definition you will also have to convert that path back into this screen object
   String toPath();
 
-  String toRegistryPath() {
+  String toRegistryPath({bool topLevel = false}) {
     String path = toPath();
+
+    if (path.trim() == "/") {
+      return "/";
+    }
 
     // Strip out query params
     if (path.contains("?")) {
@@ -114,12 +140,13 @@ mixin ArcaneRoutingScreen {
       path = path.split("/").last;
     }
 
-    return path;
+    return "${topLevel ? "/" : ""}$path";
   }
 
-  ArcaneRoute buildRoute({List<ArcaneRoute> subRoutes = const []}) =>
+  ArcaneRoute buildRoute(
+          {List<ArcaneRoute> subRoutes = const [], bool topLevel = false}) =>
       ArcaneRoute(
-        path: toRegistryPath(),
+        path: toRegistryPath(topLevel: topLevel),
         builder: (context, state) => this as Widget,
         routes: subRoutes,
       );
@@ -148,4 +175,29 @@ mixin ArcaneRoutingScreen {
 extension XStringRedirectConverter on String {
   String get toRedirect => base64Url.encode(utf8.encode(this));
   String get fromRedirect => utf8.decode(base64Url.decode(this));
+}
+
+extension XGoRouter on GoRouter {
+  void logRouter() {
+    for (RouteBase m in configuration.routes) {
+      if (m is GoRoute) {
+        m.logRoute();
+      } else {
+        verbose("Route: $m");
+      }
+    }
+  }
+}
+
+extension XGoRoute on GoRoute {
+  void logRoute([int depth = 0]) {
+    verbose("${" " * depth}ArcaneRoute: $path");
+    for (RouteBase m in routes) {
+      if (m is GoRoute) {
+        m.logRoute(depth + 1);
+      } else {
+        verbose("${" " * (depth + 1)}Route: $m");
+      }
+    }
+  }
 }

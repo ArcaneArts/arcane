@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:arcane/arcane.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -37,6 +35,7 @@ class UserService extends StatelessService {
 
   Future<void> bind(String uid) async {
     if (_bound) {
+      warn("Already bound to user service");
       return;
     }
 
@@ -44,15 +43,26 @@ class UserService extends StatelessService {
 
     verbose("Binding user service for $uid");
     try {
-      await FirebaseAnalytics.instance
-          .setUserId(id: uid, callOptions: AnalyticsCallOptions(global: true));
-      verbose("Bound Analytics");
+      try {
+        await FirebaseAnalytics.instance.setUserId(
+            id: uid, callOptions: AnalyticsCallOptions(global: true));
+        verbose("Bound Analytics");
+      } catch (e, es) {
+        warn("Analytics is not supported on this platform");
+      }
 
       PrecisionStopwatch p = PrecisionStopwatch.start();
       await [
-        _ensureUser(uid),
-        _ensureUserCapabilities(uid),
-        _ensureUserPrivate(uid),
+        _ensureUser(uid).catchError((e, es) {
+          warn("Failed to ensure user");
+          warn(e);
+          warn(es);
+        }),
+        _ensureUserPrivate(uid).catchError((e, es) {
+          warn("Failed to ensure user private");
+          warn(e);
+          warn(es);
+        }),
       ].wait();
       verbose("Got all init data in ${p.getMilliseconds()}");
       List<StreamSubscription> subs = [
@@ -73,15 +83,19 @@ class UserService extends StatelessService {
     } catch (e, es) {
       Arcane.logger.handle(e, es, "Failed to bind User service!");
     }
+
+    success("Bound User Service for $uid");
   }
 
   String uid() => auth.FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> _ensureUser(String uid) async {
+    verbose("Ensuring User $uid");
     DocumentSnapshot<Map<String, dynamic>> snap =
         await Arcane.app.users.userRef(uid).get();
 
     if (!snap.exists) {
+      warn("User $uid does not exist. Creating it.");
       lastUser = Arcane.app.users.onCreateUser(ArcaneUserInfo(
         firstName: _grabFirstName ??
             auth.FirebaseAuth.instance.currentUser!.displayName!
@@ -95,34 +109,9 @@ class UserService extends StatelessService {
         uid: uid,
       ));
       await Arcane.app.users.userRef(uid).set(lastUser);
+      success("Created User $uid $lastUser");
     } else {
       lastUser = snap.data()!;
-    }
-  }
-
-  Future<void> _ensureUserCapabilities(String uid) async {
-    DocumentSnapshot<Map<String, dynamic>> snap =
-        await Arcane.app.users.userCapabilitiesRef(uid).get();
-
-    if (!snap.exists) {
-      lastUserCapabilities =
-          Arcane.app.users.onCreateUserCapabilities(ArcaneUserInfo(
-        firstName: _grabFirstName ??
-            auth.FirebaseAuth.instance.currentUser!.displayName!
-                .split(" ")
-                .first,
-        lastName: _grabLastName ??
-            auth.FirebaseAuth.instance.currentUser!.displayName!
-                .split(" ")
-                .last,
-        email: auth.FirebaseAuth.instance.currentUser!.email!,
-        uid: uid,
-      ));
-      await Arcane.app.users
-          .userCapabilitiesRef(uid)
-          .set(Map.of(lastUserCapabilities));
-    } else {
-      lastUserCapabilities = snap.data()!;
     }
   }
 

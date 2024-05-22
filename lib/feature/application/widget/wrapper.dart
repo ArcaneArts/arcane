@@ -60,21 +60,22 @@ class OpalWrapperState extends State<OpalWrapper> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      _controllerStream.build((controller) => Directionality(
-          textDirection: widget.directionality,
-          child: Theme(
-              data: controller.theme,
-              child: widget.backgroundBuilder(
-                  context,
-                  Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      widget.background ?? const OpalBackground(),
-                      widget.foregroundBuilder(
-                          context,
-                          widget.builder(context, controller.light,
-                              controller.dark, controller.themeMode.value)),
-                    ],
-                  )))));
+  Widget build(BuildContext context) => _controllerStream.build((controller) {
+        return Directionality(
+            textDirection: widget.directionality,
+            child: Theme(
+                data: controller.theme,
+                child: widget.backgroundBuilder(
+                    context,
+                    Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        widget.background ?? const OpalBackground(),
+                        widget.foregroundBuilder(
+                            context,
+                            widget.builder(context, controller.light,
+                                controller.dark, controller.themeMode.value)),
+                      ],
+                    ))));
+      });
 }

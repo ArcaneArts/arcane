@@ -32,34 +32,34 @@ class LoggingService extends Service {
 
     // Configure fast_log package to route to talker
     lDebugMode = true;
-    lLogOverride = (type, message) {
-      switch (type) {
-        case LogCategory.info:
-          talker.info(message);
-          break;
-        case LogCategory.success:
-          talker.info(message);
-          break;
-        case LogCategory.warning:
-          talker.warning(message);
-          break;
-        case LogCategory.error:
-          talker.error(message);
-          break;
-        case LogCategory.verbose:
-          talker.verbose(message);
-          break;
-        case LogCategory.navigation:
-          talker.info(message);
-          break;
-        case LogCategory.actioned:
-          talker.info(message);
-          break;
-        case LogCategory.network:
-          talker.info(message);
-          break;
-      }
-    };
+    // lLogOverride = (type, message) {
+    //   switch (type) {
+    //     case LogCategory.info:
+    //       talker.info(message);
+    //       break;
+    //     case LogCategory.success:
+    //       talker.info(message);
+    //       break;
+    //     case LogCategory.warning:
+    //       talker.warning(message);
+    //       break;
+    //     case LogCategory.error:
+    //       talker.error(message);
+    //       break;
+    //     case LogCategory.verbose:
+    //       talker.verbose(message);
+    //       break;
+    //     case LogCategory.navigation:
+    //       talker.info(message);
+    //       break;
+    //     case LogCategory.actioned:
+    //       talker.info(message);
+    //       break;
+    //     case LogCategory.network:
+    //       talker.info(message);
+    //       break;
+    //   }
+    // };
 
     FlutterError.onError = (d) => _errorStream!.add(d);
   }

@@ -4,6 +4,7 @@ export 'dart:async';
 
 export 'package:bar/bar.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:dart_mappable/dart_mappable.dart';
 export 'package:fast_log/fast_log.dart';
 export 'package:fire_crud/fire_crud.dart';
 export 'package:firebase_core/firebase_core.dart';
@@ -17,7 +18,6 @@ export 'package:padded/padded.dart';
 export 'package:precision_stopwatch/precision_stopwatch.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:serviced/serviced.dart';
-export 'package:snackbar/snackbar.dart';
 export 'package:throttled/throttled.dart';
 export 'package:tinycolor2/tinycolor2.dart';
 export 'package:toxic/toxic.dart';

@@ -101,8 +101,8 @@ void main() => Arcane(
       ),
 
       // Define themes
-      darkTheme: ThemeData.dark(),
-      lightTheme: ThemeData.light(),
+      initialDarkTheme: ThemeData.dark(),
+      initialLightTheme: ThemeData.light(),
 
       // Theme Mods. These are applied to both light and dark themes
       themeMods: [
@@ -163,8 +163,8 @@ void mainButWithoutComments() => Arcane(
       title: "Example",
       firebase: DefaultFirebaseOptions.currentPlatform,
       svgLogo: svgArcaneArts,
-      darkTheme: ThemeData.dark(),
-      lightTheme: ThemeData.light(),
+      initialDarkTheme: ThemeData.dark(),
+      initialLightTheme: ThemeData.light(),
       lightThemeMods: [(t) => t.copyWith(cardColor: Colors.white)],
       darkThemeMods: [],
       exitWindowOnClose: true,

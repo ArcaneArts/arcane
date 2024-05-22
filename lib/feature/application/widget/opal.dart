@@ -19,7 +19,7 @@ class Opal {
     List<ThemeMod> darkThemeMods = const [],
     List<ThemeMod> lightThemeMods = const [],
     double themeColorMixture = 0.25,
-    double backgroundOpacity = 0.85,
+    double backgroundOpacity = 0.15,
     List<ThemeMod> themeMods = const [],
     required VoidCallback listener,
   }) {
@@ -52,11 +52,20 @@ class Opal {
     return t;
   }
 
-  ThemeData get light => modifyTheme(modifyTheme(lightThemeData.value),
-      overrideMods: lightThemeMods.value);
+  ThemeData applyOpal(ThemeData t) => t.copyWith(
+      colorScheme: t.colorScheme.copyWith(
+        background: Colors.transparent,
+        surface: Colors.transparent,
+      ),
+      scaffoldBackgroundColor: Colors.transparent,
+      canvasColor: Colors.transparent);
 
-  ThemeData get dark => modifyTheme(modifyTheme(darkThemeData.value),
-      overrideMods: darkThemeMods.value);
+  ThemeData get light =>
+      applyOpal(modifyTheme(modifyTheme(lightThemeData.value),
+          overrideMods: lightThemeMods.value));
+
+  ThemeData get dark => applyOpal(modifyTheme(modifyTheme(darkThemeData.value),
+      overrideMods: darkThemeMods.value));
 
   ThemeData get theme => isDark() ? dark : light;
 

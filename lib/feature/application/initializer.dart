@@ -1,5 +1,7 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/feature/login/login_service.dart';
+import 'package:arcane/feature/service/bloc_service.dart';
+import 'package:arcane/feature/service/firebase_service.dart';
 import 'package:arcane/feature/service/hive_service.dart';
 import 'package:arcane/feature/service/logging_service.dart';
 import 'package:arcane/feature/service/user_service.dart';
@@ -55,6 +57,32 @@ class ArcaneUserProvider {
     this.onUserCapabilitiesUpdate,
     this.onUserPrivateUpdate,
   });
+
+  static fromCrud<U, C, P>(
+          {required FireCrud<U> Function(String uid) userCrud,
+          required FireCrud<C> Function(String uid) userCapabilitiesCrud,
+          required FireCrud<P> Function(String uid) userPrivateCrud,
+          required U Function(ArcaneUserInfo user) onCreateUser,
+          required C Function(ArcaneUserInfo user) onCreateUserCapabilities,
+          required P Function(ArcaneUserInfo user) onCreateUserPrivate,
+          Function(Map<String, dynamic> user)? onUserUpdate,
+          Function(Map<String, dynamic> userCapabilities)?
+              onUserCapabilitiesUpdate,
+          Function(Map<String, dynamic> userPrivate)? onUserPrivateUpdate}) =>
+      ArcaneUserProvider(
+        userRef: (uid) => userCrud(uid).collection.doc(uid),
+        userCapabilitiesRef: (uid) =>
+            userCapabilitiesCrud(uid).collection.doc(uid),
+        userPrivateRef: (uid) => userPrivateCrud(uid).collection.doc(uid),
+        onCreateUser: (info) => userCrud(info.uid).toMap(onCreateUser(info)),
+        onCreateUserCapabilities: (info) => userCapabilitiesCrud(info.uid)
+            .toMap(onCreateUserCapabilities(info)),
+        onCreateUserPrivate: (info) =>
+            userPrivateCrud(info.uid).toMap(onCreateUserPrivate(info)),
+        onUserUpdate: onUserUpdate,
+        onUserCapabilitiesUpdate: onUserCapabilitiesUpdate,
+        onUserPrivateUpdate: onUserPrivateUpdate,
+      );
 }
 
 class ArcanePlatform {
@@ -98,8 +126,8 @@ class Arcane {
   final ArcaneUserProvider users;
   final String svgLogo;
   final ArcaneRouter router;
-  final ThemeData? lightTheme;
-  final ThemeData? darkTheme;
+  final ThemeData? initialLightTheme;
+  final ThemeData? initialDarkTheme;
   final List<ThemeMod> themeMods;
   final List<ThemeMod> darkThemeMods;
   final List<ThemeMod> lightThemeMods;
@@ -125,14 +153,23 @@ class Arcane {
     this.events,
     this.windowsGoogleSignInClientId,
     this.windowsGoogleSignInRedirectUri,
-    this.lightTheme,
-    this.darkTheme,
+    this.initialLightTheme,
+    this.initialDarkTheme,
     this.themeMods = const [],
     this.darkThemeMods = const [],
     this.lightThemeMods = const [],
   }) {
-    _app = this;
-    _start();
+    FlutterError.onError = (details) {
+      error("Caught Flutter Error: ${details.exception}");
+      error(details.stack);
+    };
+    runZonedGuarded(() async {
+      _app = this;
+      await _start();
+    }, (e, es) {
+      error("Caught Zone Error: $e");
+      error(es);
+    });
   }
 
   bool get canSignInWithGoogleOnWindows =>
@@ -140,10 +177,17 @@ class Arcane {
       windowsGoogleSignInRedirectUri != null;
 
   Future<void> _start() async {
+    info("Arcane Application Starting");
     await _registerDefaultServices();
+    info("Base Services Registered");
+    verbose("Init: Pre-Init");
     await _init(events?.onPreInit);
     await services().waitForStartup();
+    success("Auto-Startup Services Complete");
+    verbose("Init: Post-Init");
     await _init(events?.onPostInit);
+    info("Starting Application");
+    runApp(application());
   }
 
   Future<void> _init(Function()? run) async {
@@ -154,16 +198,32 @@ class Arcane {
   }
 
   Future<void> _registerDefaultServices() async {
-    services().register<LoggingService>(() => LoggingService(), lazy: false);
-    services().register<WidgetsBindingService>(() => WidgetsBindingService(),
+    await _registerCoreService<WidgetsBindingService>(
+        () => WidgetsBindingService(),
         lazy: false);
-    services().register<HiveService>(() => HiveService(), lazy: false);
-    services().register<UserService>(() => UserService());
-    services().register<LoginService>(() => LoginService());
+    await _registerCoreService<HiveService>(() => HiveService(), lazy: false);
+    await _registerCoreService<FirebaseService>(() => FirebaseService(),
+        lazy: false);
+    await _registerCoreService<LoggingService>(() => LoggingService(),
+        lazy: false);
+    await _registerCoreService<UserService>(() => UserService());
+    await _registerCoreService<LoginService>(() => LoginService());
+    await _registerCoreService<BlocService>(() => BlocService());
 
     if (isWindowManaged) {
-      services().register<WindowService>(() => WindowService(), lazy: false);
+      await _registerCoreService<WindowService>(() => WindowService(),
+          lazy: false);
     }
+  }
+
+  Future<void> _registerCoreService<T extends Service>(
+      ServiceConstructor<T> constructor,
+      {bool lazy = true}) async {
+    await Future.wait(services().tasks);
+    services().tasks = [];
+    services().register<T>(constructor, lazy: lazy);
+    await Future.wait(services().tasks);
+    services().tasks = [];
   }
 
   void updateTempContext(BuildContext context) => _tempContext = context;
@@ -187,10 +247,21 @@ class Arcane {
   static CollectionReference<Map<String, dynamic>> collection(String name) =>
       FirebaseFirestore.instance.collection(name);
 
-  static GoRouter buildRouterConfig() => app.router.buildConfiguration(navKey);
+  static GoRouter buildRouterConfig() {
+    verbose("Building Router Configuration");
+    return app.router.buildConfiguration(navKey);
+  }
 
   static void goHome(BuildContext context) =>
       context.go(app.router.initialRoute);
+
+  static ThemeData get darkTheme => opal.dark;
+
+  static ThemeData get lightTheme => opal.light;
+
+  static bool get isDark => opal.isDark();
+
+  static ThemeData get theme => opal.theme;
 
   static void goSplash(BuildContext context) => context.go("/splash");
 

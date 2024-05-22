@@ -6,15 +6,19 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
   flutter: ">=1.17.0"
 dependencies:
-  flutter:
-    sdk: flutter
   window_manager: ^0.3.9
+  desktop_webview_auth: ^0.0.15
+  firebase_core: ^2.31.0
+  cloud_firestore: ^4.17.3
+  firebase_analytics: ^10.10.5
+  firebase_auth: ^4.19.5
+  sign_in_with_apple: ^6.1.0
+  google_sign_in: ^6.2.1
   fast_log: ^1.0.7
   fire_crud: ^1.1.8
   padded: ^1.0.1
   precision_stopwatch: ^1.0.2
   serviced: ^1.0.1
-  snackbar: ^1.0.2
   throttled: ^1.0.1
   toxic: ^1.2.4
   path_provider: ^2.1.3
@@ -25,15 +29,9 @@ dependencies:
   flutter_bloc: ^8.1.5
   rxdart: ^0.27.7
   flutter_native_splash: ^2.4.0
-  firebase_core: ^2.31.0
-  sign_in_with_apple: ^6.1.0
-  google_sign_in: ^6.2.1
-  firebase_auth: ^4.19.5
   dialoger: ^1.0.0
   crypto: ^3.0.3
   provider: ^6.1.2
-  cloud_firestore: ^4.17.3
-  firebase_analytics: ^10.10.5
   dart_mappable: ^4.2.2
   flutter_svg: ^2.0.10+1
   lzstring: ^2.0.0+2
@@ -42,10 +40,12 @@ dependencies:
   go_router: ^14.1.2
   mesh_gradient: ^1.3.4
   tinycolor2: ^3.0.1
-  desktop_webview_auth: ^0.0.15
   bar: ^1.0.0
   flutter_animate: ^4.5.0
   common_svgs: ^1.0.2
+
+  flutter:
+    sdk: flutter
 dev_dependencies:
   dart_mappable_builder: ^4.2.3
   build_runner: ^2.4.10

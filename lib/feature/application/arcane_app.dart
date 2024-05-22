@@ -1,4 +1,6 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/feature/service/bloc_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget _passthroughBuilder(BuildContext context, Widget child) => child;
 
@@ -68,9 +70,12 @@ class ArcaneApp extends StatefulWidget {
 }
 
 class _ArcaneAppState extends State<ArcaneApp> {
+  late GoRouter router;
+
   @override
   void initState() {
     Arcane.app.updateTempContext(context);
+    router = Arcane.buildRouterConfig();
     super.initState();
   }
 
@@ -80,25 +85,34 @@ class _ArcaneAppState extends State<ArcaneApp> {
       backgroundBuilder: widget.backgroundBuilder,
       foregroundBuilder: widget.foregroundBuilder ??
           (context, child) => Arcane.isWindowManaged
-              ? widget.titleBar ??
-                  ArcaneTitleBar(
-                    leading: SvgPicture.string(
-                      Arcane.app.svgLogo,
-                      width: 28,
-                      height: 28,
-                    ),
-                    title: Text(Arcane.app.title),
-                  )
+              ? Directionality(
+                  textDirection: widget.directionality,
+                  child: Column(
+                    children: [
+                      (widget.titleBar ??
+                          ArcaneTitleBar(
+                            leading: SvgPicture.string(
+                              Arcane.app.svgLogo,
+                              width: 28,
+                              height: 28,
+                            ),
+                            title: Text(Arcane.app.title),
+                          )),
+                      Flexible(child: child)
+                    ],
+                  ))
               : child,
       directionality: widget.directionality,
       themeMode: Arcane.themeMode,
-      darkTheme: Arcane.app.darkTheme,
-      lightTheme: Arcane.app.lightTheme,
+      darkTheme: Arcane.app.initialDarkTheme,
+      lightTheme: Arcane.app.initialLightTheme,
       themeMods: Arcane.app.themeMods,
       darkThemeMods: Arcane.app.darkThemeMods,
       lightThemeMods: Arcane.app.lightThemeMods,
-      builder: (context, light, dark, mode) => MaterialApp.router(
-            routerConfig: Arcane.buildRouterConfig(),
+      builder: (context, light, dark, mode) => MultiBlocProvider(
+          providers: svc<BlocService>().onRegisterProviders().toList(),
+          child: MaterialApp.router(
+            routerConfig: router,
             scaffoldMessengerKey: widget.scaffoldMessengerKey,
             builder: widget.builder,
             title: Arcane.app.title,
@@ -124,5 +138,5 @@ class _ArcaneAppState extends State<ArcaneApp> {
             theme: light,
             darkTheme: dark,
             themeMode: mode,
-          ));
+          )));
 }
