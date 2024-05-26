@@ -120,7 +120,7 @@ class Arcane {
   final bool exitWindowOnClose;
   final WindowOptions windowOptions;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final ArcaneApp Function() application;
+  final Widget Function() application;
   final FirebaseOptions firebase;
   final ArcaneEvents? events;
   final ArcaneUserProvider users;
