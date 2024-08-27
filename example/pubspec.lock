@@ -40,6 +40,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  boxy:
+    dependency: transitive
+    description:
+      name: boxy
+      sha256: eaa774ff591191b86f2eb8e8eae878aec50604404b74388a27e655cf3aadf758
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   characters:
     dependency: transitive
     description:
@@ -64,6 +72,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  colored_print:
+    dependency: transitive
+    description:
+      name: colored_print
+      sha256: ab9f458563fb4bbc81ac8c5fea65f4e0154f20382458d40bd985c950208f3d21
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   convert:
     dependency: transitive
     description:
@@ -120,6 +136,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  fast_log:
+    dependency: transitive
+    description:
+      name: fast_log
+      sha256: "23d0c6e2d2aeeb9c04d69f47ad7005bc0e35a259a874e673beb32ad22c957810"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -314,6 +338,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.9.1"
+  pylon:
+    dependency: transitive
+    description:
+      name: pylon
+      sha256: "94b6d2278cd0b0632e9bf8d8bb4c393ffd5483d13877264dcda54665be639432"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.4"
   rxdart:
     dependency: transitive
     description:

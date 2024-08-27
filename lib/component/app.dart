@@ -1,9 +1,9 @@
 import 'dart:ui';
 
+import 'package:arcane/arcane.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
 import 'package:rxdart/rxdart.dart';
-import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:toxic/extensions/future.dart';
 import 'package:toxic_flutter/toxic_flutter.dart';
 
@@ -16,8 +16,25 @@ enum ThemeMode {
 BehaviorSubject<int> _appUpdate = BehaviorSubject<int>.seeded(0);
 bool _initialized = false;
 
+void toast(c.BuildContext context, Widget child) {
+  showToast(
+      context: context,
+      showDuration: const Duration(seconds: 3),
+      dismissible: true,
+      entryDuration: const Duration(milliseconds: 100),
+      builder: (context, overlay) => Glass(
+            blur: Theme.of(context).surfaceBlur ?? 16,
+            borderRadius: BorderRadius.circular(32),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: child,
+            ),
+          ));
+}
+
 class ArcaneApp extends StatelessWidget {
   static FragmentProgram? noiseShader;
+  static FragmentProgram? blurShader;
   final m.ThemeData? materialTheme;
   final c.CupertinoThemeData? cupertinoTheme;
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -146,10 +163,19 @@ class ArcaneApp extends StatelessWidget {
 
   ThemeData get realLightTheme =>
       lightTheme ??
-      ThemeData(colorScheme: ColorSchemes.lightZinc(), radius: 0.5);
+      ThemeData(
+          colorScheme: ColorSchemes.lightZinc(),
+          surfaceOpacity: 0.666,
+          surfaceBlur: 16,
+          radius: 0.5);
 
   ThemeData get realDarkTheme =>
-      darkTheme ?? ThemeData(colorScheme: ColorSchemes.darkZinc(), radius: 0.5);
+      darkTheme ??
+      ThemeData(
+          colorScheme: ColorSchemes.darkZinc(),
+          surfaceOpacity: 0.8,
+          surfaceBlur: 16,
+          radius: 0.5);
 
   ThemeData get currentTheme => switch (themeMode) {
         ThemeMode.light => realLightTheme,
@@ -166,8 +192,12 @@ class ArcaneApp extends StatelessWidget {
     _initialized = true;
     WidgetsBinding.instance.platformDispatcher.onPlatformBrightnessChanged =
         () => updateApp();
-    FragmentProgram.fromAsset('packages/arcane/shaders/noise.frag')
-        .then((value) => noiseShader = value)
+    Future.wait([
+      FragmentProgram.fromAsset('packages/arcane/shaders/noise.frag'),
+      FragmentProgram.fromAsset('packages/arcane/shaders/blur.frag'),
+    ])
+        .thenRun((value) => noiseShader = value[0])
+        .thenRun((value) => blurShader = value[1])
         .thenRun((_) => updateApp());
   }
 
