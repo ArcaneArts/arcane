@@ -63,9 +63,11 @@ class Glass extends StatelessWidget {
   final bool disabled;
   final Widget? under;
   final Color? tint;
+  final Color? disabledColor;
 
   const Glass(
       {super.key,
+      this.disabledColor,
       this.under,
       this.tint,
       this.disabled = false,
@@ -79,7 +81,10 @@ class Glass extends StatelessWidget {
   Widget build(BuildContext context) {
     bool disabled = this.disabled || GlassStopper.isStopping(context);
     Widget b = disabled
-        ? child
+        ? Container(
+            color: disabledColor ?? Theme.of(context).colorScheme.background,
+            child: child,
+          )
         : BlurSurface(
             borderRadius: borderRadius,
             blur: blur ?? Theme.of(context).surfaceBlur ?? 16,
@@ -101,7 +106,10 @@ class Glass extends StatelessWidget {
     );
 
     return disabled
-        ? child
+        ? Container(
+            color: disabledColor ?? Theme.of(context).colorScheme.background,
+            child: child,
+          )
         : ClipRRect(
             borderRadius: borderRadius,
             child: b,

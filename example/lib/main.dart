@@ -1,5 +1,7 @@
 import 'package:arcane/arcane.dart';
 
+bool v = false;
+String? vv;
 void main() {
   runApp(const ExampleArcaneApp());
 }
@@ -107,13 +109,22 @@ class _HomeState extends State<Home> {
           ]),
           slivers: [
             SliverToBoxAdapter(
-              child: Tile(
-                trailing: Icon(Icons.ac_unit),
-                leading: Icon(Icons.ac_unit),
-                title: Text("List Tile"),
-                onPressed: () {},
-                subtitle: Text("This is a regular list tile"),
-              ),
+              child: StatefulBuilder(
+                  builder: (context, setState) => Tile(
+                        leading: Icon(Icons.ac_unit),
+                        title: Text("List Tile"),
+                        trailing: Selector<String>(
+                          labelBuilder: (e) => e,
+                          value: vv,
+                          onChanged: (v) {
+                            setState(() {
+                              vv = v;
+                            });
+                          },
+                          values: ["Hello", "World", "Something Else"],
+                        ),
+                        subtitle: Text("This is a regular list tile"),
+                      )),
             ),
             Tile(
               trailing: Icon(Icons.ac_unit),
