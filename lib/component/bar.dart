@@ -62,6 +62,7 @@ class Bar extends StatelessWidget {
                               !GlassStopper.isStopping(context))) &&
                       Navigator.canPop(context))
                     GhostButton(
+                        density: ButtonDensity.icon,
                         child: const Icon(BootstrapIcons.chevronLeft),
                         onPressed: () => Arcane.pop(context)),
                   ...leading
