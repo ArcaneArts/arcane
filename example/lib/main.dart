@@ -24,145 +24,276 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int index = 0;
+  @override
+  Widget build(BuildContext context) => Screen(
+        header: const Bar(
+          titleText: "Arcane",
+        ),
+        children: [
+          Tile(
+            leading: const Icon(BootstrapIcons.bodyText),
+            title: Text("Text"),
+            subtitle: Text("Text sizes & styles"),
+            onPressed: () => Arcane.push(context, const ExampleText()),
+          ),
+          Tile(
+            leading: const Icon(BootstrapIcons.gift),
+            title: const Text("Buttons"),
+            subtitle: const Text("Button styles w/o icons"),
+            onPressed: () => Arcane.push(context, const ExampleButtons()),
+          ),
+          Tile(
+            leading: const Icon(BootstrapIcons.cardList),
+            title: const Text("Tiles"),
+            subtitle: const Text("List Tiles"),
+            onPressed: () => Arcane.push(context, const ExampleTiles()),
+          ),
+        ],
+      );
+}
+
+class ExampleTiles extends StatelessWidget {
+  const ExampleTiles({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Screen(
+        header: Bar(
+          titleText: "Tiles",
+        ),
+        slivers: [
+          Tile(
+            title: Text("Sliver Tile"),
+            subtitle: Text(
+                "If you scroll down you will see that this sliver tile title / icon / trailing will act as a floating header while overtop of this description text. Basically \n\n\n This is still the description box."),
+            leading: Text("L"),
+            trailing: Text("T"),
+            sliver: true,
+          )
+        ],
+        children: [
+          Tile(
+            title: Text("Title"),
+            subtitle: Text("Subtitle"),
+            leading: Text("L"),
+            trailing: Text("T"),
+          ),
+          Divider(
+            height: 16,
+          ),
+          Tile(
+            title: Text("Title"),
+            leading: Text("L"),
+            trailing: Text("T"),
+          ),
+          Divider(
+            height: 16,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 16,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 16,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+          Divider(
+            height: 100,
+          ),
+        ],
+      );
+}
+
+class ExampleText extends StatelessWidget {
+  const ExampleText({super.key});
 
   @override
   Widget build(BuildContext context) => Screen(
-          header: Bar(
-            titleText: "Arcane",
-            trailing: [
-              PopupMenu(
-                icon: Icon(Icons.more_vert),
-                items: [
-                  MenuLabel(child: Text("Label")),
-                  MenuButton(
-                    child: Text("Hello"),
-                  ),
-                  MenuButton(child: Text("World")),
-                  MenuButton(
-                    subMenu: [
-                      MenuButton(
-                        child: Text('Email'),
-                      ),
-                      MenuButton(
-                        child: Text('Message'),
-                      ),
-                      MenuDivider(),
-                      MenuButton(
-                        child: Text('More...'),
-                      ),
-                    ],
-                    child: Text('Invite users'),
-                  ),
-                ],
-              )
-            ],
+        header: const Bar(
+          titleText: "Text",
+        ),
+        children: [
+          Divider(
+            height: 16,
+            child: Text("Basic"),
           ),
-          footer: ButtonBar(selectedIndex: index, buttons: [
-            IconTab(
-              icon: Icons.home_outlined,
-              selectedIcon: Icons.home_rounded,
-              onPressed: () => setState(() {
-                index = 0;
+          Text("x9 Large", style: Theme.of(context).typography.x9Large),
+          Text("x8 Large", style: Theme.of(context).typography.x8Large),
+          Text("x7 Large", style: Theme.of(context).typography.x7Large),
+          Text("x6 Large", style: Theme.of(context).typography.x6Large),
+          Text("x5 Large", style: Theme.of(context).typography.x5Large),
+          Text("x4 Large", style: Theme.of(context).typography.x4Large),
+          Text("x3 Large", style: Theme.of(context).typography.x3Large),
+          Text("x2 Large", style: Theme.of(context).typography.x2Large),
+          Text("Large", style: Theme.of(context).typography.large),
+          Text("Medium", style: Theme.of(context).typography.medium),
+          Text("Small", style: Theme.of(context).typography.small),
+          Text("xSmall", style: Theme.of(context).typography.xSmall),
+          Divider(
+            height: 16,
+            child: Text("Headlines"),
+          ),
+          Text("Heading 1", style: Theme.of(context).typography.h1),
+          Text("Heading 2", style: Theme.of(context).typography.h2),
+          Text("Heading 3", style: Theme.of(context).typography.h3),
+          Text("Heading 4", style: Theme.of(context).typography.h4),
+          Divider(
+            height: 16,
+            child: Text("Modifiers"),
+          ),
+          Text("Lead", style: Theme.of(context).typography.lead),
+          Text("Bold", style: Theme.of(context).typography.bold),
+          Text("Black", style: Theme.of(context).typography.black),
+          Text("Muted", style: Theme.of(context).typography.textMuted),
+        ],
+      );
+}
 
-                DialogText(
-                  title: "Hello",
-                  description: "Please enter your name",
-                  hint: "Sir Derpington III",
-                  onConfirm: (x) => print("Entered $x"),
-                ).show(context);
-              }),
-            ),
-            IconTab(
-              icon: Icons.featured_play_list_outlined,
-              selectedIcon: Icons.featured_play_list_rounded,
-              onPressed: () => setState(() {
-                index = 1;
+class ExampleButtons extends StatelessWidget {
+  const ExampleButtons({super.key});
 
-                DialogConfirm(
-                  title: "You Sure?",
-                  descriptionWidget: SizedBox(
-                    width: 500,
-                    child: PopupMenu(
-                      items: [
-                        MenuButton(child: Text("Hello")),
-                        MenuButton(child: Text("Hello")),
-                        MenuButton(child: Text("Hello")),
-                        MenuButton(child: Text("Hello")),
-                      ],
-                      child: Icon(Icons.more_vert),
-                    ),
-                  ),
-                  confirmText: "Custom Yes",
-                  cancelText: "Custom No",
-                  onConfirm: () => print("Confirmed"),
-                ).show(context);
-              }),
+  @override
+  Widget build(BuildContext context) => Screen(
+        header: const Bar(
+          titleText: "Buttons",
+        ),
+        children: [
+          ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(16),
+                GhostButton(
+                  onPressed: () {},
+                  density: ButtonDensity.icon,
+                  child: const Icon(BootstrapIcons.activity),
+                ),
+                const Gap(16),
+                GhostButton(
+                  child: Text("Ghost Button"),
+                  onPressed: () {},
+                ),
+                Gap(16),
+                GhostButton(
+                  child: Text("Ghost w Icon"),
+                  onPressed: () {},
+                  leading: Icon(BootstrapIcons.activity),
+                )
+              ],
             ),
-            IconTab(
-              icon: Icons.settings_outlined,
-              selectedIcon: Icons.settings_rounded,
-              onPressed: () => setState(() {
-                index = 2;
-              }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(16),
+                TextButton(
+                  child: Icon(BootstrapIcons.activity),
+                  onPressed: () {},
+                  density: ButtonDensity.icon,
+                ),
+                const Gap(16),
+                TextButton(
+                  child: Text("Text Button"),
+                  onPressed: () {},
+                ),
+                Gap(16),
+                TextButton(
+                  child: Text("Text w Icon"),
+                  onPressed: () {},
+                  leading: Icon(BootstrapIcons.activity),
+                )
+              ],
             ),
-          ]),
-          slivers: [
-            SliverToBoxAdapter(
-              child: StatefulBuilder(
-                  builder: (context, setState) => Tile(
-                        leading: Icon(Icons.ac_unit),
-                        title: Text("List Tile"),
-                        trailing: Selector<String>(
-                          labelBuilder: (e) => e,
-                          value: vv,
-                          onChanged: (v) {
-                            setState(() {
-                              vv = v;
-                            });
-                          },
-                          values: ["Hello", "World", "Something Else"],
-                        ),
-                        subtitle: Text("This is a regular list tile"),
-                      )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(16),
+                OutlineButton(
+                  child: Icon(BootstrapIcons.activity),
+                  onPressed: () {},
+                  density: ButtonDensity.icon,
+                ),
+                const Gap(16),
+                OutlineButton(
+                  child: Text("Outline Button"),
+                  onPressed: () {},
+                ),
+                Gap(16),
+                OutlineButton(
+                  child: Text("Outline w Icon"),
+                  onPressed: () {},
+                  leading: Icon(BootstrapIcons.activity),
+                )
+              ],
             ),
-            Tile(
-              trailing: Icon(Icons.ac_unit),
-              leading: Icon(Icons.ac_unit),
-              title: Text("Derp"),
-              subtitle: Text("Derp Subtitle " * 100),
-              sliver: true,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(16),
+                SecondaryButton(
+                  child: Icon(BootstrapIcons.activity),
+                  onPressed: () {},
+                  density: ButtonDensity.icon,
+                ),
+                const Gap(16),
+                SecondaryButton(
+                  child: Text("Secondary Button"),
+                  onPressed: () {},
+                ),
+                Gap(16),
+                SecondaryButton(
+                  child: Text("Secondary w Icon"),
+                  onPressed: () {},
+                  leading: Icon(BootstrapIcons.activity),
+                )
+              ],
             ),
-            Tile(
-              leading: Icon(Icons.ac_unit),
-              title: Text("Derp"),
-              subtitle: Text("Derp Subtitle " * 100),
-              sliver: true,
-            ),
-            BarSection(
-                titleText: "New Section",
-                sliver: MultiSliver(
-                  children: [
-                    Tile(
-                      trailing: Icon(Icons.ac_unit),
-                      leading: Icon(Icons.ac_unit),
-                      title: Text("Derp"),
-                      subtitle: Text("Derp Subtitle " * 100),
-                      sliver: true,
-                    ),
-                    Tile(
-                      leading: Icon(Icons.ac_unit),
-                      title: Text("Derp"),
-                      subtitle: Text("Derp Subtitle " * 100),
-                      sliver: true,
-                    ),
-                    Tile(
-                      leading: Icon(Icons.ac_unit),
-                      title: Text("Derp"),
-                      subtitle: Text("Derp Subtitle " * 100),
-                      sliver: true,
-                    ),
-                  ],
-                ))
-          ]);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(16),
+                PrimaryButton(
+                  child: Icon(BootstrapIcons.activity),
+                  onPressed: () {},
+                  density: ButtonDensity.icon,
+                ),
+                const Gap(16),
+                PrimaryButton(
+                  child: Text("Primary Button"),
+                  onPressed: () {},
+                ),
+                Gap(16),
+                PrimaryButton(
+                  child: Text("Primary w Icon"),
+                  onPressed: () {},
+                  leading: Icon(BootstrapIcons.activity),
+                )
+              ],
+            )
+          ].map((e) => Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: e,
+              ))
+        ],
+      );
 }

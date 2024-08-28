@@ -47,7 +47,7 @@ class GlassStopper extends StatelessWidget {
   const GlassStopper({super.key, required this.builder, this.stopping = false});
 
   static bool isStopping(BuildContext context) =>
-      context.pylonOr<_GlassStop>()?.stopping ?? false;
+      context.pylonOr<_GlassStop>()?.stopping ?? true;
 
   @override
   Widget build(BuildContext context) =>
@@ -64,9 +64,11 @@ class Glass extends StatelessWidget {
   final Widget? under;
   final Color? tint;
   final Color? disabledColor;
+  final bool ignoreContextSignals;
 
   const Glass(
       {super.key,
+      this.ignoreContextSignals = false,
       this.disabledColor,
       this.under,
       this.tint,
@@ -79,7 +81,8 @@ class Glass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool disabled = this.disabled || GlassStopper.isStopping(context);
+    bool disabled = this.disabled ||
+        (GlassStopper.isStopping(context) && !ignoreContextSignals);
     Widget b = disabled
         ? Container(
             color: disabledColor ?? Theme.of(context).colorScheme.background,

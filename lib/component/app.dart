@@ -3,9 +3,19 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
+import 'package:pylon/pylon.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:toxic/extensions/future.dart';
 import 'package:toxic_flutter/toxic_flutter.dart';
+
+class Arcane {
+  static void pop<T extends Object?>(BuildContext context, [T? result]) =>
+      Navigator.pop(context, result);
+
+  static Future<T?> push<T extends Object?>(
+          BuildContext context, Widget child) =>
+      Pylon.push(context, child);
+}
 
 enum ThemeMode {
   system,

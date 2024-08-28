@@ -1,5 +1,7 @@
 import 'package:arcane/arcane.dart';
 
+enum BarBackButtonMode { never, always, whenPinned }
+
 class Bar extends StatelessWidget {
   final List<Widget> trailing;
   final List<Widget> leading;
@@ -20,12 +22,14 @@ class Bar extends StatelessWidget {
   final double? height;
   final bool useSafeArea;
   final bool useGlass;
+  final BarBackButtonMode backButton;
 
   const Bar(
       {super.key,
       this.trailing = const [],
       this.leading = const [],
       this.titleText,
+      this.backButton = BarBackButtonMode.always,
       this.headerText,
       this.subtitleText,
       this.title,
@@ -49,6 +53,16 @@ class Bar extends StatelessWidget {
               disabled: !useGlass,
               blur: Theme.of(context).surfaceBlur ?? 16,
               child: AppBar(
+                leading: [
+                  if ((backButton == BarBackButtonMode.always ||
+                          (backButton == BarBackButtonMode.whenPinned &&
+                              !GlassStopper.isStopping(context))) &&
+                      Navigator.canPop(context))
+                    GhostButton(
+                        child: const Icon(BootstrapIcons.chevronLeft),
+                        onPressed: () => Arcane.pop(context)),
+                  ...leading
+                ],
                 trailing: trailing,
                 title: titleText?.text ?? title,
                 header: headerText?.text ?? header,
