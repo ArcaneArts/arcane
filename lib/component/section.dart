@@ -4,18 +4,13 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 class GlassSection extends StatelessWidget {
   final Widget sliver;
   final Widget header;
-  final bool ignoreContextSignals;
 
-  const GlassSection(
-      {super.key,
-      required this.sliver,
-      required this.header,
-      this.ignoreContextSignals = false});
+  const GlassSection({super.key, required this.sliver, required this.header});
 
   @override
   Widget build(BuildContext context) => SliverStickyHeader.builder(
         builder: (context, state) => Glass(
-          ignoreContextSignals: ignoreContextSignals,
+          ignoreContextSignals: true,
           disabled: !state.isPinned,
           blur: Theme.of(context).surfaceBlur ?? 16,
           child: header,
@@ -52,7 +47,9 @@ class BarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverStickyHeader.builder(
         builder: (context, state) => Bar(
+          ignoreContextSignals: true,
           useGlass: state.isPinned,
+          backButton: backButton,
           title: title,
           header: header,
           subtitle: subtitle,

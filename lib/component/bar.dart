@@ -23,9 +23,11 @@ class Bar extends StatelessWidget {
   final bool useSafeArea;
   final bool useGlass;
   final BarBackButtonMode backButton;
+  final bool ignoreContextSignals;
 
   const Bar(
       {super.key,
+      this.ignoreContextSignals = false,
       this.trailing = const [],
       this.leading = const [],
       this.titleText,
@@ -50,6 +52,7 @@ class Bar extends StatelessWidget {
   Widget build(BuildContext context) => Stack(
         children: [
           Glass(
+              ignoreContextSignals: ignoreContextSignals,
               disabled: !useGlass,
               blur: Theme.of(context).surfaceBlur ?? 16,
               child: AppBar(

@@ -191,7 +191,6 @@ class Tile extends StatelessWidget {
       ));
 
   Widget buildSliver(BuildContext context) => GlassSection(
-      ignoreContextSignals: true,
       header: Padding(
           padding: contentPadding,
           child: Row(
