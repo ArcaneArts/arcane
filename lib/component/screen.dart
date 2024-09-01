@@ -20,6 +20,7 @@ class Screen extends StatefulWidget {
   final Color? footerBackgroundColor;
   final bool showLoadingSparks;
   final double footerHeight;
+  final bool footerPaddingBottom;
 
   const Screen({
     super.key,
@@ -36,6 +37,7 @@ class Screen extends StatefulWidget {
     this.headerBackgroundColor,
     this.footerBackgroundColor,
     this.showLoadingSparks = false,
+    this.footerPaddingBottom = true,
   });
 
   @override
@@ -78,7 +80,7 @@ class _ScreenState extends State<Screen> {
         SliverList(
           delegate: SliverChildListDelegate(widget.children),
         ),
-      if (widget.footer != null)
+      if (widget.footer != null && widget.footerPaddingBottom)
         SliverToBoxAdapter(
           child: Container(
             height: widget.footerHeight,

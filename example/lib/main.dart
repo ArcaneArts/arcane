@@ -70,6 +70,7 @@ class _ExampleBottomBarState extends State<ExampleBottomBar> {
 
   @override
   Widget build(BuildContext context) => Screen(
+        footerPaddingBottom: false,
         header: const Bar(
           titleText: "Bottom Bar",
         ),
