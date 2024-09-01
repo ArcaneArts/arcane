@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
             onPressed: () => Arcane.push(context, const ExampleSheets()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.file),
+            leading: const Icon(BootstrapIcons.bell),
             title: const Text("Toast"),
             subtitle: const Text("Toast notifications"),
             onPressed: () => Arcane.push(context, const ExampleToasts()),
@@ -94,10 +94,6 @@ class ExampleToasts extends StatelessWidget {
                           location: ToastLocation.bottomLeft,
                           builder: (context) => const Text("Bottom Left"),
                         ).open(context)),
-                const Gap(16),
-                PrimaryButton(
-                    child: const Text("Text Input Dialog"),
-                    onPressed: () => {}),
               ],
             ),
           )
