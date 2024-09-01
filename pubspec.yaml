@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 2.0.5
+version: 2.0.6
 homepage: https://github.com/ArcaneArts/arcane
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -21,6 +21,8 @@ dependencies:
   toxic_flutter: ^1.0.2+1
   page_transition: ^2.1.0
   sliver_fill_remaining_box_adapter: ^1.0.0
+  modal_bottom_sheet: ^3.0.0
+  flutter_phosphor_icons: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

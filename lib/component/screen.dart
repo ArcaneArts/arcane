@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pylon/pylon.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
@@ -13,17 +14,14 @@ class Screen extends StatefulWidget {
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
   final VoidCallback? onRefresh;
-  final bool
-      floatingHeader; // when header floats, it takes no space in the layout, and positioned on top of the content
-  final bool floatingFooter;
-  final Color? headerBackgroundColor;
-  final Color? footerBackgroundColor;
   final bool showLoadingSparks;
   final double footerHeight;
   final bool footerPaddingBottom;
+  final ScrollController? scrollController;
 
   const Screen({
     super.key,
+    this.scrollController,
     this.footerHeight = 52,
     this.slivers = const [],
     this.children = const [],
@@ -32,10 +30,6 @@ class Screen extends StatefulWidget {
     this.loadingProgress,
     this.loadingProgressIndeterminate = false,
     this.onRefresh,
-    this.floatingHeader = false,
-    this.floatingFooter = false,
-    this.headerBackgroundColor,
-    this.footerBackgroundColor,
     this.showLoadingSparks = false,
     this.footerPaddingBottom = true,
   });
@@ -45,26 +39,53 @@ class Screen extends StatefulWidget {
 }
 
 class _ScreenState extends State<Screen> {
-  late ScrollController controller;
+  ScrollController? _controller;
   BehaviorSubject<bool> headerBlur = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> footerBlur = BehaviorSubject.seeded(true);
 
+  ScrollController getController(BuildContext context) {
+    void bind() {
+      _controller!.addListener(() {
+        if (_controller!.position.pixels ==
+            _controller!.position.maxScrollExtent) {
+          footerBlur.add(false);
+        } else {
+          footerBlur.add(true);
+        }
+
+        if (_controller!.position.pixels ==
+            _controller!.position.minScrollExtent) {
+          headerBlur.add(false);
+        } else {
+          headerBlur.add(true);
+        }
+      });
+    }
+
+    if (_controller != null) {
+      return _controller!;
+    }
+
+    if (widget.scrollController != null) {
+      _controller = widget.scrollController;
+      bind();
+      return _controller!;
+    }
+
+    ScrollController? c = ModalScrollController.of(context);
+    if (c != null) {
+      _controller = c;
+      bind();
+      return c;
+    }
+
+    _controller = ScrollController();
+    bind();
+    return _controller!;
+  }
+
   @override
   void initState() {
-    controller = ScrollController();
-    controller.addListener(() {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        footerBlur.add(false);
-      } else {
-        footerBlur.add(true);
-      }
-
-      if (controller.position.pixels == controller.position.minScrollExtent) {
-        headerBlur.add(false);
-      } else {
-        headerBlur.add(true);
-      }
-    });
     super.initState();
   }
 
@@ -89,6 +110,9 @@ class _ScreenState extends State<Screen> {
     ];
 
     return Scaffold(
+      loadingProgress: widget.loadingProgress,
+      loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
+      onRefresh: widget.onRefresh,
       floatingFooter: true,
       footers: [
         if (widget.footer != null)
@@ -104,7 +128,7 @@ class _ScreenState extends State<Screen> {
               ))
       ],
       child: CustomScrollView(
-        controller: controller,
+        controller: getController(context),
         slivers: [
           if (widget.header != null)
             SliverPinnedHeader(

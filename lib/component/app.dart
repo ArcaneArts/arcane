@@ -26,22 +26,6 @@ enum ThemeMode {
 BehaviorSubject<int> _appUpdate = BehaviorSubject<int>.seeded(0);
 bool _initialized = false;
 
-void toast(c.BuildContext context, Widget child) {
-  showToast(
-      context: context,
-      showDuration: const Duration(seconds: 3),
-      dismissible: true,
-      entryDuration: const Duration(milliseconds: 100),
-      builder: (context, overlay) => Glass(
-            blur: Theme.of(context).surfaceBlur ?? 16,
-            borderRadius: BorderRadius.circular(32),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: child,
-            ),
-          ));
-}
-
 class ArcaneApp extends StatelessWidget {
   final m.ThemeData? materialTheme;
   final c.CupertinoThemeData? cupertinoTheme;
@@ -78,7 +62,7 @@ class ArcaneApp extends StatelessWidget {
   final Map<ShortcutActivator, Intent>? shortcuts;
   final Map<Type, Action<Intent>>? actions;
   final String? restorationScopeId;
-  final ScrollBehavior? scrollBehavior;
+  final ScrollBehavior scrollBehavior;
   final bool debugShowMaterialGrid;
   final bool disableBrowserContextMenu;
   final ThemeMode themeMode;
@@ -114,7 +98,7 @@ class ArcaneApp extends StatelessWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-    this.scrollBehavior,
+    this.scrollBehavior = const ArcaneScrollBehavior(),
     this.materialTheme,
     this.cupertinoTheme,
     this.scaling,
@@ -152,7 +136,7 @@ class ArcaneApp extends StatelessWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-    this.scrollBehavior,
+    this.scrollBehavior = const ArcaneScrollBehavior(),
     this.materialTheme,
     this.cupertinoTheme,
     this.scaling,
@@ -185,6 +169,8 @@ class ArcaneApp extends StatelessWidget {
           surfaceBlur: 16,
           radius: 0.5);
 
+  bool get isDark => currentTheme.brightness == Brightness.dark;
+
   ThemeData get currentTheme => switch (themeMode) {
         ThemeMode.light => realLightTheme,
         ThemeMode.dark => realDarkTheme,
@@ -205,6 +191,14 @@ class ArcaneApp extends StatelessWidget {
       FragmentProgram.fromAsset('packages/arcane/shaders/blur.frag'),
     ]).thenRun((_) => updateApp());
   }
+
+  m.ThemeData get arcaneMaterialTheme =>
+      (isDark ? m.ThemeData.dark() : m.ThemeData.light()).copyWith(
+          pageTransitionsTheme: m.PageTransitionsTheme(
+              builders: Map.fromEntries(
+        m.TargetPlatform.values
+            .map((e) => MapEntry(e, const m.CupertinoPageTransitionsBuilder())),
+      )));
 
   static void updateApp() => _appUpdate.add(_appUpdate.value + 1);
 
@@ -270,10 +264,26 @@ class ArcaneApp extends StatelessWidget {
             actions: actions,
             restorationScopeId: restorationScopeId,
             scrollBehavior: scrollBehavior,
-            materialTheme: materialTheme,
+            materialTheme: materialTheme ?? arcaneMaterialTheme,
             cupertinoTheme: cupertinoTheme,
             scaling: scaling,
             disableBrowserContextMenu: disableBrowserContextMenu,
           ));
   }
+}
+
+class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
+  final bool allowMouseDragging;
+
+  const ArcaneScrollBehavior({this.allowMouseDragging = true});
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) =>
+      const BouncingScrollPhysics();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        if (allowMouseDragging) PointerDeviceKind.mouse,
+      };
 }

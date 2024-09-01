@@ -1,9 +1,12 @@
 import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
+import 'package:pylon/pylon.dart';
 
 mixin ArcaneDialogLauncher on Widget {
-  void show(BuildContext context) => showDialog(
-      context: context, barrierDismissible: true, builder: (context) => this);
+  void open(BuildContext context) {
+    PylonBuilder builder = Pylon.mirror(context, (context) => this);
+    showDialog(context: context, barrierDismissible: true, builder: builder);
+  }
 }
 
 class DialogConfirm extends StatelessWidget with ArcaneDialogLauncher {
@@ -33,7 +36,7 @@ class DialogConfirm extends StatelessWidget with ArcaneDialogLauncher {
             [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('Cancel'),
+                child: Text(cancelText),
               ),
               TextButton(
                 onPressed: () {

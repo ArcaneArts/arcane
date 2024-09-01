@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 
 enum BarBackButtonMode { never, always, whenPinned }
 
@@ -63,7 +64,9 @@ class Bar extends StatelessWidget {
                       Navigator.canPop(context))
                     GhostButton(
                         density: ButtonDensity.icon,
-                        child: const Icon(BootstrapIcons.chevronLeft),
+                        child: context.inSheet
+                            ? const Icon(PhosphorIcons.x_bold)
+                            : const Icon(PhosphorIcons.caret_left_bold),
                         onPressed: () => Arcane.pop(context)),
                   ...leading
                 ],
