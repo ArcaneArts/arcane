@@ -43,8 +43,6 @@ void toast(c.BuildContext context, Widget child) {
 }
 
 class ArcaneApp extends StatelessWidget {
-  static FragmentProgram? noiseShader;
-  static FragmentProgram? blurShader;
   final m.ThemeData? materialTheme;
   final c.CupertinoThemeData? cupertinoTheme;
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -205,10 +203,7 @@ class ArcaneApp extends StatelessWidget {
     Future.wait([
       FragmentProgram.fromAsset('packages/arcane/shaders/noise.frag'),
       FragmentProgram.fromAsset('packages/arcane/shaders/blur.frag'),
-    ])
-        .thenRun((value) => noiseShader = value[0])
-        .thenRun((value) => blurShader = value[1])
-        .thenRun((_) => updateApp());
+    ]).thenRun((_) => updateApp());
   }
 
   static void updateApp() => _appUpdate.add(_appUpdate.value + 1);

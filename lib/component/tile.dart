@@ -162,7 +162,7 @@ class Tile extends StatelessWidget {
   Widget buildTile(BuildContext context) => Padding(
       padding: contentPadding,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (leading != null)
             Padding(

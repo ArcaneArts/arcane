@@ -1,7 +1,7 @@
 import 'package:arcane/arcane.dart';
-import 'package:boxy/slivers.dart';
 import 'package:pylon/pylon.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 import 'package:toxic/extensions/stream.dart';
 import 'package:toxic_flutter/extensions/stream.dart';
 
@@ -23,7 +23,7 @@ class Screen extends StatefulWidget {
 
   const Screen({
     super.key,
-    this.footerHeight = 50,
+    this.footerHeight = 52,
     this.slivers = const [],
     this.children = const [],
     this.header,
@@ -71,46 +71,36 @@ class _ScreenState extends State<Screen> {
     List<Widget> slv = [
       ...widget.slivers,
       if (widget.children.length == 1)
-        SliverFillRemaining(
+        SliverFillRemainingBoxAdapter(
           child: widget.children.first,
         ),
       if (widget.children.length > 1)
         SliverList(
           delegate: SliverChildListDelegate(widget.children),
         ),
-    ];
-
-    if (widget.footer != null) {
-      slv = [
-        SliverContainer(
-          sliver: [
-            ...slv,
-            SliverToBoxAdapter(child: SizedBox(height: widget.footerHeight))
-          ].collapseSlivers,
-          foreground: Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                footerBlur.unique.build((blurring) => GlassStopper(
-                      builder: (context) => KeyedSubtree(
-                        key: ValueKey("fblur.$blurring"),
-                        child: Pylon<AntiFlickerDirection>(
-                          value: AntiFlickerDirection.bottom,
-                          builder: (context) => widget.footer!,
-                        ),
-                      ),
-                      stopping: !blurring,
-                    ))
-              ],
-            ),
+      if (widget.footer != null)
+        SliverToBoxAdapter(
+          child: Container(
+            height: widget.footerHeight,
           ),
         )
-      ];
-    }
+    ];
 
     return Scaffold(
+      floatingFooter: true,
+      footers: [
+        if (widget.footer != null)
+          footerBlur.unique.build((blurring) => GlassStopper(
+                builder: (context) => KeyedSubtree(
+                  key: ValueKey("fblur.$blurring"),
+                  child: Pylon<AntiFlickerDirection>(
+                    value: AntiFlickerDirection.bottom,
+                    builder: (context) => widget.footer!,
+                  ),
+                ),
+                stopping: !blurring,
+              ))
+      ],
       child: CustomScrollView(
         controller: controller,
         slivers: [

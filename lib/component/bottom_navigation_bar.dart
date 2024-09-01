@@ -49,6 +49,7 @@ class ButtonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Bar(
+        backButton: BarBackButtonMode.never,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: buttons

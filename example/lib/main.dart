@@ -48,7 +48,60 @@ class _HomeState extends State<Home> {
             subtitle: const Text("List Tiles"),
             onPressed: () => Arcane.push(context, const ExampleTiles()),
           ),
+          Tile(
+            leading: const Icon(BootstrapIcons.menuButton),
+            title: const Text("Bottom Bar"),
+            subtitle: const Text("Example bottom bar navigation"),
+            onPressed: () => Arcane.push(context, const ExampleBottomBar()),
+          ),
         ],
+      );
+}
+
+class ExampleBottomBar extends StatefulWidget {
+  const ExampleBottomBar({super.key});
+
+  @override
+  State<ExampleBottomBar> createState() => _ExampleBottomBarState();
+}
+
+class _ExampleBottomBarState extends State<ExampleBottomBar> {
+  int index = 0;
+
+  @override
+  Widget build(BuildContext context) => Screen(
+        header: const Bar(
+          titleText: "Bottom Bar",
+        ),
+        children: [
+          Center(
+            child: IndexedStack(
+              index: index,
+              children: [
+                Text("Home"),
+                Text("Gift"),
+                Text("List"),
+              ],
+            ),
+          )
+        ],
+        footer: ButtonBar(selectedIndex: index, buttons: [
+          IconTab(
+              onPressed: () => setState(() => index = 0),
+              icon: BootstrapIcons.house,
+              selectedIcon: BootstrapIcons.houseFill,
+              label: "Home"),
+          IconTab(
+              onPressed: () => setState(() => index = 1),
+              icon: BootstrapIcons.gift,
+              selectedIcon: BootstrapIcons.giftFill,
+              label: "Gift"),
+          IconTab(
+              onPressed: () => setState(() => index = 2),
+              icon: BootstrapIcons.sdCard,
+              selectedIcon: BootstrapIcons.sdCardFill,
+              label: "List"),
+        ]),
       );
 }
 
@@ -77,13 +130,39 @@ class ExampleTiles extends StatelessWidget {
             leading: Text("L"),
             trailing: Text("T"),
           ),
-          Divider(
-            height: 16,
-          ),
           Tile(
             title: Text("Title"),
             leading: Text("L"),
             trailing: Text("T"),
+          ),
+          Tile(
+            leading: Text("L"),
+            title: Text("Title"),
+          ),
+          Tile(
+            leading: Text("L"),
+            subtitle: Text("Subtitle Only"),
+          ),
+          CheckboxTile(
+            title: Text("Checkbox Tile"),
+            leading: Text("L"),
+            subtitle: Text("Subtitle"),
+            value: true,
+          ),
+          CheckboxTile(
+            title: Text("Checkbox Tile"),
+            leading: Text("L"),
+            trailing: Text("T"),
+            subtitle: Text("But with a trailing widget"),
+            value: true,
+          ),
+          CheckboxTile(
+            title: Text("Leading Checkbox Tile"),
+            leading: Text("L"),
+            checkPosition: TileWidgetPosition.leading,
+            trailing: Text("T"),
+            subtitle: Text("But with a leading widget"),
+            value: true,
           ),
           Divider(
             height: 16,
@@ -134,7 +213,7 @@ class ExampleText extends StatelessWidget {
           titleText: "Text",
         ),
         children: [
-          Divider(
+          const Divider(
             height: 16,
             child: Text("Basic"),
           ),
@@ -150,7 +229,7 @@ class ExampleText extends StatelessWidget {
           Text("Medium", style: Theme.of(context).typography.medium),
           Text("Small", style: Theme.of(context).typography.small),
           Text("xSmall", style: Theme.of(context).typography.xSmall),
-          Divider(
+          const Divider(
             height: 16,
             child: Text("Headlines"),
           ),
@@ -158,7 +237,7 @@ class ExampleText extends StatelessWidget {
           Text("Heading 2", style: Theme.of(context).typography.h2),
           Text("Heading 3", style: Theme.of(context).typography.h3),
           Text("Heading 4", style: Theme.of(context).typography.h4),
-          Divider(
+          const Divider(
             height: 16,
             child: Text("Modifiers"),
           ),

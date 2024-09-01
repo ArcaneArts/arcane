@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0"
+    version: "2.0.4"
   archive:
     dependency: transitive
     description:
@@ -383,6 +383,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_fill_remaining_box_adapter:
+    dependency: transitive
+    description:
+      name: sliver_fill_remaining_box_adapter
+      sha256: "2a222c0f09eb07c37857ce2526c0fbf3b17b2bd1b1ff0e890085f2f7a9ba1927"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   sliver_tools:
     dependency: transitive
     description:
