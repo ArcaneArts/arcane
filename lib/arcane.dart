@@ -1,6 +1,7 @@
 library arcane;
 
 export 'package:shadcn_flutter/shadcn_flutter.dart';
+export 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 export 'package:sliver_tools/sliver_tools.dart';
 
 export 'component/adaptive.dart';

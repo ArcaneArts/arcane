@@ -2,7 +2,6 @@ import 'package:arcane/arcane.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pylon/pylon.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 import 'package:toxic/extensions/stream.dart';
 import 'package:toxic_flutter/extensions/stream.dart';
 
@@ -11,6 +10,7 @@ class Screen extends StatefulWidget {
   final List<Widget> slivers;
   final Widget? header;
   final Widget? footer;
+  final Widget? background;
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
   final VoidCallback? onRefresh;
@@ -18,9 +18,14 @@ class Screen extends StatefulWidget {
   final double footerHeight;
   final bool footerPaddingBottom;
   final ScrollController? scrollController;
+  final double minContentFraction;
+  final double minContentWidth;
 
   const Screen({
     super.key,
+    this.background,
+    this.minContentWidth = 500,
+    this.minContentFraction = 0.75,
     this.scrollController,
     this.footerHeight = 52,
     this.slivers = const [],
@@ -108,6 +113,13 @@ class _ScreenState extends State<Screen> {
           ),
         )
     ];
+    double width = MediaQuery.of(context).size.width;
+    double gutterWidth = 0;
+
+    if (width > widget.minContentWidth) {
+      gutterWidth = (width * ((1 - widget.minContentFraction) / 2)) - 25;
+      print("Gutter width: $gutterWidth");
+    }
 
     return Scaffold(
       loadingProgress: widget.loadingProgress,
@@ -127,23 +139,34 @@ class _ScreenState extends State<Screen> {
                 stopping: !blurring,
               ))
       ],
-      child: CustomScrollView(
-        controller: getController(context),
-        slivers: [
-          if (widget.header != null)
-            SliverPinnedHeader(
-              child: headerBlur.unique.build((blurring) => GlassStopper(
-                    builder: (context) => KeyedSubtree(
-                      key: ValueKey("hblur.$blurring"),
-                      child: Pylon<AntiFlickerDirection>(
-                        value: AntiFlickerDirection.top,
-                        builder: (context) => widget.header!,
-                      ),
-                    ),
-                    stopping: !blurring,
-                  )),
-            ),
-          ...slv
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (widget.background != null) widget.background!,
+          CustomScrollView(
+            controller: getController(context),
+            slivers: [
+              if (widget.header != null)
+                SliverPinnedHeader(
+                  child: headerBlur.unique.build((blurring) => GlassStopper(
+                        builder: (context) => KeyedSubtree(
+                          key: ValueKey("hblur.$blurring"),
+                          child: Pylon<AntiFlickerDirection>(
+                            value: AntiFlickerDirection.top,
+                            builder: (context) => widget.header!,
+                          ),
+                        ),
+                        stopping: !blurring,
+                      )),
+                ),
+              if (gutterWidth > 0)
+                ...slv.map((e) => SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: gutterWidth),
+                    sliver: e))
+              else
+                ...slv
+            ],
+          )
         ],
       ),
     );

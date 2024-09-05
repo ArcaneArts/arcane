@@ -1,3 +1,7 @@
+## 2.0.7
+
+* Gutters
+
 ## 1.0.1
 
 * So many fixes
