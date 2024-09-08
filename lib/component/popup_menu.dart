@@ -1,36 +1,30 @@
 import 'package:arcane/arcane.dart';
 
 class PopupMenu extends StatelessWidget {
-  final Widget? icon;
-  final Widget? child;
+  final IconData icon;
   final List<MenuItem> items;
 
-  const PopupMenu({super.key, this.icon, this.child, required this.items});
+  const PopupMenu({super.key, required this.icon, required this.items});
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        child: GhostButton(
-          onPressed: () {
-            _showDropdown(
-                context: context,
-                builder: (context) => Theme(
-                      data: Theme.of(context).copyWith(
-                        surfaceBlur: 18,
-                        surfaceOpacity: 0.5,
-                      ),
-                      child: DropdownMenu(
-                        children: items,
-                        surfaceOpacity: 0.5,
-                        surfaceBlur: 18,
-                      ),
-                    ));
-          },
-          leading: icon,
-          density: icon != null && child != null
-              ? ButtonDensity.normal
-              : ButtonDensity.icon,
-          child: child ?? Container(),
-        ),
+        child: IconButton(
+            onPressed: () {
+              _showDropdown(
+                  context: context,
+                  builder: (context) => Theme(
+                        data: Theme.of(context).copyWith(
+                          surfaceBlur: 18,
+                          surfaceOpacity: 0.5,
+                        ),
+                        child: DropdownMenu(
+                          surfaceOpacity: 0.5,
+                          surfaceBlur: 18,
+                          children: items,
+                        ),
+                      ));
+            },
+            icon: icon),
       );
 }
 

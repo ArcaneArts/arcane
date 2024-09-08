@@ -1,5 +1,9 @@
 import 'package:arcane/arcane.dart';
 
+typedef ListTile = Tile;
+typedef SwitchListTile = SwitchTile;
+typedef CheckboxListTile = CheckboxTile;
+
 enum TileWidgetPosition { leading, trailing }
 
 class SwitchTile extends StatelessWidget {
@@ -175,10 +179,13 @@ class Tile extends StatelessWidget {
             children: [
               if (title != null)
                 DefaultTextStyle(
-                    style: Theme.of(context).typography.medium, child: title!),
+                    style: Theme.of(context).typography.medium.copyWith(
+                        color: Theme.of(context).colorScheme.foreground),
+                    child: title!),
               if (subtitle != null)
                 DefaultTextStyle(
-                    style: Theme.of(context).typography.xSmall,
+                    style: Theme.of(context).typography.small.copyWith(
+                        color: Theme.of(context).colorScheme.foreground),
                     child: subtitle!),
             ],
           )),
@@ -207,7 +214,8 @@ class Tile extends StatelessWidget {
                 children: [
                   if (title != null)
                     DefaultTextStyle(
-                        style: Theme.of(context).typography.medium,
+                        style: Theme.of(context).typography.medium.copyWith(
+                            color: Theme.of(context).colorScheme.foreground),
                         child: title!),
                 ],
               )),
@@ -237,7 +245,13 @@ class Tile extends StatelessWidget {
                   children: [
                     if (subtitle != null)
                       DefaultTextStyle(
-                              style: Theme.of(context).typography.xSmall,
+                              style: Theme.of(context)
+                                  .typography
+                                  .small
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .foreground),
                               child: subtitle!)
                           .withOpacity(0.9),
                   ],

@@ -12,7 +12,7 @@ class ExampleArcaneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const ArcaneApp(
         home: Home(),
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
       );
 }
 
@@ -72,6 +72,113 @@ class _HomeState extends State<Home> {
             subtitle: const Text("Toast notifications"),
             onPressed: () => Arcane.push(context, const ExampleToasts()),
           ),
+          Tile(
+            leading: const Icon(BootstrapIcons.menuApp),
+            title: const Text("Menus"),
+            subtitle: const Text("Context & Dropdown Menus"),
+            onPressed: () => Arcane.push(context, const ExampleMenus()),
+          ),
+          Tile(
+            leading: const Icon(BootstrapIcons.bell),
+            title: const Text("Icons"),
+            subtitle:
+                const Text("Quick Icons forwarded from Bootstrap & Phosphor"),
+            onPressed: () => Arcane.push(context, const ExampleIcons()),
+          )
+        ],
+      );
+}
+
+Map<String, IconData> _icons = {};
+
+class ExampleIcons extends StatelessWidget {
+  const ExampleIcons({super.key});
+
+  @override
+  Widget build(BuildContext context) => Screen(
+        header: const Bar(
+          titleText: "Icons",
+        ),
+        slivers: [
+          SliverGrid(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                MapEntry<String, IconData> entry =
+                    _icons.entries.elementAt(index);
+                return Tooltip(
+                    child: Icon(entry.value), tooltip: Text(entry.key));
+              }),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 50)),
+        ],
+      );
+}
+
+class ExampleMenus extends StatelessWidget {
+  const ExampleMenus({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Screen(
+        header: Bar(
+          titleText: "Menus",
+          trailing: [
+            PopupMenu(icon: Icons.dots_three, items: [
+              MenuButton(child: Text("Item 1")),
+              MenuButton(child: Text("Item 2")),
+              MenuButton(
+                subMenu: [
+                  MenuButton(child: Text("Item 5")),
+                  MenuButton(child: Text("Item 6")),
+                  MenuButton(child: Text("Item 7")),
+                  MenuButton(
+                    subMenu: [
+                      MenuButton(child: Text("Item 8")),
+                      MenuButton(child: Text("Item 9")),
+                      MenuButton(child: Text("Item 10"))
+                    ],
+                    child: Text("Group 2"),
+                  )
+                ],
+                child: Text("Group 1"),
+              ),
+              MenuButton(child: Text("Item 4"))
+            ])
+          ],
+        ),
+        children: [
+          ContextMenu(
+              child: Tile(
+                leading: Icon(Icons.activity_light),
+                title: Text("Right Click Me!"),
+                subtitle: Text("Or long press on mobile"),
+              ),
+              items: [
+                MenuButton(child: Text("Im a menu item")),
+                MenuButton(
+                  child: Text("Im a menu item too!"),
+                  subMenu: [
+                    MenuButton(child: Text("Im a sub menu item")),
+                    MenuButton(child: Text("Im a sub menu item 2")),
+                    MenuButton(child: Text("Im a sub menu item 3")),
+                  ],
+                ),
+              ]),
+          ContextMenu(
+              child: Tile(
+                leading: Icon(Icons.activity_light),
+                title: Text("Right Click Me!"),
+                subtitle: Text("Or long press on mobile"),
+              ),
+              items: [
+                MenuButton(child: Text("Im a menu item")),
+                MenuButton(
+                  child: Text("Im a menu item too!"),
+                  subMenu: [
+                    MenuButton(child: Text("Im a sub menu item")),
+                    MenuButton(child: Text("Im a sub menu item 2")),
+                    MenuButton(child: Text("Im a sub menu item 3")),
+                  ],
+                ),
+              ])
         ],
       );
 }

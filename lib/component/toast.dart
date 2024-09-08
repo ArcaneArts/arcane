@@ -36,7 +36,7 @@ class TextToast extends StatelessWidget with ArcaneToastLauncher {
     this.showDuration = const Duration(seconds: 3),
     this.dismissible = true,
     this.location = ToastLocation.bottomLeft,
-    this.entryDuration = const Duration(milliseconds: 100),
+    this.entryDuration = const Duration(milliseconds: 500),
   });
 
   @override
@@ -60,18 +60,14 @@ class Toast extends StatelessWidget with ArcaneToastLauncher {
     this.location = ToastLocation.bottomLeft,
     this.showDuration = const Duration(seconds: 3),
     this.dismissible = true,
-    this.entryDuration = const Duration(milliseconds: 100),
+    this.entryDuration = const Duration(milliseconds: 500),
     required this.builder,
   });
 
   @override
-  Widget build(BuildContext context) => Glass(
-        ignoreContextSignals: true,
-        disabled: false,
-        blur: Theme.of(context).surfaceBlur ?? 16,
-        borderRadius: BorderRadius.circular(8),
+  Widget build(BuildContext context) => SurfaceCard(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           child: Builder(builder: builder),
         ),
       );

@@ -157,7 +157,7 @@ class ArcaneApp extends StatelessWidget {
       lightTheme ??
       ThemeData(
           colorScheme: ColorSchemes.lightZinc(),
-          surfaceOpacity: 0.666,
+          surfaceOpacity: 0.5,
           surfaceBlur: 16,
           radius: 0.5);
 
@@ -165,7 +165,7 @@ class ArcaneApp extends StatelessWidget {
       darkTheme ??
       ThemeData(
           colorScheme: ColorSchemes.darkZinc(),
-          surfaceOpacity: 0.8,
+          surfaceOpacity: 0.5,
           surfaceBlur: 16,
           radius: 0.5);
 
