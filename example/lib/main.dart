@@ -12,7 +12,7 @@ class ExampleArcaneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const ArcaneApp(
         home: Home(),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
       );
 }
 
