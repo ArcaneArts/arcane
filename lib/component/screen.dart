@@ -118,7 +118,6 @@ class _ScreenState extends State<Screen> {
 
     if (width > widget.minContentWidth) {
       gutterWidth = (width * ((1 - widget.minContentFraction) / 2)) - 25;
-      print("Gutter width: $gutterWidth");
     }
 
     return Scaffold(

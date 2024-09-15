@@ -186,10 +186,6 @@ class ArcaneApp extends StatelessWidget {
     _initialized = true;
     WidgetsBinding.instance.platformDispatcher.onPlatformBrightnessChanged =
         () => updateApp();
-    Future.wait([
-      FragmentProgram.fromAsset('packages/arcane/shaders/noise.frag'),
-      FragmentProgram.fromAsset('packages/arcane/shaders/blur.frag'),
-    ]).thenRun((_) => updateApp());
   }
 
   m.ThemeData get arcaneMaterialTheme =>

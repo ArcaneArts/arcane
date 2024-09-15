@@ -28,9 +28,11 @@ class AdaptiveSize {
 }
 
 class Adaptive extends StatelessWidget {
+  final Key? treeKey;
+
   final Map<AdaptiveSize, AdaptiveBuilder> builders;
 
-  const Adaptive({super.key, required this.builders})
+  const Adaptive({super.key, required this.builders, this.treeKey})
       : assert(builders.length > 0, 'At least one builder must be provided');
 
   @override
@@ -52,7 +54,9 @@ class Adaptive extends StatelessWidget {
             }
           }
 
-          return builders[last ?? builders.entries.first.key]!(context);
+          return KeyedSubtree(
+              key: treeKey,
+              child: builders[last ?? builders.entries.first.key]!(context));
         },
       );
 }
