@@ -31,3 +31,7 @@ build/
 arcane_chat_app/
 
 keys/
+
+.flutter-plugins
+
+.flutter-plugins-dependencies
