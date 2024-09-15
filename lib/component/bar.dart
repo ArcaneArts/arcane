@@ -82,7 +82,6 @@ class Bar extends StatelessWidget {
                 trailingGap: trailingGap,
                 height: height,
                 surfaceBlur: 0,
-                surfaceOpacity: 0,
                 useSafeArea: useSafeArea,
                 child: child,
               ))

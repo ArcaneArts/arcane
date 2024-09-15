@@ -1,3 +1,9 @@
+## 2.1.1
+* Theme Fixes
+
+## 2.1.0
+* All of shadcn_flutter without the js web hacks
+
 ## 2.0.7
 
 * Gutters

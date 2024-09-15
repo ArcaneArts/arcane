@@ -103,7 +103,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(
-          color: widget.borderColor ?? theme.colorScheme.muted,
+          color: widget.borderColor ?? theme.colorScheme.border,
           width: widget.borderWidth ?? (1 * scaling),
           style: widget.borderStyle ?? BorderStyle.solid,
         ),

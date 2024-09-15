@@ -1378,9 +1378,9 @@ Decoration _buttonOutlineDecoration(
   var themeData = Theme.of(context);
   if (states.contains(WidgetState.disabled)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.withOpacity(0),
+      color: themeData.colorScheme.border.withOpacity(0),
       border: Border.all(
-        color: themeData.colorScheme.muted,
+        color: themeData.colorScheme.border,
         width: 1,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
@@ -1388,18 +1388,18 @@ Decoration _buttonOutlineDecoration(
   }
   if (states.contains(WidgetState.hovered)) {
     return BoxDecoration(
-      color: themeData.colorScheme.muted.scaleAlpha(0.8),
+      color: themeData.colorScheme.border.scaleAlpha(0.8),
       border: Border.all(
-        color: themeData.colorScheme.muted.scaleAlpha(0.8),
+        color: themeData.colorScheme.border.scaleAlpha(0.8),
         width: 1,
       ),
       borderRadius: BorderRadius.circular(themeData.radiusMd),
     );
   }
   return BoxDecoration(
-    color: themeData.colorScheme.muted.withOpacity(0),
+    color: themeData.colorScheme.border.withOpacity(0),
     border: Border.all(
-      color: themeData.colorScheme.muted,
+      color: themeData.colorScheme.border,
       width: 1,
     ),
     borderRadius: BorderRadius.circular(themeData.radiusMd),

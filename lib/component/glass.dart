@@ -53,8 +53,6 @@ class GlassStopper extends StatelessWidget {
 }
 
 class Glass extends StatelessWidget {
-  final Color? color;
-  final double opacity;
   final Widget child;
   final double? blur;
   final BorderRadius borderRadius;
@@ -71,8 +69,6 @@ class Glass extends StatelessWidget {
       this.under,
       this.tint,
       this.disabled = false,
-      this.color,
-      this.opacity = 0.5,
       this.blur,
       this.borderRadius = const BorderRadius.all(Radius.circular(0)),
       required this.child});
@@ -165,7 +161,6 @@ class BlurSurface extends StatelessWidget {
         Positioned.fill(
             child: ArcaneBlur(intensity: blur, child: const SizedBox())),
         Container(
-          color: Theme.of(context).colorScheme.background.withOpacity(0.5),
           child: child,
         ),
       ]);

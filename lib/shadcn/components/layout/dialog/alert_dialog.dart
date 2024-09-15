@@ -39,10 +39,11 @@ class _AlertDialogState extends State<AlertDialog> {
           backgroundColor: themeData.colorScheme.popover,
           borderRadius: themeData.radiusXxl,
           borderWidth: 1 * scaling,
-          borderColor: themeData.colorScheme.muted,
+          borderColor: themeData.colorScheme.border,
           padding: EdgeInsets.all(24 * scaling),
           surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
-          surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
+          surfaceOpacity:
+              (widget.surfaceOpacity ?? themeData.surfaceOpacity)! * 1.1,
           child: IntrinsicHeight(
             child: Column(
               mainAxisSize: MainAxisSize.min,

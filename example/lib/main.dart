@@ -10,9 +10,10 @@ class ExampleArcaneApp extends StatelessWidget {
   const ExampleArcaneApp({super.key});
 
   @override
-  Widget build(BuildContext context) => const ArcaneApp(
-        home: Home(),
-        themeMode: ThemeMode.system,
+  Widget build(BuildContext context) => ArcaneApp(
+        home: const Home(),
+        theme: ArcaneTheme(
+            themeMode: ThemeMode.system, scheme: ColorSchemes.red()),
       );
 }
 

@@ -196,3 +196,4 @@ export 'component/tile.dart';
 export 'component/toast.dart';
 export 'util/blur.dart';
 export 'util/extensions.dart';
+export 'util/theme.dart';
