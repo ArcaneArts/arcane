@@ -160,21 +160,6 @@ extension IterableExtension<T> on Iterable<T> {
 }
 
 extension WidgetExtension on Widget {
-  Widget sized({double? width, double? height}) {
-    if (this is SizedBox) {
-      return SizedBox(
-        width: width ?? (this as SizedBox).width,
-        height: height ?? (this as SizedBox).height,
-        child: (this as SizedBox).child,
-      );
-    }
-    return SizedBox(
-      width: width,
-      height: height,
-      child: this,
-    );
-  }
-
   Widget constrained(
       {double? minWidth,
       double? maxWidth,
