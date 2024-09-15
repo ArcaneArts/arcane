@@ -34,14 +34,8 @@ class _SurfaceBlurState extends State<SurfaceBlur> {
         Positioned.fill(
           child: ClipRRect(
             borderRadius: widget.borderRadius ?? BorderRadius.zero,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: widget.surfaceBlur!,
-                sigmaY: widget.surfaceBlur!,
-              ),
-              // had to add SizedBox, otherwise it won't blur
-              child: const SizedBox(),
-            ),
+            child: ArcaneBlur(
+                intensity: widget.surfaceBlur!, child: const SizedBox()),
           ),
         ),
         KeyedSubtree(

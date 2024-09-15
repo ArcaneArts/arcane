@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:arcane/arcane.dart';
 import 'package:pylon/pylon.dart';
 
@@ -165,12 +163,7 @@ class BlurSurface extends StatelessWidget {
           )),
         if (under != null) under!,
         Positioned.fill(
-            child: BackdropFilter(
-          filter: ui.ImageFilter.blur(
-              sigmaX: blur, sigmaY: blur, tileMode: TileMode.decal),
-          // had to add SizedBox, otherwise it won't blur
-          child: Container(),
-        )),
+            child: ArcaneBlur(intensity: blur, child: const SizedBox())),
         Container(
           color: Theme.of(context).colorScheme.background.withOpacity(0.5),
           child: child,

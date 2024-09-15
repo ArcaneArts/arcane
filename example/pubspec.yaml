@@ -5,7 +5,6 @@ version: 1.0.0+1
 environment:
   sdk: ^3.5.0
 dependencies:
-  shadcn_flutter: any
   arcane:
     path: ../
   flutter:
@@ -20,41 +19,41 @@ flutter:
   fonts:
     - family: "GeistSans"
       fonts:
-        - asset: "packages/arcane/fonts/Geist-Black.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Black.otf"
           weight: 800
-        - asset: "packages/arcane/fonts/Geist-Bold.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Bold.otf"
           weight: 700
-        - asset: "packages/arcane/fonts/Geist-Light.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Light.otf"
           weight: 300
-        - asset: "packages/arcane/fonts/Geist-Medium.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Medium.otf"
           weight: 500
-        - asset: "packages/arcane/fonts/Geist-SemiBold.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-SemiBold.otf"
           weight: 600
-        - asset: "packages/arcane/fonts/Geist-Thin.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Thin.otf"
           weight: 100
-        - asset: "packages/arcane/fonts/Geist-UltraBlack.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-UltraBlack.otf"
           weight: 900
-        - asset: "packages/arcane/fonts/Geist-UltraLight.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-UltraLight.otf"
           weight: 200
-        - asset: "packages/arcane/fonts/Geist-Regular.otf"
+        - asset: "packages/arcane/resources/fonts/Geist-Regular.otf"
           weight: 400
     - family: "GeistMono"
       fonts:
-        - asset: "packages/arcane/fonts/GeistMono-Black.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Black.otf"
           weight: 800
-        - asset: "packages/arcane/fonts/GeistMono-Bold.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Bold.otf"
           weight: 700
-        - asset: "packages/arcane/fonts/GeistMono-Light.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Light.otf"
           weight: 300
-        - asset: "packages/arcane/fonts/GeistMono-Medium.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Medium.otf"
           weight: 500
-        - asset: "packages/arcane/fonts/GeistMono-Regular.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Regular.otf"
           weight: 400
-        - asset: "packages/arcane/fonts/GeistMono-SemiBold.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-SemiBold.otf"
           weight: 600
-        - asset: "packages/arcane/fonts/GeistMono-Thin.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-Thin.otf"
           weight: 100
-        - asset: "packages/arcane/fonts/GeistMono-UltraBlack.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-UltraBlack.otf"
           weight: 900
-        - asset: "packages/arcane/fonts/GeistMono-UltraLight.otf"
+        - asset: "packages/arcane/resources/fonts/GeistMono-UltraLight.otf"
           weight: 200
