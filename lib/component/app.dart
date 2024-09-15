@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
 import 'package:pylon/pylon.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:toxic/extensions/future.dart';
 import 'package:toxic_flutter/toxic_flutter.dart';
 
 class Arcane {

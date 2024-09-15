@@ -31,55 +31,55 @@ class _HomeState extends State<Home> {
         ),
         children: [
           Tile(
-            leading: const Icon(BootstrapIcons.bodyText),
+            leading: const Icon(Icons.text_aa),
             title: Text("Text"),
             subtitle: Text("Text sizes & styles"),
             onPressed: () => Arcane.push(context, const ExampleText()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.gift),
+            leading: const Icon(Icons.gift),
             title: const Text("Buttons"),
             subtitle: const Text("Button styles w/o icons"),
             onPressed: () => Arcane.push(context, const ExampleButtons()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.cardList),
+            leading: const Icon(Icons.cards),
             title: const Text("Tiles"),
             subtitle: const Text("List Tiles"),
             onPressed: () => Arcane.push(context, const ExampleTiles()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.menuButton),
+            leading: const Icon(Icons.menu_ionic),
             title: const Text("Bottom Bar"),
             subtitle: const Text("Example bottom bar navigation"),
             onPressed: () => Arcane.push(context, const ExampleBottomBar()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.diagram2),
+            leading: const Icon(Icons.diamond),
             title: const Text("Dialogs"),
             subtitle: const Text("Dialog confirms and whatnot"),
             onPressed: () => Arcane.push(context, const ExampleDialogs()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.file),
+            leading: const Icon(Icons.file),
             title: const Text("Sheets"),
             subtitle: const Text("Modal sheets"),
             onPressed: () => Arcane.push(context, const ExampleSheets()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.bell),
+            leading: const Icon(Icons.bell),
             title: const Text("Toast"),
             subtitle: const Text("Toast notifications"),
             onPressed: () => Arcane.push(context, const ExampleToasts()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.menuApp),
+            leading: const Icon(Icons.menu_ionic),
             title: const Text("Menus"),
             subtitle: const Text("Context & Dropdown Menus"),
             onPressed: () => Arcane.push(context, const ExampleMenus()),
           ),
           Tile(
-            leading: const Icon(BootstrapIcons.bell),
+            leading: const Icon(Icons.bell),
             title: const Text("Icons"),
             subtitle:
                 const Text("Quick Icons forwarded from Bootstrap & Phosphor"),
@@ -353,18 +353,18 @@ class _ExampleBottomBarState extends State<ExampleBottomBar> {
         footer: ButtonBar(selectedIndex: index, buttons: [
           IconTab(
               onPressed: () => setState(() => index = 0),
-              icon: BootstrapIcons.house,
-              selectedIcon: BootstrapIcons.houseFill,
+              icon: Icons.house,
+              selectedIcon: Icons.house_fill,
               label: "Home"),
           IconTab(
               onPressed: () => setState(() => index = 1),
-              icon: BootstrapIcons.gift,
-              selectedIcon: BootstrapIcons.giftFill,
+              icon: Icons.gift,
+              selectedIcon: Icons.gift_fill,
               label: "Gift"),
           IconTab(
               onPressed: () => setState(() => index = 2),
-              icon: BootstrapIcons.sdCard,
-              selectedIcon: BootstrapIcons.sdCardFill,
+              icon: Icons.cards,
+              selectedIcon: Icons.cards_fill,
               label: "List"),
         ]),
       );
@@ -531,7 +531,7 @@ class ExampleButtons extends StatelessWidget {
                 GhostButton(
                   onPressed: () {},
                   density: ButtonDensity.icon,
-                  child: const Icon(BootstrapIcons.activity),
+                  child: const Icon(Icons.activity),
                 ),
                 const Gap(16),
                 GhostButton(
@@ -542,7 +542,7 @@ class ExampleButtons extends StatelessWidget {
                 GhostButton(
                   child: Text("Ghost w Icon"),
                   onPressed: () {},
-                  leading: Icon(BootstrapIcons.activity),
+                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -551,7 +551,7 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 TextButton(
-                  child: Icon(BootstrapIcons.activity),
+                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
                 ),
@@ -564,7 +564,7 @@ class ExampleButtons extends StatelessWidget {
                 TextButton(
                   child: Text("Text w Icon"),
                   onPressed: () {},
-                  leading: Icon(BootstrapIcons.activity),
+                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -573,7 +573,7 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 OutlineButton(
-                  child: Icon(BootstrapIcons.activity),
+                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
                 ),
@@ -586,7 +586,7 @@ class ExampleButtons extends StatelessWidget {
                 OutlineButton(
                   child: Text("Outline w Icon"),
                   onPressed: () {},
-                  leading: Icon(BootstrapIcons.activity),
+                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -595,7 +595,7 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 SecondaryButton(
-                  child: Icon(BootstrapIcons.activity),
+                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
                 ),
@@ -608,7 +608,7 @@ class ExampleButtons extends StatelessWidget {
                 SecondaryButton(
                   child: Text("Secondary w Icon"),
                   onPressed: () {},
-                  leading: Icon(BootstrapIcons.activity),
+                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -617,7 +617,7 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 PrimaryButton(
-                  child: Icon(BootstrapIcons.activity),
+                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
                 ),
@@ -630,7 +630,7 @@ class ExampleButtons extends StatelessWidget {
                 PrimaryButton(
                   child: Text("Primary w Icon"),
                   onPressed: () {},
-                  leading: Icon(BootstrapIcons.activity),
+                  leading: Icon(Icons.activity),
                 )
               ],
             )

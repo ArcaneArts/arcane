@@ -13,7 +13,6 @@ class Screen extends StatefulWidget {
   final Widget? background;
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
-  final VoidCallback? onRefresh;
   final bool showLoadingSparks;
   final double footerHeight;
   final bool footerPaddingBottom;
@@ -34,7 +33,6 @@ class Screen extends StatefulWidget {
     this.footer,
     this.loadingProgress,
     this.loadingProgressIndeterminate = false,
-    this.onRefresh,
     this.showLoadingSparks = false,
     this.footerPaddingBottom = true,
   });
@@ -123,7 +121,6 @@ class _ScreenState extends State<Screen> {
     return Scaffold(
       loadingProgress: widget.loadingProgress,
       loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
-      onRefresh: widget.onRefresh,
       floatingFooter: true,
       footers: [
         if (widget.footer != null)

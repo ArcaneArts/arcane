@@ -9,22 +9,23 @@ class PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GestureDetector(
         child: IconButton(
-            onPressed: () {
-              _showDropdown(
-                  context: context,
-                  builder: (context) => Theme(
-                        data: Theme.of(context).copyWith(
-                          surfaceBlur: 18,
-                          surfaceOpacity: 0.5,
-                        ),
-                        child: DropdownMenu(
-                          surfaceOpacity: 0.5,
-                          surfaceBlur: 18,
-                          children: items,
-                        ),
-                      ));
-            },
-            icon: icon),
+          onPressed: () {
+            _showDropdown(
+                context: context,
+                builder: (context) => Theme(
+                      data: Theme.of(context).copyWith(
+                        surfaceBlur: 18,
+                        surfaceOpacity: 0.5,
+                      ),
+                      child: DropdownMenu(
+                        surfaceOpacity: 0.5,
+                        surfaceBlur: 18,
+                        children: items,
+                      ),
+                    ));
+          },
+          icon: Icon(icon),
+        ),
       );
 }
 
