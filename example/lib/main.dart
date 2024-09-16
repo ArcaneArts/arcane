@@ -33,8 +33,8 @@ class _HomeState extends State<Home> {
         children: [
           Tile(
             leading: const Icon(Icons.text_aa),
-            title: Text("Text"),
-            subtitle: Text("Text sizes & styles"),
+            title: const Text("Text"),
+            subtitle: const Text("Text sizes & styles"),
             onPressed: () => Arcane.push(context, const ExampleText()),
           ),
           Tile(
@@ -106,9 +106,10 @@ class ExampleIcons extends StatelessWidget {
                 MapEntry<String, IconData> entry =
                     _icons.entries.elementAt(index);
                 return Tooltip(
-                    child: Icon(entry.value), tooltip: Text(entry.key));
+                    tooltip: Text(entry.key),
+                    child: Icon(entry.value));
               }),
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 50)),
         ],
       );
@@ -147,39 +148,39 @@ class ExampleMenus extends StatelessWidget {
         ),
         children: [
           ContextMenu(
-              child: Tile(
-                leading: Icon(Icons.activity_light),
-                title: Text("Right Click Me!"),
-                subtitle: Text("Or long press on mobile"),
-              ),
               items: [
                 MenuButton(child: Text("Im a menu item")),
                 MenuButton(
-                  child: Text("Im a menu item too!"),
                   subMenu: [
                     MenuButton(child: Text("Im a sub menu item")),
                     MenuButton(child: Text("Im a sub menu item 2")),
                     MenuButton(child: Text("Im a sub menu item 3")),
                   ],
+                  child: Text("Im a menu item too!"),
                 ),
-              ]),
+              ],
+              child: Tile(
+                leading: Icon(Icons.activity_light),
+                title: Text("Right Click Me!"),
+                subtitle: Text("Or long press on mobile"),
+              )),
           ContextMenu(
-              child: Tile(
-                leading: Icon(Icons.activity_light),
-                title: Text("Right Click Me!"),
-                subtitle: Text("Or long press on mobile"),
-              ),
               items: [
                 MenuButton(child: Text("Im a menu item")),
                 MenuButton(
-                  child: Text("Im a menu item too!"),
                   subMenu: [
                     MenuButton(child: Text("Im a sub menu item")),
                     MenuButton(child: Text("Im a sub menu item 2")),
                     MenuButton(child: Text("Im a sub menu item 3")),
                   ],
+                  child: Text("Im a menu item too!"),
                 ),
-              ])
+              ],
+              child: Tile(
+                leading: Icon(Icons.activity_light),
+                title: Text("Right Click Me!"),
+                subtitle: Text("Or long press on mobile"),
+              ))
         ],
       );
 }
@@ -297,7 +298,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: Text("L"),
+                            leading: const Text("L"),
                           ))))),
           BarSection(
               headerText: "Header 2",
@@ -307,7 +308,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: Text("L"),
+                            leading: const Text("L"),
                           ))))),
           BarSection(
               headerText: "Header 3",
@@ -317,7 +318,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: Text("L"),
+                            leading: const Text("L"),
                           )))))
         ],
       );
@@ -339,18 +340,6 @@ class _ExampleBottomBarState extends State<ExampleBottomBar> {
         header: const Bar(
           titleText: "Bottom Bar",
         ),
-        children: [
-          Center(
-            child: IndexedStack(
-              index: index,
-              children: [
-                Text("Home"),
-                Text("Gift"),
-                Text("List"),
-              ],
-            ),
-          )
-        ],
         footer: ButtonBar(selectedIndex: index, buttons: [
           IconTab(
               onPressed: () => setState(() => index = 0),
@@ -368,6 +357,18 @@ class _ExampleBottomBarState extends State<ExampleBottomBar> {
               selectedIcon: Icons.cards_fill,
               label: "List"),
         ]),
+        children: [
+          Center(
+            child: IndexedStack(
+              index: index,
+              children: [
+                Text("Home"),
+                Text("Gift"),
+                Text("List"),
+              ],
+            ),
+          )
+        ],
       );
 }
 
@@ -536,14 +537,14 @@ class ExampleButtons extends StatelessWidget {
                 ),
                 const Gap(16),
                 GhostButton(
-                  child: Text("Ghost Button"),
+                  child: const Text("Ghost Button"),
                   onPressed: () {},
                 ),
-                Gap(16),
+                const Gap(16),
                 GhostButton(
+                  onPressed: () {},
+                  leading: const Icon(Icons.activity),
                   child: Text("Ghost w Icon"),
-                  onPressed: () {},
-                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -552,20 +553,20 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 TextButton(
-                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
+                  child: Icon(Icons.activity),
                 ),
                 const Gap(16),
                 TextButton(
-                  child: Text("Text Button"),
+                  child: const Text("Text Button"),
                   onPressed: () {},
                 ),
-                Gap(16),
+                const Gap(16),
                 TextButton(
+                  onPressed: () {},
+                  leading: const Icon(Icons.activity),
                   child: Text("Text w Icon"),
-                  onPressed: () {},
-                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -574,20 +575,20 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 OutlineButton(
-                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
+                  child: Icon(Icons.activity),
                 ),
                 const Gap(16),
                 OutlineButton(
-                  child: Text("Outline Button"),
+                  child: const Text("Outline Button"),
                   onPressed: () {},
                 ),
-                Gap(16),
+                const Gap(16),
                 OutlineButton(
+                  onPressed: () {},
+                  leading: const Icon(Icons.activity),
                   child: Text("Outline w Icon"),
-                  onPressed: () {},
-                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -596,20 +597,20 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 SecondaryButton(
-                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
+                  child: Icon(Icons.activity),
                 ),
                 const Gap(16),
                 SecondaryButton(
-                  child: Text("Secondary Button"),
+                  child: const Text("Secondary Button"),
                   onPressed: () {},
                 ),
-                Gap(16),
+                const Gap(16),
                 SecondaryButton(
+                  onPressed: () {},
+                  leading: const Icon(Icons.activity),
                   child: Text("Secondary w Icon"),
-                  onPressed: () {},
-                  leading: Icon(Icons.activity),
                 )
               ],
             ),
@@ -618,25 +619,25 @@ class ExampleButtons extends StatelessWidget {
               children: [
                 const Gap(16),
                 PrimaryButton(
-                  child: Icon(Icons.activity),
                   onPressed: () {},
                   density: ButtonDensity.icon,
+                  child: Icon(Icons.activity),
                 ),
                 const Gap(16),
                 PrimaryButton(
-                  child: Text("Primary Button"),
+                  child: const Text("Primary Button"),
                   onPressed: () {},
                 ),
-                Gap(16),
+                const Gap(16),
                 PrimaryButton(
-                  child: Text("Primary w Icon"),
                   onPressed: () {},
-                  leading: Icon(Icons.activity),
+                  leading: const Icon(Icons.activity),
+                  child: Text("Primary w Icon"),
                 )
               ],
             )
           ].map((e) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: e,
               ))
         ],
