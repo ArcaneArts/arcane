@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:pylon/pylon.dart';
 
 class Arcane {
   static ArcaneAppState? _app;
@@ -153,8 +152,7 @@ class ArcaneAppState extends State<ArcaneApp> {
   bool get usesRouter =>
       widget.routerDelegate != null || widget.routerConfig != null;
 
-  AbstractArcaneTheme get currentTheme =>
-      widget.theme ?? AbstractArcaneTheme.defaultArcaneTheme;
+  AbstractArcaneTheme get currentTheme => _theme;
 
   @override
   Widget build(BuildContext context) => usesRouter

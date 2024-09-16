@@ -1,3 +1,6 @@
+## 2.1.4
+* Theme Fixes
+
 ## 2.1.1
 * Theme Fixes
 
