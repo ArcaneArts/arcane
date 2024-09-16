@@ -1,6 +1,6 @@
+import 'package:arcane/arcane.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:arcane/arcane.dart';
 
 class DesktopEditableTextContextMenu extends StatelessWidget {
   final BuildContext anchorContext;
@@ -408,9 +408,11 @@ class ContextMenu extends StatefulWidget {
   final List<MenuItem> items;
   final HitTestBehavior behavior;
   final Axis direction;
+  final bool enabled;
 
   const ContextMenu({
     super.key,
+    this.enabled = true,
     required this.child,
     required this.items,
     this.behavior = HitTestBehavior.translucent,
@@ -448,6 +450,10 @@ class _ContextMenuState extends State<ContextMenu> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.enabled) {
+      return widget.child;
+    }
+
     final platform = Theme.of(context).platform;
     final bool enableLongPress = platform == TargetPlatform.iOS ||
         platform == TargetPlatform.android ||
