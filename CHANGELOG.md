@@ -1,3 +1,7 @@
+## 2.1.6
+* Improved List Tiles
+* Docs
+
 ## 2.1.4
 * Theme Fixes
 

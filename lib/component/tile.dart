@@ -157,11 +157,16 @@ class Tile extends StatelessWidget {
     this.onPressed,
     this.knownIconSize = 20,
     this.contentPadding =
-        const EdgeInsets.symmetric(vertical: 4, horizontal: 18),
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
     this.leadingPadding = const EdgeInsets.only(right: 10, top: 4),
     this.trailingPadding = const EdgeInsets.only(left: 10, top: 4),
     this.sliver = false,
   });
+
+  Widget get styledSubtitle =>
+      subtitle is Text ? subtitle!.small().muted() : subtitle!;
+
+  Widget get styledTitle => title is Text ? title!.medium() : title!;
 
   Widget buildTile(BuildContext context) => Padding(
       padding: contentPadding,
@@ -177,16 +182,8 @@ class Tile extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (title != null)
-                DefaultTextStyle(
-                    style: Theme.of(context).typography.medium.copyWith(
-                        color: Theme.of(context).colorScheme.foreground),
-                    child: title!),
-              if (subtitle != null)
-                DefaultTextStyle(
-                    style: Theme.of(context).typography.small.copyWith(
-                        color: Theme.of(context).colorScheme.foreground),
-                    child: subtitle!),
+              if (title != null) styledTitle,
+              if (subtitle != null) styledSubtitle,
             ],
           )),
           if (trailing != null)

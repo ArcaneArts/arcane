@@ -106,8 +106,7 @@ class ExampleIcons extends StatelessWidget {
                 MapEntry<String, IconData> entry =
                     _icons.entries.elementAt(index);
                 return Tooltip(
-                    tooltip: Text(entry.key),
-                    child: Icon(entry.value));
+                    tooltip: Text(entry.key), child: Icon(entry.value));
               }),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 50)),
@@ -298,7 +297,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: const Text("L"),
+                            leading: const Icon(Icons.plus),
                           ))))),
           BarSection(
               headerText: "Header 2",
@@ -308,7 +307,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: const Text("L"),
+                            leading: const Icon(Icons.plus),
                           ))))),
           BarSection(
               headerText: "Header 3",
@@ -318,7 +317,7 @@ class ExampleSheet extends StatelessWidget {
                       (i) => Tile(
                             title: Text("Tile $i"),
                             subtitle: Text("Subtitle $i"),
-                            leading: const Text("L"),
+                            leading: const Icon(Icons.plus),
                           )))))
         ],
       );
@@ -376,7 +375,7 @@ class ExampleTiles extends StatelessWidget {
   const ExampleTiles({super.key});
 
   @override
-  Widget build(BuildContext context) => const Screen(
+  Widget build(BuildContext context) => Screen(
         header: Bar(
           titleText: "Tiles",
         ),
@@ -385,8 +384,8 @@ class ExampleTiles extends StatelessWidget {
             title: Text("Sliver Tile"),
             subtitle: Text(
                 "If you scroll down you will see that this sliver tile title / icon / trailing will act as a floating header while overtop of this description text. Basically \n\n\n This is still the description box."),
-            leading: Text("L"),
-            trailing: Text("T"),
+            leading: Icon(Icons.plus),
+            trailing: Icon(Icons.x),
             sliver: true,
           )
         ],
@@ -394,40 +393,41 @@ class ExampleTiles extends StatelessWidget {
           Tile(
             title: Text("Title"),
             subtitle: Text("Subtitle"),
-            leading: Text("L"),
-            trailing: Text("T"),
+            leading: Icon(Icons.plus),
+            trailing: Icon(Icons.x),
+            onPressed: () => print("Tile Pressed"),
           ),
           Tile(
             title: Text("Title"),
-            leading: Text("L"),
-            trailing: Text("T"),
+            leading: Icon(Icons.plus),
+            trailing: Icon(Icons.x),
           ),
           Tile(
-            leading: Text("L"),
+            leading: Icon(Icons.plus),
             title: Text("Title"),
           ),
           Tile(
-            leading: Text("L"),
+            leading: Icon(Icons.plus),
             subtitle: Text("Subtitle Only"),
           ),
-          CheckboxTile(
+          SwitchTile(
             title: Text("Checkbox Tile"),
-            leading: Text("L"),
+            leading: Icon(Icons.plus),
             subtitle: Text("Subtitle"),
             value: true,
           ),
           CheckboxTile(
             title: Text("Checkbox Tile"),
-            leading: Text("L"),
-            trailing: Text("T"),
+            leading: Icon(Icons.plus),
+            trailing: Icon(Icons.x),
             subtitle: Text("But with a trailing widget"),
             value: true,
           ),
           CheckboxTile(
             title: Text("Leading Checkbox Tile"),
-            leading: Text("L"),
+            leading: Icon(Icons.plus),
             checkPosition: TileWidgetPosition.leading,
-            trailing: Text("T"),
+            trailing: Icon(Icons.x),
             subtitle: Text("But with a leading widget"),
             value: true,
           ),
