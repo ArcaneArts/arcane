@@ -1,3 +1,6 @@
+## 2.1.7
+* Popup menu theme fixes
+
 ## 2.1.6
 * Improved List Tiles
 * Docs
