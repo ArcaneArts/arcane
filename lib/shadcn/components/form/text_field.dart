@@ -1,8 +1,7 @@
+import 'package:arcane/arcane.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_snap/material.dart' as material;
-
-import 'package:arcane/arcane.dart';
 
 // just wrap around the material.TextField widget
 class TextField extends StatefulWidget {
@@ -41,6 +40,7 @@ class TextField extends StatefulWidget {
   final bool? isCollapsed;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final bool autofocus;
 
   const TextField({
     super.key,
@@ -52,6 +52,7 @@ class TextField extends StatefulWidget {
     this.filled = false,
     this.placeholder,
     this.border = true,
+    this.autofocus = false,
     this.leading,
     this.trailing,
     this.padding,
@@ -107,6 +108,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChanged);
     _controller.addListener(_onValueChanged);
+    _focusNode.requestFocus();
   }
 
   @override

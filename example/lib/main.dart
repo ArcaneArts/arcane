@@ -85,12 +85,72 @@ class _HomeState extends State<Home> {
             subtitle:
                 const Text("Quick Icons forwarded from Bootstrap & Phosphor"),
             onPressed: () => Arcane.push(context, const ExampleIcons()),
+          ),
+          Tile(
+            leading: const Icon(Icons.table),
+            title: const Text("Nav Screen"),
+            subtitle: const Text("Rails & Bottom Bars"),
+            onPressed: () => Arcane.push(context, const ExampleNavTabs()),
           )
         ],
       );
 }
 
 Map<String, IconData> _icons = {};
+
+class ExampleNavTabs extends StatefulWidget {
+  const ExampleNavTabs({super.key});
+
+  @override
+  State<ExampleNavTabs> createState() => _ExampleNavTabsState();
+}
+
+class _ExampleNavTabsState extends State<ExampleNavTabs> {
+  int index = 0;
+
+  @override
+  Widget build(BuildContext context) => NavScreen(
+          selectedIndex: index,
+          onTabChanged: (index) => setState(() => this.index = index),
+          tabs: [
+            NavTab(
+                header: Bar(
+                  titleText: "Home",
+                ),
+                icon: Icons.house,
+                selectedIcon: Icons.house_fill,
+                label: "Home",
+                slivers: [
+                  SliverFillRemaining(
+                    child: Text("Derp"),
+                  )
+                ]),
+            NavTab(
+                header: Bar(
+                  titleText: "Activity",
+                ),
+                icon: Icons.activity,
+                selectedIcon: Icons.activity_fill,
+                label: "Activity",
+                slivers: [
+                  SliverFillRemaining(
+                    child: Text("Derp"),
+                  )
+                ]),
+            NavTab(
+                header: Bar(
+                  titleText: "Contacts",
+                ),
+                icon: Icons.address_book,
+                selectedIcon: Icons.address_book_fill,
+                label: "Contacts",
+                slivers: [
+                  SliverFillRemaining(
+                    child: Text("Derp"),
+                  )
+                ])
+          ]);
+}
 
 class ExampleIcons extends StatelessWidget {
   const ExampleIcons({super.key});

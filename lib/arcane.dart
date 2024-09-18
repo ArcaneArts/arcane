@@ -186,6 +186,7 @@ export 'component/adaptive.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
 export 'component/bottom_navigation_bar.dart';
+export 'component/card_carousel.dart';
 export 'component/checkbox.dart';
 export 'component/dialog.dart';
 export 'component/glass.dart';

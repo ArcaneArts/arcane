@@ -22,10 +22,12 @@ class RadioCards<T> extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: items
-              .map((item) => RadioCard(
+              .map((item) => PaddingHorizontal(
+                  padding: 4,
+                  child: RadioCard(
                     value: item,
                     child: builder(item),
-                  ))
+                  )))
               .toList(),
         ),
       );

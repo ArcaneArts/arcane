@@ -1,6 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:pylon/pylon.dart';
-import 'package:toxic/extensions/iterable.dart';
 
 class IconTab extends StatelessWidget {
   final IconData icon;
@@ -20,16 +18,10 @@ class IconTab extends StatelessWidget {
     bool selected =
         context.pylonOr<_IsSelectedBottomIndex>()?.selected ?? false;
 
-    return TextButton(
+    return IconButton(
       onPressed: onPressed,
-      enabled: true,
-      density: ButtonDensity((padding) => padding.copyWith(
-            bottom: padding.bottom * 0.5,
-            top: padding.top * 0.5,
-            left: padding.left * 0.5,
-            right: padding.right * 0.5,
-          )),
-      child: Icon(selected ? (selectedIcon ?? icon) : icon,
+      density: ButtonDensity((padding) => padding.copyWith()),
+      icon: Icon(selected ? (selectedIcon ?? icon) : icon,
           color: selected ? Theme.of(context).colorScheme.primary : null),
     );
   }
@@ -56,7 +48,7 @@ class ButtonBar extends StatelessWidget {
               .mapIndexed((button, index) => Pylon<_IsSelectedBottomIndex>(
                     value: _IsSelectedBottomIndex(index == selectedIndex),
                     builder: (context) => button,
-                    key: ValueKey("$index.${button.icon}"),
+                    key: ValueKey("$index.${button.icon}.$index"),
                   ))
               .toList(),
         ),

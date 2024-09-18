@@ -49,6 +49,53 @@ class Bar extends StatelessWidget {
       this.useGlass = true,
       this.useSafeArea = true});
 
+  Bar copyWith({
+    Key? key,
+    List<Widget>? trailing,
+    List<Widget>? leading,
+    Widget? child,
+    Widget? title,
+    String? titleText,
+    String? headerText,
+    String? subtitleText,
+    Widget? header,
+    Widget? subtitle,
+    bool? trailingExpanded,
+    Alignment? alignment,
+    Color? backgroundColor,
+    double? leadingGap,
+    double? trailingGap,
+    EdgeInsetsGeometry? padding,
+    double? height,
+    bool? useSafeArea,
+    bool? useGlass,
+    BarBackButtonMode? backButton,
+    bool? ignoreContextSignals,
+  }) =>
+      Bar(
+        key: key ?? this.key,
+        trailing: trailing ?? this.trailing,
+        leading: leading ?? this.leading,
+        title: title ?? this.title,
+        titleText: titleText ?? this.titleText,
+        headerText: headerText ?? this.headerText,
+        subtitleText: subtitleText ?? this.subtitleText,
+        header: header ?? this.header,
+        subtitle: subtitle ?? this.subtitle,
+        trailingExpanded: trailingExpanded ?? this.trailingExpanded,
+        alignment: alignment ?? this.alignment,
+        padding: padding ?? this.padding,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        leadingGap: leadingGap ?? this.leadingGap,
+        trailingGap: trailingGap ?? this.trailingGap,
+        height: height ?? this.height,
+        useSafeArea: useSafeArea ?? this.useSafeArea,
+        useGlass: useGlass ?? this.useGlass,
+        backButton: backButton ?? this.backButton,
+        ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
+        child: child ?? this.child,
+      );
+
   @override
   Widget build(BuildContext context) => Stack(
         children: [

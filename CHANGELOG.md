@@ -1,3 +1,18 @@
+## 2.1.12
+* Radio Card fixes padding & border color
+
+## 2.1.11
+* Fixes
+
+## 2.1.10
+* TextFields now have autofocus
+
+## 2.1.9
+* Cards now have onPressed
+
+## 2.1.8
+* Card Carousel
+
 ## 2.1.7
 * Popup menu theme fixes
 

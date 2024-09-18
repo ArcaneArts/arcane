@@ -231,7 +231,7 @@ class _RadioCardState<T> extends State<RadioCard<T>> with FormValueSupplier {
             child: Card(
               borderColor: groupData?.selectedItem == widget.value
                   ? theme.colorScheme.primary
-                  : theme.colorScheme.muted,
+                  : null,
               borderWidth: groupData?.selectedItem == widget.value
                   ? 2 * theme.scaling
                   : 1 * theme.scaling,

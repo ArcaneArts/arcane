@@ -125,7 +125,10 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
         child: widget.child,
       ),
     );
-    if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
+    if (widget.surfaceBlur != null &&
+        widget.surfaceBlur! > 0 &&
+        (widget.surfaceOpacity ?? Theme.of(context).surfaceOpacity ?? 0.6) <
+            1) {
       childWidget = SurfaceBlur(
         surfaceBlur: widget.surfaceBlur!,
         borderRadius: subtractByBorder(

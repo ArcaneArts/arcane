@@ -12,10 +12,12 @@ class Card extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final double? surfaceOpacity;
   final double? surfaceBlur;
+  final VoidCallback? onPressed;
 
   const Card({
     super.key,
     required this.child,
+    this.onPressed,
     this.padding,
     this.filled = false,
     this.fillColor,
@@ -32,7 +34,7 @@ class Card extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
-    return OutlinedContainer(
+    Widget c = OutlinedContainer(
       clipBehavior: clipBehavior,
       borderRadius: borderRadius,
       borderWidth: borderWidth,
@@ -42,8 +44,8 @@ class Card extends StatelessWidget {
           : theme.colorScheme.card,
       boxShadow: boxShadow,
       padding: padding ?? (EdgeInsets.all(16 * scaling)),
-      surfaceOpacity: surfaceOpacity,
-      surfaceBlur: surfaceBlur,
+      surfaceOpacity: onPressed != null ? 0 : surfaceOpacity,
+      surfaceBlur: onPressed != null ? 0 : surfaceBlur,
       child: mergeAnimatedTextStyle(
         child: child,
         duration: kDefaultDuration,
@@ -52,6 +54,16 @@ class Card extends StatelessWidget {
         ),
       ),
     );
+
+    if (onPressed != null) {
+      c = GhostButton(
+        density: ButtonDensity.compact,
+        onPressed: onPressed,
+        child: c,
+      );
+    }
+
+    return c;
   }
 }
 
