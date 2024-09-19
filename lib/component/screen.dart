@@ -2,9 +2,10 @@ import 'package:arcane/arcane.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rxdart/rxdart.dart';
 
+int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
+
 class Screen extends StatefulWidget {
-  final List<Widget> children;
-  final List<Widget> slivers;
+  final Widget? sliver;
   final Widget? header;
   final Widget? footer;
   final Widget? background;
@@ -23,6 +24,7 @@ class Screen extends StatefulWidget {
   const Screen({
     super.key,
     this.gutter = true,
+    this.sliver,
     this.fab,
     this.background,
     this.minContentWidth = 500,
@@ -30,8 +32,6 @@ class Screen extends StatefulWidget {
     this.scrollController,
     this.footerHeight = 52,
     this.fill,
-    this.slivers = const [],
-    this.children = const [],
     this.header,
     this.footer,
     this.loadingProgress,
@@ -39,6 +39,255 @@ class Screen extends StatefulWidget {
     this.showLoadingSparks = false,
     this.footerPaddingBottom = true,
   });
+
+  Screen.loading({
+    Key? key,
+  }) : this.basic(
+            key: key,
+            child: const Center(
+              child: CircularProgressIndicator(
+                size: 100,
+              ),
+            ),
+            title: "");
+
+  Screen.list({
+    Key? key,
+    required List<Widget> children,
+    required String title,
+    List<Widget> actions = const [],
+    Widget? fab,
+    Widget? background,
+    bool gutter = true,
+    double? loadingProgress,
+    bool loadingProgressIndeterminate = false,
+    bool showLoadingSparks = false,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    SemanticIndexCallback semanticIndexCallback =
+        _kDefaultSemanticIndexCallback,
+    int semanticIndexOffset = 0,
+  }) : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          sliver: SListView(
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: semanticIndexCallback,
+            semanticIndexOffset: semanticIndexOffset,
+            children: children,
+          ),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
+
+  Screen.listBuilder({
+    Key? key,
+    required String title,
+    List<Widget> actions = const [],
+    Widget? fab,
+    Widget? background,
+    bool gutter = true,
+    int? childCount,
+    required NullableIndexedWidgetBuilder builder,
+    double? loadingProgress,
+    bool loadingProgressIndeterminate = false,
+    bool showLoadingSparks = false,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    SemanticIndexCallback semanticIndexCallback =
+        _kDefaultSemanticIndexCallback,
+    int semanticIndexOffset = 0,
+  }) : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          sliver: SListView.builder(
+            builder: builder,
+            childCount: childCount,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: semanticIndexCallback,
+            semanticIndexOffset: semanticIndexOffset,
+          ),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
+
+  Screen.grid({
+    Key? key,
+    required List<Widget> children,
+    required String title,
+    List<Widget> actions = const [],
+    Widget? fab,
+    Widget? background,
+    bool gutter = true,
+    double? loadingProgress,
+    bool loadingProgressIndeterminate = false,
+    bool showLoadingSparks = false,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    SemanticIndexCallback semanticIndexCallback =
+        _kDefaultSemanticIndexCallback,
+    int semanticIndexOffset = 0,
+    SliverGridDelegate? gridDelegate,
+    int? crossAxisCount,
+    double? maxCrossAxisExtent,
+    double mainAxisSpacing = 0.0,
+    double crossAxisSpacing = 0.0,
+    double childAspectRatio = 1.0,
+  }) : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          sliver: SGridView(
+            gridDelegate: gridDelegate,
+            crossAxisCount: crossAxisCount,
+            maxCrossAxisExtent: maxCrossAxisExtent,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: semanticIndexCallback,
+            semanticIndexOffset: semanticIndexOffset,
+            children: children,
+          ),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
+
+  Screen.gridBuilder(
+      {Key? key,
+      required String title,
+      int? childCount,
+      required NullableIndexedWidgetBuilder builder,
+      List<Widget> actions = const [],
+      Widget? fab,
+      Widget? background,
+      bool gutter = true,
+      double? loadingProgress,
+      bool loadingProgressIndeterminate = false,
+      bool showLoadingSparks = false,
+      bool addAutomaticKeepAlives = true,
+      bool addRepaintBoundaries = true,
+      bool addSemanticIndexes = true,
+      SemanticIndexCallback semanticIndexCallback =
+          _kDefaultSemanticIndexCallback,
+      int semanticIndexOffset = 0,
+      SliverGridDelegate? gridDelegate,
+      int? crossAxisCount,
+      double? maxCrossAxisExtent,
+      double mainAxisSpacing = 0.0,
+      double crossAxisSpacing = 0.0,
+      double childAspectRatio = 1.0,
+      ChildIndexGetter? findChildIndexCallback})
+      : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          sliver: SGridView.builder(
+            gridDelegate: gridDelegate,
+            crossAxisCount: crossAxisCount,
+            maxCrossAxisExtent: maxCrossAxisExtent,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: semanticIndexCallback,
+            semanticIndexOffset: semanticIndexOffset,
+            builder: builder,
+            findChildIndexCallback: findChildIndexCallback,
+            childCount: childCount,
+          ),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
+
+  Screen.custom({
+    Key? key,
+    required List<Widget> slivers,
+    required String title,
+    List<Widget> actions = const [],
+    Widget? fab,
+    Widget? background,
+    bool gutter = true,
+    double? loadingProgress,
+    bool loadingProgressIndeterminate = false,
+    bool showLoadingSparks = false,
+  }) : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          sliver: MultiSliver(children: slivers),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
+
+  Screen.basic({
+    Key? key,
+    required Widget child,
+    required String title,
+    List<Widget> actions = const [],
+    Widget? fab,
+    Widget? background,
+    bool gutter = true,
+    double? loadingProgress,
+    bool loadingProgressIndeterminate = false,
+    bool showLoadingSparks = false,
+  }) : this(
+          key: key,
+          header: Bar(
+            titleText: title,
+            trailing: actions,
+          ),
+          fill: child,
+          fab: fab,
+          background: background,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+        );
 
   @override
   State<Screen> createState() => _ScreenState();
@@ -127,15 +376,7 @@ class _ScreenState extends State<Screen> {
     }
 
     List<Widget> slv = [
-      ...widget.slivers,
-      if (widget.children.length == 1)
-        SliverFillRemainingBoxAdapter(
-          child: widget.children.first,
-        ),
-      if (widget.children.length > 1)
-        SliverList(
-          delegate: SliverChildListDelegate(widget.children),
-        ),
+      if (widget.sliver != null) widget.sliver!,
       if (widget.footer != null && widget.footerPaddingBottom)
         SliverToBoxAdapter(
           child: Container(
@@ -215,7 +456,7 @@ class NavTab {
   final IconData icon;
   final IconData selectedIcon;
   final String label;
-  final List<Widget>? slivers;
+  final Widget? sliver;
   final Bar header;
   final Widget? fill;
   final Widget? fab;
@@ -226,7 +467,7 @@ class NavTab {
     required this.selectedIcon,
     required this.label,
     this.fab,
-    this.slivers = const [],
+    this.sliver,
     this.fill,
     this.gutter = true,
   });
@@ -397,7 +638,8 @@ class _NavScreenState extends State<NavScreen> {
       );
     } else {
       List<Widget> slv = [
-        ...widget.tabs[widget.selectedIndex].slivers!,
+        if (widget.tabs[widget.selectedIndex].sliver != null)
+          widget.tabs[widget.selectedIndex].sliver!,
         if (!rail)
           SliverToBoxAdapter(
             child: Container(

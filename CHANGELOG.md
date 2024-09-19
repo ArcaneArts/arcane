@@ -1,3 +1,16 @@
+## 2.2.0
+* BREAKING: Screen.slivers changed to Screen.sliver (use Screen.sliver: MultiSliver(children: []))
+* BREAKING: Screen.children has been removed (use Screen.fill: ListView()/Row())
+* BREAKING: NavScreen.slivers changed to NavScreen.sliver (use NavScreen.sliver: MultiSliver(children: []))
+* BREAKING: NavScreen.children has been removed (use NavScreen.fill: ListView()/Row())
+* Added Screen.basic() for a more scaffold-like experience
+* Added Screen.list() for a more ListView-like experience
+* Added Screen.listBuilder() for a more ListView.builder-like experience
+* Added Screen.grid() for a more GridView-like experience
+* Added Screen.gridBuilder() for a more GridView.builder-like experience
+* Added Screen.custom() for a more custom sliver-like experience
+* Added Screen.loading() for an easy loader experience
+
 ## 2.1.16
 * Added sliver views SListView & SGridView to simplify Sliver Lists & Grids
 
