@@ -170,29 +170,43 @@ class Tile extends StatelessWidget {
 
   Widget buildTile(BuildContext context) => Padding(
       padding: contentPadding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (leading != null)
-            Padding(
-              padding: leadingPadding,
-              child: leading!,
-            ),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (title != null) styledTitle,
-              if (subtitle != null) styledSubtitle,
-            ],
-          )),
-          if (trailing != null)
-            Padding(
-              padding: leadingPadding,
-              child: trailing!,
+      child: true
+          ? Row(
+              children: [
+                Expanded(
+                    child: Basic(
+                  leadingAlignment: Alignment.center,
+                  trailingAlignment: Alignment.center,
+                  leading: leading,
+                  trailing: trailing,
+                  title: title,
+                  subtitle: subtitle,
+                ))
+              ],
             )
-        ],
-      ));
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (leading != null)
+                  Padding(
+                    padding: leadingPadding,
+                    child: leading!,
+                  ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (title != null) styledTitle,
+                    if (subtitle != null) styledSubtitle,
+                  ],
+                )),
+                if (trailing != null)
+                  Padding(
+                    padding: leadingPadding,
+                    child: trailing!,
+                  )
+              ],
+            ));
 
   Widget buildSliver(BuildContext context) => GlassSection(
       header: Padding(

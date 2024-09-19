@@ -1,3 +1,17 @@
+## 2.1.16
+* Added sliver views SListView & SGridView to simplify Sliver Lists & Grids
+
+## 2.1.15
+* Floating Action Buttons
+* Fixed an issue with nav screens with filled bottom bars showing in rail views
+* Fixed List tiles
+
+## 2.1.14
+* Allow gutters to be disabled on scaffolds and nav tabs
+
+## 2.1.13
+* Screens & Nav Screens support fill property for regular children
+
 ## 2.1.12
 * Radio Card fixes padding & border color
 

@@ -91,12 +91,27 @@ class _HomeState extends State<Home> {
             title: const Text("Nav Screen"),
             subtitle: const Text("Rails & Bottom Bars"),
             onPressed: () => Arcane.push(context, const ExampleNavTabs()),
+          ),
+          Tile(
+            leading: const Icon(Icons.list),
+            title: const Text("Sliver Things"),
+            subtitle: const Text("Less shit slivers"),
+            onPressed: () => Arcane.push(context, const ExampleSliverThings()),
           )
         ],
       );
 }
 
 Map<String, IconData> _icons = {};
+
+class ExampleSliverThings extends StatelessWidget {
+  const ExampleSliverThings({super.key});
+
+  @override
+  Widget build(BuildContext context) => Screen(
+        slivers: [],
+      );
+}
 
 class ExampleNavTabs extends StatefulWidget {
   const ExampleNavTabs({super.key});
@@ -120,6 +135,11 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                 icon: Icons.house,
                 selectedIcon: Icons.house_fill,
                 label: "Home",
+                fab: Fab(
+                  leading: Icon(Icons.plus),
+                  child: Text("Note"),
+                  onPressed: () {},
+                ),
                 slivers: [
                   SliverFillRemaining(
                     child: Text("Derp"),
@@ -129,15 +149,24 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                 header: Bar(
                   titleText: "Activity",
                 ),
+                fab: Fab(
+                  child: Text("I am Fab"),
+                  onPressed: () {},
+                ),
                 icon: Icons.activity,
                 selectedIcon: Icons.activity_fill,
                 label: "Activity",
-                slivers: [
-                  SliverFillRemaining(
-                    child: Text("Derp"),
-                  )
-                ]),
+                fill: Container(
+                  color: Colors.red,
+                  child: Center(
+                    child: Text("Im a fill"),
+                  ),
+                )),
             NavTab(
+                fab: Fab(
+                  child: Icon(Icons.plus),
+                  onPressed: () {},
+                ),
                 header: Bar(
                   titleText: "Contacts",
                 ),
@@ -581,125 +610,138 @@ class ExampleButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Screen(
+        footer: Bar(
+          backButton: BarBackButtonMode.never,
+          titleText: "Test",
+        ),
+        fab: Text("I am fab"),
         header: const Bar(
           titleText: "Buttons",
         ),
-        children: [
-          ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        slivers: [
+          SliverFillRemaining(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Gap(16),
-                GhostButton(
-                  onPressed: () {},
-                  density: ButtonDensity.icon,
-                  child: const Icon(Icons.activity),
-                ),
-                const Gap(16),
-                GhostButton(
-                  child: const Text("Ghost Button"),
-                  onPressed: () {},
-                ),
-                const Gap(16),
-                GhostButton(
-                  onPressed: () {},
-                  leading: const Icon(Icons.activity),
-                  child: Text("Ghost w Icon"),
-                )
+                ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(16),
+                      GhostButton(
+                        onPressed: () {},
+                        density: ButtonDensity.icon,
+                        child: const Icon(Icons.activity),
+                      ),
+                      const Gap(16),
+                      GhostButton(
+                        child: const Text("Ghost Button"),
+                        onPressed: () {},
+                      ),
+                      const Gap(16),
+                      GhostButton(
+                        onPressed: () {},
+                        leading: const Icon(Icons.activity),
+                        child: Text("Ghost w Icon"),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(16),
+                      TextButton(
+                        onPressed: () {},
+                        density: ButtonDensity.icon,
+                        child: Icon(Icons.activity),
+                      ),
+                      const Gap(16),
+                      TextButton(
+                        child: const Text("Text Button"),
+                        onPressed: () {},
+                      ),
+                      const Gap(16),
+                      TextButton(
+                        onPressed: () {},
+                        leading: const Icon(Icons.activity),
+                        child: Text("Text w Icon"),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(16),
+                      OutlineButton(
+                        onPressed: () {},
+                        density: ButtonDensity.icon,
+                        child: Icon(Icons.activity),
+                      ),
+                      const Gap(16),
+                      OutlineButton(
+                        child: const Text("Outline Button"),
+                        onPressed: () {},
+                      ),
+                      const Gap(16),
+                      OutlineButton(
+                        onPressed: () {},
+                        leading: const Icon(Icons.activity),
+                        child: Text("Outline w Icon"),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(16),
+                      SecondaryButton(
+                        onPressed: () {},
+                        density: ButtonDensity.icon,
+                        child: Icon(Icons.activity),
+                      ),
+                      const Gap(16),
+                      SecondaryButton(
+                        child: const Text("Secondary Button"),
+                        onPressed: () {},
+                      ),
+                      const Gap(16),
+                      SecondaryButton(
+                        onPressed: () {},
+                        leading: const Icon(Icons.activity),
+                        child: Text("Secondary w Icon"),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(16),
+                      PrimaryButton(
+                        onPressed: () {},
+                        density: ButtonDensity.icon,
+                        child: Icon(Icons.activity),
+                      ),
+                      const Gap(16),
+                      PrimaryButton(
+                        child: const Text("Primary Button"),
+                        onPressed: () {},
+                      ),
+                      const Gap(16),
+                      PrimaryButton(
+                        onPressed: () {},
+                        leading: const Icon(Icons.activity),
+                        child: Text("Primary w Icon"),
+                      )
+                    ],
+                  )
+                ].map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: e,
+                    ))
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Gap(16),
-                TextButton(
-                  onPressed: () {},
-                  density: ButtonDensity.icon,
-                  child: Icon(Icons.activity),
-                ),
-                const Gap(16),
-                TextButton(
-                  child: const Text("Text Button"),
-                  onPressed: () {},
-                ),
-                const Gap(16),
-                TextButton(
-                  onPressed: () {},
-                  leading: const Icon(Icons.activity),
-                  child: Text("Text w Icon"),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Gap(16),
-                OutlineButton(
-                  onPressed: () {},
-                  density: ButtonDensity.icon,
-                  child: Icon(Icons.activity),
-                ),
-                const Gap(16),
-                OutlineButton(
-                  child: const Text("Outline Button"),
-                  onPressed: () {},
-                ),
-                const Gap(16),
-                OutlineButton(
-                  onPressed: () {},
-                  leading: const Icon(Icons.activity),
-                  child: Text("Outline w Icon"),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Gap(16),
-                SecondaryButton(
-                  onPressed: () {},
-                  density: ButtonDensity.icon,
-                  child: Icon(Icons.activity),
-                ),
-                const Gap(16),
-                SecondaryButton(
-                  child: const Text("Secondary Button"),
-                  onPressed: () {},
-                ),
-                const Gap(16),
-                SecondaryButton(
-                  onPressed: () {},
-                  leading: const Icon(Icons.activity),
-                  child: Text("Secondary w Icon"),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Gap(16),
-                PrimaryButton(
-                  onPressed: () {},
-                  density: ButtonDensity.icon,
-                  child: Icon(Icons.activity),
-                ),
-                const Gap(16),
-                PrimaryButton(
-                  child: const Text("Primary Button"),
-                  onPressed: () {},
-                ),
-                const Gap(16),
-                PrimaryButton(
-                  onPressed: () {},
-                  leading: const Icon(Icons.activity),
-                  child: Text("Primary w Icon"),
-                )
-              ],
-            )
-          ].map((e) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: e,
-              ))
+          )
         ],
       );
 }

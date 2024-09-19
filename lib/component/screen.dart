@@ -16,14 +16,20 @@ class Screen extends StatefulWidget {
   final ScrollController? scrollController;
   final double minContentFraction;
   final double minContentWidth;
+  final Widget? fill;
+  final bool gutter;
+  final Widget? fab;
 
   const Screen({
     super.key,
+    this.gutter = true,
+    this.fab,
     this.background,
     this.minContentWidth = 500,
     this.minContentFraction = 0.75,
     this.scrollController,
     this.footerHeight = 52,
+    this.fill,
     this.slivers = const [],
     this.children = const [],
     this.header,
@@ -91,6 +97,35 @@ class _ScreenState extends State<Screen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.fill != null) {
+      return Scaffold(
+        loadingProgress: widget.loadingProgress,
+        loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
+        floatingFooter: false,
+        floatingHeader: false,
+        headers: [
+          if (widget.header != null)
+            GlassStopper(builder: (context) => widget.header!, stopping: true)
+        ],
+        footers: [
+          if (widget.footer != null)
+            GlassStopper(builder: (context) => widget.footer!, stopping: true)
+        ],
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (widget.background != null) widget.background!,
+            widget.fill!,
+            if (widget.fab != null)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: widget.fab,
+              )
+          ],
+        ),
+      );
+    }
+
     List<Widget> slv = [
       ...widget.slivers,
       if (widget.children.length == 1)
@@ -111,7 +146,7 @@ class _ScreenState extends State<Screen> {
     double width = MediaQuery.of(context).size.width;
     double gutterWidth = 0;
 
-    if (width > widget.minContentWidth) {
+    if (widget.gutter && width > widget.minContentWidth) {
       gutterWidth = (width * ((1 - widget.minContentFraction) / 2)) - 25;
     }
 
@@ -159,7 +194,16 @@ class _ScreenState extends State<Screen> {
               else
                 ...slv
             ],
-          )
+          ),
+          if (widget.fab != null)
+            PaddingBottom(
+                padding: widget.footer != null && widget.fill == null
+                    ? widget.footerHeight
+                    : 0,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: widget.fab,
+                ))
         ],
       ),
     );
@@ -167,26 +211,30 @@ class _ScreenState extends State<Screen> {
 }
 
 class NavTab {
+  final bool gutter;
   final IconData icon;
   final IconData selectedIcon;
   final String label;
-  final List<Widget> slivers;
+  final List<Widget>? slivers;
   final Bar header;
+  final Widget? fill;
+  final Widget? fab;
 
   const NavTab({
     required this.header,
     required this.icon,
     required this.selectedIcon,
     required this.label,
-    required this.slivers,
+    this.fab,
+    this.slivers = const [],
+    this.fill,
+    this.gutter = true,
   });
 }
 
 class NavScreen extends StatefulWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
-  final Widget? header;
-  final Widget? footer;
   final Widget? background;
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
@@ -207,9 +255,7 @@ class NavScreen extends StatefulWidget {
     this.minContentWidth = 500,
     this.minContentFraction = 0.75,
     this.scrollController,
-    this.footerHeight = 52,
-    this.header,
-    this.footer,
+    this.footerHeight = 60,
     this.loadingProgress,
     this.loadingProgressIndeterminate = false,
     this.showLoadingSparks = false,
@@ -277,10 +323,7 @@ class _NavScreenState extends State<NavScreen> {
             icon: e.icon,
             selectedIcon: e.selectedIcon,
             label: e.label,
-            onPressed: () => setState(() {
-              widget.onTabChanged(i);
-              print("Changed?");
-            }),
+            onPressed: () => setState(() => widget.onTabChanged(i)),
           ))
     ]);
   }
@@ -319,96 +362,145 @@ class _NavScreenState extends State<NavScreen> {
           })
         ],
       ),
-    ).padLeft(8);
+    ).padOnly(left: 8, right: 8);
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     bool rail = width > widget.minContentWidth;
-    List<Widget> slv = [
-      ...widget.tabs[widget.selectedIndex].slivers,
-      if (!rail)
-        SliverToBoxAdapter(
-          child: Container(
-            height: widget.footerHeight,
-          ),
-        )
-    ];
+
     double gutterWidth = 0;
 
-    if (width > widget.minContentWidth) {
+    if (widget.tabs[widget.selectedIndex].gutter &&
+        width > widget.minContentWidth) {
       gutterWidth = (width * ((1 - widget.minContentFraction) / 2)) - 25;
     }
 
-    Widget list = Stack(
-      fit: StackFit.expand,
-      children: [
-        if (widget.background != null) widget.background!,
-        CustomScrollView(
-          controller: getController(context),
-          slivers: [
-            SliverPinnedHeader(
-              child: headerBlur.unique.build((blurring) => GlassStopper(
+    Widget content;
+
+    if (widget.tabs[widget.selectedIndex].fill != null) {
+      content = Stack(
+        fit: StackFit.expand,
+        children: [
+          if (widget.background != null) widget.background!,
+          PaddingHorizontal(
+            padding: gutterWidth,
+            child: widget.tabs[widget.selectedIndex].fill!,
+          ),
+          if (widget.tabs[widget.selectedIndex].fab != null)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: widget.tabs[widget.selectedIndex].fab,
+            )
+        ],
+      );
+    } else {
+      List<Widget> slv = [
+        ...widget.tabs[widget.selectedIndex].slivers!,
+        if (!rail)
+          SliverToBoxAdapter(
+            child: Container(
+              height: widget.footerHeight,
+            ),
+          )
+      ];
+      Widget list = Stack(
+        fit: StackFit.expand,
+        children: [
+          if (widget.background != null) widget.background!,
+          CustomScrollView(
+            controller: getController(context),
+            slivers: [
+              SliverPinnedHeader(
+                child: headerBlur.unique.build((blurring) => GlassStopper(
+                      builder: (context) => KeyedSubtree(
+                        key: ValueKey("hblur.$blurring"),
+                        child: Pylon<AntiFlickerDirection>(
+                          value: AntiFlickerDirection.top,
+                          builder: (context) =>
+                              widget.tabs[widget.selectedIndex].header.copyWith(
+                                  backButton:
+                                      rail ? BarBackButtonMode.never : null,
+                                  height: 36),
+                        ),
+                      ),
+                      stopping: !blurring,
+                    )),
+              ),
+              if (gutterWidth > 0)
+                ...slv.map((e) => SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: gutterWidth),
+                    sliver: e))
+              else
+                ...slv
+            ],
+          ),
+          if (!rail)
+            Positioned.fill(
+                child: Align(
+              alignment: Alignment.bottomCenter,
+              child: footerBlur.unique.build((blurring) => GlassStopper(
                     builder: (context) => KeyedSubtree(
-                      key: ValueKey("hblur.$blurring"),
+                      key: ValueKey("fblur.$blurring"),
                       child: Pylon<AntiFlickerDirection>(
-                        value: AntiFlickerDirection.top,
-                        builder: (context) =>
-                            widget.tabs[widget.selectedIndex].header.copyWith(
-                                backButton:
-                                    rail ? BarBackButtonMode.never : null,
-                                height: 36),
+                        value: AntiFlickerDirection.bottom,
+                        builder: (context) => IntrinsicHeight(
+                          child: buildBottomBar(context),
+                        ),
                       ),
                     ),
                     stopping: !blurring,
                   )),
-            ),
-            if (gutterWidth > 0)
-              ...slv.map((e) => SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: gutterWidth),
-                  sliver: e))
-            else
-              ...slv
-          ],
-        ),
-        if (!rail)
-          Positioned.fill(
-              child: Align(
-            alignment: Alignment.bottomCenter,
-            child: footerBlur.unique.build((blurring) => GlassStopper(
-                  builder: (context) => KeyedSubtree(
-                    key: ValueKey("fblur.$blurring"),
-                    child: Pylon<AntiFlickerDirection>(
-                      value: AntiFlickerDirection.bottom,
-                      builder: (context) => IntrinsicHeight(
-                        child: buildBottomBar(context),
-                      ),
-                    ),
-                  ),
-                  stopping: !blurring,
-                )),
-          ))
+            )),
+          if (widget.tabs[widget.selectedIndex].fab != null)
+            PaddingBottom(
+                padding: !rail ? widget.footerHeight : 0,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: widget.tabs[widget.selectedIndex].fab,
+                ))
+        ],
+      );
+
+      content = list;
+    }
+
+    Widget c = Scaffold(
+      loadingProgress: widget.loadingProgress,
+      loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
+      floatingFooter: widget.tabs[widget.selectedIndex].fill == null,
+      floatingHeader: widget.tabs[widget.selectedIndex].fill == null,
+      footers: [
+        if (!rail && widget.tabs[widget.selectedIndex].fill != null)
+          GlassStopper(
+              builder: (context) => buildBottomBar(context), stopping: true)
       ],
+      headers: [
+        if (widget.tabs[widget.selectedIndex].fill != null)
+          GlassStopper(
+              builder: (context) => widget.tabs[widget.selectedIndex].header
+                  .copyWith(
+                      backButton: rail ? BarBackButtonMode.never : null,
+                      height: 36),
+              stopping: true)
+      ],
+      child: content,
     );
 
     return Scaffold(
-      loadingProgress: widget.loadingProgress,
-      loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
-      floatingFooter: true,
-      child: rail
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                buildRail(context),
-                Expanded(
-                  child: list,
-                )
-              ],
-            )
-          : list,
-    );
+        child: rail
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  buildRail(context),
+                  Expanded(
+                    child: c,
+                  )
+                ],
+              )
+            : c);
   }
 }
 
