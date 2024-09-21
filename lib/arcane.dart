@@ -140,6 +140,7 @@ export 'package:flutter/widgets.dart'
         AnimatedPositioned,
         AnimatedPhysicalModel,
         AnimatedSize;
+export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:padded/padded.dart';
 export 'package:phonecodes/phonecodes.dart' show Countries, Country;
 export 'package:pixel_snap/widgets.dart'
@@ -177,7 +178,8 @@ export 'package:pixel_snap/widgets.dart'
 export 'package:pylon/pylon.dart';
 export 'package:skeletonizer/skeletonizer.dart';
 export 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
-export 'package:sliver_tools/sliver_tools.dart';
+export 'package:sliver_tools/sliver_tools.dart' hide MultiSliver;
+export 'package:soft_edge_blur/soft_edge_blur.dart';
 export 'package:toxic/toxic.dart';
 export 'package:toxic_flutter/toxic_flutter.dart';
 

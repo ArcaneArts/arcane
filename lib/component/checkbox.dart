@@ -19,13 +19,13 @@ class ArcaneCheckbox extends StatefulWidget {
   final bool tristate;
 
   const ArcaneCheckbox({
-    Key? key,
+    super.key,
     required this.state,
     required this.onChanged,
     this.leading,
     this.trailing,
     this.tristate = false,
-  }) : super(key: key);
+  });
 
   @override
   _ArcaneCheckboxState createState() => _ArcaneCheckboxState();
@@ -128,8 +128,8 @@ class _ArcaneCheckboxState extends State<ArcaneCheckbox>
                         child: AnimatedValueBuilder(
                           value: 1.0,
                           initialValue: _shouldAnimate ? 0.0 : null,
-                          duration: Duration(milliseconds: 300),
-                          curve: IntervalDuration(
+                          duration: const Duration(milliseconds: 300),
+                          curve: const IntervalDuration(
                             start: Duration(milliseconds: 175),
                             duration: Duration(milliseconds: 300),
                           ),

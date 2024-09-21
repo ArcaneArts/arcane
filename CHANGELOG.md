@@ -1,3 +1,14 @@
+## 2.2.2
+* BREAKING NavScreens no longer support scroll controller customization
+* BREAKING: NavScreens no longer support selectedIndex or onIndexChanged as it is now managed in their state
+* NavScreens now function like an IndexedStack
+
+## 2.2.1
+* BREAKING: Screen constructors support header instead of title/actions
+* Pylon is now supported in popup menus
+* Reused MultiSliver and adapted to allow const
+* Added FabMenu widget for quickly creating popup menus
+
 ## 2.2.0
 * BREAKING: Screen.slivers changed to Screen.sliver (use Screen.sliver: MultiSliver(children: []))
 * BREAKING: Screen.children has been removed (use Screen.fill: ListView()/Row())

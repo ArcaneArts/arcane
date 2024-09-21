@@ -3,6 +3,21 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
+import 'package:flutter_animate/flutter_animate.dart';
+
+extension XWidgetEffect on Widget {
+  Widget get blurIn => animate()
+      .fadeIn(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOutExpo,
+      )
+      .blurXY(
+        begin: 36,
+        end: 0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOutCirc,
+      );
+}
 
 enum ThemeMode {
   system,

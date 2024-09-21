@@ -1,5 +1,25 @@
 import 'package:arcane/arcane.dart';
 
+class FabMenu extends StatelessWidget {
+  final Widget child;
+  final Widget? leading;
+  final List<MenuItem> items;
+
+  const FabMenu(
+      {super.key, required this.child, this.leading, this.items = const []});
+
+  @override
+  Widget build(BuildContext context) => Fab(
+        leading: leading,
+        onPressed: () => showDropdown(
+            context: context,
+            builder: (context) => DropdownMenu(
+                  children: items,
+                )),
+        child: child,
+      );
+}
+
 class Fab extends StatelessWidget {
   final Widget child;
   final Widget? leading;
@@ -22,5 +42,5 @@ class Fab extends StatelessWidget {
                   ? (child as Icon).large()
                   : child,
         ),
-      ));
+      )).blurIn;
 }

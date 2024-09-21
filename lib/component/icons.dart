@@ -1,7 +1,9 @@
 import 'package:arcane/arcane.dart';
+import 'package:flutter/material.dart' as m show Icons;
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:ionicons/ionicons.dart';
 
+typedef MaterialIcons = m.Icons;
 typedef _P = PhosphorIconsData;
 typedef _O = IoniconsData;
 typedef _I = IconData;

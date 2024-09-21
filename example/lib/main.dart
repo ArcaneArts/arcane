@@ -80,13 +80,6 @@ class _HomeState extends State<Home> {
           onPressed: () => Arcane.push(context, const ExampleMenus()),
         ),
         Tile(
-          leading: const Icon(Icons.bell),
-          title: const Text("Icons"),
-          subtitle:
-              const Text("Quick Icons forwarded from Bootstrap & Phosphor"),
-          onPressed: () => Arcane.push(context, const ExampleIcons()),
-        ),
-        Tile(
           leading: const Icon(Icons.table),
           title: const Text("Nav Screen"),
           subtitle: const Text("Rails & Bottom Bars"),
@@ -108,77 +101,54 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
   int index = 0;
 
   @override
-  Widget build(BuildContext context) => NavScreen(
-          selectedIndex: index,
-          onTabChanged: (index) => setState(() => this.index = index),
-          tabs: [
-            NavTab(
-                header: Bar(
-                  titleText: "Home",
-                ),
-                icon: Icons.house,
-                selectedIcon: Icons.house_fill,
-                label: "Home",
-                fab: Fab(
-                  leading: Icon(Icons.plus),
-                  child: Text("Note"),
-                  onPressed: () {},
-                ),
-                sliver: SliverFillRemaining(
-                  child: Text("Derp"),
-                )),
-            NavTab(
-                header: Bar(
-                  titleText: "Activity",
-                ),
-                fab: Fab(
-                  child: Text("I am Fab"),
-                  onPressed: () {},
-                ),
-                icon: Icons.activity,
-                selectedIcon: Icons.activity_fill,
-                label: "Activity",
-                fill: Container(
-                  color: Colors.red,
-                  child: Center(
-                    child: Text("Im a fill"),
-                  ),
-                )),
-            NavTab(
-                fab: Fab(
-                  child: Icon(Icons.plus),
-                  onPressed: () {},
-                ),
-                header: Bar(
-                  titleText: "Contacts",
-                ),
-                icon: Icons.address_book,
-                selectedIcon: Icons.address_book_fill,
-                label: "Contacts",
-                sliver: SliverFillRemaining(
-                  child: Text("Derp"),
-                ))
-          ]);
-}
-
-class ExampleIcons extends StatelessWidget {
-  const ExampleIcons({super.key});
-
-  @override
-  Widget build(BuildContext context) => Screen(
-        header: const Bar(
-          titleText: "Icons",
-        ),
-        sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              MapEntry<String, IconData> entry =
-                  _icons.entries.elementAt(index);
-              return Tooltip(
-                  tooltip: Text(entry.key), child: Icon(entry.value));
-            }),
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 50)),
-      );
+  Widget build(BuildContext context) => NavScreen(tabs: [
+        NavTab(
+            header: Bar(
+              titleText: "Home",
+            ),
+            icon: Icons.house,
+            selectedIcon: Icons.house_fill,
+            label: "Home",
+            fab: Fab(
+              leading: Icon(Icons.plus),
+              child: Text("Note"),
+              onPressed: () {},
+            ),
+            sliver: SliverFillRemaining(
+              child: Text("Derp"),
+            )),
+        NavTab(
+            header: Bar(
+              titleText: "Activity",
+            ),
+            fab: Fab(
+              child: Text("I am Fab"),
+              onPressed: () {},
+            ),
+            icon: Icons.activity,
+            selectedIcon: Icons.activity_fill,
+            label: "Activity",
+            fill: Container(
+              color: Colors.red,
+              child: Center(
+                child: Text("Im a fill"),
+              ),
+            )),
+        NavTab(
+            fab: Fab(
+              child: Icon(Icons.plus),
+              onPressed: () {},
+            ),
+            header: Bar(
+              titleText: "Contacts",
+            ),
+            icon: Icons.address_book,
+            selectedIcon: Icons.address_book_fill,
+            label: "Contacts",
+            sliver: SliverFillRemaining(
+              child: Text("Derp"),
+            ))
+      ]);
 }
 
 class ExampleMenus extends StatelessWidget {
@@ -186,6 +156,10 @@ class ExampleMenus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Screen(
+        fab: FabMenu(child: Icon(Icons.menu_ionic), items: [
+          MenuButton(child: Text("Item 1")),
+          MenuButton(child: Text("Item 2")),
+        ]),
         header: Bar(
           titleText: "Menus",
           trailing: [

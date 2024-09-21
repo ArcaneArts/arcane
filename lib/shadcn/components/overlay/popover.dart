@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:arcane/arcane.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:arcane/arcane.dart';
 
 class PopoverAnchor extends StatefulWidget {
   const PopoverAnchor({
@@ -457,6 +457,7 @@ PopoverCompleter<T?> showPopover<T>({
   Duration? showDuration,
   Duration? dismissDuration,
 }) {
+  builder = Pylon.mirror(context, builder);
   TextDirection textDirection = Directionality.of(context);
   Alignment resolvedAlignment = alignment.resolve(textDirection);
   anchorAlignment ??= alignment * -1;

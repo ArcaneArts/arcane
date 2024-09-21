@@ -1,6 +1,5 @@
 import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
-import 'package:pylon/pylon.dart';
 
 mixin ArcaneDialogLauncher on Widget {
   void open(BuildContext context) {
@@ -185,5 +184,5 @@ class ArcaneDialog extends StatelessWidget {
         surfaceOpacity: surfaceOpacity,
         barrierColor: barrierColor ??
             Theme.of(context).colorScheme.background.withOpacity(0.65),
-      );
+      ).blurIn;
 }

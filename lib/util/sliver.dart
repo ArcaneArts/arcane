@@ -1,6 +1,33 @@
 import 'package:arcane/arcane.dart';
 
+export 'package:sliver_tools/src/rendering/multi_sliver.dart';
+
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
+
+/// [MultiSliver] allows for returning multiple slivers from a single build method
+class MultiSliver extends MultiChildRenderObjectWidget {
+  const MultiSliver({
+    super.key,
+    super.children = const [],
+    this.pushPinnedChildren = false,
+  });
+
+  /// If true any children that paint beyond the layoutExtent of the entire [MultiSliver] will
+  /// be pushed off towards the leading edge of the [Viewport]
+  final bool pushPinnedChildren;
+
+  @override
+  RenderMultiSliver createRenderObject(BuildContext context) =>
+      RenderMultiSliver(
+        containing: pushPinnedChildren,
+      );
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant RenderMultiSliver renderObject) {
+    renderObject.containing = pushPinnedChildren;
+  }
+}
 
 class SGridView extends StatelessWidget {
   final List<Widget> children;

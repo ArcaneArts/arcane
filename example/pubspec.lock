@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.1.15"
+    version: "2.2.0"
   archive:
     dependency: transitive
     description:
@@ -237,6 +237,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: transitive
+    description:
+      name: flutter_animate
+      sha256: "7c8a6594a9252dad30cc2ef16e33270b6248c4dedc3b3d06c86c4f3f4dc05ae5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -604,6 +612,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.4"
+  soft_edge_blur:
+    dependency: transitive
+    description:
+      name: soft_edge_blur
+      sha256: ef33c734faf5b5f7d8a457ed38e17b53c7690af374266dcf7b86f8581ad6071d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   source_span:
     dependency: transitive
     description:

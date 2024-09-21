@@ -40,22 +40,22 @@ class Screen extends StatefulWidget {
     this.footerPaddingBottom = true,
   });
 
-  Screen.loading({
+  const Screen.loading({
     Key? key,
+    Widget? header,
   }) : this.basic(
             key: key,
+            header: header,
             child: const Center(
               child: CircularProgressIndicator(
                 size: 100,
               ),
-            ),
-            title: "");
+            ));
 
   Screen.list({
     Key? key,
     required List<Widget> children,
-    required String title,
-    List<Widget> actions = const [],
+    Widget? header,
     Widget? fab,
     Widget? background,
     bool gutter = true,
@@ -70,10 +70,7 @@ class Screen extends StatefulWidget {
     int semanticIndexOffset = 0,
   }) : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           sliver: SListView(
             addAutomaticKeepAlives: addAutomaticKeepAlives,
             addRepaintBoundaries: addRepaintBoundaries,
@@ -92,12 +89,11 @@ class Screen extends StatefulWidget {
 
   Screen.listBuilder({
     Key? key,
-    required String title,
-    List<Widget> actions = const [],
     Widget? fab,
     Widget? background,
     bool gutter = true,
     int? childCount,
+    Widget? header,
     required NullableIndexedWidgetBuilder builder,
     double? loadingProgress,
     bool loadingProgressIndeterminate = false,
@@ -110,10 +106,7 @@ class Screen extends StatefulWidget {
     int semanticIndexOffset = 0,
   }) : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           sliver: SListView.builder(
             builder: builder,
             childCount: childCount,
@@ -134,8 +127,7 @@ class Screen extends StatefulWidget {
   Screen.grid({
     Key? key,
     required List<Widget> children,
-    required String title,
-    List<Widget> actions = const [],
+    Widget? header,
     Widget? fab,
     Widget? background,
     bool gutter = true,
@@ -156,10 +148,7 @@ class Screen extends StatefulWidget {
     double childAspectRatio = 1.0,
   }) : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           sliver: SGridView(
             gridDelegate: gridDelegate,
             crossAxisCount: crossAxisCount,
@@ -184,10 +173,9 @@ class Screen extends StatefulWidget {
 
   Screen.gridBuilder(
       {Key? key,
-      required String title,
+      Widget? header,
       int? childCount,
       required NullableIndexedWidgetBuilder builder,
-      List<Widget> actions = const [],
       Widget? fab,
       Widget? background,
       bool gutter = true,
@@ -209,10 +197,7 @@ class Screen extends StatefulWidget {
       ChildIndexGetter? findChildIndexCallback})
       : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           sliver: SGridView.builder(
             gridDelegate: gridDelegate,
             crossAxisCount: crossAxisCount,
@@ -239,9 +224,8 @@ class Screen extends StatefulWidget {
 
   Screen.custom({
     Key? key,
-    required List<Widget> slivers,
-    required String title,
-    List<Widget> actions = const [],
+    List<Widget> slivers = const [],
+    Widget? header,
     Widget? fab,
     Widget? background,
     bool gutter = true,
@@ -250,10 +234,7 @@ class Screen extends StatefulWidget {
     bool showLoadingSparks = false,
   }) : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           sliver: MultiSliver(children: slivers),
           fab: fab,
           background: background,
@@ -263,11 +244,10 @@ class Screen extends StatefulWidget {
           showLoadingSparks: showLoadingSparks,
         );
 
-  Screen.basic({
+  const Screen.basic({
     Key? key,
     required Widget child,
-    required String title,
-    List<Widget> actions = const [],
+    Widget? header,
     Widget? fab,
     Widget? background,
     bool gutter = true,
@@ -276,10 +256,7 @@ class Screen extends StatefulWidget {
     bool showLoadingSparks = false,
   }) : this(
           key: key,
-          header: Bar(
-            titleText: title,
-            trailing: actions,
-          ),
+          header: header,
           fill: child,
           fab: fab,
           background: background,
@@ -474,15 +451,13 @@ class NavTab {
 }
 
 class NavScreen extends StatefulWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onTabChanged;
+  final int initialIndex;
   final Widget? background;
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
   final bool showLoadingSparks;
   final double footerHeight;
   final bool footerPaddingBottom;
-  final ScrollController? scrollController;
   final double minContentFraction;
   final double minContentWidth;
   final List<NavTab> tabs;
@@ -490,12 +465,10 @@ class NavScreen extends StatefulWidget {
   const NavScreen({
     super.key,
     required this.tabs,
-    this.selectedIndex = 0,
-    required this.onTabChanged,
+    this.initialIndex = 0,
     this.background,
     this.minContentWidth = 500,
     this.minContentFraction = 0.75,
-    this.scrollController,
     this.footerHeight = 60,
     this.loadingProgress,
     this.loadingProgressIndeterminate = false,
@@ -508,68 +481,75 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
-  ScrollController? _controller;
+  Map<int, ScrollController> _controllers = {};
   BehaviorSubject<bool> headerBlur = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> footerBlur = BehaviorSubject.seeded(true);
+  late int selectedIndex;
 
-  ScrollController getController(BuildContext context) {
-    void bind() {
-      _controller!.addListener(() {
-        if (_controller!.position.pixels ==
-            _controller!.position.maxScrollExtent) {
-          footerBlur.add(false);
-        } else {
-          footerBlur.add(true);
-        }
+  @override
+  void initState() {
+    selectedIndex = widget.initialIndex;
+    super.initState();
+  }
 
-        if (_controller!.position.pixels ==
-            _controller!.position.minScrollExtent) {
-          headerBlur.add(false);
-        } else {
-          headerBlur.add(true);
-        }
-      });
+  @override
+  Widget build(BuildContext context) => IndexedStack(
+        index: selectedIndex,
+        children: [
+          for (int i = 0; i < widget.tabs.length; i++) buildIndex(context, i)
+        ],
+      );
+
+  void updateBlurStoppers(int index) {
+    if (_controllers[index] != null) {
+      if (_controllers[index]!.position.pixels ==
+          _controllers[index]!.position.maxScrollExtent) {
+        footerBlur.add(false);
+      } else {
+        footerBlur.add(true);
+      }
+
+      if (_controllers[index]!.position.pixels ==
+          _controllers[index]!.position.minScrollExtent) {
+        headerBlur.add(false);
+      } else {
+        headerBlur.add(true);
+      }
     }
+  }
 
-    if (_controller != null) {
-      return _controller!;
-    }
-
-    if (widget.scrollController != null) {
-      _controller = widget.scrollController;
-      bind();
-      return _controller!;
+  ScrollController getController(BuildContext context, int index) {
+    if (_controllers[index] != null) {
+      return _controllers[index]!;
     }
 
     ScrollController? c = ModalScrollController.of(context);
     if (c != null) {
-      _controller = c;
-      bind();
+      _controllers[index] = c;
+      _controllers[index]!.addListener(() => updateBlurStoppers(index));
       return c;
     }
 
-    _controller = ScrollController();
-    bind();
-    return _controller!;
+    _controllers[index] = ScrollController();
+    _controllers[index]!.addListener(() => updateBlurStoppers(index));
+    return _controllers[index]!;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Widget buildBottomBar(BuildContext context) {
-    return ButtonBar(selectedIndex: widget.selectedIndex, buttons: [
+  Widget buildBottomBar(BuildContext context, int index) {
+    return ButtonBar(selectedIndex: index, buttons: [
       ...widget.tabs.mapIndexed((e, i) => IconTab(
             icon: e.icon,
             selectedIcon: e.selectedIcon,
             label: e.label,
-            onPressed: () => setState(() => widget.onTabChanged(i)),
+            onPressed: () => setState(() => setState(() {
+                  selectedIndex = i;
+                  updateBlurStoppers(selectedIndex);
+                })),
           ))
     ]);
   }
 
-  Widget buildRail(BuildContext context) {
+  Widget buildRail(BuildContext context, int index) {
     return SizedBox(
       width: 32,
       child: Column(
@@ -586,7 +566,7 @@ class _NavScreenState extends State<NavScreen> {
               onPressed: () => Arcane.pop(context)),
           Gap(8),
           ...widget.tabs.mapIndexed((e, i) {
-            if (i == widget.selectedIndex) {
+            if (i == index) {
               return IconButton(
                   icon: Icon(
                 e.selectedIcon,
@@ -597,7 +577,10 @@ class _NavScreenState extends State<NavScreen> {
             return IconButton(
               icon: Icon(e.icon),
               onPressed: () {
-                widget.onTabChanged(i);
+                setState(() {
+                  selectedIndex = i;
+                  updateBlurStoppers(selectedIndex);
+                });
               },
             );
           })
@@ -606,40 +589,37 @@ class _NavScreenState extends State<NavScreen> {
     ).padOnly(left: 8, right: 8);
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildIndex(BuildContext context, int index) {
     double width = MediaQuery.of(context).size.width;
     bool rail = width > widget.minContentWidth;
 
     double gutterWidth = 0;
 
-    if (widget.tabs[widget.selectedIndex].gutter &&
-        width > widget.minContentWidth) {
+    if (widget.tabs[index].gutter && width > widget.minContentWidth) {
       gutterWidth = (width * ((1 - widget.minContentFraction) / 2)) - 25;
     }
 
     Widget content;
 
-    if (widget.tabs[widget.selectedIndex].fill != null) {
+    if (widget.tabs[index].fill != null) {
       content = Stack(
         fit: StackFit.expand,
         children: [
           if (widget.background != null) widget.background!,
           PaddingHorizontal(
             padding: gutterWidth,
-            child: widget.tabs[widget.selectedIndex].fill!,
+            child: widget.tabs[index].fill!,
           ),
-          if (widget.tabs[widget.selectedIndex].fab != null)
+          if (widget.tabs[index].fab != null)
             Align(
               alignment: Alignment.bottomRight,
-              child: widget.tabs[widget.selectedIndex].fab,
+              child: widget.tabs[index].fab,
             )
         ],
       );
     } else {
       List<Widget> slv = [
-        if (widget.tabs[widget.selectedIndex].sliver != null)
-          widget.tabs[widget.selectedIndex].sliver!,
+        if (widget.tabs[index].sliver != null) widget.tabs[index].sliver!,
         if (!rail)
           SliverToBoxAdapter(
             child: Container(
@@ -652,7 +632,7 @@ class _NavScreenState extends State<NavScreen> {
         children: [
           if (widget.background != null) widget.background!,
           CustomScrollView(
-            controller: getController(context),
+            controller: getController(context, index),
             slivers: [
               SliverPinnedHeader(
                 child: headerBlur.unique.build((blurring) => GlassStopper(
@@ -660,8 +640,8 @@ class _NavScreenState extends State<NavScreen> {
                         key: ValueKey("hblur.$blurring"),
                         child: Pylon<AntiFlickerDirection>(
                           value: AntiFlickerDirection.top,
-                          builder: (context) =>
-                              widget.tabs[widget.selectedIndex].header.copyWith(
+                          builder: (context) => widget.tabs[index].header
+                              .copyWith(
                                   backButton:
                                       rail ? BarBackButtonMode.never : null,
                                   height: 36),
@@ -688,19 +668,19 @@ class _NavScreenState extends State<NavScreen> {
                       child: Pylon<AntiFlickerDirection>(
                         value: AntiFlickerDirection.bottom,
                         builder: (context) => IntrinsicHeight(
-                          child: buildBottomBar(context),
+                          child: buildBottomBar(context, index),
                         ),
                       ),
                     ),
                     stopping: !blurring,
                   )),
             )),
-          if (widget.tabs[widget.selectedIndex].fab != null)
+          if (widget.tabs[index].fab != null)
             PaddingBottom(
                 padding: !rail ? widget.footerHeight : 0,
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: widget.tabs[widget.selectedIndex].fab,
+                  child: widget.tabs[index].fab,
                 ))
         ],
       );
@@ -711,20 +691,20 @@ class _NavScreenState extends State<NavScreen> {
     Widget c = Scaffold(
       loadingProgress: widget.loadingProgress,
       loadingProgressIndeterminate: widget.loadingProgressIndeterminate,
-      floatingFooter: widget.tabs[widget.selectedIndex].fill == null,
-      floatingHeader: widget.tabs[widget.selectedIndex].fill == null,
+      floatingFooter: widget.tabs[index].fill == null,
+      floatingHeader: widget.tabs[index].fill == null,
       footers: [
-        if (!rail && widget.tabs[widget.selectedIndex].fill != null)
+        if (!rail && widget.tabs[index].fill != null)
           GlassStopper(
-              builder: (context) => buildBottomBar(context), stopping: true)
+              builder: (context) => buildBottomBar(context, index),
+              stopping: true)
       ],
       headers: [
-        if (widget.tabs[widget.selectedIndex].fill != null)
+        if (widget.tabs[index].fill != null)
           GlassStopper(
-              builder: (context) => widget.tabs[widget.selectedIndex].header
-                  .copyWith(
-                      backButton: rail ? BarBackButtonMode.never : null,
-                      height: 36),
+              builder: (context) => widget.tabs[index].header.copyWith(
+                  backButton: rail ? BarBackButtonMode.never : null,
+                  height: 36),
               stopping: true)
       ],
       child: content,
@@ -736,7 +716,7 @@ class _NavScreenState extends State<NavScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  buildRail(context),
+                  buildRail(context, index),
                   Expanded(
                     child: c,
                   )
