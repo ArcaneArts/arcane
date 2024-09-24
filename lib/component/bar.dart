@@ -25,6 +25,8 @@ class Bar extends StatelessWidget {
   final bool useGlass;
   final BarBackButtonMode backButton;
   final bool ignoreContextSignals;
+  final bool bottomSafeArea;
+  final bool topSafeArea;
 
   const Bar(
       {super.key,
@@ -35,6 +37,8 @@ class Bar extends StatelessWidget {
       this.backButton = BarBackButtonMode.always,
       this.headerText,
       this.subtitleText,
+      this.bottomSafeArea = false,
+      this.topSafeArea = true,
       this.title,
       this.header,
       this.subtitle,
@@ -100,38 +104,46 @@ class Bar extends StatelessWidget {
   Widget build(BuildContext context) => Stack(
         children: [
           Glass(
+              tint: Theme.of(context)
+                  .colorScheme
+                  .background
+                  .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
               ignoreContextSignals: ignoreContextSignals,
               disabled: !useGlass,
               blur: Theme.of(context).surfaceBlur ?? 16,
-              child: AppBar(
-                leading: [
-                  if ((backButton == BarBackButtonMode.always ||
-                          (backButton == BarBackButtonMode.whenPinned &&
-                              !GlassStopper.isStopping(context))) &&
-                      Navigator.canPop(context))
-                    GhostButton(
-                        density: ButtonDensity.icon,
-                        child: context.inSheet
-                            ? const Icon(PhosphorIcons.x_bold)
-                            : const Icon(PhosphorIcons.caret_left_bold),
-                        onPressed: () => Arcane.pop(context)),
-                  ...leading
-                ],
-                trailing: trailing,
-                title: titleText?.text ?? title,
-                header: headerText?.text ?? header,
-                subtitle: subtitleText?.text ?? subtitle,
-                trailingExpanded: trailingExpanded,
-                alignment: alignment,
-                padding: padding,
-                backgroundColor: backgroundColor,
-                leadingGap: leadingGap,
-                trailingGap: trailingGap,
-                height: height,
-                surfaceBlur: 0,
-                useSafeArea: useSafeArea,
-                child: child,
-              ))
+              child: SafeArea(
+                  bottom: bottomSafeArea,
+                  top: topSafeArea,
+                  child: AppBar(
+                    leading: [
+                      if ((backButton == BarBackButtonMode.always ||
+                              (backButton == BarBackButtonMode.whenPinned &&
+                                  !GlassStopper.isStopping(context))) &&
+                          Navigator.canPop(context))
+                        GhostButton(
+                            density: ButtonDensity.icon,
+                            child: context.inSheet
+                                ? const Icon(PhosphorIcons.x_bold)
+                                : const Icon(PhosphorIcons.caret_left_bold),
+                            onPressed: () => Arcane.pop(context)),
+                      ...leading
+                    ],
+                    surfaceOpacity: 0,
+                    trailing: trailing,
+                    title: titleText?.text ?? title,
+                    header: headerText?.text ?? header,
+                    subtitle: subtitleText?.text ?? subtitle,
+                    trailingExpanded: trailingExpanded,
+                    alignment: alignment,
+                    padding: padding,
+                    backgroundColor: backgroundColor,
+                    leadingGap: leadingGap,
+                    trailingGap: trailingGap,
+                    height: height,
+                    surfaceBlur: 0,
+                    useSafeArea: useSafeArea,
+                    child: child,
+                  )))
         ],
       );
 }

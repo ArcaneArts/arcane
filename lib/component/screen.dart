@@ -40,6 +40,35 @@ class Screen extends StatefulWidget {
     this.footerPaddingBottom = true,
   });
 
+  Screen.expander(
+      {Key? key,
+      required Widget collapsedHeader,
+      required Widget expandedHeader,
+      required Widget sliver,
+      Widget? fab,
+      Widget? background,
+      bool gutter = false,
+      double? expandedHeaderHeight})
+      : this(
+          key: key,
+          fill: SliverSnap(
+            expandedBackgroundColor: Colors.transparent,
+            collapsedBackgroundColor: Colors.transparent,
+            expandedContent: expandedHeader,
+            expandedContentHeight: expandedHeaderHeight,
+            collapsedBarHeight: 60,
+            collapsedContent: GlassStopper(
+                builder: (context) => collapsedHeader, stopping: false),
+            stretch: true,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            sliver: sliver,
+          ),
+          fab: fab,
+          background: background,
+          gutter: gutter,
+        );
+
   const Screen.loading({
     Key? key,
     Widget? header,

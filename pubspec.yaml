@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 2.2.2
+version: 2.2.5
 homepage: https://github.com/ArcaneArts/arcane
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -35,7 +35,9 @@ dependencies:
   image: ^4.2.0
   email_validator: ^3.0.0
   flutter_animate: ^4.5.0
-  soft_edge_blur: ^0.1.1
+  soft_edge_blur: ^0.1.2
+  flutter_shaders: ^0.1.2
+  flutter_hooks: ^0.20.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

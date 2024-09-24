@@ -1,3 +1,14 @@
+## 2.2.5
+* Added an expander screen for collapsible header bars
+
+## 2.2.4
+* Fix Safe Area on mobile
+* Fix blur effect on impeller
+* Motion Blur Effect Support
+
+## 2.2.3
+* Fix scrolling on macos touchpads
+
 ## 2.2.2
 * BREAKING NavScreens no longer support scroll controller customization
 * BREAKING: NavScreens no longer support selectedIndex or onIndexChanged as it is now managed in their state

@@ -89,8 +89,8 @@ abstract class AbstractArcaneTheme {
               .copyWith(surface: arcane.colorScheme.background),
           pageTransitionsTheme: m.PageTransitionsTheme(
               builders: Map.fromEntries(
-            m.TargetPlatform.values.map(
-                (e) => MapEntry(e, const m.CupertinoPageTransitionsBuilder())),
+            m.TargetPlatform.values
+                .map((e) => MapEntry(e, const m.ZoomPageTransitionsBuilder())),
           )));
 
   ThemeData getArcaneTheme() => buildTheme(themeMode.brightness);

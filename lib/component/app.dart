@@ -12,7 +12,7 @@ class Arcane {
 
   static Future<T?> push<T extends Object?>(
           BuildContext context, Widget child) =>
-      Pylon.push(context, child);
+      Pylon.push(context, child, type: PylonRouteType.material);
 }
 
 class ArcaneApp extends StatefulWidget {
@@ -234,5 +234,11 @@ class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
         if (allowMouseDragging) PointerDeviceKind.mouse,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.invertedStylus,
+        PointerDeviceKind.trackpad,
+        // The VoiceAccess sends pointer events with unknown type when scrolling
+        // scrollables.
+        PointerDeviceKind.unknown,
       };
 }

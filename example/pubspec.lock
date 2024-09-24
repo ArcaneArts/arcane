@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.2.4"
   archive:
     dependency: transitive
     description:
@@ -245,6 +245,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.0"
+  flutter_hooks:
+    dependency: transitive
+    description:
+      name: flutter_hooks
+      sha256: cde36b12f7188c85286fba9b38cc5a902e7279f36dd676967106c041dc9dde70
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.5"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -616,10 +624,10 @@ packages:
     dependency: transitive
     description:
       name: soft_edge_blur
-      sha256: ef33c734faf5b5f7d8a457ed38e17b53c7690af374266dcf7b86f8581ad6071d
+      sha256: "68cbd06d58b4b05b835c6d1ec666e688e83ca5896331915f75c89c11ca7fba1a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   source_span:
     dependency: transitive
     description:
