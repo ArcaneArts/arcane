@@ -1,3 +1,6 @@
+## 2.3.1
+* Support sliver screens without headers
+
 ## 2.3.0
 * BREAKING All screens need to now use FillScreen, SliverScreen or NavigationScreen
 * Blur fixes

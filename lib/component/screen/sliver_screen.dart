@@ -116,20 +116,21 @@ class _SliverScreenState extends State<SliverScreen> {
         CustomScrollView(
           controller: getController(context),
           slivers: [
-            SliverPinnedHeader(
-              child: headerBlur.unique.build((blurring) => GlassStopper(
-                    key: headerKey,
-                    builder: (context) => KeyedSubtree(
-                      key: ValueKey("hblur.$blurring"),
-                      child: Pylon<AntiFlickerDirection>(
-                        value: AntiFlickerDirection.top,
-                        builder: (context) => SafeBar(
-                            top: true, builder: (context) => widget.header!),
+            if (widget.header != null)
+              SliverPinnedHeader(
+                child: headerBlur.unique.build((blurring) => GlassStopper(
+                      key: headerKey,
+                      builder: (context) => KeyedSubtree(
+                        key: ValueKey("hblur.$blurring"),
+                        child: Pylon<AntiFlickerDirection>(
+                          value: AntiFlickerDirection.top,
+                          builder: (context) => SafeBar(
+                              top: true, builder: (context) => widget.header!),
+                        ),
                       ),
-                    ),
-                    stopping: !(blurring || widget.background != null),
-                  )),
-            ),
+                      stopping: !(blurring || widget.background != null),
+                    )),
+              ),
             widget.sliver,
             SliverToBoxAdapter(
               child: SizedBox(
@@ -149,8 +150,7 @@ class _SliverScreenState extends State<SliverScreen> {
                       child: Pylon<AntiFlickerDirection>(
                         value: AntiFlickerDirection.bottom,
                         builder: (context) => SafeBar(
-                            bottom: true,
-                            builder: (context) => widget.footer!),
+                            bottom: true, builder: (context) => widget.footer!),
                       ),
                     ),
                     stopping: !(footer || widget.background != null),
