@@ -4,11 +4,11 @@ class ExampleToasts extends StatelessWidget {
   const ExampleToasts({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => FillScreen(
         header: const Bar(
           titleText: "Dialogs",
         ),
-        fill: Center(
+        child: Center(
           child: Column(
             children: [
               PrimaryButton(

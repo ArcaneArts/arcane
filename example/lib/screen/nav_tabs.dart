@@ -11,52 +11,45 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
   int index = 0;
 
   @override
-  Widget build(BuildContext context) => NavScreen(tabs: [
-        NavTab(
-            header: Bar(
-              titleText: "Home",
-            ),
-            icon: Icons.house,
-            selectedIcon: Icons.house_fill,
-            label: "Home",
-            fab: Fab(
-              leading: Icon(Icons.plus),
-              child: Text("Note"),
-              onPressed: () {},
-            ),
-            sliver: SliverFillRemaining(
-              child: Text("Derp"),
-            )),
-        NavTab(
-            header: Bar(
-              titleText: "Activity",
-            ),
-            fab: Fab(
-              child: Text("I am Fab"),
-              onPressed: () {},
-            ),
-            icon: Icons.activity,
-            selectedIcon: Icons.activity_fill,
-            label: "Activity",
-            fill: Container(
-              color: Colors.red,
-              child: Center(
-                child: Text("Im a fill"),
-              ),
-            )),
-        NavTab(
-            fab: Fab(
-              child: Icon(Icons.plus),
-              onPressed: () {},
-            ),
-            header: Bar(
-              titleText: "Contacts",
-            ),
-            icon: Icons.address_book,
-            selectedIcon: Icons.address_book_fill,
-            label: "Contacts",
-            sliver: SliverFillRemaining(
-              child: Text("Derp"),
-            ))
-      ]);
+  Widget build(BuildContext context) => NavigationScreen(
+          onIndexChanged: (index) => setState(() => this.index = index),
+          index: index,
+          tabs: [
+            NavTab(
+                icon: Icons.house,
+                selectedIcon: Icons.house_fill,
+                label: "Home",
+                builder: (context, footer) => FillScreen(
+                    footer: footer,
+                    header: Bar(
+                      titleText: "Home",
+                    ),
+                    child: Center(
+                      child: Text("Home Screen"),
+                    ))),
+            NavTab(
+                icon: Icons.activity,
+                selectedIcon: Icons.activity_fill,
+                label: "Activity",
+                builder: (context, footer) => FillScreen(
+                    header: Bar(
+                      titleText: "Activity",
+                    ),
+                    footer: footer,
+                    child: Center(
+                      child: Text("Activity Screen"),
+                    ))),
+            NavTab(
+                icon: Icons.address_book,
+                selectedIcon: Icons.address_book_fill,
+                label: "Contacts",
+                builder: (context, footer) => FillScreen(
+                    header: Bar(
+                      titleText: "Contacts",
+                    ),
+                    footer: footer,
+                    child: Center(
+                      child: Text("Contacts Screen"),
+                    )))
+          ]);
 }

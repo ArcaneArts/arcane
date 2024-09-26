@@ -4,7 +4,7 @@ class ExampleTiles extends StatelessWidget {
   const ExampleTiles({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => SliverScreen(
         header: Bar(
           titleText: "Tiles",
         ),

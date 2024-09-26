@@ -4,7 +4,7 @@ class ExampleButtons extends StatelessWidget {
   const ExampleButtons({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => FillScreen(
         footer: Bar(
           backButton: BarBackButtonMode.never,
           titleText: "Test",
@@ -13,7 +13,7 @@ class ExampleButtons extends StatelessWidget {
         header: const Bar(
           titleText: "Buttons",
         ),
-        fill: Center(
+        child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

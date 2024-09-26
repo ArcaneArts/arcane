@@ -21,12 +21,9 @@ class Bar extends StatelessWidget {
   final double? trailingGap;
   final EdgeInsetsGeometry? padding;
   final double? height;
-  final bool useSafeArea;
   final bool useGlass;
   final BarBackButtonMode backButton;
   final bool ignoreContextSignals;
-  final bool bottomSafeArea;
-  final bool topSafeArea;
 
   const Bar(
       {super.key,
@@ -37,8 +34,6 @@ class Bar extends StatelessWidget {
       this.backButton = BarBackButtonMode.always,
       this.headerText,
       this.subtitleText,
-      this.bottomSafeArea = false,
-      this.topSafeArea = true,
       this.title,
       this.header,
       this.subtitle,
@@ -50,8 +45,7 @@ class Bar extends StatelessWidget {
       this.leadingGap,
       this.trailingGap,
       this.height,
-      this.useGlass = true,
-      this.useSafeArea = true});
+      this.useGlass = true});
 
   Bar copyWith({
     Key? key,
@@ -71,7 +65,6 @@ class Bar extends StatelessWidget {
     double? trailingGap,
     EdgeInsetsGeometry? padding,
     double? height,
-    bool? useSafeArea,
     bool? useGlass,
     BarBackButtonMode? backButton,
     bool? ignoreContextSignals,
@@ -93,7 +86,6 @@ class Bar extends StatelessWidget {
         leadingGap: leadingGap ?? this.leadingGap,
         trailingGap: trailingGap ?? this.trailingGap,
         height: height ?? this.height,
-        useSafeArea: useSafeArea ?? this.useSafeArea,
         useGlass: useGlass ?? this.useGlass,
         backButton: backButton ?? this.backButton,
         ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
@@ -111,15 +103,15 @@ class Bar extends StatelessWidget {
               ignoreContextSignals: ignoreContextSignals,
               disabled: !useGlass,
               blur: Theme.of(context).surfaceBlur ?? 16,
-              child: SafeArea(
-                  bottom: bottomSafeArea,
-                  top: topSafeArea,
-                  child: AppBar(
+              child: SafeBar.withSafety(
+                  context,
+                  AppBar(
                     leading: [
                       if ((backButton == BarBackButtonMode.always ||
                               (backButton == BarBackButtonMode.whenPinned &&
                                   !GlassStopper.isStopping(context))) &&
-                          Navigator.canPop(context))
+                          Navigator.canPop(context) &&
+                          !BlockBackButton.isBlocking(context))
                         GhostButton(
                             density: ButtonDensity.icon,
                             child: context.inSheet
@@ -141,9 +133,63 @@ class Bar extends StatelessWidget {
                     trailingGap: trailingGap,
                     height: height,
                     surfaceBlur: 0,
-                    useSafeArea: useSafeArea,
                     child: child,
                   )))
         ],
+      );
+}
+
+class SafeBar extends StatelessWidget {
+  final bool top;
+  final bool bottom;
+  final bool left;
+  final bool right;
+  final PylonBuilder builder;
+
+  static Widget withSafety(BuildContext context, Widget widget) {
+    SafeBar? s = context.pylonOr<SafeBar>();
+
+    if (s != null) {
+      return SafeArea(
+        top: s.top,
+        bottom: s.bottom,
+        left: s.left,
+        right: s.right,
+        child: widget,
+      );
+    }
+    return widget;
+  }
+
+  const SafeBar(
+      {super.key,
+      this.top = false,
+      this.bottom = false,
+      this.left = false,
+      this.right = false,
+      required this.builder});
+
+  @override
+  Widget build(BuildContext context) => Pylon<SafeBar>(
+        local: true,
+        value: this,
+        builder: builder,
+      );
+}
+
+class BlockBackButton extends StatelessWidget {
+  final bool block;
+  final PylonBuilder builder;
+
+  static bool isBlocking(BuildContext context) =>
+      context.pylonOr<BlockBackButton>()?.block ?? false;
+
+  const BlockBackButton({super.key, this.block = true, required this.builder});
+
+  @override
+  Widget build(BuildContext context) => Pylon<BlockBackButton>(
+        local: true,
+        value: this,
+        builder: builder,
       );
 }

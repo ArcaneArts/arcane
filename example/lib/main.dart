@@ -34,7 +34,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => SliverScreen(
       header: const Bar(
         titleText: "Arcane",
       ),

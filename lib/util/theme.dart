@@ -87,15 +87,21 @@ abstract class AbstractArcaneTheme {
       theme.copyWith(
           colorScheme: theme.colorScheme
               .copyWith(surface: arcane.colorScheme.background),
-          pageTransitionsTheme: m.PageTransitionsTheme(
-              builders: Map.fromEntries(
-            m.TargetPlatform.values
-                .map((e) => MapEntry(e, const m.ZoomPageTransitionsBuilder())),
-          )));
+          pageTransitionsTheme: m.PageTransitionsTheme(builders: {
+            ...Map.fromEntries(
+              m.TargetPlatform.values.map((e) => MapEntry(
+                  e,
+                  const m.ZoomPageTransitionsBuilder(
+                      allowSnapshotting: true,
+                      allowEnterRouteSnapshotting: true))),
+            ),
+            // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
+          }));
 
   ThemeData getArcaneTheme() => buildTheme(themeMode.brightness);
 
-  m.ThemeData getMaterialTheme() => buildMaterialTheme(themeMode.brightness);
+  m.ThemeData getMaterialTheme() => colorMaterialTheme(
+      getArcaneTheme(), buildMaterialTheme(themeMode.brightness));
 
   c.CupertinoThemeData getCupertinoTheme() =>
       buildCupertinoTheme(themeMode.brightness);

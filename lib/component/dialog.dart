@@ -4,7 +4,14 @@ import 'package:flutter/services.dart';
 mixin ArcaneDialogLauncher on Widget {
   void open(BuildContext context) {
     PylonBuilder builder = Pylon.mirror(context, (context) => this);
-    showDialog(context: context, barrierDismissible: true, builder: builder);
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Theme.of(context)
+            .colorScheme
+            .background
+            .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
+        builder: builder);
   }
 }
 

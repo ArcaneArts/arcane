@@ -48,7 +48,9 @@ class GlassStopper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Pylon<_GlassStop>(value: _GlassStop(stopping), builder: builder);
+      Pylon<_GlassStop>(
+          local: true,
+          value: _GlassStop(stopping), builder: builder);
 }
 
 class Glass extends StatelessWidget {

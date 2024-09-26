@@ -4,7 +4,7 @@ class ExampleMenus extends StatelessWidget {
   const ExampleMenus({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => SliverScreen(
         fab: FabMenu(child: Icon(Icons.menu_ionic), items: [
           MenuButton(child: Text("Item 1")),
           MenuButton(child: Text("Item 2")),

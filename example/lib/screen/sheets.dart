@@ -4,11 +4,11 @@ class ExampleSheets extends StatelessWidget {
   const ExampleSheets({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => FillScreen(
         header: const Bar(
           titleText: "Sheets",
         ),
-        fill: Center(
+        child: Center(
           child: Column(
             children: [
               PrimaryButton(
@@ -35,7 +35,7 @@ class ExampleSheet extends StatelessWidget {
   const ExampleSheet({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => SliverScreen(
         header: const Bar(
           titleText: "This is a sheet",
         ),

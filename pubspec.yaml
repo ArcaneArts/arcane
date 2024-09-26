@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 2.2.5
+version: 2.3.0
 homepage: https://github.com/ArcaneArts/arcane
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   flutter_sticky_header: ^0.6.5
   padded: ^1.0.1 
-  pylon: ^3.0.4
+  pylon: ^3.0.5
   rxdart: ^0.28.0
   sliver_tools: ^0.2.12
   tinycolor2: ^3.0.1

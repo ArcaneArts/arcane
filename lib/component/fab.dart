@@ -1,5 +1,20 @@
 import 'package:arcane/arcane.dart';
 
+class FabSocket extends StatelessWidget {
+  final Widget child;
+
+  const FabSocket({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) => Align(
+        alignment: Alignment.bottomRight,
+        child: PaddingAll(
+          padding: 8,
+          child: child,
+        ),
+      );
+}
+
 class FabMenu extends StatelessWidget {
   final Widget child;
   final Widget? leading;

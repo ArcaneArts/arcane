@@ -4,12 +4,13 @@ class ExampleDialogs extends StatelessWidget {
   const ExampleDialogs({super.key});
 
   @override
-  Widget build(BuildContext context) => Screen(
+  Widget build(BuildContext context) => FillScreen(
         header: const Bar(
           titleText: "Dialogs",
         ),
-        fill: Center(
+        child: Center(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               PrimaryButton(
                   child: const Text("Alert Dialog"),

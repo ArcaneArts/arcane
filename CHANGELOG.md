@@ -1,3 +1,12 @@
+## 2.3.0
+* BREAKING All screens need to now use FillScreen, SliverScreen or NavigationScreen
+* Blur fixes
+* Fab fixes
+* Sizing fixes
+
+## 2.2.6
+* Fix fill in nav tabs breaking listener local position
+
 ## 2.2.5
 * Added an expander screen for collapsible header bars
 
