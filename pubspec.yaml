@@ -38,6 +38,7 @@ dependencies:
   soft_edge_blur: ^0.1.2
   flutter_shaders: ^0.1.2
   flutter_hooks: ^0.20.5
+  auto_size_text: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

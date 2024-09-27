@@ -21,7 +21,7 @@ class ExampleArcaneApp extends StatelessWidget {
   Widget build(BuildContext context) => ArcaneApp(
         home: const Home(),
         theme: ArcaneTheme(
-            themeMode: ThemeMode.system, scheme: ColorSchemes.red()),
+            themeMode: ThemeMode.system, scheme: ColorSchemes.blue()),
       );
 }
 
@@ -35,8 +35,26 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) => SliverScreen(
-      header: const Bar(
+      header: Bar(
         titleText: "Arcane",
+        actions: BarActions(
+          actions: [
+            BarAction(
+                icon: Icons.activity, label: "Activity", onPressed: () {}),
+            BarAction(
+                icon: Icons.address_book,
+                label: "Address Book",
+                onPressed: () {}),
+            BarAction(
+                icon: Icons.airplane, label: "Airplane", onPressed: () {}),
+            BarAction(icon: Icons.airplay, label: "Airplay", onPressed: () {}),
+            BarAction(icon: Icons.alien, label: "Alien", onPressed: () {}),
+            BarAction(
+                icon: Icons.align_bottom,
+                label: "Align Bottom",
+                onPressed: () {}),
+          ],
+        ),
       ),
       sliver: SListView(children: [
         Tile(
