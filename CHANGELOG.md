@@ -1,3 +1,6 @@
+## 2.3.2
+* Bar Actions
+
 ## 2.3.1
 * Support sliver screens without headers
 

@@ -124,11 +124,8 @@ class Bar extends StatelessWidget {
                       ...leading
                     ],
                     surfaceOpacity: 0,
-                    trailing: [
-                      ...trailing,
-                    ],
-                    title: (titleText?.text ?? title)?.ast,
-                    barActions: actions,
+                    trailing: [...trailing, if (actions != null) actions!],
+                    title: titleText?.text ?? title,
                     header: headerText?.text ?? header,
                     subtitle: subtitleText?.text ?? subtitle,
                     trailingExpanded: trailingExpanded,
@@ -215,61 +212,59 @@ const double _iconButtonWidth = 24;
 
 class BarActions extends StatelessWidget {
   final List<BarAction> actions;
+  final int maxIcons;
 
-  const BarActions({super.key, this.actions = const []});
+  const BarActions({super.key, this.actions = const [], this.maxIcons = 2});
 
   @override
-  Widget build(BuildContext context) =>
-      LayoutBuilder(builder: (context, constraints) {
-        print(constraints.maxWidth);
-
-        List<MenuButton> menu = [];
-        List<Widget> spread = [];
-        List<Widget> mandatory = actions
-            .where((i) => !i.collapsable)
-            .map((i) => Tooltip(
-                tooltip: Text(i.label),
-                child: IconButton(
-                  icon: Icon(i.icon),
-                  onPressed: i.onPressed,
-                )))
-            .toList();
-        bool hasMenu = false;
-        List<BarAction> col = actions.where((i) => i.collapsable).toList();
-
-        while ((col.length + mandatory.length + (hasMenu ? 1 : 0)) *
-                    _iconButtonWidth >
-                (constraints.maxWidth * 0.5) &&
-            col.isNotEmpty) {
-          hasMenu = true;
-          BarAction c = col.removeAt(0);
-          menu.add(MenuButton(
-            leading: Icon(c.icon),
-            onPressed: (context) => c.onPressed(),
-            child: Text(
-              c.label,
-            ),
-          ));
-        }
-
-        spread.addAll(mandatory);
-        spread.addAll(col.map((i) => Tooltip(
+  Widget build(BuildContext context) {
+    List<MenuButton> menu = [];
+    List<Widget> spread = [];
+    List<Widget> mandatory = actions
+        .where((i) => !i.collapsable)
+        .map((i) => Tooltip(
             tooltip: Text(i.label),
             child: IconButton(
               icon: Icon(i.icon),
               onPressed: i.onPressed,
-            ))));
+            )))
+        .toList();
+    bool hasMenu = false;
+    List<BarAction> col = actions.where((i) => i.collapsable).toList();
 
-        if (hasMenu) {
-          spread.add(PopupMenu(icon: Icons.dots_three, items: menu));
-        }
+    while (
+        (col.length + mandatory.length + (hasMenu ? 1 : 0)) * _iconButtonWidth >
+                (maxIcons * _iconButtonWidth) &&
+            col.isNotEmpty) {
+      hasMenu = true;
+      BarAction c = col.removeAt(0);
+      menu.add(MenuButton(
+        leading: Icon(c.icon),
+        onPressed: (context) => c.onPressed(),
+        child: Text(
+          c.label,
+        ),
+      ));
+    }
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: spread,
-        );
-      });
+    spread.addAll(mandatory);
+    spread.addAll(col.map((i) => Tooltip(
+        tooltip: Text(i.label),
+        child: IconButton(
+          icon: Icon(i.icon),
+          onPressed: i.onPressed,
+        ))));
+
+    if (hasMenu) {
+      spread.add(PopupMenu(icon: Icons.dots_three, items: menu));
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: spread,
+    );
+  }
 }
 
 class BarAction {
