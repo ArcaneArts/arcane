@@ -108,6 +108,11 @@ class _SliverScreenState extends State<SliverScreen> {
       }
     });
 
+    double width = MediaQuery.of(context).size.width;
+    double gutterWidth = widget.gutter && width > widget.minContentWidth
+        ? (width * ((1 - widget.minContentFraction) / 2)) - 25
+        : 0;
+
     return Scaffold(
         child: MaybeStack(
       fit: StackFit.expand,
@@ -131,7 +136,11 @@ class _SliverScreenState extends State<SliverScreen> {
                       stopping: !(blurring || widget.background != null),
                     )),
               ),
-            widget.sliver,
+            SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: gutterWidth,
+                ),
+                sliver: widget.sliver),
             SliverToBoxAdapter(
               child: SizedBox(
                 height: footerSize,

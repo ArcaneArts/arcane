@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
-import 'package:padded/padded.dart';
 
 class Gutter extends StatelessWidget {
   final Key? treeKey;

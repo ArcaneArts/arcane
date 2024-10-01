@@ -1,3 +1,6 @@
+## 2.3.3
+* Reinstate gutters
+
 ## 2.3.2
 * Bar Actions
 
