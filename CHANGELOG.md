@@ -1,3 +1,9 @@
+## 2.4.1
+* Sidebars in nav screen type added
+
+## 2.4.0
+* BREAKING: Removed motion_blur shader, remove it from your pubspec.yaml
+
 ## 2.3.3
 * Reinstate gutters
 

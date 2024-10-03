@@ -14,7 +14,7 @@ class NavTab {
   });
 }
 
-enum NavigationType { bottomNavigationBar, navigationRail }
+enum NavigationType { bottomNavigationBar, navigationRail, sidebar }
 
 class NavigationScreen extends AbstractStatelessScreen {
   final int index;
@@ -45,14 +45,15 @@ class NavigationScreen extends AbstractStatelessScreen {
         mainAxisSize: MainAxisSize.max,
         children: [
           const Gap(5),
-          SafeArea(
-              top: true,
-              child: GhostButton(
-                  density: ButtonDensity.icon,
-                  child: context.inSheet
-                      ? const Icon(Icons.x_bold)
-                      : const Icon(Icons.caret_left_bold),
-                  onPressed: () => Arcane.pop(context))),
+          if (Navigator.canPop(context))
+            SafeArea(
+                top: true,
+                child: GhostButton(
+                    density: ButtonDensity.icon,
+                    child: context.inSheet
+                        ? const Icon(Icons.x_bold)
+                        : const Icon(Icons.caret_left_bold),
+                    onPressed: () => Arcane.pop(context))),
           ...tabs
               .mapIndexed((tab, railIndex) => IconButton(
                     icon: Icon(
@@ -70,6 +71,32 @@ class NavigationScreen extends AbstractStatelessScreen {
         ],
       );
 
+  Widget buildSidebar(BuildContext context, int index) => NavigationSidebar(
+        labelType: NavigationLabelType.expanded,
+        constraints: const BoxConstraints(minWidth: 100, maxWidth: 150),
+        index: index,
+        children: [
+          if (Navigator.canPop(context)) ...[
+            NavigationButton(
+              index: -1,
+              child: Icon(Icons.caret_left_bold),
+              onChanged: (e) => Arcane.pop(context),
+              label: Text("Back"),
+            ),
+            NavigationGap(16)
+          ],
+          ...tabs.mapIndexed((e, i) => NavigationButton(
+              onChanged: (e) {
+                if (index != i) {
+                  onIndexChanged?.call(i);
+                }
+              },
+              index: i,
+              label: Text(e.label ?? "Item ${index + 1}"),
+              child: Icon(index == i ? e.selectedIcon ?? e.icon : e.icon)))
+        ],
+      );
+
   @override
   Widget build(BuildContext context) => IndexedStack(
         index: index,
@@ -77,6 +104,20 @@ class NavigationScreen extends AbstractStatelessScreen {
             .mapIndexed((tab, index) => switch (type) {
                   NavigationType.bottomNavigationBar => tabs[index].builder(
                       context, buildBottomNavigationBar(context, index)),
+                  NavigationType.sidebar => Scaffold(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          buildSidebar(context, index),
+                          Expanded(
+                            child: BlockBackButton(
+                                builder: (context) =>
+                                    tabs[index].builder(context, null)),
+                          ),
+                        ],
+                      ),
+                    ),
                   NavigationType.navigationRail => Scaffold(
                       child: Row(
                         mainAxisSize: MainAxisSize.max,

@@ -12,6 +12,7 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
 
   @override
   Widget build(BuildContext context) => NavigationScreen(
+          type: NavigationType.sidebar,
           onIndexChanged: (index) => setState(() => this.index = index),
           index: index,
           tabs: [

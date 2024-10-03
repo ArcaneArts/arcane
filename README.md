@@ -30,8 +30,6 @@ dependencies:
     arcane: VERSION
 flutter:
   uses-material-design: true
-  shaders:
-    - packages/arcane/shaders/motion_blur.glsl
   fonts:
     - family: "GeistSans"
       fonts:
