@@ -47,8 +47,11 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                             onChanged: (t) => setState(() => type = t))
                       ],
                     ),
-                    child: const Center(
-                      child: Text("Home Screen"),
+                    child: CenterBody(
+                      icon: Icons.alien,
+                      message: "The Message",
+                      actionText: "Action",
+                      onActionPressed: () {},
                     ))),
             NavTab(
                 icon: Icons.activity,
