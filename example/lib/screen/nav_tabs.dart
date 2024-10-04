@@ -7,12 +7,29 @@ class ExampleNavTabs extends StatefulWidget {
   State<ExampleNavTabs> createState() => _ExampleNavTabsState();
 }
 
+class _TypePicker extends StatelessWidget {
+  final NavigationType type;
+  final ValueChanged<NavigationType> onChanged;
+
+  const _TypePicker({super.key, required this.type, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) =>
+      PopupMenu(icon: (Icons.package), items: [
+        ...NavigationType.values.map((e) => MenuCheckbox(
+            onChanged: (context, v) => onChanged(e),
+            value: e == type,
+            child: Text(e.name)))
+      ]);
+}
+
 class _ExampleNavTabsState extends State<ExampleNavTabs> {
   int index = 0;
+  NavigationType type = NavigationType.navigationRail;
 
   @override
   Widget build(BuildContext context) => NavigationScreen(
-          type: NavigationType.sidebar,
+          type: type,
           onIndexChanged: (index) => setState(() => this.index = index),
           index: index,
           tabs: [
@@ -24,8 +41,13 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                     footer: footer,
                     header: Bar(
                       titleText: "Home",
+                      trailing: [
+                        _TypePicker(
+                            type: type,
+                            onChanged: (t) => setState(() => type = t))
+                      ],
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text("Home Screen"),
                     ))),
             NavTab(
@@ -35,9 +57,14 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                 builder: (context, footer) => FillScreen(
                     header: Bar(
                       titleText: "Activity",
+                      trailing: [
+                        _TypePicker(
+                            type: type,
+                            onChanged: (t) => setState(() => type = t))
+                      ],
                     ),
                     footer: footer,
-                    child: Center(
+                    child: const Center(
                       child: Text("Activity Screen"),
                     ))),
             NavTab(
@@ -47,9 +74,14 @@ class _ExampleNavTabsState extends State<ExampleNavTabs> {
                 builder: (context, footer) => FillScreen(
                     header: Bar(
                       titleText: "Contacts",
+                      trailing: [
+                        _TypePicker(
+                            type: type,
+                            onChanged: (t) => setState(() => type = t))
+                      ],
                     ),
                     footer: footer,
-                    child: Center(
+                    child: const Center(
                       child: Text("Contacts Screen"),
                     )))
           ]);
