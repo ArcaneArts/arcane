@@ -1,3 +1,6 @@
+## 2.4.2
+* Settings api
+
 ## 2.4.1
 * Sidebars in nav screen type added
 

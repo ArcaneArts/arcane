@@ -210,4 +210,5 @@ export 'util/theme.dart';
 export 'component/screen/navigation_screen.dart';
 export 'component/screen/abstract_screen.dart';
 export 'component/screen/fill_screen.dart';
+export 'component/screen/settings_screen.dart';
 export 'component/screen/sliver_screen.dart';

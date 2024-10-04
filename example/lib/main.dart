@@ -3,6 +3,7 @@ import 'package:example/screen/buttons.dart';
 import 'package:example/screen/dialogs.dart';
 import 'package:example/screen/menus.dart';
 import 'package:example/screen/nav_tabs.dart';
+import 'package:example/screen/settings.dart';
 import 'package:example/screen/sheets.dart';
 import 'package:example/screen/text.dart';
 import 'package:example/screen/tiles.dart';
@@ -104,6 +105,12 @@ class _HomeState extends State<Home> {
           title: const Text("Nav Screen"),
           subtitle: const Text("Rails & Bottom Bars"),
           onPressed: () => Arcane.push(context, const ExampleNavTabs()),
+        ),
+        Tile(
+          leading: const Icon(Icons.gear_six_fill),
+          title: const Text("Settings Screen"),
+          subtitle: const Text("Multi sectioned Screen example"),
+          onPressed: () => Arcane.push(context, const ExampleSettings()),
         )
       ]));
 }
