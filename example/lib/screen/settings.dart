@@ -44,12 +44,22 @@ OptionScreen optScreen = OptionScreen(
 
 OptionGroup optGroup = OptionGroup(
     name: "Appearance",
+    options: [optThemeMode, optGroup2],
+    description: "This is an option group for appearance settings",
+    icon: Icons.activity_fill);
+
+OptionGroup optGroup2 = OptionGroup(
+    name: "INNER THING",
     options: [optThemeMode],
     description: "This is an option group for appearance settings",
     icon: Icons.activity_fill);
 
-OptionScreen optMain = OptionScreen(
-    name: "Settings", options: [optName, optAge, optScreen, optGroup]);
+OptionScreen optMain = OptionScreen(name: "Settings", options: [
+  optName,
+  optAge,
+  optScreen,
+  optGroup,
+]);
 
 class ExampleSettings extends StatelessWidget {
   const ExampleSettings({super.key});
