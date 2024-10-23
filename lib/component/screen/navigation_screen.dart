@@ -20,10 +20,14 @@ class NavigationScreen extends AbstractStatelessScreen {
   final int index;
   final NavigationType type;
   final ValueChanged<int>? onIndexChanged;
+  final double siderailRightPadding;
   final List<NavTab> tabs;
+  final double siderailTopPadding;
   const NavigationScreen(
       {super.key,
+      this.siderailRightPadding = 8,
       this.index = 0,
+      this.siderailTopPadding = 8,
       this.onIndexChanged,
       required this.tabs,
       this.type = NavigationType.bottomNavigationBar});
@@ -69,7 +73,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                   ))
               .toList(),
         ],
-      );
+      ).padTop(siderailTopPadding);
 
   Widget buildSidebar(BuildContext context, int index) => NavigationSidebar(
         labelType: NavigationLabelType.expanded,
@@ -95,7 +99,7 @@ class NavigationScreen extends AbstractStatelessScreen {
               label: Text(e.label ?? "Item ${index + 1}"),
               child: Icon(index == i ? e.selectedIcon ?? e.icon : e.icon)))
         ],
-      );
+      ).padTop(siderailTopPadding);
 
   @override
   Widget build(BuildContext context) => IndexedStack(
@@ -110,6 +114,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           buildSidebar(context, index),
+                          Gap(siderailRightPadding),
                           Expanded(
                             child: BlockBackButton(
                                 builder: (context) =>
@@ -124,6 +129,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           buildNavigationRail(context, index),
+                          Gap(siderailRightPadding),
                           Expanded(
                             child: BlockBackButton(
                                 builder: (context) =>

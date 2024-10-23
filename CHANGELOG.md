@@ -1,3 +1,10 @@
+## 2.4.4
+* Dark/light oled preset themes @NextdoorPsycho
+* Upgrade dependencies
+
+## 2.4.3
+* Siderail & bar padding options
+
 ## 2.4.2
 * Settings api
 
