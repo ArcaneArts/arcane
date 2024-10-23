@@ -861,4 +861,71 @@ class ColorSchemes {
       dark: darkViolet(),
     );
   }
+
+  static ColorScheme lightOLED() {
+    return ColorScheme(
+      brightness: Brightness.light,
+      background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      card: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      cardForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      popover: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      popoverForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      primary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      primaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      secondary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.7).toColor(),
+      secondaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      muted: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
+      mutedForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.4).toColor(),
+      accent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
+      accentForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      destructive: const HSLColor.fromAHSL(1, 0.0, 0.84, 0.6).toColor(),
+      destructiveForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      border: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.7).toColor(),
+      input: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
+      ring: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      chart1: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.5).toColor(),
+      chart2: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.6).toColor(),
+      chart3: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.7).toColor(),
+      chart4: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.8).toColor(),
+      chart5: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.9).toColor(),
+    );
+  }
+
+  static ColorScheme darkOLED() {
+    return ColorScheme(
+      brightness: Brightness.dark,
+      background: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      foreground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      card: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      cardForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      popover: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      popoverForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      primary: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      primaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
+      secondary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.3).toColor(),
+      secondaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      muted: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.2).toColor(),
+      mutedForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.8).toColor(),
+      accent: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.2).toColor(),
+      accentForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      destructive: const HSLColor.fromAHSL(1, 0.0, 0.63, 0.31).toColor(),
+      destructiveForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      border: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.3).toColor(),
+      input: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.2).toColor(),
+      ring: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
+      chart1: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.5).toColor(),
+      chart2: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.4).toColor(),
+      chart3: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.3).toColor(),
+      chart4: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.2).toColor(),
+      chart5: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.1).toColor(),
+    );
+  }
+
+  static ContrastedColorScheme oled() {
+    return ContrastedColorScheme(
+      light: lightOLED(),
+      dark: darkOLED(),
+    );
+  }
 }
