@@ -82,7 +82,8 @@ class CheckboxTile extends StatelessWidget {
   final bool sliver;
   final double knownIconSize;
   final TileWidgetPosition checkPosition;
-  final ValueChanged<bool>? onChanged;
+  final ValueChanged<bool?>? onChanged;
+  final bool tristate;
 
   const CheckboxTile({
     super.key,
@@ -91,6 +92,7 @@ class CheckboxTile extends StatelessWidget {
     this.subtitle,
     this.leading,
     this.trailing,
+    this.tristate = false,
     this.onChanged,
     this.knownIconSize = 20,
     this.contentPadding =
@@ -108,12 +110,20 @@ class CheckboxTile extends StatelessWidget {
   }) =>
       ArcaneCheckbox(
         leading: leading,
+        tristate: tristate,
         trailing: trailing,
-        state: (value ?? false)
+        state: value == false
             ? ArcaneCheckboxState.unchecked
-            : ArcaneCheckboxState.checked,
-        onChanged: (v) =>
-            onChanged != null ? onChanged!(v == CheckboxState.checked) : null,
+            : value == null
+                ? ArcaneCheckboxState.indeterminate
+                : ArcaneCheckboxState.checked,
+        onChanged: (v) => onChanged != null
+            ? onChanged!(v == ArcaneCheckboxState.checked
+                ? true
+                : v == ArcaneCheckboxState.indeterminate
+                    ? null
+                    : false)
+            : null,
       );
 
   @override

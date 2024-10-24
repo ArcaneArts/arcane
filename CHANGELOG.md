@@ -1,3 +1,10 @@
+## 2.5.1
+* Fix Checkbox state inversion
+
+## 2.5.0
+* Checkbox List Tiles now support tristate
+* BREAKING Checkbox list tiles onChanged bool is now bool?
+
 ## 2.4.4
 * Dark/light oled preset themes @NextdoorPsycho
 * Upgrade dependencies
