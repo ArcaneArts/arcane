@@ -1,3 +1,6 @@
+## 2.5.2
+* FEAT: Image View
+
 ## 2.5.1
 * Fix Checkbox state inversion
 
