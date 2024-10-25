@@ -9,6 +9,8 @@ dependencies:
   boxy: ^2.2.0
   flutter:
     sdk: flutter
+  # https://github.com/Baseflow/flutter_cached_network_image/issues/981 MAX 3.3.1 
+  cached_network_image: ^3.3.1
   flutter_sticky_header: ^0.7.0
   padded: ^1.0.1 
   pylon: ^3.0.5
@@ -41,6 +43,9 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   thumbhash: ^0.1.0+1
   flutter_thumbhash: ^0.1.0+1
+  octo_image: ^2.1.0
+  blurhash_dart: ^1.2.1
+  flutter_blurhash: ^0.8.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

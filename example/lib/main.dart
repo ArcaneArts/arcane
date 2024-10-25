@@ -1,6 +1,7 @@
 import 'package:arcane/arcane.dart';
 import 'package:example/screen/buttons.dart';
 import 'package:example/screen/dialogs.dart';
+import 'package:example/screen/images.dart';
 import 'package:example/screen/menus.dart';
 import 'package:example/screen/nav_tabs.dart';
 import 'package:example/screen/settings.dart';
@@ -93,6 +94,12 @@ class _HomeState extends State<Home> {
           title: const Text("Toast"),
           subtitle: const Text("Toast notifications"),
           onPressed: () => Arcane.push(context, const ExampleToasts()),
+        ),
+        Tile(
+          leading: const Icon(Icons.image),
+          title: const Text("Images"),
+          subtitle: const Text("Image Views"),
+          onPressed: () => Arcane.push(context, const ExampleImages()),
         ),
         Tile(
           leading: const Icon(Icons.menu_ionic),
