@@ -38,7 +38,8 @@ class ExampleButtons extends StatelessWidget {
                       onPressed: () {},
                       leading: const Icon(Icons.activity),
                       child: Text("Ghost w Icon"),
-                    )
+                    ),
+                    NumberInput()
                   ],
                 ),
                 Row(

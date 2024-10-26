@@ -17,10 +17,14 @@ class NumberInput extends StatefulWidget {
   final AbstractButtonStyle? buttonStyle;
   final TextStyle? style;
   final EdgeInsetsGeometry? padding;
+  final FocusNode? focusNode;
+  final VoidCallback? onEditingComplete;
 
   const NumberInput({
     super.key,
+    this.onEditingComplete,
     this.padding,
+    this.focusNode,
     this.controller,
     this.initialValue = 0,
     this.step = 1,
@@ -251,6 +255,7 @@ class _NumberInputState extends State<NumberInput> {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
     return TextField(
+      focusNode: widget.focusNode,
       padding: widget.padding ??
           EdgeInsets.symmetric(
             horizontal: 10 * scaling,
@@ -275,6 +280,7 @@ class _NumberInputState extends State<NumberInput> {
         _lastValidValue = value;
         _controller.text = _valueAsString;
         widget.onChanged?.call(_lastValidValue);
+        widget.onEditingComplete?.call();
       },
       border: !widget.showButtons,
       enabled: widget.enabled ?? true,
