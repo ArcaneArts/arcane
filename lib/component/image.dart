@@ -24,10 +24,10 @@ class ImageStyle {
         assert(fit != BoxFit.none, "Fit cannot be none. Use contain instead.");
 }
 
-class ImageView extends StatelessWidget {
+class ImageView extends StatefulWidget {
   final String? thumbHash;
   final String? blurHash;
-  final String url;
+  final Future<String> url;
   final String? cacheKey;
   final ImageStyle style;
   final Duration? fadeOutDuration;
@@ -42,30 +42,47 @@ class ImageView extends StatelessWidget {
       this.cacheKey});
 
   @override
-  Widget build(BuildContext context) => OctoImage(
-      fit: style.fit,
-      width: style.width,
-      height: style.height,
-      alignment: style.alignment,
-      color: style.color,
-      colorBlendMode: style.colorBlendMode,
-      fadeOutDuration: fadeOutDuration,
-      fadeOutCurve: Curves.easeIn,
-      errorBuilder: (context, e, es) => ImagePlaceholderView(
-            isError: true,
-            style: style,
-            thumbHash: thumbHash,
-            blurHash: blurHash,
-          ),
-      placeholderBuilder: (w) => ImagePlaceholderView(
-            style: style,
-            thumbHash: thumbHash,
-            blurHash: blurHash,
-          ),
-      image: CachedNetworkImageProvider(
-        url,
-        cacheKey: cacheKey,
-      ));
+  State<ImageView> createState() => _ImageViewState();
+}
+
+class _ImageViewState extends State<ImageView> {
+  @override
+  Widget build(BuildContext context) =>
+      widget.url.buildNullable((url) => OctoImage(
+          fit: widget.style.fit,
+          width: widget.style.width,
+          height: widget.style.height,
+          alignment: widget.style.alignment,
+          color: widget.style.color,
+          colorBlendMode: widget.style.colorBlendMode,
+          fadeOutDuration: widget.fadeOutDuration,
+          fadeOutCurve: Curves.easeIn,
+          errorBuilder: (context, e, es) => ImagePlaceholderView(
+                isError: true,
+                style: widget.style,
+                thumbHash: widget.thumbHash,
+                blurHash: widget.blurHash,
+              ),
+          placeholderBuilder: (w) => ImagePlaceholderView(
+                style: widget.style,
+                thumbHash: widget.thumbHash,
+                blurHash: widget.blurHash,
+              ),
+          image: url == null
+              ? _DummyImageProvider()
+              : CachedNetworkImageProvider(
+                  url,
+                  cacheKey: widget.cacheKey,
+                )));
+}
+
+class _DummyImageProvider extends ImageProvider<CachedNetworkImageProvider> {
+  @override
+  Future<CachedNetworkImageProvider> obtainKey(
+      ImageConfiguration configuration) async {
+    await Future.delayed(Duration(hours: 1));
+    throw InvalidResult("Waited for url?");
+  }
 }
 
 class ImagePlaceholderView extends StatelessWidget {

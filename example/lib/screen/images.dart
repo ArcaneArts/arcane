@@ -10,12 +10,14 @@ class ExampleImages extends StatelessWidget {
         ),
         child: Center(
           child: ImageView(
-              cacheKey: "ffff",
-              style: ImageStyle(),
+              cacheKey: "ffffxxxxx",
+              style: ImageStyle(width: 100),
               blurHash: r'KRASz$ofs^ogfffPs]fRWQ',
               //thumbHash: "XyMGHwD5d2hpp2d9hHaKdHd4mYAp9mcN",
-              url:
-                  "https://raw.githubusercontent.com/ArcaneArts/arcane/refs/heads/main/79207749.webp"),
+              url: Future.delayed(
+                  Duration(seconds: 1),
+                  () =>
+                      "https://raw.githubusercontent.com/ArcaneArts/arcane/refs/heads/main/79207749.webp")),
         ),
       );
 }

@@ -1,3 +1,6 @@
+## 2.5.4
+* Image view now supports future urls and loads gracefully
+
 ## 2.5.3
 * Number field support on editing complete
 
