@@ -160,6 +160,8 @@ extension IterableExtension<T> on Iterable<T> {
 }
 
 extension WidgetExtension on Widget {
+  Widget get slvToBox => SliverToBoxAdapter(child: this);
+
   Widget constrained(
       {double? minWidth,
       double? maxWidth,
@@ -387,6 +389,38 @@ extension WidgetExtension on Widget {
       child: IntrinsicHeight(
         child: this,
       ),
+    );
+  }
+
+  Widget contain(
+      {double? width,
+      double? height,
+      Color? color,
+      Decoration? decoration,
+      AlignmentGeometry? alignment,
+      EdgeInsetsGeometry? padding,
+      Clip clipBehavior = Clip.none,
+      BoxConstraints? constraints,
+      Decoration? foregroundDecoration,
+      EdgeInsetsGeometry? margin,
+      Matrix4? transform,
+      AlignmentGeometry? transformAlignment,
+      Key? key}) {
+    return Container(
+      key: key,
+      width: width,
+      height: height,
+      color: color,
+      decoration: decoration,
+      alignment: alignment,
+      padding: padding,
+      clipBehavior: clipBehavior,
+      constraints: constraints,
+      foregroundDecoration: foregroundDecoration,
+      margin: margin,
+      transform: transform,
+      transformAlignment: transformAlignment,
+      child: this,
     );
   }
 }

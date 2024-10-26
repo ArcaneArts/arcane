@@ -324,47 +324,55 @@ class PopoverAnchorState extends State<PopoverAnchor>
   Widget build(BuildContext context) {
     Widget childWidget = Data.inherit(
       data: this,
-      child: TapRegion(
-        // enabled: widget.consumeOutsideTaps,
-        onTapOutside: widget.onTapOutside != null
-            ? (event) {
-                widget.onTapOutside?.call();
-              }
-            : null,
-        groupId: widget.regionGroupId,
-        child: MediaQuery.removePadding(
-          context: context,
-          removeBottom: true,
-          removeLeft: true,
-          removeRight: true,
-          removeTop: true,
-          child: AnimatedBuilder(
-            animation: widget.animation,
-            builder: (context, child) {
-              final theme = Theme.of(context);
-              final scaling = theme.scaling;
-              return PopoverLayout(
-                alignment: _alignment,
-                position: _position,
-                anchorSize: _anchorSize,
-                anchorAlignment: _anchorAlignment,
-                widthConstraint: _widthConstraint,
-                heightConstraint: _heightConstraint,
-                offset: _offset,
-                margin: _margin ?? (const EdgeInsets.all(8) * scaling),
-                scale: tweenValue(0.9, 1.0, widget.animation.value),
-                scaleAlignment: widget.transitionAlignment ?? _alignment,
-                allowInvertVertical: _allowInvertVertical,
-                allowInvertHorizontal: _allowInvertHorizontal,
-                child: child!,
-              );
-            },
-            child: FadeTransition(
-              opacity: widget.animation,
-              child: widget.builder(context),
-            ),
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.transparent,
           ),
-        ),
+          TapRegion(
+            consumeOutsideTaps: widget.consumeOutsideTaps,
+            onTapOutside: widget.onTapOutside != null
+                ? (event) {
+                    print("Ouitside tap");
+                    widget.onTapOutside?.call();
+                  }
+                : null,
+            groupId: widget.regionGroupId,
+            child: MediaQuery.removePadding(
+              context: context,
+              removeBottom: true,
+              removeLeft: true,
+              removeRight: true,
+              removeTop: true,
+              child: AnimatedBuilder(
+                animation: widget.animation,
+                builder: (context, child) {
+                  final theme = Theme.of(context);
+                  final scaling = theme.scaling;
+                  return PopoverLayout(
+                    alignment: _alignment,
+                    position: _position,
+                    anchorSize: _anchorSize,
+                    anchorAlignment: _anchorAlignment,
+                    widthConstraint: _widthConstraint,
+                    heightConstraint: _heightConstraint,
+                    offset: _offset,
+                    margin: _margin ?? (const EdgeInsets.all(8) * scaling),
+                    scale: tweenValue(0.9, 1.0, widget.animation.value),
+                    scaleAlignment: widget.transitionAlignment ?? _alignment,
+                    allowInvertVertical: _allowInvertVertical,
+                    allowInvertHorizontal: _allowInvertHorizontal,
+                    child: child!,
+                  );
+                },
+                child: FadeTransition(
+                  opacity: widget.animation,
+                  child: widget.builder(context),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
     if (widget.themes != null) {

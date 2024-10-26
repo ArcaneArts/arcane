@@ -1,18 +1,22 @@
+## 2.5.5
+* FIX: popup menus allowing outside taps to go through
+* Added .contain() widget extension for wrapping a container 
+
 ## 2.5.4
-* Image view now supports future urls and loads gracefully
+* FEAT: Image view now supports future urls and loads gracefully
 
 ## 2.5.3
-* Number field support on editing complete
+* FEAT: Number field support on editing complete
 
 ## 2.5.2
 * FEAT: Image View
 
 ## 2.5.1
-* Fix Checkbox state inversion
+* FIX: Checkbox state inversion
 
 ## 2.5.0
-* Checkbox List Tiles now support tristate
-* BREAKING Checkbox list tiles onChanged bool is now bool?
+* FEAT: Checkbox List Tiles now support tristate
+* BREAKING: Checkbox list tiles onChanged bool is now bool?
 
 ## 2.4.4
 * Dark/light oled preset themes @NextdoorPsycho
