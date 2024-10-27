@@ -10,8 +10,8 @@ class ExampleImages extends StatelessWidget {
         ),
         child: Center(
           child: ImageView(
-              cacheKey: "ffffxxxxx",
-              style: ImageStyle(width: 100),
+              cacheKey: "ffffxxxxxx",
+              style: ImageStyle(),
               blurHash: r'KRASz$ofs^ogfffPs]fRWQ',
               //thumbHash: "XyMGHwD5d2hpp2d9hHaKdHd4mYAp9mcN",
               url: Future.delayed(
