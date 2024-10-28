@@ -1,3 +1,6 @@
+## 2.5.6
+* FEAT: SliverGutter
+
 ## 2.5.5
 * FIX: popup menus allowing outside taps to go through
 * Added .contain() widget extension for wrapping a container 
