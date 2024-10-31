@@ -48,16 +48,11 @@ class _BackdropFilterBlur extends StatelessWidget {
   final TileMode tileMode;
   final Widget child;
 
-  const _BackdropFilterBlur(
-      {super.key,
-      required this.blurriness,
-      this.tileMode = TileMode.decal,
-      required this.child});
+  const _BackdropFilterBlur({required this.blurriness, this.tileMode = TileMode.decal, required this.child});
 
   @override
   Widget build(BuildContext context) => BackdropFilter(
-        filter: ui.ImageFilter.blur(
-            sigmaX: blurriness, sigmaY: blurriness, tileMode: tileMode),
+        filter: ui.ImageFilter.blur(sigmaX: blurriness, sigmaY: blurriness, tileMode: tileMode),
         child: child,
       );
 }
@@ -74,8 +69,7 @@ class _RenderObjectBlur extends SingleChildRenderObjectWidget {
   });
 
   @override
-  void updateRenderObject(
-      BuildContext context, covariant _RenderObjectBlurRenderBox renderObject) {
+  void updateRenderObject(BuildContext context, covariant _RenderObjectBlurRenderBox renderObject) {
     if (blurriness == renderObject.blurriness) return;
     renderObject.blurriness = blurriness;
     renderObject.tileMode = tileMode;

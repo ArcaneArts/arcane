@@ -5,7 +5,7 @@ class ExampleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverScreen(
-      header: Bar(
+      header: const Bar(
         titleText: "Text",
       ),
       sliver: SListView(

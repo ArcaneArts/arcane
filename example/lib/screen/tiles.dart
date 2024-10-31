@@ -5,14 +5,13 @@ class ExampleTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverScreen(
-        header: Bar(
+        header: const Bar(
           titleText: "Tiles",
         ),
         sliver: MultiSliver(children: [
-          Tile(
+          const Tile(
             title: Text("Sliver Tile"),
-            subtitle: Text(
-                "If you scroll down you will see that this sliver tile title / icon / trailing will act as a floating header while overtop of this description text. Basically \n\n\n This is still the description box."),
+            subtitle: Text("If you scroll down you will see that this sliver tile title / icon / trailing will act as a floating header while overtop of this description text. Basically \n\n\n This is still the description box."),
             leading: Icon(Icons.plus),
             trailing: Icon(Icons.x),
             sliver: true,
@@ -20,39 +19,39 @@ class ExampleTiles extends StatelessWidget {
           SListView(
             children: [
               Tile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                leading: Icon(Icons.plus),
-                trailing: Icon(Icons.x),
+                title: const Text("Title"),
+                subtitle: const Text("Subtitle"),
+                leading: const Icon(Icons.plus),
+                trailing: const Icon(Icons.x),
                 onPressed: () => print("Tile Pressed"),
               ),
-              Tile(
+              const Tile(
                 title: Text("Title"),
                 leading: Icon(Icons.plus),
                 trailing: Icon(Icons.x),
               ),
-              Tile(
+              const Tile(
                 leading: Icon(Icons.plus),
                 title: Text("Title"),
               ),
-              Tile(
+              const Tile(
                 leading: Icon(Icons.plus),
                 subtitle: Text("Subtitle Only"),
               ),
-              SwitchTile(
+              const SwitchTile(
                 title: Text("Checkbox Tile"),
                 leading: Icon(Icons.plus),
                 subtitle: Text("Subtitle"),
                 value: true,
               ),
-              CheckboxTile(
+              const CheckboxTile(
                 title: Text("Checkbox Tile"),
                 leading: Icon(Icons.plus),
                 trailing: Icon(Icons.x),
                 subtitle: Text("But with a trailing widget"),
                 value: true,
               ),
-              CheckboxTile(
+              const CheckboxTile(
                 title: Text("Leading Checkbox Tile"),
                 leading: Icon(Icons.plus),
                 checkPosition: TileWidgetPosition.leading,
@@ -60,40 +59,40 @@ class ExampleTiles extends StatelessWidget {
                 subtitle: Text("But with a leading widget"),
                 value: true,
               ),
-              Divider(
+              const Divider(
                 height: 16,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 16,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 16,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
-              Divider(
+              const Divider(
                 height: 100,
               ),
             ],

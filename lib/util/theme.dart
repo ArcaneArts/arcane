@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
-import 'package:flutter_animate/flutter_animate.dart';
 
 extension XWidgetEffect on Widget {
   Widget get blurIn => animate()
@@ -29,8 +28,7 @@ extension XThemeModeToBrightness on ThemeMode {
   Brightness get brightness => switch (this) {
         ThemeMode.light => Brightness.light,
         ThemeMode.dark => Brightness.dark,
-        ThemeMode.system =>
-          WidgetsBinding.instance.platformDispatcher.platformBrightness,
+        ThemeMode.system => WidgetsBinding.instance.platformDispatcher.platformBrightness,
       };
 }
 
@@ -57,19 +55,14 @@ class ArcaneTheme extends AbstractArcaneTheme {
       );
 
   @override
-  m.ThemeData buildMaterialTheme(Brightness brightness) =>
-      (brightness == Brightness.dark
-          ? m.ThemeData.dark()
-          : m.ThemeData.light());
+  m.ThemeData buildMaterialTheme(Brightness brightness) => (brightness == Brightness.dark ? m.ThemeData.dark() : m.ThemeData.light());
 
   @override
-  c.CupertinoThemeData buildCupertinoTheme(Brightness brightness) =>
-      c.CupertinoThemeData(brightness: brightness);
+  c.CupertinoThemeData buildCupertinoTheme(Brightness brightness) => c.CupertinoThemeData(brightness: brightness);
 }
 
 abstract class AbstractArcaneTheme {
-  static final AbstractArcaneTheme defaultArcaneTheme =
-      ArcaneTheme(scheme: ColorSchemes.zinc());
+  static final AbstractArcaneTheme defaultArcaneTheme = ArcaneTheme(scheme: ColorSchemes.zinc());
 
   final ThemeMode themeMode;
 
@@ -83,26 +76,18 @@ abstract class AbstractArcaneTheme {
 
   c.CupertinoThemeData buildCupertinoTheme(Brightness brightness);
 
-  m.ThemeData colorMaterialTheme(ThemeData arcane, m.ThemeData theme) =>
-      theme.copyWith(
-          colorScheme: theme.colorScheme
-              .copyWith(surface: arcane.colorScheme.background),
-          pageTransitionsTheme: m.PageTransitionsTheme(builders: {
-            ...Map.fromEntries(
-              m.TargetPlatform.values.map((e) => MapEntry(
-                  e,
-                  const m.ZoomPageTransitionsBuilder(
-                      allowSnapshotting: true,
-                      allowEnterRouteSnapshotting: true))),
-            ),
-            // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
-          }));
+  m.ThemeData colorMaterialTheme(ThemeData arcane, m.ThemeData theme) => theme.copyWith(
+      colorScheme: theme.colorScheme.copyWith(surface: arcane.colorScheme.background),
+      pageTransitionsTheme: m.PageTransitionsTheme(builders: {
+        ...Map.fromEntries(
+          m.TargetPlatform.values.map((e) => MapEntry(e, const m.ZoomPageTransitionsBuilder(allowSnapshotting: true, allowEnterRouteSnapshotting: true))),
+        ),
+        // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
+      }));
 
   ThemeData getArcaneTheme() => buildTheme(themeMode.brightness);
 
-  m.ThemeData getMaterialTheme() => colorMaterialTheme(
-      getArcaneTheme(), buildMaterialTheme(themeMode.brightness));
+  m.ThemeData getMaterialTheme() => colorMaterialTheme(getArcaneTheme(), buildMaterialTheme(themeMode.brightness));
 
-  c.CupertinoThemeData getCupertinoTheme() =>
-      buildCupertinoTheme(themeMode.brightness);
+  c.CupertinoThemeData getCupertinoTheme() => buildCupertinoTheme(themeMode.brightness);
 }

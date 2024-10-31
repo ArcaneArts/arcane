@@ -5,11 +5,11 @@ class ExampleMenus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SliverScreen(
-        fab: FabMenu(child: Icon(Icons.menu_ionic), items: [
+        fab: const FabMenu(items: [
           MenuButton(child: Text("Item 1")),
           MenuButton(child: Text("Item 2")),
-        ]),
-        header: Bar(
+        ], child: Icon(Icons.menu_ionic)),
+        header: const Bar(
           titleText: "Menus",
           trailing: [
             PopupMenu(icon: Icons.dots_three, items: [
@@ -21,11 +21,7 @@ class ExampleMenus extends StatelessWidget {
                   MenuButton(child: Text("Item 6")),
                   MenuButton(child: Text("Item 7")),
                   MenuButton(
-                    subMenu: [
-                      MenuButton(child: Text("Item 8")),
-                      MenuButton(child: Text("Item 9")),
-                      MenuButton(child: Text("Item 10"))
-                    ],
+                    subMenu: [MenuButton(child: Text("Item 8")), MenuButton(child: Text("Item 9")), MenuButton(child: Text("Item 10"))],
                     child: Text("Group 2"),
                   )
                 ],
@@ -36,7 +32,7 @@ class ExampleMenus extends StatelessWidget {
           ],
         ),
         sliver: SListView(
-          children: [
+          children: const [
             ContextMenu(
                 items: [
                   MenuButton(child: Text("Im a menu item")),
