@@ -1,3 +1,6 @@
+## 2.5.7
+* Added scaledLeadingPadding to Checkbox widgets
+
 ## 2.5.6
 * FEAT: SliverGutter
 
