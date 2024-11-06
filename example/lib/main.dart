@@ -1,14 +1,7 @@
 import 'package:arcane/arcane.dart';
-import 'package:example/screen/buttons.dart';
-import 'package:example/screen/dialogs.dart';
-import 'package:example/screen/images.dart';
-import 'package:example/screen/menus.dart';
-import 'package:example/screen/nav_tabs.dart';
-import 'package:example/screen/settings.dart';
-import 'package:example/screen/sheets.dart';
-import 'package:example/screen/text.dart';
-import 'package:example/screen/tiles.dart';
-import 'package:example/screen/toasts.dart';
+import 'package:example/showcase/buttons.dart';
+import 'package:example/showcase/text.dart';
+import 'package:example/util/showcase.dart';
 
 bool v = false;
 String? vv;
@@ -35,89 +28,70 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool searching = false;
+  TextEditingController controller = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  bool listed = false;
+
+  List<ArcaneShowcase> get valid => searching
+      ? showcases.where((element) => element.matches(controller.text)).toList()
+      : showcases;
+
   @override
   Widget build(BuildContext context) => SliverScreen(
       header: Bar(
-        titleText: "Arcane",
-        actions: BarActions(
-          actions: [
-            BarAction(
-                icon: Icons.activity, label: "Activity", onPressed: () {}),
-            BarAction(
-                icon: Icons.address_book,
-                label: "Address Book",
-                onPressed: () {}),
-            BarAction(
-                icon: Icons.airplane, label: "Airplane", onPressed: () {}),
-            BarAction(icon: Icons.airplay, label: "Airplay", onPressed: () {}),
-            BarAction(icon: Icons.alien, label: "Alien", onPressed: () {}),
-            BarAction(
-                icon: Icons.align_bottom,
-                label: "Align Bottom",
-                onPressed: () {}),
-          ],
-        ),
+        headerText: searching ? null : "Arcane",
+        title: searching
+            ? TextField(
+                controller: controller,
+                onChanged: (v) {
+                  setState(() {});
+                },
+                onSubmitted: (v) {},
+                placeholder: "Search",
+              )
+            : const Text("Tome of Style"),
+        trailing: [
+          searching
+              ? IconButton(
+                  icon: const Icon(Icons.x),
+                  onPressed: () {
+                    setState(() {
+                      searching = false;
+                      controller.clear();
+                    });
+                  })
+              : IconButton(
+                  icon: const Icon(Icons.search_ionic),
+                  onPressed: () {
+                    setState(() {
+                      searching = true;
+                      focusNode.requestFocus();
+                    });
+                  }),
+        ],
       ),
-      sliver: SListView(children: [
-        Tile(
-          leading: const Icon(Icons.text_aa),
-          title: const Text("Text"),
-          subtitle: const Text("Text sizes & styles"),
-          onPressed: () => Arcane.push(context, const ExampleText()),
-        ),
-        Tile(
-          leading: const Icon(Icons.gift),
-          title: const Text("Buttons"),
-          subtitle: const Text("Button styles w/o icons"),
-          onPressed: () => Arcane.push(context, const ExampleButtons()),
-        ),
-        Tile(
-          leading: const Icon(Icons.cards),
-          title: const Text("Tiles"),
-          subtitle: const Text("List Tiles"),
-          onPressed: () => Arcane.push(context, const ExampleTiles()),
-        ),
-        Tile(
-          leading: const Icon(Icons.diamond),
-          title: const Text("Dialogs"),
-          subtitle: const Text("Dialog confirms and whatnot"),
-          onPressed: () => Arcane.push(context, const ExampleDialogs()),
-        ),
-        Tile(
-          leading: const Icon(Icons.file),
-          title: const Text("Sheets"),
-          subtitle: const Text("Modal sheets"),
-          onPressed: () => Arcane.push(context, const ExampleSheets()),
-        ),
-        Tile(
-          leading: const Icon(Icons.bell),
-          title: const Text("Toast"),
-          subtitle: const Text("Toast notifications"),
-          onPressed: () => Arcane.push(context, const ExampleToasts()),
-        ),
-        Tile(
-          leading: const Icon(Icons.image),
-          title: const Text("Images"),
-          subtitle: const Text("Image Views"),
-          onPressed: () => Arcane.push(context, const ExampleImages()),
-        ),
-        Tile(
-          leading: const Icon(Icons.menu_ionic),
-          title: const Text("Menus"),
-          subtitle: const Text("Context & Dropdown Menus"),
-          onPressed: () => Arcane.push(context, const ExampleMenus()),
-        ),
-        Tile(
-          leading: const Icon(Icons.table),
-          title: const Text("Nav Screen"),
-          subtitle: const Text("Rails & Bottom Bars"),
-          onPressed: () => Arcane.push(context, const ExampleNavTabs()),
-        ),
-        Tile(
-          leading: const Icon(Icons.gear_six_fill),
-          title: const Text("Settings Screen"),
-          subtitle: const Text("Multi sectioned Screen example"),
-          onPressed: () => Arcane.push(context, const ExampleSettings()),
-        )
-      ]));
+      sliver: MultiSliver(
+        children: [
+          ...valid
+              .whereType<SliverScreenArcaneShowcase>()
+              .map((e) => BarSection(
+                    leading: [
+                      if (e.icon != null) Icon(e.icon),
+                    ],
+                    titleText: e.name,
+                    subtitleText: e.description,
+                    sliver: e.buildSliver(context),
+                  )),
+          SGridView(
+            children: [
+              ...valid
+                  .where((e) => e is! SliverScreenArcaneShowcase)
+                  .map((e) => e.buildCard(context))
+            ],
+          ),
+        ],
+      ));
 }
+
+const List<ArcaneShowcase> showcases = [TextShowcase(), ButtonsShowcase()];

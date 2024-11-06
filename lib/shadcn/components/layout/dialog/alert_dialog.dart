@@ -9,6 +9,7 @@ class AlertDialog extends StatefulWidget {
   final double? surfaceBlur;
   final double? surfaceOpacity;
   final Color? barrierColor;
+  final double padding;
 
   const AlertDialog({
     super.key,
@@ -20,6 +21,7 @@ class AlertDialog extends StatefulWidget {
     this.surfaceBlur,
     this.surfaceOpacity,
     this.barrierColor,
+    this.padding = 24,
   });
 
   @override
@@ -40,7 +42,7 @@ class _AlertDialogState extends State<AlertDialog> {
           borderRadius: themeData.radiusXxl,
           borderWidth: 1 * scaling,
           borderColor: themeData.colorScheme.border,
-          padding: EdgeInsets.all(24 * scaling),
+          padding: EdgeInsets.all(widget.padding * scaling),
           surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
           surfaceOpacity:
               (widget.surfaceOpacity ?? themeData.surfaceOpacity)! * 1.1,

@@ -1,5 +1,6 @@
 library arcane;
 
+export 'package:arcane/component/logo.dart';
 // Shadcn
 export 'package:arcane/shadcn/components/animation.dart';
 export 'package:arcane/shadcn/components/chart/tracker.dart';
@@ -191,7 +192,11 @@ export 'component/bottom_navigation_bar.dart';
 export 'component/card_carousel.dart';
 export 'component/center_body.dart';
 export 'component/checkbox.dart';
-export 'component/dialog.dart';
+export 'component/dialog/confirm.dart';
+export 'component/dialog/confirm_text.dart';
+export 'component/dialog/dialog.dart';
+export 'component/dialog/email.dart';
+export 'component/dialog/text.dart';
 export 'component/fab.dart';
 export 'component/glass.dart';
 export 'component/gutter.dart';

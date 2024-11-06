@@ -7,6 +7,7 @@ import 'package:pixel_snap/material.dart' as material;
 class TextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool filled;
+  final bool sameSizeHintStyle;
   final String? placeholder;
   final bool border;
   final Widget? leading;
@@ -50,6 +51,7 @@ class TextField extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.filled = false,
+    this.sameSizeHintStyle = false,
     this.placeholder,
     this.border = true,
     this.autofocus = false,
@@ -234,12 +236,16 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         isDense: true,
         fillColor: theme.colorScheme.muted,
         hintText: widget.placeholder,
-        hintStyle: defaultTextStyle
-            .merge(theme.typography.normal)
-            .merge(theme.typography.small)
-            .copyWith(
-              color: theme.colorScheme.mutedForeground,
-            ),
+        hintStyle: widget.sameSizeHintStyle
+            ? defaultTextStyle.copyWith(
+                color: theme.colorScheme.mutedForeground.withOpacity(0.8),
+              )
+            : defaultTextStyle
+                .merge(theme.typography.normal)
+                .merge(theme.typography.small)
+                .copyWith(
+                  color: theme.colorScheme.mutedForeground,
+                ),
         border: !widget.border
             ? material.InputBorder.none
             : widget.filled
