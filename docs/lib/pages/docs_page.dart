@@ -314,7 +314,7 @@ class DocsPageState extends State<DocsPage> {
       ],
     ),
     // COMPONENTS END
-  ];
+  ]; //
 
   List<String> componentCategories = [
     'Animation',
