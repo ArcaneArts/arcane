@@ -157,7 +157,7 @@ class _DialogConfirmTextState extends State<DialogConfirmText>
                             ? Theme.of(context).colorScheme.destructive
                             : null,
                       ),
-                    ),
+                    ).iw,
                   ),
                 ),
               ),

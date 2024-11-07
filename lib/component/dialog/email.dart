@@ -85,7 +85,7 @@ class _DialogEmailState extends State<DialogEmail> {
                   widget.onConfirm(value);
                 },
                 leading: const Icon(Icons.mail_ionic),
-              ),
+              ).iw,
             ],
           ),
           actions: [
