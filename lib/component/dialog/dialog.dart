@@ -44,7 +44,7 @@ class ArcaneDialog extends StatelessWidget {
         title: title,
         content: content,
         actions: actions,
-        padding: padding,
+        padding: EdgeInsets.all(padding * Theme.of(context).scaling),
         trailing: trailing,
         surfaceBlur: surfaceBlur,
         surfaceOpacity: surfaceOpacity,

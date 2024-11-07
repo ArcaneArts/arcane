@@ -79,7 +79,7 @@ class _DialogEmailState extends State<DialogEmail> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 focusNode: focusNode,
                 controller: controller,
-                placeholder: widget.hint,
+                placeholder: widget.hint == null ? null : Text(widget.hint!),
                 onSubmitted: (value) {
                   Navigator.of(context).pop(true);
                   widget.onConfirm(value);

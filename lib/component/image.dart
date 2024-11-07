@@ -81,7 +81,7 @@ class _DummyImageProvider extends ImageProvider<CachedNetworkImageProvider> {
   Future<CachedNetworkImageProvider> obtainKey(
       ImageConfiguration configuration) async {
     await Future.delayed(Duration(hours: 1));
-    throw InvalidResult("Waited for url?");
+    throw "Waited for url?";
   }
 }
 

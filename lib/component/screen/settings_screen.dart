@@ -238,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
                 title: TextField(
                   autofocus: true,
-                  placeholder: "Search ${widget.options.name}",
+                  placeholder: Text("Search ${widget.options.name}"),
                   controller: searchController,
                   onSubmitted: (v) {
                     setState(() {});
