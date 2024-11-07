@@ -1,3 +1,7 @@
+## 2.5.8
+* The command dialog
+* The confirm text dialog
+
 ## 2.5.7
 * Added scaledLeadingPadding to Checkbox widgets
 
