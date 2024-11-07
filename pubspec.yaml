@@ -1,7 +1,9 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
 version: 3.0.0+1
-homepage: https://github.com/ArcaneArts/arcane
+homepage: https://arcane.art
+documentation: https://tome.arcane.art
+repository: https://github.com/ArcaneArts/arcane
 environment:
   sdk: '>=3.3.0 <4.0.0'
   flutter: ">=1.17.0"
