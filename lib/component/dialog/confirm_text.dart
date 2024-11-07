@@ -150,7 +150,7 @@ class _DialogConfirmTextState extends State<DialogConfirmText>
                       maxLines: 1,
                       focusNode: focusNode,
                       controller: controller,
-                      placeholder: widget.verificationText,
+                      placeholder: Text(widget.verificationText),
                       onSubmitted: _handleSubmit,
                       style: TextStyle(
                         color: _isError

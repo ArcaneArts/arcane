@@ -78,8 +78,8 @@ class _DialogCommandState extends State<DialogCommand> {
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   focusNode: focusNode,
                   controller: controller,
-                  placeholder: widget.hint,
-                  sameSizeHintStyle: true,
+                  placeholder: widget.hint == null ? null : Text(widget.hint!),
+                  // sameSizeHintStyle: true, TODO: fix
                   onChanged: (value) => setState(() {}),
                   onSubmitted: (value) {
                     Navigator.of(context).pop(true);
