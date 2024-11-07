@@ -256,7 +256,7 @@ class BarActions extends StatelessWidget {
         ))));
 
     if (hasMenu) {
-      spread.add(PopupMenu(icon: Icons.dots_three, items: menu));
+      spread.add(IconButtonMenu(icon: Icons.dots_three, items: menu));
     }
 
     return Row(
