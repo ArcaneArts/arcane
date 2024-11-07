@@ -43,6 +43,8 @@ echo "Updating dependencies for 'docs'."
 cd docs
 echo "Branding 'docs' to 'arcane'."
 find lib/pages -type f -name "docs_page.dart" -exec sed -i "s/'shadcn_flutter'/'arcane'/g" {} +
+find lib/pages -type f -name "docs_page.dart" -exec sed -i 's|'FlutterLogo'|'Logo'|g' {} +
+
 cd ..
 echo "Changing urls to arcane"
 find docs -type f -name "*.dart" -exec sed -i 's|'https://github.com/sunarya-thito/shadcn_flutter'|'https://github.com/ArcaneArts/arcane'|g' {} +
