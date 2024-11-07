@@ -29,223 +29,20 @@ class ScreensExample extends StatelessWidget {
           'Arcane screens allow you to easily create scaffolds of various types & uses.',
       displayName: 'Screens',
       children: [
-        ArcaneUsageExample(
-          padding: 0,
-          title: 'Fill Screens',
-          code: """
-FillScreen(
-  header: Bar(
-    titleText: "Header",
-    trailing: [
-      IconButton(
-        icon: Icon(Icons.activity),
-        onPressed: () {},
-      )]),
-  child: Center(
-    child: Text("Fill Screen")
-  )
-)
-""",
-          child: SizedBox(
-            height: 500,
-            child: FillScreen(
-                header: Bar(titleText: "Header", trailing: [
-                  IconButton(
-                    icon: Icon(Icons.activity),
-                    onPressed: () {},
-                  )
-                ]),
-                child: Center(child: Text("Fill Screen"))),
-          ),
-        ),
-        ArcaneUsageExample(
-          padding: 0,
-          title: 'Sliver Screens',
-          code: r"""
-SliverScreen(
-  gutter: false,
-  header: Bar(titleText: "Header", trailing: [
-    IconButton(
-      icon: Icon(Icons.activity),
-      onPressed: () {},
-    )
-  ]),
-  sliver: SliverPadding(
-    padding: EdgeInsets.symmetric(horizontal: 8),
-    sliver: SGridView.builder(
-      childCount: 24,
-      crossAxisSpacing: 8,
-      childAspectRatio: 2,
-      mainAxisSpacing: 8,
-      builder: (context, index) => Card(
-        child: Center(
-          child: Basic(
-            title: Text("Item $index"),
-            subtitle: Text("Subtitle or something"),
-          ),
-        ),
-      ),
-    ),
-  )
-)
-""",
-          child: SizedBox(
-            height: 500,
-            child: SliverScreen(
-                gutter: false,
-                header: Bar(titleText: "Header", trailing: [
-                  IconButton(
-                    icon: Icon(Icons.activity),
-                    onPressed: () {},
-                  )
-                ]),
-                sliver: SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  sliver: SGridView.builder(
-                    childCount: 24,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 2,
-                    mainAxisSpacing: 8,
-                    maxCrossAxisExtent: 200,
-                    builder: (context, index) => Card(
-                      child: Center(
-                        child: Basic(
-                          title: Text("Item $index"),
-                          subtitle: Text("Subtitle or something"),
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-          ),
-        ),
-        ArcaneUsageExample(
-          padding: 0,
-          title: 'Sliver Sections',
-          code: r"""
-SliverScreen(
-  gutter: false,
-  header: Bar(titleText: "Header", trailing: [
-    IconButton(
-      icon: Icon(Icons.activity),
-      onPressed: () {},
-    )
-  ]),
-  sliver: MultiSliver(
-    children: [
-      SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        sliver: SGridView.builder(
-          childCount: 16,
-          crossAxisSpacing: 8,
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          mainAxisSpacing: 8,
-          builder: (context, index) => Card(
-            child: Center(
-              child: Basic(
-                title: Text("Item s1 $index"),
-                subtitle: Text("Subtitle or something"),
-              ),
-            ),
-          ),
-        ),
-      ),
-      BarSection(
-          titleText: "Grid Section",
-          subtitleText: "Subtitle or something",
-          trailing: [
-            IconButton(
-              icon: Icon(Icons.add_circle_ionic),
-              onPressed: () {},
-            )
-          ],
-          sliver: SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            sliver: SGridView.builder(
-              childCount: 24,
-              crossAxisSpacing: 8,
-              childAspectRatio: 2,
-              mainAxisSpacing: 8,
-              builder: (context, index) => Card(
-                child: Center(
-                  child: Basic(
-                    title: Text("Item $index"),
-                    subtitle: Text("Subtitle or something"),
-                  ),
-                ),
-              ),
-            ),
-          ))
-    ],
-  )
-)
-""",
-          child: SizedBox(
-            height: 500,
-            child: SliverScreen(
-                gutter: false,
-                header: Bar(titleText: "Header", trailing: [
-                  IconButton(
-                    icon: Icon(Icons.activity),
-                    onPressed: () {},
-                  )
-                ]),
-                sliver: MultiSliver(
-                  children: [
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      sliver: SGridView.builder(
-                        childCount: 4,
-                        crossAxisSpacing: 8,
-                        maxCrossAxisExtent: 400,
-                        childAspectRatio: 1,
-                        mainAxisSpacing: 8,
-                        builder: (context, index) => Card(
-                          child: Center(
-                            child: Basic(
-                              title: Text("Item s1 $index"),
-                              subtitle: Text("Subtitle or something"),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    BarSection(
-                        titleText: "Grid Section",
-                        subtitleText: "Subtitle or something",
-                        trailing: [
-                          IconButton(
-                            icon: Icon(Icons.add_circle_ionic),
-                            onPressed: () {},
-                          )
-                        ],
-                        sliver: SliverPadding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          sliver: SGridView.builder(
-                            childCount: 24,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 2,
-                            maxCrossAxisExtent: 200,
-                            mainAxisSpacing: 8,
-                            builder: (context, index) => Card(
-                              child: Center(
-                                child: Basic(
-                                  title: Text("Item $index"),
-                                  subtitle: Text("Subtitle or something"),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ))
-                  ],
-                )),
-          ),
-        ),
-        ArcaneUsageExample(
-          padding: 0,
-          title: 'Navigation Screens',
-          code: """
+        exampleScreenFill,
+        exampleScreenSliver,
+        exampleScreenSliverSections,
+        exampleScreenNavigation
+      ],
+    );
+  }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleScreenNavigation => ArcaneUsageExample(
+      padding: 0,
+      title: 'Navigation Screens',
+      code: r"""
 NavigationScreen(
   type: type,
   index: index,
@@ -306,16 +103,227 @@ NavigationScreen(
   ]
 )
 """,
-          child: SizedBox(
-            height: 500,
-            child: ExampleNavigationScreen(),
+      child: SizedBox(
+        height: 500,
+        child: ExampleNavigationScreen(),
+      ),
+    );
+
+Widget get exampleScreenSliverSections => ArcaneUsageExample(
+      padding: 0,
+      title: 'Sliver Sections',
+      code: r"""
+SliverScreen(
+  gutter: false,
+  header: Bar(titleText: "Header", trailing: [
+    IconButton(
+      icon: Icon(Icons.activity),
+      onPressed: () {},
+    )
+  ]),
+  sliver: MultiSliver(
+    children: [
+      SliverPadding(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        sliver: SGridView.builder(
+          childCount: 16,
+          crossAxisSpacing: 8,
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+          mainAxisSpacing: 8,
+          builder: (context, index) => Card(
+            child: Center(
+              child: Basic(
+                title: Text("Item s1 $index"),
+                subtitle: Text("Subtitle or something"),
+              ),
+            ),
           ),
         ),
-      ],
+      ),
+      BarSection(
+          titleText: "Grid Section",
+          subtitleText: "Subtitle or something",
+          trailing: [
+            IconButton(
+              icon: Icon(Icons.add_circle_ionic),
+              onPressed: () {},
+            )
+          ],
+          sliver: SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            sliver: SGridView.builder(
+              childCount: 24,
+              crossAxisSpacing: 8,
+              childAspectRatio: 2,
+              mainAxisSpacing: 8,
+              builder: (context, index) => Card(
+                child: Center(
+                  child: Basic(
+                    title: Text("Item $index"),
+                    subtitle: Text("Subtitle or something"),
+                  ),
+                ),
+              ),
+            ),
+          ))
+    ],
+  )
+)
+""",
+      child: SizedBox(
+        height: 500,
+        child: SliverScreen(
+            gutter: false,
+            header: Bar(titleText: "Header", trailing: [
+              IconButton(
+                icon: Icon(Icons.activity),
+                onPressed: () {},
+              )
+            ]),
+            sliver: MultiSliver(
+              children: [
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  sliver: SGridView.builder(
+                    childCount: 4,
+                    crossAxisSpacing: 8,
+                    maxCrossAxisExtent: 400,
+                    childAspectRatio: 1,
+                    mainAxisSpacing: 8,
+                    builder: (context, index) => Card(
+                      child: Center(
+                        child: Basic(
+                          title: Text("Item s1 $index"),
+                          subtitle: Text("Subtitle or something"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                BarSection(
+                    titleText: "Grid Section",
+                    subtitleText: "Subtitle or something",
+                    trailing: [
+                      IconButton(
+                        icon: Icon(Icons.add_circle_ionic),
+                        onPressed: () {},
+                      )
+                    ],
+                    sliver: SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      sliver: SGridView.builder(
+                        childCount: 24,
+                        crossAxisSpacing: 8,
+                        childAspectRatio: 2,
+                        maxCrossAxisExtent: 200,
+                        mainAxisSpacing: 8,
+                        builder: (context, index) => Card(
+                          child: Center(
+                            child: Basic(
+                              title: Text("Item $index"),
+                              subtitle: Text("Subtitle or something"),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ))
+              ],
+            )),
+      ),
     );
-  }
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleScreenSliver => ArcaneUsageExample(
+      padding: 0,
+      title: 'Sliver Screens',
+      code: r"""
+SliverScreen(
+  gutter: false,
+  header: Bar(titleText: "Header", trailing: [
+    IconButton(
+      icon: Icon(Icons.activity),
+      onPressed: () {},
+    )
+  ]),
+  sliver: SliverPadding(
+    padding: EdgeInsets.symmetric(horizontal: 8),
+    sliver: SGridView.builder(
+      childCount: 24,
+      crossAxisSpacing: 8,
+      childAspectRatio: 2,
+      mainAxisSpacing: 8,
+      builder: (context, index) => Card(
+        child: Center(
+          child: Basic(
+            title: Text("Item $index"),
+            subtitle: Text("Subtitle or something"),
+          ),
+        ),
+      ),
+    ),
+  )
+)
+""",
+      child: SizedBox(
+        height: 500,
+        child: SliverScreen(
+            gutter: false,
+            header: Bar(titleText: "Header", trailing: [
+              IconButton(
+                icon: Icon(Icons.activity),
+                onPressed: () {},
+              )
+            ]),
+            sliver: SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              sliver: SGridView.builder(
+                childCount: 24,
+                crossAxisSpacing: 8,
+                childAspectRatio: 2,
+                mainAxisSpacing: 8,
+                maxCrossAxisExtent: 200,
+                builder: (context, index) => Card(
+                  child: Center(
+                    child: Basic(
+                      title: Text("Item $index"),
+                      subtitle: Text("Subtitle or something"),
+                    ),
+                  ),
+                ),
+              ),
+            )),
+      ),
+    );
+
+Widget get exampleScreenFill => ArcaneUsageExample(
+      padding: 0,
+      title: 'Fill Screens',
+      code: """
+FillScreen(
+  header: Bar(
+    titleText: "Header",
+    trailing: [
+      IconButton(
+        icon: Icon(Icons.activity),
+        onPressed: () {},
+      )]),
+  child: Center(
+    child: Text("Fill Screen")
+  )
+)
+""",
+      child: SizedBox(
+        height: 500,
+        child: FillScreen(
+            header: Bar(titleText: "Header", trailing: [
+              IconButton(
+                icon: Icon(Icons.activity),
+                onPressed: () {},
+              )
+            ]),
+            child: Center(child: Text("Fill Screen"))),
+      ),
+    );
 
 class ExampleNavigationScreen extends StatefulWidget {
   const ExampleNavigationScreen({super.key});
