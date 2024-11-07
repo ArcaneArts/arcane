@@ -1,6 +1,10 @@
 import 'package:arcane/arcane.dart';
 
 extension XWidgetArcane on Widget {
+  Widget get iw => IntrinsicWidth(child: this);
+
+  Widget get ih => IntrinsicHeight(child: this);
+
   Widget get asSliver {
     if (this is ListView) {
       return (this as ListView).asSliver;
