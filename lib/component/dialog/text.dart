@@ -82,15 +82,15 @@ class _DialogTextState extends State<DialogText> {
                 },
                 obscureText: widget.obscureText,
                 initialValue: widget.initialValue,
-              ).iw,
+              ),
             ],
           ),
           actions: [
-            TextButton(
+            OutlineButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(widget.cancelText),
             ),
-            TextButton(
+            SecondaryButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
                 widget.onConfirm(controller.text);
@@ -99,6 +99,6 @@ class _DialogTextState extends State<DialogText> {
             ),
             if (widget.actions != null) ...widget.actions!,
           ],
-        ),
+        ).iw,
       );
 }

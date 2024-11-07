@@ -136,8 +136,8 @@ class _DialogCommandState extends State<DialogCommand> {
                         ),
                       )),
               ],
-            ).iw),
-      ),
+            )),
+      ).iw,
     );
   }
 }

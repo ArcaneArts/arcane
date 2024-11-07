@@ -11,9 +11,11 @@ class DialogConfirmText extends StatefulWidget with ArcaneDialogLauncher {
   final List<Widget>? actions;
   final TextInputType? keyboardType;
   final bool ignoreCase;
+  final bool destructive;
 
   const DialogConfirmText({
     super.key,
+    this.destructive = false,
     required this.title,
     this.description,
     this.descriptionWidget = const SizedBox.shrink(),
@@ -157,23 +159,32 @@ class _DialogConfirmTextState extends State<DialogConfirmText>
                             ? Theme.of(context).colorScheme.destructive
                             : null,
                       ),
-                    ).iw,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
           actions: [
-            TextButton(
+            OutlineButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(widget.cancelText),
             ),
-            TextButton(
-              onPressed: () => _handleSubmit(controller.text),
-              child: Text(widget.confirmText),
-            ),
+            widget.destructive
+                ? DestructiveButton(
+                    onPressed: () {
+                      _handleSubmit(controller.text);
+                    },
+                    child: Text(widget.confirmText),
+                  )
+                : SecondaryButton(
+                    onPressed: () {
+                      _handleSubmit(controller.text);
+                    },
+                    child: Text(widget.confirmText),
+                  ),
             if (widget.actions != null) ...widget.actions!,
           ],
-        ),
+        ).iw,
       );
 }
