@@ -40,17 +40,16 @@ class ArcaneDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ArcaneAlertDialog(
-        leading: leading,
-        title: title,
-        content: content,
-        actions: actions,
-        padding: EdgeInsets.all(padding * Theme.of(context).scaling),
-        trailing: trailing,
-        surfaceBlur: surfaceBlur,
-        surfaceOpacity: surfaceOpacity,
-        barrierColor: barrierColor ??
-            Theme.of(context).colorScheme.background.withOpacity(0.65),
-      ).blurIn;
+          leading: leading,
+          title: title,
+          content: content,
+          actions: actions,
+          padding: EdgeInsets.all(padding * Theme.of(context).scaling),
+          trailing: trailing,
+          surfaceBlur: surfaceBlur,
+          surfaceOpacity: surfaceOpacity,
+          barrierColor: barrierColor)
+      .blurIn;
 }
 
 class ArcaneAlertDialog extends StatefulWidget {
