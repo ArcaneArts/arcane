@@ -60,7 +60,7 @@ class ArcaneTheme extends AbstractArcaneTheme {
   const ArcaneTheme({
     this.scheme,
     this.radius = 0.4,
-    this.surfaceOpacity = 0.5,
+    this.surfaceOpacity = 0.66,
     this.surfaceBlur = 18,
     super.themeMode = ThemeMode.system,
   });

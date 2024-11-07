@@ -17,7 +17,6 @@ class ExampleArcaneApp extends StatelessWidget {
   Widget build(BuildContext context) => ArcaneApp(
         home: const Home(),
         theme: ArcaneTheme(
-            themeMode: ThemeMode.system,
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.blue)),
       );
 }
