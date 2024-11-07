@@ -1,43 +1,238 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/dialog/command.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as sh hide TextExtension;
+
+late BuildContext _context;
+
+List<ShadcnDocsSection> customSections = [
+  ShadcnDocsSection("Arcane", [
+    ShadcnDocsPage("Screens", "screens"),
+    ShadcnDocsPage("Dialogs", "dialogs")
+  ])
+];
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [
   GoRoute(
       path: "screens",
       name: "screens",
-      builder: (_, __) => const ScreensExample())
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'screens',
+            description:
+                'Arcane screens allow you to easily create scaffolds of various types & uses.',
+            displayName: 'Screens',
+            children: [
+              exampleScreenFill,
+              exampleScreenSliver,
+              exampleScreenSliverSections,
+              exampleScreenNavigation
+            ],
+          )),
+  GoRoute(
+      path: "dialogs",
+      name: "dialogs",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'dialogs',
+            description:
+                'Arcane dialogs are designed to be quick to use but also easy to extend.',
+            displayName: 'Dialogs',
+            children: [
+              exampleDialogConfirm,
+              exampleDialogConfirmText,
+              exampleDialogText,
+              exampleDialogEmail,
+              exampleDialogCommand
+            ],
+          ))
 ];
-//////////////////////////////////////////////////////////////////////////////////////////
-List<ShadcnDocsSection> customSections = [
-  ShadcnDocsSection("Arcane", [ShadcnDocsPage("Screens", "screens")])
-];
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////// Screens //////////////////
-class ScreensExample extends StatelessWidget {
-  const ScreensExample({super.key});
+Widget get exampleDialogConfirm => ArcaneUsageExample(
+    title: "Confirm Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),onPressed: () => DialogConfirm(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",  onConfirm: () => print("Confirmed"),
+    description: "Description Text goes here",
+  ).open(_context),
+  child: Text("Confirm Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogConfirm(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: () => print("Confirmed"),
+        description: "Description Text goes here",
+      ).open(_context),
+      child: Text("Confirm Dialog"),
+    ));
 
-  @override
-  Widget build(BuildContext context) {
-    return ArcaneComponentPage(
-      name: 'screen',
-      description:
-          'Arcane screens allow you to easily create scaffolds of various types & uses.',
-      displayName: 'Screens',
-      children: [
-        exampleScreenFill,
-        exampleScreenSliver,
-        exampleScreenSliverSections,
-        exampleScreenNavigation
-      ],
-    );
-  }
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
+Widget get exampleDialogText => ArcaneUsageExample(
+    title: "Text Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogText(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (t) => print(t),
+    description: "Description Text goes here",
+    hint: "Hint Text",
+  ).open(_context),
+  child: Text("Text Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogText(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (t) => print(t),
+        description: "Description Text goes here",
+        hint: "Hint Text",
+      ).open(_context),
+      child: Text("Text Dialog"),
+    ));
+
+Widget get exampleDialogConfirmText => ArcaneUsageExample(
+    title: "Confirm Text Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogConfirmText(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    ignoreCase: true,
+    cancelText: "Cancel Text",
+    onConfirm: () => print("Confirmed"),
+    description: "Please type 'derp' to continue.",
+    verificationText: "derp",
+  ).open(_context),
+  child: Text("Confirm Text Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogConfirmText(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        ignoreCase: true,
+        cancelText: "Cancel Text",
+        onConfirm: () => print("Confirmed"),
+        description: "Please type 'derp' to continue.",
+        verificationText: "derp",
+      ).open(_context),
+      child: Text("Confirm Text Dialog"),
+    ));
+
+Widget get exampleDialogEmail => ArcaneUsageExample(
+    title: "Email Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogEmail(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (e) => print(e),
+    description: "Please enter an email address.",
+  ).open(_context),
+  child: Text("Email Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogEmail(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (e) => print(e),
+        description: "Please enter an email address.",
+      ).open(_context),
+      child: Text("Email Dialog"),
+    ));
+
+Widget get exampleDialogCommand => ArcaneUsageExample(
+    title: "Command Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogCommand(
+    onConfirm: (e) => print(e),
+    options: {
+      "Alpha",
+      "Beta",
+      "Gamma",
+      "Delta",
+      "Epsilon",
+      "Zeta",
+      "Eta",
+      "Theta",
+      "Iota",
+      "Kappa",
+      "Lambda",
+      "Mu",
+      "Nu",
+      "Xi",
+      "Omicron",
+      "Pi",
+      "Rho",
+      "Sigma",
+      "Tau",
+      "Upsilon",
+      "Phi",
+      "Chi",
+      "Psi",
+      "Omega"
+    },
+  ).open(_context),
+  child: Text("Command Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogCommand(
+        onConfirm: (e) => print(e),
+        options: {
+          "Alpha",
+          "Beta",
+          "Gamma",
+          "Delta",
+          "Epsilon",
+          "Zeta",
+          "Eta",
+          "Theta",
+          "Iota",
+          "Kappa",
+          "Lambda",
+          "Mu",
+          "Nu",
+          "Xi",
+          "Omicron",
+          "Pi",
+          "Rho",
+          "Sigma",
+          "Tau",
+          "Upsilon",
+          "Phi",
+          "Chi",
+          "Psi",
+          "Omega"
+        },
+      ).open(_context),
+      child: Text("Command Dialog"),
+    ));
 
 Widget get exampleScreenNavigation => ArcaneUsageExample(
       padding: 0,
@@ -496,6 +691,7 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
   final GlobalKey _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -582,62 +778,6 @@ class _ArcaneCodeSnippetBuilderState extends State<ArcaneCodeSnippetBuilder> {
       mode: widget.mode,
     );
   }
-}
-
-String _formatCode(String code) {
-  // check if code uses stateful widget
-  if (code.contains('StatefulWidget')) {
-    RegExp exp = RegExp(r'extends[\s]*State<.+?>[\s]*{[\s]*\n(.*)[\s]*}',
-        multiLine: true, dotAll: true);
-    var firstMatch = exp.firstMatch(code);
-    if (firstMatch == null) {
-      return code;
-    }
-    code = firstMatch.group(1)!;
-    List<String> lines = code.split('\n');
-    String formatted = '';
-    // count the number of spaces in the 2nd line
-    int spaces = lines.first.length - lines.first.trimLeft().length;
-    // spaces is now the standard indentation length
-    // now replace the indentation with the standard indentation length
-    for (int i = 0; i < lines.length; i++) {
-      int sub = spaces.clamp(0, lines[i].length);
-      formatted += lines[i].substring(sub);
-      if (i < lines.length - 1) {
-        formatted += '\n';
-      }
-    }
-    return formatted;
-  }
-  RegExp exp = RegExp(
-    r'return[\s]*(.+)?[\s]*;[\s]*}[\s]*}',
-    multiLine: true,
-    dotAll: true,
-  );
-  var firstMatch = exp.firstMatch(code);
-  assert(firstMatch != null, 'Code snippet must have a return statement');
-  code = firstMatch!.group(1)!;
-  // remove the indentation by one level for each line except the first line
-  List<String> lines = code.split('\n');
-  String formatted = lines.first;
-  if (lines.length < 2) {
-    return code;
-  }
-  formatted += '\n';
-  // count the number of spaces in the 2nd line
-  int spaces = lines[1].length - lines[1].trimLeft().length;
-  // divide floor by 2 because 2
-  spaces = (spaces / 2).floor() + 1;
-  // spaces is now the standard indentation length
-  // now replace the indentation with the standard indentation length
-  for (int i = 1; i < lines.length; i++) {
-    int sub = spaces.clamp(0, lines[i].length);
-    formatted += lines[i].substring(sub);
-    if (i < lines.length - 1) {
-      formatted += '\n';
-    }
-  }
-  return formatted;
 }
 
 class ArcaneComponentPage extends StatefulWidget {
