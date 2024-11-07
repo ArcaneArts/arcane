@@ -16,7 +16,8 @@ class ExampleArcaneApp extends StatelessWidget {
   Widget build(BuildContext context) => ArcaneApp(
         home: const Home(),
         theme: ArcaneTheme(
-            themeMode: ThemeMode.system, scheme: ColorSchemes.blue()),
+            themeMode: ThemeMode.system,
+            scheme: ContrastedColorScheme.fromScheme(ColorSchemes.blue)),
       );
 }
 
@@ -48,7 +49,7 @@ class _HomeState extends State<Home> {
                   setState(() {});
                 },
                 onSubmitted: (v) {},
-                placeholder: "Search",
+                placeholder: const Text("Search"),
               )
             : const Text("Tome of Style"),
         trailing: [
@@ -73,6 +74,17 @@ class _HomeState extends State<Home> {
       ),
       sliver: MultiSliver(
         children: [
+          SliverToBoxAdapter(
+            child: Card(
+              onPressed: () {
+                print("Pressed");
+              },
+              child: Basic(
+                title: Text("Arcane"),
+                subtitle: Text("A style library for Flutter"),
+              ),
+            ),
+          ),
           ...valid
               .whereType<SliverScreenArcaneShowcase>()
               .map((e) => BarSection(
