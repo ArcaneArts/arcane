@@ -1,3 +1,8 @@
+## 3.0.1
+* ContextMenu now has an enabled property (default true)
+* NumberInput now has an onEditingComplete event
+* Fix dialog backgrounds in themes with 100% surface opacity
+
 ## 3.0.0
 
 ### Features
