@@ -55,14 +55,12 @@ class _DialogCommandState extends State<DialogCommand> {
     double h = 32;
 
     return PaddingTop(
-        padding: min(
-            d3, (h * validOptions.length) + (validOptions.isNotEmpty ? 3 : 0)),
-        child: ArcaneDialog(
-          padding: 4,
-          content: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: d3,
-            ),
+      padding: min(
+          d3, (h * validOptions.length) + (validOptions.isNotEmpty ? 3 : 0)),
+      child: ArcaneDialog(
+        padding: 4,
+        content: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: d3),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,8 +136,8 @@ class _DialogCommandState extends State<DialogCommand> {
                         ),
                       )),
               ],
-            ),
-          ),
-        ));
+            ).iw),
+      ),
+    );
   }
 }

@@ -82,7 +82,7 @@ class _DialogTextState extends State<DialogText> {
                 },
                 obscureText: widget.obscureText,
                 initialValue: widget.initialValue,
-              ),
+              ).iw,
             ],
           ),
           actions: [
