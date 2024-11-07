@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 2.5.8
+version: 3.0.0
 homepage: https://github.com/ArcaneArts/arcane
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -48,6 +48,9 @@ dependencies:
   blurhash_dart: ^1.2.1
   flutter_blurhash: ^0.8.2
   common_svgs: ^1.0.2
+  
+  # for arcane_shadcn
+  data_widget: ^0.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
