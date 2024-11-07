@@ -32,7 +32,9 @@ echo "Tearing out 'arcane_shadcn/docs' into 'docs'."
 rm -rf docs && mkdir -p docs
 cp -a arcane_shadcn/docs/. docs 
 
-# Fix doc imports
+# Fix doc imports 
+
+
 echo "Fixing pubspec for 'docs' to target arcane_shadcn."
 find docs -type f -name "pubspec.yaml" -exec sed -i 's|path: ../|path: ../arcane_shadcn|g' {} +
 find docs -type f -name "pubspec.yaml" -exec sed -i 's|  # The following adds the Cupertino Icons font to your application.|  arcane: |g' {} +
@@ -47,6 +49,7 @@ find lib/pages -type f -name "docs_page.dart" -exec sed -i 's|'FlutterLogo'|'Log
 
 cd ..
 echo "Changing urls to arcane"
+find docs -type f -name "*.dart" -exec sed -i 's|- asset: "packages/shadcn_flutter/|- asset: "packages/arcane/resources/|g' {} +
 find docs -type f -name "*.dart" -exec sed -i 's|'https://github.com/sunarya-thito/shadcn_flutter'|'https://github.com/ArcaneArts/arcane'|g' {} +
 find docs -type f -name "*.dart" -exec sed -i 's|'https://pub.dev/packages/shadcn_flutter'|'https://pub.dev/packages/arcane'|g' {} +
 cp arcane_docs/lib/custom.dart docs/lib/custom.dart
