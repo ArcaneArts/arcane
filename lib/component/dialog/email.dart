@@ -85,15 +85,15 @@ class _DialogEmailState extends State<DialogEmail> {
                   widget.onConfirm(value);
                 },
                 leading: const Icon(Icons.mail_ionic),
-              ).iw,
+              ),
             ],
           ),
           actions: [
-            TextButton(
+            OutlineButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(widget.cancelText),
             ),
-            TextButton(
+            SecondaryButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
                 widget.onConfirm(controller.text);
@@ -102,6 +102,6 @@ class _DialogEmailState extends State<DialogEmail> {
             ),
             if (widget.actions != null) ...widget.actions!,
           ],
-        ),
+        ).iw,
       );
 }
