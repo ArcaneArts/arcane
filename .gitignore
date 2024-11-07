@@ -27,15 +27,11 @@ migrate_working_dir/
 **/doc/api/
 .dart_tool/
 build/
-
-arcane_chat_app/
-
-keys/
-
 .flutter-plugins
-
 .flutter-plugins-dependencies
 
+# Ignore repo but not generated shad
 arcane_shadcn
+!lib/generated/arcane_shadcn/
 
-docs/
+
