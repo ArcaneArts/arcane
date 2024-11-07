@@ -1,5 +1,6 @@
 import 'package:arcane/arcane.dart';
 import 'package:example/showcase/buttons.dart';
+import 'package:example/showcase/cards.dart';
 import 'package:example/showcase/text.dart';
 import 'package:example/util/showcase.dart';
 
@@ -74,17 +75,6 @@ class _HomeState extends State<Home> {
       ),
       sliver: MultiSliver(
         children: [
-          SliverToBoxAdapter(
-            child: Card(
-              onPressed: () {
-                print("Pressed");
-              },
-              child: Basic(
-                title: Text("Arcane"),
-                subtitle: Text("A style library for Flutter"),
-              ),
-            ),
-          ),
           ...valid
               .whereType<SliverScreenArcaneShowcase>()
               .map((e) => BarSection(
@@ -106,4 +96,8 @@ class _HomeState extends State<Home> {
       ));
 }
 
-const List<ArcaneShowcase> showcases = [TextShowcase(), ButtonsShowcase()];
+const List<ArcaneShowcase> showcases = [
+  TextShowcase(),
+  ButtonsShowcase(),
+  CardsShowcase()
+];
