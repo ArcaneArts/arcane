@@ -1,3 +1,6 @@
+## 3.0.2
+* Changed default surface opacity from 0.5 to 0.66
+
 ## 3.0.1
 * ContextMenu now has an enabled property (default true)
 * NumberInput now has an onEditingComplete event
