@@ -60,6 +60,8 @@ rm -rf arcane_shadcn/docs &
 rm -rf arcane_shadcn/example &
 rm -rf arcane_shadcn/docs_images &
 rm -rf arcane_shadcn/.github &
+rm -rf lib/generated/arcane_shadcn/fonts &
+rm -rf lib/generated/arcane_shadcn/icons &
 echo "Pub get on all projects."
 (flutter clean && flutter pub get) &
 (cd docs && flutter clean && flutter pub get) &
