@@ -1,3 +1,20 @@
+## 3.0.0
+
+### Features
+* Dialogs are now in spec with shadcn
+* New dialog type: DialogCommand, like a command palette
+* Upgraded shadcn_flutter to latest version 0.0.21+ (ref 0c56f183241e40f19bb9fe46522daf238191ccd6)
+* A documentation site is now available at https://tome.arcane.art which includes all shadcn reference + arcane.
+* New widget: BasicCard which is a card with some basic in it. 
+* New Widget: ArcaneArtsLogo
+* New Menu Launcher Widgets: OutlineButtonMenu, TextButtonMenu, SecondaryButtonMenu, PrimaryButtonMenu to join IconButtonMenu
+### Fixes
+* dialog intrinsics & spacing issues
+### Breaking Changes
+* ArcaneThemes are now specified with `ArcaneTheme(scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc))`
+* Renamed PopupMenu to IconButtonMenu
+* You need to add the fonts RadixIcons & BootstrapIcons to your pubspec.yaml (see README.md!)
+
 ## 2.5.8
 * The command dialog
 * The confirm text dialog
