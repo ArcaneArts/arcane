@@ -10,7 +10,9 @@ late BuildContext _context;
 List<ShadcnDocsSection> customSections = [
   ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
-    ShadcnDocsPage("Dialogs", "dialogs")
+    ShadcnDocsPage("Dialogs", "dialogs"),
+    ShadcnDocsPage("Image", "image"),
+    ShadcnDocsPage("Center Body", "center_body"),
   ])
 ];
 
@@ -46,10 +48,80 @@ List<GoRoute> customRoutes = [
               exampleDialogEmail,
               exampleDialogCommand
             ],
+          )),
+  GoRoute(
+      path: "center_body",
+      name: "center_body",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'center_body',
+            description:
+                'Center Body is a simple widget that displays a message and an icon, optionally with an action button.',
+            displayName: 'Center Body',
+            children: [
+              exampleCenterBodySimple,
+              exampleCenterBodyAction,
+            ],
+          )),
+  GoRoute(
+      path: "image",
+      name: "image",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'image',
+            description:
+                'A unified image view that supports local caching, future urls & thumbhashes/blurhashes.',
+            displayName: 'Image',
+            children: [exampleImage],
           ))
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleImage => ArcaneUsageExample(
+    title: "Simple Center Body",
+    code: r"""
+ImageView(
+  // Thumbhashes are prioritized over blurhashes
+  thumbHash: "XyMGHwD5d1hpp2d9dHaKdHd4mYAp9mcN",
+  blurHash: r"URASz$ofs^j]ogfffPoPs]fRWQfPj]oPfRW7",
+  style: ImageStyle(fit: BoxFit.contain, width: 200, height: 200),
+  url: Future.delayed(
+      Duration(seconds: 1),
+      () =>
+          "https://github.com/ArcaneArts/ArcaneArts/blob/main/icon/bg_512.png?raw=true")
+)
+    """,
+    child: ImageView(
+        // Thumbhashes are prioritized over blurhashes
+        thumbHash: "XyMGHwD5d1hpp2d9dHaKdHd4mYAp9mcN",
+        blurHash: r"URASz$ofs^j]ogfffPoPs]fRWQfPj]oPfRW7",
+        style: ImageStyle(fit: BoxFit.contain, width: 200, height: 200),
+        url: Future.delayed(
+            Duration(seconds: 1),
+            () =>
+                "https://github.com/ArcaneArts/ArcaneArts/blob/main/icon/bg_512.png?raw=true")));
+
+Widget get exampleCenterBodySimple => ArcaneUsageExample(
+    title: "Simple Center Body",
+    code: """
+CenterBody(icon: Icons.warning_fill, message: "Not Found")
+    """,
+    child: CenterBody(icon: Icons.warning_fill, message: "Not Found"));
+
+Widget get exampleCenterBodyAction => ArcaneUsageExample(
+    title: "Center Body with Action",
+    code: """
+CenterBody(icon: Icons.warning_fill, message: "Not Found", 
+  actionText: "Refresh", 
+  onActionPressed: () => print("Refreshing...")
+)
+    """,
+    child: CenterBody(
+        icon: Icons.warning_fill,
+        message: "Not Found",
+        actionText: "Refresh",
+        onActionPressed: () {
+          print("Refreshing...");
+        }));
 
 Widget get exampleDialogConfirm => ArcaneUsageExample(
     title: "Confirm Dialog",
