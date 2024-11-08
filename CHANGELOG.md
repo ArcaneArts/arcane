@@ -1,3 +1,7 @@
+## 3.0.4
+* Sync with shadcn_flutter (ref e1e67d5c83b11bda1377ba0fa0e08164a5e1c194) & Update Docs
+* ArcaneDialogLauncher.open now returns a Future<T?> for the pop result
+
 ## 3.0.3
 * New Documentation Added
 
