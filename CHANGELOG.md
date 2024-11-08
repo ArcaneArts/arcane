@@ -1,3 +1,6 @@
+## 3.0.3
+* New Documentation Added
+
 ## 3.0.2
 * Changed default surface opacity from 0.5 to 0.66
 

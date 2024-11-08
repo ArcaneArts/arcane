@@ -77,7 +77,7 @@ List<GoRoute> customRoutes = [
 //////////////////////////////////////////////////////////////////////////////////////////
 
 Widget get exampleImage => ArcaneUsageExample(
-    title: "Simple Center Body",
+    title: "Image with Thumbhash",
     code: r"""
 ImageView(
   // Thumbhashes are prioritized over blurhashes
