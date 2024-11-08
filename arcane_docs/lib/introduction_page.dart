@@ -34,7 +34,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   'Beautifully designed components from Shadcn/UI is now available for Flutter.')
               .lead(),
           const Text(
-            'Welcome to shadcn_flutter, a versatile and comprehensive set '
+            'Welcome to arcane, a versatile and comprehensive set '
             'of UI components designed specifically for Flutter desktop and '
             'web applications. With the growing popularity of Flutter for '
             'building cross-platform apps, we recognized the need for a '
@@ -76,6 +76,9 @@ class _IntroductionPageState extends State<IntroductionPage> {
               .p(),
           const Text(
             'This package is not affiliated with Shadcn/UI. This package is a community-driven project.',
+          ).p(),
+          const Text(
+            'This package is a fork of shadcn_flutter',
           ).p(),
           const Text('Frequently Asked Questions').h2().anchored(faqKey),
           Accordion(
@@ -136,20 +139,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
               const Text('Github: ')
                   .thenButton(
                       onPressed: () {
-                        launchUrlString(
-                            'https://github.com/ArcaneArts/arcane');
+                        launchUrlString('https://github.com/ArcaneArts/arcane');
                       },
-                      child: const Text(
-                          'https://github.com/ArcaneArts/arcane'))
+                      child: const Text('https://github.com/ArcaneArts/arcane'))
                   .li(),
               const Text('pub.dev: ')
                   .thenButton(
                       onPressed: () {
-                        launchUrlString(
-                            'https://pub.dev/packages/arcane');
+                        launchUrlString('https://pub.dev/packages/arcane');
                       },
-                      child:
-                          const Text('https://pub.dev/packages/arcane'))
+                      child: const Text('https://pub.dev/packages/arcane'))
                   .li(),
               const Text('Discord: ')
                   .thenButton(

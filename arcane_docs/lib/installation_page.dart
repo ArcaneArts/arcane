@@ -1,7 +1,6 @@
+import 'package:docs/pages/docs_page.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
-import '../docs_page.dart';
 
 class InstallationPage extends StatefulWidget {
   const InstallationPage({super.key});
@@ -11,7 +10,6 @@ class InstallationPage extends StatefulWidget {
 }
 
 class _InstallationPageState extends State<InstallationPage> {
-  final OnThisPage _cliKey = OnThisPage();
   final OnThisPage _manualKey = OnThisPage();
   final OnThisPage _experimentalKey = OnThisPage();
   @override
@@ -19,7 +17,6 @@ class _InstallationPageState extends State<InstallationPage> {
     return DocsPage(
       name: 'installation',
       onThisPage: {
-        'Install using CLI': _cliKey,
         'Install Manually': _manualKey,
         'Experimental Version': _experimentalKey,
       },
@@ -27,38 +24,7 @@ class _InstallationPageState extends State<InstallationPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text('Installation').h1(),
-          const Text('Install and configure shadcn_flutter in your project.')
-              .lead(),
-          const Text('Install using CLI').h2().anchored(_cliKey),
-          const Gap(32),
-          // 1. Activate "shadcn_flutter_cli" package
-          // 2. Run "flutter pub global run shadcn_flutter_cli:setup"
-          Steps(
-            children: [
-              StepItem(
-                title: const Text('Activate the package'),
-                content: [
-                  const Text('Activate the shadcn_flutter_cli package.').p(),
-                  const CodeSnippet(
-                    code: 'flutter pub global activate shadcn_flutter_cli',
-                    mode: 'shell',
-                  ).p(),
-                ],
-              ),
-              StepItem(
-                title: const Text('Run the setup command'),
-                content: [
-                  const Text(
-                          'Run the setup command to add shadcn_flutter to your project.')
-                      .p(),
-                  const CodeSnippet(
-                    code: 'flutter pub global run shadcn_flutter_cli:setup',
-                    mode: 'shell',
-                  ).p(),
-                ],
-              ),
-            ],
-          ),
+          const Text('Install and configure arcane in your project.').lead(),
           const Text('Install Manually').h2().anchored(_manualKey),
           const Gap(32),
           Steps(
@@ -78,11 +44,10 @@ class _InstallationPageState extends State<InstallationPage> {
               StepItem(
                 title: const Text('Adding the dependency'),
                 content: [
-                  const Text(
-                          'Next, add the shadcn_flutter dependency to your project.')
+                  const Text('Next, add the arcane dependency to your project.')
                       .p(),
                   const CodeSnippet(
-                    code: 'flutter pub add shadcn_flutter',
+                    code: 'flutter pub add arcane',
                     mode: 'shell',
                   ).p(),
                 ],
@@ -94,27 +59,29 @@ class _InstallationPageState extends State<InstallationPage> {
                           'Now, you can import the package in your Dart code.')
                       .p(),
                   const CodeSnippet(
-                    code:
-                        'import \'package:shadcn_flutter/shadcn_flutter.dart\';',
+                    code: 'import \'package:arcame/arcame.dart\';',
                     mode: 'dart',
                   ).p(),
                 ],
               ),
               StepItem(
-                title: const Text('Adding the ShadcnApp widget'),
+                title: const Text('Adding the ArcaneApp widget'),
                 content: [
-                  const Text('Add the ShadcnApp widget to your main function.')
+                  const Text('Add the ArcaneApp widget to your main function.')
                       .p(),
                   const CodeSnippet(
                     code: '''
 void main() {
   runApp(
-    ShadcnApp(
+    ArcaneApp(
       title: 'My App',
       home: MyHomePage(),
-      theme: ThemeData(
-        colorScheme: ColorSchemes.darkZync(),
+      theme: ArcaneTheme(
+        scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zync),
         radius: 0.5,
+        surfaceOpacity: 0.66,
+        surfaceBlur: 18,
+        themeMode: ThemeMode.system
       ),
     ),
   );
