@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/dialog/command.dart';
 import 'package:example/showcase/buttons.dart';
 import 'package:example/showcase/cards.dart';
 import 'package:example/showcase/text.dart';
@@ -17,6 +18,7 @@ class ExampleArcaneApp extends StatelessWidget {
   Widget build(BuildContext context) => ArcaneApp(
         home: const Home(),
         theme: ArcaneTheme(
+            surfaceOpacity: 1,
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.blue)),
       );
 }
@@ -61,6 +63,9 @@ class _HomeState extends State<Home> {
                       searching = false;
                       controller.clear();
                     });
+                    DialogCommand(
+                      onConfirm: (_) {},
+                    ).open(context);
                   })
               : IconButton(
                   icon: const Icon(Icons.search_ionic),

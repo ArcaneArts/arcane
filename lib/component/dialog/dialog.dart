@@ -4,13 +4,7 @@ mixin ArcaneDialogLauncher on Widget {
   Future<T?> open<T>(BuildContext context) {
     PylonBuilder builder = Pylon.mirror(context, (context) => this);
     return showDialog<T>(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Theme.of(context)
-            .colorScheme
-            .background
-            .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
-        builder: builder);
+        context: context, barrierDismissible: true, builder: builder);
   }
 }
 
