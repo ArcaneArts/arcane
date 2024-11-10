@@ -77,7 +77,7 @@ void main() {
       title: 'My App',
       home: MyHomePage(),
       theme: ArcaneTheme(
-        scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zync),
+        scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc),
         radius: 0.5,
         surfaceOpacity: 0.66,
         surfaceBlur: 18,
