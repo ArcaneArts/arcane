@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 3.0.9
+version: 3.1.0
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -11,8 +11,8 @@ dependencies:
   boxy: ^2.2.0
   flutter:
     sdk: flutter
-  # https://github.com/Baseflow/flutter_cached_network_image/issues/981 MAX 3.3.1 
-  cached_network_image: ^3.3.1
+  # https://github.com/Baseflow/flutter_cached_network_image/issues/981 
+  cached_network_image: ^3.4.1
   flutter_sticky_header: ^0.7.0
   padded: ^1.0.1 
   pylon: ^3.0.5
@@ -21,7 +21,7 @@ dependencies:
   tinycolor2: ^3.0.1
   toxic: ^1.3.2
   toxic_flutter: ^1.1.0
-  flutter_svg: ^2.0.13
+  flutter_svg: ^2.0.14
   page_transition: ^2.1.0
   sliver_fill_remaining_box_adapter: ^1.0.0
   modal_bottom_sheet: ^3.0.0
@@ -30,7 +30,7 @@ dependencies:
   mesh_gradient: ^1.3.8
   smooth_sheets: ^0.10.2
   pixel_snap: ^0.1.5
-  file_picker: ^8.1.3
+  file_picker: ^8.1.4
   audioplayers: ^6.1.0
   skeletonizer: ^1.4.2
   syntax_highlight: ^0.4.0
@@ -51,8 +51,6 @@ dependencies:
   flutter_blurhash: ^0.8.2
   common_svgs: ^1.0.2
   conjure: 1.0.0
-  
-  # for arcane_shadcn
   data_widget: ^0.0.2
   cupertino_icons: ^1.0.8
 dev_dependencies:
