@@ -2,6 +2,7 @@ library arcane;
 
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
+export 'package:conjure/conjure.dart';
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:padded/padded.dart';
 export 'package:pylon/pylon.dart';
@@ -14,6 +15,7 @@ export 'package:toxic_flutter/toxic_flutter.dart';
 
 // Arcane
 export 'component/adaptive.dart';
+export 'component/conjured.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
 export 'component/basic_card.dart';
