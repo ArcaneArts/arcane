@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 3.0.5 
+version: 3.0.9
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -50,6 +50,7 @@ dependencies:
   blurhash_dart: ^1.2.1
   flutter_blurhash: ^0.8.2
   common_svgs: ^1.0.2
+  conjure: 1.0.0
   
   # for arcane_shadcn
   data_widget: ^0.0.2

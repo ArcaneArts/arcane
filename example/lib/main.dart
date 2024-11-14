@@ -51,10 +51,17 @@ class _HomeState extends State<Home> {
                   setState(() {});
                 },
                 onSubmitted: (v) {},
-                placeholder: const Text("Search"),
+                placeholder: "Search",
               )
             : const Text("Tome of Style"),
         trailing: [
+          IconButton(
+              icon: Icon(Icons.address_book),
+              onPressed: () => DialogText(
+                    onConfirm: (_) {},
+                    title: "Arcane",
+                    hint: "This is the hint",
+                  ).open(context)),
           searching
               ? IconButton(
                   icon: const Icon(Icons.x),

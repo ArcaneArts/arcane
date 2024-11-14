@@ -22,11 +22,13 @@ class NavigationScreen extends AbstractStatelessScreen {
   final ValueChanged<int>? onIndexChanged;
   final double siderailRightPadding;
   final List<NavTab> tabs;
+  final Widget? overrideSidebarGap;
   final double siderailTopPadding;
   const NavigationScreen(
       {super.key,
       this.siderailRightPadding = 8,
       this.index = 0,
+      this.overrideSidebarGap,
       this.siderailTopPadding = 8,
       this.onIndexChanged,
       required this.tabs,
@@ -114,7 +116,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           buildSidebar(context, index),
-                          Gap(siderailRightPadding),
+                          overrideSidebarGap ?? Gap(siderailRightPadding),
                           Expanded(
                             child: BlockBackButton(
                                 builder: (context) =>

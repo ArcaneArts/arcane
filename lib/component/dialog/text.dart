@@ -75,7 +75,7 @@ class _DialogTextState extends State<DialogText> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 focusNode: focusNode,
                 controller: controller,
-                placeholder: widget.hint == null ? null : Text(widget.hint!),
+                placeholder: widget.hint,
                 onSubmitted: (value) {
                   Navigator.of(context).pop(true);
                   widget.onConfirm(value);

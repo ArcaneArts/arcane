@@ -1,3 +1,15 @@
+## 3.0.9
+* Added overrideSidebarGap to NavigationScreen
+
+## 3.0.8
+* Fix Options not showing in some views if InfoOption or ActionOption
+
+## 3.0.7
+* Searchable InfoOption & ActionOption widgets
+
+## 3.0.6
+* Settings InfoOption & ActionOption widgets
+
 ## 3.0.5
 * Fix Dialogs using incorrect default barrier color
 

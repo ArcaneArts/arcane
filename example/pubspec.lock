@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.0.4"
+    version: "3.0.9"
   archive:
     dependency: transitive
     description:
@@ -184,6 +184,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  conjure:
+    dependency: transitive
+    description:
+      name: conjure
+      sha256: "980cc94fc7ad6b281e49e9c90eeed29aa588fc3f90010c00361bbb58dcb3bcd5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   convert:
     dependency: transitive
     description:
@@ -981,5 +989,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.2 <4.0.0"
   flutter: ">=3.24.0"

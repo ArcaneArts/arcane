@@ -111,6 +111,50 @@ abstract class OptionField<T> extends Option {
       .contains(text.toLowerCase());
 }
 
+class ActionOption extends Option {
+  final void Function() action;
+
+  const ActionOption({
+    required super.name,
+    required this.action,
+    super.description,
+    super.icon,
+    super.shouldShow = _defShouldShow,
+  });
+
+  @override
+  Widget get built => ListTile(
+        title: Text(name),
+        subtitle: description != null ? Text(description!) : null,
+        leading: Icon(icon),
+        onPressed: action,
+      ).asSliver;
+
+  @override
+  bool matches(String text) =>
+      "$name $description".toLowerCase().contains(text.toLowerCase());
+}
+
+class InfoOption extends Option {
+  const InfoOption({
+    required super.name,
+    super.description,
+    super.icon,
+    super.shouldShow = _defShouldShow,
+  });
+
+  @override
+  Widget get built => ListTile(
+        title: Text(name),
+        subtitle: description != null ? Text(description!) : null,
+        leading: Icon(icon),
+      ).asSliver;
+
+  @override
+  bool matches(String text) =>
+      "$name $description".toLowerCase().contains(text.toLowerCase());
+}
+
 abstract class Option {
   final IconData icon;
   final String name;
@@ -170,6 +214,16 @@ class OptionGroup extends Option {
       if (i is OptionGroup) {
         yield* i.getFields();
       } else if (i is OptionField) {
+        yield i;
+      }
+    }
+  }
+
+  Iterable<Option> getNonGroups() sync* {
+    for (Option i in options) {
+      if (i is OptionGroup) {
+        yield* i.getNonGroups();
+      } else {
         yield i;
       }
     }
@@ -238,7 +292,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
                 title: TextField(
                   autofocus: true,
-                  placeholder: Text("Search ${widget.options.name}"),
+                  placeholder: "Search ${widget.options.name}",
                   controller: searchController,
                   onSubmitted: (v) {
                     setState(() {});
@@ -269,11 +323,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ? MultiSliver(
                         children: [
                           ...widget.options
-                              .getFields()
+                              .getNonGroups()
                               .unique
                               .where((e) => e.shouldShow(context))
                               .where((e) => e.matches(searchController.text))
-                              .map((e) => e.built)
+                              .map((e) => e.built),
                         ],
                       )
                     : MultiSliver(
@@ -283,7 +337,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               .where((e) => e.shouldShow(context))
                               .map((e) => e.built),
                           ...widget.options.options
-                              .whereType<OptionField>()
+                              .where((i) => i is! OptionGroup)
                               .where((e) => e.shouldShow(context))
                               .map((e) => e.built),
                           ...widget.options.options
