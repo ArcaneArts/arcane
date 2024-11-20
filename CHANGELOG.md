@@ -1,3 +1,6 @@
+## 3.1.1
+* Sync Upstream
+
 ## 3.1.0
 * BREAKING: Text Fields no longer require Widgets and only support Strings since we're wrapping mat text fields anyways
 * Text Fields default to placeholderAlignment centerStart instead of topStart
