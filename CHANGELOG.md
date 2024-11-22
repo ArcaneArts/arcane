@@ -1,3 +1,11 @@
+## 3.1.2
+* Sync Upstream
+* Make divider expands by default
+* Call onChanged on number input when text field changed
+* Added theme extension
+* add icon gap to copyWith in collapsible
+* Fixed calendar item visual for start and end selected range
+
 ## 3.1.1
 * Sync Upstream
 
