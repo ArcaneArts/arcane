@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
+typedef Predicate<T> = bool Function(T value);
+
 const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
