@@ -155,6 +155,14 @@ class ArcaneAppState extends State<ArcaneApp> {
   AbstractArcaneTheme get currentTheme => _theme;
 
   @override
+  void didUpdateWidget(ArcaneApp oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.theme != widget.theme) {
+      _theme = widget.theme ?? AbstractArcaneTheme.defaultArcaneTheme;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) => usesRouter
       ? ShadcnApp.router(
           routeInformationProvider: widget.routeInformationProvider,
