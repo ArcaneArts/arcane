@@ -79,6 +79,27 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     var scaling = themeData.scaling;
+    Widget content = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (widget.leading != null)
+          widget.leading!.iconXLarge().iconMutedForeground(),
+        if (widget.title != null || widget.content != null)
+          Flexible(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.title != null) widget.title!.large().semiBold(),
+                if (widget.content != null) widget.content!.small().muted(),
+              ],
+            ).gap(8 * scaling),
+          ),
+        if (widget.trailing != null)
+          widget.trailing!.iconXLarge().iconMutedForeground(),
+      ],
+    ).gap(16 * scaling);
     return ModalContainer(
       borderRadius: themeData.borderRadiusXxl,
       barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
@@ -92,45 +113,43 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
         padding: widget.padding ?? EdgeInsets.all(24 * scaling),
         surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
         surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.leading != null)
-                    widget.leading!.iconXLarge().iconMutedForeground(),
-                  if (widget.title != null || widget.content != null)
+        child: LayoutBuilder(
+            builder: (context, constraints) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Flexible(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (widget.title != null)
-                            widget.title!.large().semiBold(),
-                          if (widget.content != null)
-                            widget.content!.small().muted(),
-                        ],
-                      ).gap(8 * scaling),
+                      child: content,
                     ),
-                  if (widget.trailing != null)
-                    widget.trailing!.iconXLarge().iconMutedForeground(),
-                ],
-              ).gap(16 * scaling),
-            ),
-            if (widget.actions != null && widget.actions!.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                // children: widget.actions!,
-                children: join(widget.actions!, SizedBox(width: 8 * scaling))
-                    .toList(),
-              ),
-          ],
-        ).gap(16 * scaling),
+                    if (widget.actions != null && widget.actions!.isNotEmpty)
+                      Stack(
+                        fit: StackFit.passthrough,
+                        alignment: Alignment.centerRight,
+                        children: [
+                          SizedBox(
+                            height: 0,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              hitTestBehavior: HitTestBehavior.deferToChild,
+                              child: Opacity(
+                                opacity: 0,
+                                child: content,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ...join(
+                                  widget.actions!, SizedBox(width: 8 * scaling))
+                            ],
+                          )
+                        ],
+                      )
+                  ],
+                ).gap(16 * scaling)),
       ),
     );
   }
