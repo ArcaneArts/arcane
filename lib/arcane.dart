@@ -3,6 +3,17 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
+export 'package:flutter/widgets.dart'
+    show
+        TableBorder,
+        TableColumnWidth,
+        FixedColumnWidth,
+        FractionColumnWidth,
+        IntrinsicColumnWidth,
+        MaxColumnWidth,
+        MinColumnWidth,
+        FlexColumnWidth,
+        TableCellVerticalAlignment;
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:padded/padded.dart';
 export 'package:pylon/pylon.dart';
@@ -47,6 +58,7 @@ export 'component/screen/sliver_screen.dart';
 export 'component/section.dart';
 export 'component/selector.dart';
 export 'component/sheet.dart';
+export 'component/table.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
 export 'util/blur.dart';
