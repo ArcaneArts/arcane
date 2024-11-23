@@ -996,6 +996,7 @@ Widget get exampleDialogCommand => ArcaneUsageExample(
 PrimaryButton(
   leading: Icon(Icons.open_outline_ionic),
   onPressed: () => DialogCommand(
+    leading: Icon(Icons.airplane),
     onConfirm: (e) => print(e),
     options: {
       "Alpha",
@@ -1030,6 +1031,7 @@ PrimaryButton(
     child: PrimaryButton(
       leading: Icon(Icons.open_outline_ionic),
       onPressed: () => DialogCommand(
+        leading: Icon(Icons.airplane),
         onConfirm: (e) => print(e),
         options: {
           "Alpha",
