@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/dialog/command.dart';
 
 bool v = false;
 String? vv;
@@ -16,7 +17,7 @@ class ExampleArcaneApp extends StatelessWidget {
           child: Builder(
               builder: (context) => PrimaryButton(
                   child: Text("Date Range Picker"),
-                  onPressed: () => DialogDateMulti(
+                  onPressed: () => DialogCommand(
                         onConfirm: (range) {
                           print(range);
                         },

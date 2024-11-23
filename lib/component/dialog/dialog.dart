@@ -113,43 +113,41 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
         padding: widget.padding ?? EdgeInsets.all(24 * scaling),
         surfaceBlur: widget.surfaceBlur ?? themeData.surfaceBlur,
         surfaceOpacity: widget.surfaceOpacity ?? themeData.surfaceOpacity,
-        child: LayoutBuilder(
-            builder: (context, constraints) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: content,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: content,
+            ),
+            if (widget.actions != null && widget.actions!.isNotEmpty)
+              Stack(
+                fit: StackFit.passthrough,
+                alignment: Alignment.centerRight,
+                children: [
+                  SizedBox(
+                    height: 0,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
+                      hitTestBehavior: HitTestBehavior.deferToChild,
+                      child: Opacity(
+                        opacity: 0,
+                        child: content,
+                      ),
                     ),
-                    if (widget.actions != null && widget.actions!.isNotEmpty)
-                      Stack(
-                        fit: StackFit.passthrough,
-                        alignment: Alignment.centerRight,
-                        children: [
-                          SizedBox(
-                            height: 0,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              physics: const NeverScrollableScrollPhysics(),
-                              hitTestBehavior: HitTestBehavior.deferToChild,
-                              child: Opacity(
-                                opacity: 0,
-                                child: content,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ...join(
-                                  widget.actions!, SizedBox(width: 8 * scaling))
-                            ],
-                          )
-                        ],
-                      )
-                  ],
-                ).gap(16 * scaling)),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ...join(widget.actions!, SizedBox(width: 8 * scaling))
+                    ],
+                  )
+                ],
+              )
+          ],
+        ).gap(16 * scaling),
       ),
     );
   }

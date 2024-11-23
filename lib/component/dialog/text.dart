@@ -59,7 +59,7 @@ class _DialogTextState extends State<DialogText> {
           title: Text(widget.title),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (widget.description != null ||
                   widget.descriptionWidget is! SizedBox)
