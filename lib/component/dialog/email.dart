@@ -93,7 +93,7 @@ class _DialogEmailState extends State<DialogEmail> {
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(widget.cancelText),
             ),
-            SecondaryButton(
+            PrimaryButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
                 widget.onConfirm(controller.text);

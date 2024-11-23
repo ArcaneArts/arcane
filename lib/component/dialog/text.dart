@@ -90,7 +90,7 @@ class _DialogTextState extends State<DialogText> {
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(widget.cancelText),
             ),
-            SecondaryButton(
+            PrimaryButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
                 widget.onConfirm(controller.text);

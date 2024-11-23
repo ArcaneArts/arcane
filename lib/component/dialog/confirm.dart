@@ -47,7 +47,7 @@ class DialogConfirm extends StatelessWidget with ArcaneDialogLauncher {
                       },
                       child: Text(confirmText),
                     )
-                  : SecondaryButton(
+                  : PrimaryButton(
                       onPressed: () {
                         Navigator.of(context).pop(true);
                         onConfirm();

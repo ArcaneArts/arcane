@@ -177,7 +177,7 @@ class _DialogConfirmTextState extends State<DialogConfirmText>
                     },
                     child: Text(widget.confirmText),
                   )
-                : SecondaryButton(
+                : PrimaryButton(
                     onPressed: () {
                       _handleSubmit(controller.text);
                     },
