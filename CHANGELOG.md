@@ -1,3 +1,6 @@
+## 3.1.4
+* Tables!
+
 ## 3.1.3
 * Chat Screen UI
 

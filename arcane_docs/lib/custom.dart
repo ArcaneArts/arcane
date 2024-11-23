@@ -13,6 +13,7 @@ List<ShadcnDocsSection> customSections = [
   ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
     ShadcnDocsPage("Chat", "chat"),
+    ShadcnDocsPage("Tables", "tables"),
     ShadcnDocsPage("Dialogs", "dialogs"),
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
@@ -83,10 +84,453 @@ List<GoRoute> customRoutes = [
             description: 'A chat UI that supports basic messages on a stream.',
             displayName: 'Chat',
             children: [exampleChatBubblesScreen, exampleChatTilesScreen],
-          ))
+          )),
+  GoRoute(
+      path: "tables",
+      name: "tables",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'tables',
+            description:
+                'Tables for Arcane are designed to be simple to use and easy to extend.',
+            displayName: 'Tables',
+            children: [
+              exampleTables,
+              exampleTableAltColors,
+              exampleTableWithColors,
+              exampleTableColumnSizes
+            ],
+          )),
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleTableColumnSizes => ArcaneUsageExample(
+    title: "Column Sizing",
+    code: r"""
+Table(
+  defaultColumnWidth: const ComfyColumnWidth(),
+  columnWidths: const {
+    // You can use 
+    // ComfyColumnWidth - Combines Intrinsic & Flex Column Widths,
+    // FixedColumnWidth - Fixed width for the column,
+    // FractionColumnWidth - Fraction of the available space,
+    // IntrinsicColumnWidth - Intrinsic width of the column,
+    // MaxColumnWidth - Max width for the column,
+    // MinColumnWidth - Min width for the column,
+    // FlexColumnWidth - Flex width for the column like a row flex,
+    
+    0: ComfyColumnWidth(flex: 1),
+    1: ComfyColumnWidth(flex: 4),
+  },
+  rows: [
+    TR.header(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR.footer(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+  ],
+)
+    """,
+    child: Table(
+      defaultColumnWidth: const ComfyColumnWidth(),
+      columnWidths: const {
+        0: ComfyColumnWidth(flex: 1),
+        1: ComfyColumnWidth(flex: 4),
+      },
+      rows: [
+        TR.header(
+          column: [
+            TD(Text("Cell 1")),
+            TD(Text("Cell A")),
+          ],
+        ),
+        TR(
+          column: [
+            TD(Text("Cell 1")),
+            TD(Text("Cell A")),
+          ],
+        ),
+        TR(
+          column: [
+            TD(Text("Cell 2")),
+            TD(Text("Cell B")),
+          ],
+        ),
+        TR(
+          column: [
+            TD(Text("Cell 2")),
+            TD(Text("Cell B")),
+          ],
+        ),
+        TR(
+          column: [
+            TD(Text("Cell 2")),
+            TD(Text("Cell B")),
+          ],
+        ),
+        TR(
+          column: [
+            TD(Text("Cell 2")),
+            TD(Text("Cell B")),
+          ],
+        ),
+        TR.footer(
+          column: [
+            TD(Text("Cell 1")),
+            TD(Text("Cell A")),
+          ],
+        ),
+      ],
+    ));
+
+Widget get exampleTables => ArcaneUsageExample(
+    title: "Basic Tables",
+    code: r"""
+Table(
+  rows: [
+    TR.header(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR.footer(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+  ],
+)
+    """,
+    child: Row(
+      children: [
+        Expanded(
+            child: Table(
+          rows: [
+            TR.header(
+              column: [
+                TD(Text("Cell 1")),
+                TD(Text("Cell A")),
+              ],
+            ),
+            TR(
+              column: [
+                TD(Text("Cell 1")),
+                TD(Text("Cell A")),
+              ],
+            ),
+            TR(
+              column: [
+                TD(Text("Cell 2")),
+                TD(Text("Cell B")),
+              ],
+            ),
+            TR(
+              column: [
+                TD(Text("Cell 2")),
+                TD(Text("Cell B")),
+              ],
+            ),
+            TR(
+              column: [
+                TD(Text("Cell 2")),
+                TD(Text("Cell B")),
+              ],
+            ),
+            TR(
+              column: [
+                TD(Text("Cell 2")),
+                TD(Text("Cell B")),
+              ],
+            ),
+            TR.footer(
+              column: [
+                TD(Text("Cell 1")),
+                TD(Text("Cell A")),
+              ],
+            ),
+          ],
+        ))
+      ],
+    ));
+
+Widget get exampleTableAltColors => ArcaneUsageExample(
+    title: "Alternating Row Color",
+    code: r"""
+Table(
+  alternatingRowColor: true,
+  rows: [
+    TR.header(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR.footer(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+  ],
+)
+    """,
+    child: Row(
+      children: [
+        Expanded(
+          child: Table(
+            alternatingRowColor: true,
+            rows: [
+              TR.header(
+                column: [
+                  TD(Text("Cell 1")),
+                  TD(Text("Cell A")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 1")),
+                  TD(Text("Cell A")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR.footer(
+                column: [
+                  TD(Text("Cell 1")),
+                  TD(Text("Cell A")),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    ));
+
+Widget get exampleTableWithColors => ArcaneUsageExample(
+    title: "Colored Cells & Rows",
+    code: r"""
+Table(
+  rows: [
+    TR.header(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 1"), color: Colors.red.withOpacity(0.1)),
+        TD(Text("Cell A")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2"), color: Colors.red.withOpacity(0.1)),
+        TD(Text("Cell B"), color: Colors.blue.withOpacity(0.1)),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B"), color: Colors.blue.withOpacity(0.1)),
+      ],
+    ),
+    TR(
+      color: Colors.green.withOpacity(0.1),
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR(
+      column: [
+        TD(Text("Cell 2")),
+        TD(Text("Cell B")),
+      ],
+    ),
+    TR.footer(
+      column: [
+        TD(Text("Cell 1")),
+        TD(Text("Cell A")),
+      ],
+    ),
+  ],
+)
+    """,
+    child: Row(
+      children: [
+        Expanded(
+          child: Table(
+            rows: [
+              TR.header(
+                column: [
+                  TD(Text("Cell 1")),
+                  TD(Text("Cell A")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 1"), color: Colors.red.withOpacity(0.1)),
+                  TD(Text("Cell A")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2"), color: Colors.red.withOpacity(0.1)),
+                  TD(Text("Cell B"), color: Colors.blue.withOpacity(0.1)),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B"), color: Colors.blue.withOpacity(0.1)),
+                ],
+              ),
+              TR(
+                color: Colors.green.withOpacity(0.1),
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR(
+                column: [
+                  TD(Text("Cell 2")),
+                  TD(Text("Cell B")),
+                ],
+              ),
+              TR.footer(
+                column: [
+                  TD(Text("Cell 1")),
+                  TD(Text("Cell A")),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    ));
 
 Widget get exampleChatBubblesScreen => ArcaneUsageExample(
     title: "Chat Bubbles",

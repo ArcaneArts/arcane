@@ -14,19 +14,53 @@ class ExampleArcaneApp extends StatelessWidget {
         home: FillScreen(
             child: Builder(
                 builder: (context) => Table(
-                      rows: const [
+                      alternatingRowColor: false,
+                      rows: [
+                        TR.header(
+                          column: [
+                            TD(Text("Cell 1")),
+                            TD(Text("Cell A")),
+                          ],
+                        ),
                         TR(
                           column: [
-                            TD(
-                              Text("Cell 1"),
-                            ),
+                            TD(Text("Cell 1"),
+                                color: Colors.red.withOpacity(0.1)),
                             TD(Text("Cell A")),
+                          ],
+                        ),
+                        TR(
+                          column: [
+                            TD(Text("Cell 2"),
+                                color: Colors.red.withOpacity(0.1)),
+                            TD(Text("Cell B"),
+                                color: Colors.blue.withOpacity(0.1)),
+                          ],
+                        ),
+                        TR(
+                          column: [
+                            TD(Text("Cell 2")),
+                            TD(Text("Cell B"),
+                                color: Colors.blue.withOpacity(0.1)),
+                          ],
+                        ),
+                        TR(
+                          color: Colors.green.withOpacity(0.1),
+                          column: [
+                            TD(Text("Cell 2")),
+                            TD(Text("Cell B")),
                           ],
                         ),
                         TR(
                           column: [
                             TD(Text("Cell 2")),
                             TD(Text("Cell B")),
+                          ],
+                        ),
+                        TR.footer(
+                          column: [
+                            TD(Text("Cell 1")),
+                            TD(Text("Cell A")),
                           ],
                         ),
                       ],
