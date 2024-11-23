@@ -6,6 +6,7 @@ export 'package:conjure/conjure.dart';
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:padded/padded.dart';
 export 'package:pylon/pylon.dart';
+export 'package:rxdart/rxdart.dart' show BehaviorSubject;
 export 'package:skeletonizer/skeletonizer.dart';
 export 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 export 'package:sliver_tools/sliver_tools.dart' hide MultiSliver;

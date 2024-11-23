@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:arcane/arcane.dart';
 import 'package:arcane/component/dialog/command.dart';
 import 'package:docs/pages/docs_page.dart';
@@ -10,6 +12,7 @@ late BuildContext _context;
 List<ShadcnDocsSection> customSections = [
   ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
+    ShadcnDocsPage("Chat", "chat"),
     ShadcnDocsPage("Dialogs", "dialogs"),
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
@@ -71,10 +74,219 @@ List<GoRoute> customRoutes = [
                 'A unified image view that supports local caching, future urls & thumbhashes/blurhashes.',
             displayName: 'Image',
             children: [exampleImage],
+          )),
+  GoRoute(
+      path: "chat",
+      name: "chat",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'chat',
+            description: 'A chat UI that supports basic messages on a stream.',
+            displayName: 'Chat',
+            children: [exampleChatBubblesScreen, exampleChatTilesScreen],
           ))
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleChatBubblesScreen => ArcaneUsageExample(
+    title: "Chat Bubbles",
+    code: r"""
+ChatScreen(
+  gutter: false,
+  header: Bar(titleText: "Chat Bubbles"),
+  style: ChatStyle.bubbles,
+  provider: MyChatProvider(
+    users: [
+      MyUser(id: "0", name: "Dan"),
+      MyUser(id: "1", name: "Alice"),
+      MyUser(id: "2", name: "Bob"),
+      MyUser(id: "3", name: "Charlie"),
+    ], 
+    messages: BehaviorSubject.seeded([])),
+  sender: "0")
+
+/// Define a message model and implement AbstractChatMessage
+class MyMessage implements AbstractChatMessage {
+  final String id;
+  final String message;
+  @override
+  final DateTime timestamp;
+  @override
+  final String senderId;
+
+  MyMessage({
+    required this.id,
+    required this.message,
+    required this.timestamp,
+    required this.senderId,
+  });
+  
+  /// Build the content for the message
+  @override
+  Widget get messageWidget => Text(message);
+}
+
+/// Define a user model and implement AbstractChatUser
+class MyUser extends AbstractChatUser {
+  @override
+  final String id;
+  @override
+  final String name;
+
+  MyUser({
+    required this.id,
+    required this.name,
+  });
+
+  /// Build the avatar for the user
+  @override
+  Widget get avatar => const Icon(Icons.user);
+}
+
+// You need a Provider that extends ChatProvider to handle messages
+class MyChatProvider extends ChatProvider {
+  final List<MyUser> users;
+  final BehaviorSubject<List<MyMessage>> messages;
+
+  MyChatProvider({
+    required this.users,
+    required this.messages,
+  });
+
+  @override
+  Future<MyUser> getUser(String id) async =>
+      users.firstWhere((element) => element.id == id);
+
+  @override
+  Stream<List<MyMessage>> streamLastMessages() => messages;
+
+  @override
+  Future<void> sendMessage(String message) async {
+    messages.add([
+      ...messages.value,
+      MyMessage(
+        id: Random.secure().nextDouble().toString(),
+        senderId: "0",
+        message: message,
+        timestamp: DateTime.timestamp(),
+      ),
+    ]);
+  }
+}
+    """,
+    child: SizedBox(
+        height: 500,
+        child: ChatScreen(
+            gutter: false,
+            header: Bar(titleText: "Chat Bubbles"),
+            style: ChatStyle.bubbles,
+            provider: MyChatProvider(users: [
+              MyUser(id: "0", name: "Dan"),
+              MyUser(id: "1", name: "Alice"),
+              MyUser(id: "2", name: "Bob"),
+              MyUser(id: "3", name: "Charlie"),
+            ], messages: BehaviorSubject.seeded([])),
+            sender: "0")));
+
+Widget get exampleChatTilesScreen => ArcaneUsageExample(
+    title: "Chat Tiles",
+    code: r"""
+ChatScreen(
+  gutter: false,
+  header: Bar(titleText: "Chat Bubbles"),
+  style: ChatStyle.tiles,
+  provider: MyChatProvider(
+    users: [
+      MyUser(id: "0", name: "Dan"),
+      MyUser(id: "1", name: "Alice"),
+      MyUser(id: "2", name: "Bob"),
+      MyUser(id: "3", name: "Charlie"),
+    ], 
+    messages: BehaviorSubject.seeded([])),
+  sender: "0")
+
+/// Define a message model and implement AbstractChatMessage
+class MyMessage implements AbstractChatMessage {
+  final String id;
+  final String message;
+  @override
+  final DateTime timestamp;
+  @override
+  final String senderId;
+
+  MyMessage({
+    required this.id,
+    required this.message,
+    required this.timestamp,
+    required this.senderId,
+  });
+  
+  /// Build the content for the message
+  @override
+  Widget get messageWidget => Text(message);
+}
+
+/// Define a user model and implement AbstractChatUser
+class MyUser extends AbstractChatUser {
+  @override
+  final String id;
+  @override
+  final String name;
+
+  MyUser({
+    required this.id,
+    required this.name,
+  });
+
+  /// Build the avatar for the user
+  @override
+  Widget get avatar => const Icon(Icons.user);
+}
+
+// You need a Provider that extends ChatProvider to handle messages
+class MyChatProvider extends ChatProvider {
+  final List<MyUser> users;
+  final BehaviorSubject<List<MyMessage>> messages;
+
+  MyChatProvider({
+    required this.users,
+    required this.messages,
+  });
+
+  @override
+  Future<MyUser> getUser(String id) async =>
+      users.firstWhere((element) => element.id == id);
+
+  @override
+  Stream<List<MyMessage>> streamLastMessages() => messages;
+
+  @override
+  Future<void> sendMessage(String message) async {
+    messages.add([
+      ...messages.value,
+      MyMessage(
+        id: Random.secure().nextDouble().toString(),
+        senderId: "0",
+        message: message,
+        timestamp: DateTime.timestamp(),
+      ),
+    ]);
+  }
+}
+    """,
+    child: SizedBox(
+        height: 500,
+        child: ChatScreen(
+            gutter: false,
+            header: Bar(titleText: "Chat Tiles"),
+            style: ChatStyle.tiles,
+            provider: MyChatProvider(users: [
+              MyUser(id: "0", name: "Dan"),
+              MyUser(id: "1", name: "Alice"),
+              MyUser(id: "2", name: "Bob"),
+              MyUser(id: "3", name: "Charlie"),
+            ], messages: BehaviorSubject.seeded([])),
+            sender: "0")));
 
 Widget get exampleImage => ArcaneUsageExample(
     title: "Image with Thumbhash",
@@ -965,3 +1177,105 @@ class _ArcaneComponentPageState extends State<ArcaneComponentPage> {
 mixin ArcaneExample {}
 
 typedef Logo = ArcaneArtsLogo;
+
+class MyChatProvider extends ChatProvider {
+  final List<MyUser> users;
+  final BehaviorSubject<List<MyMessage>> messages;
+
+  MyChatProvider({
+    required this.users,
+    required this.messages,
+  });
+
+  @override
+  Future<MyUser> getUser(String id) async =>
+      users.firstWhere((element) => element.id == id);
+
+  @override
+  Stream<List<MyMessage>> streamLastMessages() => messages;
+
+  @override
+  Future<void> sendMessage(String message) {
+    messages.add([
+      ...messages.value,
+      MyMessage(
+        id: Random.secure().nextDouble().toString(),
+        senderId: "0",
+        message: message,
+        timestamp: DateTime.timestamp(),
+      ),
+    ]);
+
+    if (Random.secure().nextBool()) {
+      messages.add([
+        ...messages.value,
+        MyMessage(
+          id: Random.secure().nextDouble().toString(),
+          senderId: "1",
+          message: "Well well well",
+          timestamp: DateTime.timestamp(),
+        ),
+      ]);
+
+      if (Random.secure().nextBool()) {
+        messages.add([
+          ...messages.value,
+          MyMessage(
+            id: Random.secure().nextDouble().toString(),
+            senderId: "1",
+            message: "Well well well woah woah",
+            timestamp: DateTime.timestamp(),
+          ),
+        ]);
+
+        if (Random.secure().nextBool()) {
+          messages.add([
+            ...messages.value,
+            MyMessage(
+              id: Random.secure().nextDouble().toString(),
+              senderId: "1",
+              message: "NICE!",
+              timestamp: DateTime.timestamp(),
+            ),
+          ]);
+        }
+      }
+    }
+
+    return Future.value();
+  }
+}
+
+class MyMessage implements AbstractChatMessage {
+  final String id;
+  final String message;
+  @override
+  final DateTime timestamp;
+  @override
+  final String senderId;
+
+  MyMessage({
+    required this.id,
+    required this.message,
+    required this.timestamp,
+    required this.senderId,
+  });
+
+  @override
+  Widget get messageWidget => Text(message);
+}
+
+class MyUser extends AbstractChatUser {
+  @override
+  final String id;
+  @override
+  final String name;
+
+  MyUser({
+    required this.id,
+    required this.name,
+  });
+
+  @override
+  Widget get avatar => const Icon(Icons.user);
+}
