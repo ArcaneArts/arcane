@@ -1,9 +1,13 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/component/dialog/command.dart';
+import 'package:example/chat/chat.dart';
+import 'package:example/chat/model/message.dart';
+import 'package:example/chat/model/user.dart';
 import 'package:example/showcase/buttons.dart';
 import 'package:example/showcase/cards.dart';
 import 'package:example/showcase/text.dart';
 import 'package:example/util/showcase.dart';
+import 'package:rxdart/rxdart.dart';
 
 bool v = false;
 String? vv;
@@ -11,15 +15,28 @@ void main() {
   runApp(const ExampleArcaneApp());
 }
 
+BehaviorSubject<List<MyMessage>> messages = BehaviorSubject.seeded([]);
+List<MyUser> users = [
+  MyUser(id: "0", name: "Dan"),
+  MyUser(id: "1", name: "Alice"),
+  MyUser(id: "2", name: "Bob"),
+  MyUser(id: "3", name: "Charlie"),
+];
+
 class ExampleArcaneApp extends StatelessWidget {
   const ExampleArcaneApp({super.key});
 
   @override
   Widget build(BuildContext context) => ArcaneApp(
-        home: const Home(),
+        home: ChatScreen(
+            streamBuffer: 1000,
+            style: MediaQuery.of(context).size.width < 600
+                ? ChatStyle.bubbles
+                : ChatStyle.tiles,
+            provider: MyChatProvider(users: users, messages: messages),
+            sender: "0"),
         theme: ArcaneTheme(
-            surfaceOpacity: 1,
-            scheme: ContrastedColorScheme.fromScheme(ColorSchemes.blue)),
+            scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc)),
       );
 }
 
