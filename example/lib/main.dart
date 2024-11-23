@@ -12,59 +12,16 @@ class ExampleArcaneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ArcaneApp(
         home: FillScreen(
-            child: Builder(
-                builder: (context) => Table(
-                      alternatingRowColor: false,
-                      rows: [
-                        TR.header(
-                          column: [
-                            TD(Text("Cell 1")),
-                            TD(Text("Cell A")),
-                          ],
-                        ),
-                        TR(
-                          column: [
-                            TD(Text("Cell 1"),
-                                color: Colors.red.withOpacity(0.1)),
-                            TD(Text("Cell A")),
-                          ],
-                        ),
-                        TR(
-                          column: [
-                            TD(Text("Cell 2"),
-                                color: Colors.red.withOpacity(0.1)),
-                            TD(Text("Cell B"),
-                                color: Colors.blue.withOpacity(0.1)),
-                          ],
-                        ),
-                        TR(
-                          column: [
-                            TD(Text("Cell 2")),
-                            TD(Text("Cell B"),
-                                color: Colors.blue.withOpacity(0.1)),
-                          ],
-                        ),
-                        TR(
-                          color: Colors.green.withOpacity(0.1),
-                          column: [
-                            TD(Text("Cell 2")),
-                            TD(Text("Cell B")),
-                          ],
-                        ),
-                        TR(
-                          column: [
-                            TD(Text("Cell 2")),
-                            TD(Text("Cell B")),
-                          ],
-                        ),
-                        TR.footer(
-                          column: [
-                            TD(Text("Cell 1")),
-                            TD(Text("Cell A")),
-                          ],
-                        ),
-                      ],
-                    ))),
+            child: Center(
+          child: Builder(
+              builder: (context) => PrimaryButton(
+                  child: Text("Date Range Picker"),
+                  onPressed: () => DialogDateMulti(
+                        onConfirm: (range) {
+                          print(range);
+                        },
+                      ).open(context))),
+        )),
         theme: ArcaneTheme(
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc)),
       );
