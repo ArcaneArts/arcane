@@ -1,3 +1,6 @@
+## 3.1.3
+* Chat Screen UI
+
 ## 3.1.2
 * Sync Upstream
 * Make divider expands by default
