@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:arcane/arcane.dart';
-import 'package:rxdart/rxdart.dart';
 
 enum ChatStyle {
   tiles,
@@ -38,12 +37,14 @@ class ChatScreen extends StatefulWidget {
   final String placeholder;
   final Widget? header;
   final Widget? fab;
+  final CrossAxisAlignment avatarAlignment;
 
   const ChatScreen(
       {super.key,
       this.fab,
       this.gutter = false,
       this.header,
+      this.avatarAlignment = CrossAxisAlignment.start,
       this.placeholder = "Send a message",
       this.streamBuffer,
       this.style = ChatStyle.bubbles,
@@ -166,6 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: message.messageWidget,
               )),
           ChatMessageView(
+            avatarAlignment: widget.avatarAlignment,
             avatar: buildUserAvatar(message.senderId),
             header: buildUserHeader(message.senderId),
             sender: message.senderId == widget.sender,
