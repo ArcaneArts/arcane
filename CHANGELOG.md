@@ -1,3 +1,12 @@
+## 3.1.5
+* Added `DialogDate` a date picker dialog
+* Added `DialogDateRange` a date range picker dialog
+* Added `DialogDateMulti` a multi date picker dialog
+* Added `leading` and `trailing` to `DialogCommand` for more customization
+* Fixed dialogs spacing of buttons on the left
+* Dialogs now use `PrimaryButton` for their primary buttons, not `SecondaryButton`
+* Docs now include arcane localizations, fixes arcane examples in tome.
+
 ## 3.1.4
 * Tables!
 
