@@ -14,6 +14,7 @@ export 'package:soft_edge_blur/soft_edge_blur.dart';
 export 'package:toxic/toxic.dart';
 export 'package:toxic_flutter/toxic_flutter.dart';
 
+// Arcane
 export 'component/adaptive.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
@@ -21,8 +22,6 @@ export 'component/basic_card.dart';
 export 'component/bottom_navigation_bar.dart';
 export 'component/card_carousel.dart';
 export 'component/center_body.dart';
-// Arcane
-export 'component/chat/conversation_screen.dart';
 export 'component/checkbox.dart';
 export 'component/conjured.dart';
 export 'component/dialog/confirm.dart';
@@ -40,6 +39,7 @@ export 'component/logo.dart';
 export 'component/popup_menu.dart';
 export 'component/radio_cards.dart';
 export 'component/screen/abstract_screen.dart';
+export 'component/screen/chat_screen.dart';
 export 'component/screen/fill_screen.dart';
 export 'component/screen/navigation_screen.dart';
 export 'component/screen/settings_screen.dart';
