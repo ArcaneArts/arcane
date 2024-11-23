@@ -18,6 +18,8 @@ class ExampleArcaneApp extends StatelessWidget {
               builder: (context) => PrimaryButton(
                   child: Text("Date Range Picker"),
                   onPressed: () => DialogCommand(
+                        leading: Icon(Icons.airplane),
+                        trailing: Icon(Icons.airplane),
                         onConfirm: (range) {
                           print(range);
                         },

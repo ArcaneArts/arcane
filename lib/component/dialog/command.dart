@@ -11,6 +11,8 @@ class DialogCommand extends StatefulWidget with ArcaneDialogLauncher {
   final int? maxLength;
   final Set<String> options;
   final TextInputType? keyboardType;
+  final Widget? leading;
+  final Widget? trailing;
 
   const DialogCommand(
       {super.key,
@@ -20,6 +22,8 @@ class DialogCommand extends StatefulWidget with ArcaneDialogLauncher {
       this.hint,
       this.initialValue,
       this.maxLength,
+      this.leading,
+      this.trailing,
       required this.onConfirm});
 
   @override
@@ -66,6 +70,8 @@ class _DialogCommandState extends State<DialogCommand> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  leading: widget.leading,
+                  trailing: widget.trailing,
                   style: Theme.of(context)
                       .typography
                       .h3
