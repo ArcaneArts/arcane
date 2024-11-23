@@ -47,6 +47,11 @@ echo "Branding 'docs' to 'arcane'."
 find lib/pages -type f -name "docs_page.dart" -exec sed -i "s/'shadcn_flutter'/'arcane'/g" {} +
 find lib/pages -type f -name "docs_page.dart" -exec sed -i 's|'FlutterLogo'|'Logo'|g' {} +
 
+# Fix Localizations
+echo "Fixing localizations for 'docs'."
+find lib -type f -name "main.dart" -exec sed -i 's|ShadcnApp\.router\(|ShadcnApp\.router\(localizationsDelegates: const \[a\.ShadcnLocalizationsDelegate\(\)\],|g' {} +
+find lib -type f -name "main.dart" -exec sed -i 's|import '\''package:docs/custom.dart'\'';|import '\''package:docs/custom.dart'\'';import '\''package:arcane/arcane.dart'\'' as a;|g' {} +
+
 cd ..
 echo "Changing urls to arcane"
 find docs -type f -name "*.dart" -exec sed -i 's|- asset: "packages/shadcn_flutter/|- asset: "packages/arcane/resources/|g' {} +

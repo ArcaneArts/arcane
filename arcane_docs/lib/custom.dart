@@ -1488,7 +1488,7 @@ class ShadcnWrapper extends StatelessWidget {
               textSmall: t.typography.textSmall,
               textMuted: t.typography.textMuted),
           colorScheme: ColorScheme.fromMap(t.colorScheme.toMap())),
-      child: child,
+      child: Builder(builder: (context) => child),
     );
   }
 }
