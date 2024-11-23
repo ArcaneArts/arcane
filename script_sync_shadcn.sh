@@ -49,7 +49,8 @@ find lib/pages -type f -name "docs_page.dart" -exec sed -i 's|'FlutterLogo'|'Log
 
 # Fix Localizations
 echo "Fixing localizations for 'docs'."
-find lib -type f -name "main.dart" -exec sed -i 's|ShadcnApp\.router\(|ShadcnApp\.router\(localizationsDelegates: const \[a\.ShadcnLocalizationsDelegate\(\)\],|g' {} +
+
+find lib -type f -name "main.dart" -exec sed -i 's|routerConfig: router,|routerConfig: router,localizationsDelegates: const \[a\.ShadcnLocalizationsDelegate\(\)\],|g' {} +
 find lib -type f -name "main.dart" -exec sed -i 's|import '\''package:docs/custom.dart'\'';|import '\''package:docs/custom.dart'\'';import '\''package:arcane/arcane.dart'\'' as a;|g' {} +
 
 cd ..
