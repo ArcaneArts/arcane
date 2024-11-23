@@ -50,7 +50,10 @@ List<GoRoute> customRoutes = [
               exampleDialogConfirmText,
               exampleDialogText,
               exampleDialogEmail,
-              exampleDialogCommand
+              exampleDialogCommand,
+              exampleDialogDate,
+              exampleDialogRange,
+              exampleDialogMulti,
             ],
           )),
   GoRoute(
@@ -802,6 +805,102 @@ PrimaryButton(
         description: "Description Text goes here",
       ).open(_context),
       child: Text("Confirm Dialog"),
+    ));
+
+Widget get exampleDialogDate => ArcaneUsageExample(
+    title: "Date Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogDate(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (t) => print(t),
+    // Block out ALL fridays from being selected
+    stateBuilder: (date) => date.weekday == DateTime.friday ? DateState.disabled : DateState.enabled,
+  ).open(_context),
+  child: Text("Date Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogDate(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (t) => print(t),
+        // Block out ALL fridays from being selected
+        stateBuilder: (date) => date.weekday == DateTime.friday
+            ? DateState.disabled
+            : DateState.enabled,
+      ).open(_context),
+      child: Text("Date Dialog"),
+    ));
+
+Widget get exampleDialogRange => ArcaneUsageExample(
+    title: "Date Range Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogDateRange(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (t) => print(t),
+    // Block every other day from being selected as the start or stop
+    // This will allow you to select through blocked days though
+    stateBuilder: (date) => date.day % 2 == 0 ? DateState.disabled : DateState.enabled,
+  ).open(_context),
+  child: Text("Date Range Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogDateRange(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (t) => print(t),
+        // Block every other day from being selected as the start or stop
+        // This will allow you to select through blocked days though
+        stateBuilder: (date) =>
+            date.day % 2 == 0 ? DateState.disabled : DateState.enabled,
+      ).open(_context),
+      child: Text("Date Range Dialog"),
+    ));
+
+Widget get exampleDialogMulti => ArcaneUsageExample(
+    title: "Multi Date Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogDateMulti(
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (t) => print(t),
+    // Block every 7 days from being selected as the start or stop
+    // This will allow you to select through blocked days though
+    stateBuilder: (date) =>
+        date.day % 7 == 0 ? DateState.disabled : DateState.enabled,
+  ).open(_context),
+  child: Text("Multi Date Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogDateMulti(
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (t) => print(t),
+        // Block every 7 days from being selected as the start or stop
+        // This will allow you to select through blocked days though
+        stateBuilder: (date) =>
+            date.day % 7 == 0 ? DateState.disabled : DateState.enabled,
+      ).open(_context),
+      child: Text("Multi Date Dialog"),
     ));
 
 Widget get exampleDialogText => ArcaneUsageExample(
