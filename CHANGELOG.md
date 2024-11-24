@@ -2,6 +2,7 @@
 * Added DateTime & DateTimeRange extensions for easier date manipulation
 * Add WidgetStates to Clickable to allow control over the animation states
 * Fix Color Picker HSL 
+* Default Popover from anchorMinSize to anchorFixedSize
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog
