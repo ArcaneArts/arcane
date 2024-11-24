@@ -145,7 +145,7 @@ FillScreen(
 
 Widget get exampleSearchButtonLive => ArcaneUsageExample(
       padding: 0,
-      title: 'Transactional Search Button',
+      title: 'Live Search Button',
       code: r"""
 FillScreen(
   header: Bar(titleText: "Header", trailing: [
