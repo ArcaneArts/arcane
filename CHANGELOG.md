@@ -7,6 +7,7 @@
 * Add support for a `placeholderStyle` on TextFields. Defaults to a muted style or default if unspecified style.
 * Added a `SearchBox` widget for easily adding search boxes
 * Added a `SearchButton` widget for managing both `transactional` and `live` searches in a bar / card for example
+* Bars now support injecting leading / trailing widgets in them via context using `InjectBarLeading` and `InjectBarTrailing` or just `InjectBarEnd`
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog

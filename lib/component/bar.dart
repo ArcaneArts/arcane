@@ -109,7 +109,7 @@ class Bar extends StatelessWidget {
               child: SafeBar.withSafety(
                   context,
                   AppBar(
-                    leading: [
+                    leading: InjectBarLeading.mutate(context, [
                       if ((backButton == BarBackButtonMode.always ||
                               (backButton == BarBackButtonMode.whenPinned &&
                                   !GlassStopper.isStopping(context))) &&
@@ -122,9 +122,10 @@ class Bar extends StatelessWidget {
                                 : const Icon(PhosphorIcons.caret_left_bold),
                             onPressed: () => Arcane.pop(context)),
                       ...leading
-                    ],
+                    ]),
                     surfaceOpacity: 0,
-                    trailing: [...trailing, if (actions != null) actions!],
+                    trailing: InjectBarTrailing.mutate(
+                        context, [...trailing, if (actions != null) actions!]),
                     title: titleText?.text ?? title,
                     header: headerText?.text ?? header,
                     subtitle: subtitleText?.text ?? subtitle,
@@ -278,4 +279,73 @@ class BarAction {
       required this.label,
       required this.onPressed,
       this.collapsable = true});
+}
+
+class InjectBarEnds extends StatelessWidget {
+  final bool trailing;
+  final PylonBuilder builder;
+  final bool start;
+  final List<Widget> Function(BuildContext)? children;
+
+  const InjectBarEnds(
+      {super.key,
+      this.trailing = true,
+      this.start = false,
+      this.children,
+      required this.builder});
+
+  @override
+  Widget build(BuildContext context) => trailing
+      ? InjectBarTrailing(builder: builder, start: start, children: children)
+      : InjectBarLeading(builder: builder, start: start, children: children);
+}
+
+class InjectBarTrailing extends StatelessWidget {
+  final List<Widget> Function(BuildContext)? children;
+  final bool start;
+  final PylonBuilder builder;
+
+  static InjectBarTrailing? of(BuildContext context) =>
+      context.pylonOr<InjectBarTrailing>();
+
+  static List<Widget> mutate(BuildContext context, List<Widget> children) {
+    InjectBarTrailing? i = of(context);
+    return i != null
+        ? (i.start
+            ? [...children, ...(i.children?.call(context) ?? [])]
+            : [...(i.children?.call(context) ?? []), ...children])
+        : children;
+  }
+
+  const InjectBarTrailing(
+      {super.key, this.children, this.start = false, required this.builder});
+
+  @override
+  Widget build(BuildContext context) =>
+      Pylon<InjectBarTrailing>(value: this, builder: builder, local: true);
+}
+
+class InjectBarLeading extends StatelessWidget {
+  final List<Widget> Function(BuildContext)? children;
+  final bool start;
+  final PylonBuilder builder;
+
+  static InjectBarLeading? of(BuildContext context) =>
+      context.pylonOr<InjectBarLeading>();
+
+  static List<Widget> mutate(BuildContext context, List<Widget> children) {
+    InjectBarLeading? i = of(context);
+    return i != null
+        ? (i.start
+            ? [...children, ...(i.children?.call(context) ?? [])]
+            : [...(i.children?.call(context) ?? []), ...children])
+        : children;
+  }
+
+  const InjectBarLeading(
+      {super.key, this.children, this.start = true, required this.builder});
+
+  @override
+  Widget build(BuildContext context) =>
+      Pylon<InjectBarLeading>(value: this, builder: builder, local: true);
 }
