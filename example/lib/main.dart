@@ -31,6 +31,8 @@ class _ExampleNavigationScreenState extends State<ExampleNavigationScreen> {
 
   @override
   Widget build(BuildContext context) => NavigationScreen(
+          header: Text("Im a thing"),
+          footer: Text("Im a footer"),
           type: type,
           index: index,
           onIndexChanged: (index) => setState(() => this.index = index),

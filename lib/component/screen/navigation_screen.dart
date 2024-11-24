@@ -25,6 +25,8 @@ class NavigationScreen extends AbstractStatelessScreen {
   final Widget? overrideSidebarGap;
   final double siderailTopPadding;
   final bool endSide;
+  final Widget? footer;
+  final Widget? header;
   const NavigationScreen(
       {super.key,
       this.siderailRightPadding = 8,
@@ -33,6 +35,8 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.siderailTopPadding = 8,
       this.onIndexChanged,
       required this.tabs,
+      this.header,
+      this.footer,
       this.endSide = false,
       this.type = NavigationType.bottomNavigationBar});
 
@@ -84,13 +88,21 @@ class NavigationScreen extends AbstractStatelessScreen {
         labelType: NavigationLabelType.expanded,
         constraints: const BoxConstraints(minWidth: 100, maxWidth: 150),
         index: index,
+        surfaceOpacity: drawer ? 0 : null,
+        surfaceBlur: drawer ? 0 : null,
         children: [
-          if (Navigator.canPop(context)) ...[
+          if (!drawer && Navigator.canPop(context)) ...[
             NavigationButton(
               index: -1,
               child: Icon(Icons.caret_left_bold),
               onChanged: (e) => Arcane.pop(context),
               label: Text("Back"),
+            ),
+            NavigationGap(16)
+          ],
+          if (header != null) ...[
+            NavigationWidget(
+              child: SliverToBoxAdapter(child: header!),
             ),
             NavigationGap(16)
           ],
@@ -106,7 +118,13 @@ class NavigationScreen extends AbstractStatelessScreen {
               },
               index: i,
               label: Text(e.label ?? "Item ${index + 1}"),
-              child: Icon(index == i ? e.selectedIcon ?? e.icon : e.icon)))
+              child: Icon(index == i ? e.selectedIcon ?? e.icon : e.icon))),
+          if (footer != null) ...[
+            NavigationGap(16),
+            NavigationWidget(
+              child: SliverToBoxAdapter(child: footer!),
+            )
+          ],
         ],
       ).padTop(siderailTopPadding);
 
