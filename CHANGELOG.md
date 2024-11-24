@@ -1,5 +1,6 @@
 ## 3.1.6
 * Added DateTime & DateTimeRange extensions for easier date manipulation
+* Add WidgetStates to Clickable to allow control over the animation states
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog
