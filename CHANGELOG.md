@@ -5,6 +5,8 @@
 * Select Popover from anchorMinSize to anchorFixedSize
 * Support Widget States on TextFields
 * Add support for a `placeholderStyle` on TextFields. Defaults to a muted style or default if unspecified style.
+* Added a `SearchBox` widget for easily adding search boxes
+* Added a `SearchButton` widget for managing both `transactional` and `live` searches in a bar / card for example
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog

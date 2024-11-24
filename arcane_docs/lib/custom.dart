@@ -15,6 +15,7 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Chat", "chat"),
     ShadcnDocsPage("Tables", "tables"),
     ShadcnDocsPage("Dialogs", "dialogs"),
+    ShadcnDocsPage("Search", "search"),
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
   ])
@@ -22,6 +23,19 @@ List<ShadcnDocsSection> customSections = [
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [
+  GoRoute(
+      path: "search",
+      name: "search",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'search',
+            description: 'Helpful Widgets for making search easier',
+            displayName: 'Search',
+            children: [
+              exampleSearchBox,
+              exampleSearchButtonTransactional,
+              exampleSearchButtonLive,
+            ],
+          )),
   GoRoute(
       path: "screens",
       name: "screens",
@@ -106,6 +120,75 @@ List<GoRoute> customRoutes = [
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+Widget get exampleSearchButtonTransactional => ArcaneUsageExample(
+      padding: 0,
+      title: 'Transactional Search Button',
+      code: r"""
+FillScreen(
+  header: Bar(titleText: "Header", trailing: [
+    SearchButton(
+      mode: SearchButtonMode.transactional,
+      onSearch: (v) => setState(() {
+        query = v;
+      }),
+    )
+  ]),
+  child: Center(child: Text(query == null ? "null" : '"$query"'))
+)
+""",
+      child: SizedBox(
+        height: 300,
+        child: SearchExample(mode: SearchButtonMode.transactional),
+      ),
+    );
+
+Widget get exampleSearchButtonLive => ArcaneUsageExample(
+      padding: 0,
+      title: 'Transactional Search Button',
+      code: r"""
+FillScreen(
+  header: Bar(titleText: "Header", trailing: [
+    SearchButton(
+      mode: SearchButtonMode.live,
+      onSearch: (v) => setState(() {
+        query = v;
+      }),
+    )
+  ]),
+  child: Center(child: Text(query == null ? "null" : '"$query"'))
+)
+""",
+      child: SizedBox(
+        height: 300,
+        child: SearchExample(mode: SearchButtonMode.live),
+      ),
+    );
+
+Widget get exampleSearchBox => ArcaneUsageExample(
+      padding: 0,
+      title: 'Search Box',
+      code: r"""
+FillScreen(
+  header: Bar(titleText: "Header", trailing: [
+    SearchBox(
+      onEditingComplete: () => print("Editing Complete"),
+      onSubmitted: (v) => setState(() => query = v),
+      onChanged: (v) => setState(() => query = v),
+      leading: Icon(Icons.search_outline_ionic),
+      autofocus: false,
+      placeholder: "Search!",
+      minWidth: 0,
+    )
+  ]),
+  child: Center(child: Text(query == null ? "null" : '"$query"'))
+)
+""",
+      child: SizedBox(
+        height: 300,
+        child: SearchBoxExample(),
+      ),
+    );
 
 Widget get exampleTableColumnSizes => ArcaneUsageExample(
     title: "Column Sizing",
@@ -1823,4 +1906,55 @@ class MyUser extends AbstractChatUser {
 
   @override
   Widget get avatar => const Icon(Icons.user);
+}
+
+class SearchExample extends StatefulWidget {
+  final SearchButtonMode mode;
+
+  const SearchExample({super.key, required this.mode});
+
+  @override
+  State<SearchExample> createState() => _SearchExampleState();
+}
+
+class _SearchExampleState extends State<SearchExample> {
+  String? query;
+
+  @override
+  Widget build(BuildContext context) => FillScreen(
+      header: Bar(titleText: "Header", trailing: [
+        SearchButton(
+          mode: widget.mode,
+          onSearch: (v) => setState(() {
+            query = v;
+          }),
+        )
+      ]),
+      child: Center(child: Text(query == null ? "null" : '"$query"')));
+}
+
+class SearchBoxExample extends StatefulWidget {
+  const SearchBoxExample({super.key});
+
+  @override
+  State<SearchBoxExample> createState() => _SearchBoxState();
+}
+
+class _SearchBoxState extends State<SearchBoxExample> {
+  String? query;
+
+  @override
+  Widget build(BuildContext context) => FillScreen(
+      header: Bar(titleText: "Header", trailing: [
+        SearchBox(
+          onEditingComplete: () => print("Editing Complete"),
+          onSubmitted: (v) => setState(() => query = v),
+          onChanged: (v) => setState(() => query = v),
+          leading: Icon(Icons.search_outline_ionic),
+          autofocus: false,
+          placeholder: "Search!",
+          minWidth: 0,
+        )
+      ]),
+      child: Center(child: Text(query == null ? "null" : '"$query"')));
 }

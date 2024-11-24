@@ -62,6 +62,7 @@ export 'component/section.dart';
 export 'component/selector.dart';
 export 'component/sheet.dart';
 export 'component/table.dart';
+export 'component/search.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
 export 'util/blur.dart';
