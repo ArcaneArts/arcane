@@ -112,6 +112,9 @@ class _SliverScreenState extends State<SliverScreen> {
         ? (width * ((1 - widget.minContentFraction) / 2)) - 25
         : 0;
 
+    Widget? footer =
+        widget.footer ?? InjectScreenFooter.getFooterWidget(context);
+
     return Scaffold(
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
@@ -149,22 +152,21 @@ class _SliverScreenState extends State<SliverScreen> {
                 )
               ],
             ),
-            if (widget.footer != null)
+            if (footer != null)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: IntrinsicHeight(
-                  child: footerBlur.build((footer) => GlassStopper(
+                  child: footerBlur.build((footerHas) => GlassStopper(
                         key: footerKey,
                         builder: (context) => KeyedSubtree(
-                          key: ValueKey("fblur.$footer"),
+                          key: ValueKey("fblur.$footerHas"),
                           child: Pylon<AntiFlickerDirection>(
                             value: AntiFlickerDirection.bottom,
                             builder: (context) => SafeBar(
-                                bottom: true,
-                                builder: (context) => widget.footer!),
+                                bottom: true, builder: (context) => footer),
                           ),
                         ),
-                        stopping: !(footer || widget.background != null),
+                        stopping: !(footerHas || widget.background != null),
                       )),
                 ),
               ),

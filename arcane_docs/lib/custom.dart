@@ -1159,9 +1159,8 @@ NavigationScreen(
         label: "Tab 1",
         icon: Icons.activity,
         selectedIcon: Icons.activity_fill,
-        builder: (context, footer) => SliverScreen(
+        builder: (context) => SliverScreen(
             gutter: false,
-            footer: footer,
             header: Bar(titleText: "Tab 1"),
             sliver: SListView.builder(
                 childCount: 10,
@@ -1174,9 +1173,8 @@ NavigationScreen(
         label: "Tab 2",
         icon: Icons.address_book,
         selectedIcon: Icons.address_book_fill,
-        builder: (context, footer) => SliverScreen(
+        builder: (context) => SliverScreen(
             gutter: false,
-            footer: footer,
             header: Bar(titleText: "Tab 2"),
             sliver: SGridView.builder(
                 crossAxisCount: 3,
@@ -1192,8 +1190,7 @@ NavigationScreen(
         label: "Tab 3",
         icon: Icons.gear_six,
         selectedIcon: Icons.gear_six_fill,
-        builder: (context, footer) => FillScreen(
-            footer: footer,
+        builder: (context) => FillScreen(
             gutter: false,
             header: Bar(titleText: "Tab 3"),
             child: Center(
@@ -1454,9 +1451,8 @@ class _ExampleNavigationScreenState extends State<ExampleNavigationScreen> {
                 label: "Tab 1",
                 icon: Icons.activity,
                 selectedIcon: Icons.activity_fill,
-                builder: (context, footer) => SliverScreen(
+                builder: (context) => SliverScreen(
                     gutter: false,
-                    footer: footer,
                     header: Bar(titleText: "Tab 1"),
                     sliver: SListView.builder(
                         childCount: 10,
@@ -1469,9 +1465,8 @@ class _ExampleNavigationScreenState extends State<ExampleNavigationScreen> {
                 label: "Tab 2",
                 icon: Icons.address_book,
                 selectedIcon: Icons.address_book_fill,
-                builder: (context, footer) => SliverScreen(
+                builder: (context) => SliverScreen(
                     gutter: false,
-                    footer: footer,
                     header: Bar(titleText: "Tab 2"),
                     sliver: SGridView.builder(
                         crossAxisCount: 3,
@@ -1487,8 +1482,7 @@ class _ExampleNavigationScreenState extends State<ExampleNavigationScreen> {
                 label: "Tab 3",
                 icon: Icons.gear_six,
                 selectedIcon: Icons.gear_six_fill,
-                builder: (context, footer) => FillScreen(
-                    footer: footer,
+                builder: (context) => FillScreen(
                     gutter: false,
                     header: Bar(titleText: "Tab 3"),
                     child: Center(

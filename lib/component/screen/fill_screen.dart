@@ -26,6 +26,8 @@ class FillScreen extends AbstractStatelessScreen {
         ? (width * ((1 - minContentFraction) / 2)) - 25
         : 0;
 
+    Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
+
     return Scaffold(
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
@@ -60,7 +62,7 @@ class FillScreen extends AbstractStatelessScreen {
                       SafeBar(
                           bottom: true,
                           builder: (context) => GlassStopper(
-                              builder: (context) => footer!, stopping: false)),
+                              builder: (context) => footer, stopping: false)),
                   ],
                 ))
               ],

@@ -4,7 +4,7 @@ class NavTab {
   final String? label;
   final IconData icon;
   final IconData? selectedIcon;
-  final Widget Function(BuildContext, Widget?) builder;
+  final Widget Function(BuildContext) builder;
 
   const NavTab({
     this.label,
@@ -163,11 +163,12 @@ class NavigationScreen extends AbstractStatelessScreen {
                                         : OverlayPosition.left);
                               })
                         ],
-                        builder: (context) =>
-                            tabs[index].builder(context, null),
+                        builder: (context) => tabs[index].builder(context),
                       ),
-                    NavigationType.bottomNavigationBar => tabs[index].builder(
-                        context, buildBottomNavigationBar(context, index)),
+                    NavigationType.bottomNavigationBar => InjectScreenFooter(
+                        footer: (context) =>
+                            buildBottomNavigationBar(context, index),
+                        builder: (context) => tabs[index].builder(context)),
                     NavigationType.sidebar => Scaffold(
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -178,7 +179,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                             Expanded(
                               child: BlockBackButton(
                                   builder: (context) =>
-                                      tabs[index].builder(context, null)),
+                                      tabs[index].builder(context)),
                             ),
                           ],
                         ),
@@ -193,7 +194,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                             Expanded(
                               child: BlockBackButton(
                                   builder: (context) =>
-                                      tabs[index].builder(context, null)),
+                                      tabs[index].builder(context)),
                             ),
                           ],
                         ),

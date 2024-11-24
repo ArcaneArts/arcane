@@ -1,22 +1,5 @@
 import 'package:arcane/arcane.dart';
 
-class InjectFooter extends StatelessWidget {
-  final PylonBuilder footer;
-  final PylonBuilder builder;
-
-  const InjectFooter({super.key, required this.footer, required this.builder});
-
-  static Widget? getFooter(BuildContext context) =>
-      context.pylonOr<InjectFooter>();
-
-  @override
-  Widget build(BuildContext context) => Pylon<InjectFooter>(
-        local: true,
-        value: this,
-        builder: builder,
-      );
-}
-
 abstract class AbstractStatefulScreen extends StatefulWidget {
   final Widget? fab;
   final bool gutter;
@@ -73,4 +56,25 @@ abstract class AbstractStatelessScreen extends StatelessWidget {
     this.loadingProgressIndeterminate = false,
     this.showLoadingSparks = false,
   });
+}
+
+class InjectScreenFooter extends StatelessWidget {
+  final PylonBuilder footer;
+  final PylonBuilder builder;
+
+  static InjectScreenFooter? getFooter(BuildContext context) =>
+      context.pylonOr<InjectScreenFooter>();
+
+  static Widget? getFooterWidget(BuildContext context) =>
+      getFooter(context)?.footer(context);
+
+  const InjectScreenFooter(
+      {super.key, required this.footer, required this.builder});
+
+  @override
+  Widget build(BuildContext context) => Pylon<InjectScreenFooter>(
+        local: true,
+        value: this,
+        builder: builder,
+      );
 }

@@ -1,4 +1,4 @@
-## 3.1.6
+## 3.2.0
 * Added DateTime & DateTimeRange extensions for easier date manipulation
 * Add WidgetStates to Clickable to allow control over the animation states
 * Fix Color Picker HSL 
@@ -10,6 +10,8 @@
 * Bars now support injecting leading / trailing widgets in them via context using `InjectBarLeading` and `InjectBarTrailing` or just `InjectBarEnd`
 * Added Arcane.closeDrawer(context) to close the topmost drawer
 * Navigation Screen Tabs no longer have primary scaffolds if nav screen type is drawer
+* Added `InjectScreenFooter` to inject a footer into a child `FillScreen` or `SliverScreen`
+* BREAKING: `NavigationScreen`'s `NavTab.builder` is now simply `Widget Function(BuildContext context)` (footer passthrough removed)
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog
