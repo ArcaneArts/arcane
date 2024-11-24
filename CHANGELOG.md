@@ -9,6 +9,7 @@
 * Added a `SearchButton` widget for managing both `transactional` and `live` searches in a bar / card for example
 * Bars now support injecting leading / trailing widgets in them via context using `InjectBarLeading` and `InjectBarTrailing` or just `InjectBarEnd`
 * Added Arcane.closeDrawer(context) to close the topmost drawer
+* Navigation Screen Tabs no longer have primary scaffolds if nav screen type is drawer
 
 ## 3.1.5
 * Added `DialogDate` a date picker dialog
