@@ -1,4 +1,21 @@
 import 'package:arcane/arcane.dart';
+import 'package:jiffy/jiffy.dart';
+
+extension XDateTimeRangeArcane on DateTimeRange {
+  DateTimeRange get toUtc => DateTimeRange(start.toUtc(), end.toUtc());
+
+  DateTimeRange get toLocal => DateTimeRange(start.toLocal(), end.toLocal());
+
+  DateTimeRange get fullDay => DateTimeRange(start.startOfDay, end.endOfDay);
+}
+
+extension XDateTimeStartEnds on DateTime {
+  DateTime get startOfDay =>
+      Jiffy.parseFromDateTime(this).startOf(Unit.day).dateTime;
+
+  DateTime get endOfDay =>
+      Jiffy.parseFromDateTime(this).endOf(Unit.day).dateTime;
+}
 
 extension XWidgetArcane on Widget {
   Widget get iw => IntrinsicWidth(child: this);

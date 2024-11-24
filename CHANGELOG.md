@@ -1,3 +1,6 @@
+## 3.1.6
+* Added DateTime & DateTimeRange extensions for easier date manipulation
+
 ## 3.1.5
 * Added `DialogDate` a date picker dialog
 * Added `DialogDateRange` a date range picker dialog

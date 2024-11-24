@@ -53,6 +53,7 @@ dependencies:
   conjure: ^1.0.0
   data_widget: ^0.0.2
   cupertino_icons: ^1.0.8
+  jiffy: ^6.3.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

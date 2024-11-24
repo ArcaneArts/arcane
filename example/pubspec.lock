@@ -447,6 +447,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  jiffy:
+    dependency: transitive
+    description:
+      name: jiffy
+      sha256: "3497caaa36d36a29033e66803c9739ce6bccbc7e241ca46070f76ee9e6f6eb0c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.1"
   jovial_misc:
     dependency: transitive
     description:
