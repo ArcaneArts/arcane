@@ -27,44 +27,45 @@ class FillScreen extends AbstractStatelessScreen {
         : 0;
 
     return Scaffold(
+        primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
-      fit: StackFit.expand,
-      children: [
-        if (background != null) background!,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
+          fit: StackFit.expand,
           children: [
-            if (header != null)
-              SafeBar(
-                  top: true,
-                  builder: (context) => GlassStopper(
-                      builder: (context) => header!, stopping: false)),
-            Expanded(
-                child: Column(
+            if (background != null) background!,
+            Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(
-                  child: MaybeStack(
-                    fit: StackFit.passthrough,
-                    children: [
-                      child.padOnly(left: gutterWidth, right: gutterWidth),
-                      if (fab != null) FabSocket(child: fab!),
-                      if (foreground != null) foreground!,
-                    ],
-                  ),
-                ),
-                if (footer != null)
+                if (header != null)
                   SafeBar(
-                      bottom: true,
+                      top: true,
                       builder: (context) => GlassStopper(
-                          builder: (context) => footer!, stopping: false)),
+                          builder: (context) => header!, stopping: false)),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: MaybeStack(
+                        fit: StackFit.passthrough,
+                        children: [
+                          child.padOnly(left: gutterWidth, right: gutterWidth),
+                          if (fab != null) FabSocket(child: fab!),
+                          if (foreground != null) foreground!,
+                        ],
+                      ),
+                    ),
+                    if (footer != null)
+                      SafeBar(
+                          bottom: true,
+                          builder: (context) => GlassStopper(
+                              builder: (context) => footer!, stopping: false)),
+                  ],
+                ))
               ],
-            ))
+            )
           ],
-        )
-      ],
-    ));
+        ));
   }
 }

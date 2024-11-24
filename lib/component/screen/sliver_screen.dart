@@ -1,6 +1,5 @@
 import 'package:arcane/arcane.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SliverScreen extends AbstractStatefulScreen {
   final Widget sliver;
@@ -114,67 +113,70 @@ class _SliverScreenState extends State<SliverScreen> {
         : 0;
 
     return Scaffold(
+        primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
-      fit: StackFit.expand,
-      children: [
-        if (widget.background != null) widget.background!,
-        CustomScrollView(
-          controller: getController(context),
-          slivers: [
-            if (widget.header != null)
-              SliverPinnedHeader(
-                child: headerBlur.unique.build((blurring) => GlassStopper(
-                      key: headerKey,
-                      builder: (context) => KeyedSubtree(
-                        key: ValueKey("hblur.$blurring"),
-                        child: Pylon<AntiFlickerDirection>(
-                          value: AntiFlickerDirection.top,
-                          builder: (context) => SafeBar(
-                              top: true, builder: (context) => widget.header!),
-                        ),
-                      ),
-                      stopping: !(blurring || widget.background != null),
-                    )),
-              ),
-            SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: gutterWidth,
-                ),
-                sliver: widget.sliver),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: footerSize,
-              ),
-            )
-          ],
-        ),
-        if (widget.footer != null)
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: IntrinsicHeight(
-              child: footerBlur.build((footer) => GlassStopper(
-                    key: footerKey,
-                    builder: (context) => KeyedSubtree(
-                      key: ValueKey("fblur.$footer"),
-                      child: Pylon<AntiFlickerDirection>(
-                        value: AntiFlickerDirection.bottom,
-                        builder: (context) => SafeBar(
-                            bottom: true, builder: (context) => widget.footer!),
-                      ),
+          fit: StackFit.expand,
+          children: [
+            if (widget.background != null) widget.background!,
+            CustomScrollView(
+              controller: getController(context),
+              slivers: [
+                if (widget.header != null)
+                  SliverPinnedHeader(
+                    child: headerBlur.unique.build((blurring) => GlassStopper(
+                          key: headerKey,
+                          builder: (context) => KeyedSubtree(
+                            key: ValueKey("hblur.$blurring"),
+                            child: Pylon<AntiFlickerDirection>(
+                              value: AntiFlickerDirection.top,
+                              builder: (context) => SafeBar(
+                                  top: true,
+                                  builder: (context) => widget.header!),
+                            ),
+                          ),
+                          stopping: !(blurring || widget.background != null),
+                        )),
+                  ),
+                SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: gutterWidth,
                     ),
-                    stopping: !(footer || widget.background != null),
-                  )),
+                    sliver: widget.sliver),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: footerSize,
+                  ),
+                )
+              ],
             ),
-          ),
-        if (widget.fab != null)
-          Padding(
-              padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
-              child: FabSocket(child: widget.fab!)),
-        if (widget.foreground != null)
-          Padding(
-              padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
-              child: widget.foreground!),
-      ],
-    ));
+            if (widget.footer != null)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: IntrinsicHeight(
+                  child: footerBlur.build((footer) => GlassStopper(
+                        key: footerKey,
+                        builder: (context) => KeyedSubtree(
+                          key: ValueKey("fblur.$footer"),
+                          child: Pylon<AntiFlickerDirection>(
+                            value: AntiFlickerDirection.bottom,
+                            builder: (context) => SafeBar(
+                                bottom: true,
+                                builder: (context) => widget.footer!),
+                          ),
+                        ),
+                        stopping: !(footer || widget.background != null),
+                      )),
+                ),
+              ),
+            if (widget.fab != null)
+              Padding(
+                  padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
+                  child: FabSocket(child: widget.fab!)),
+            if (widget.foreground != null)
+              Padding(
+                  padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
+                  child: widget.foreground!),
+          ],
+        ));
   }
 }
