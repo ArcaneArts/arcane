@@ -1,5 +1,9 @@
 ## 3.2.1
 * Pylons are automatically injected into popovers, menus, dropdowns, dialogs, drawers etc
+* FEAT: Added `DialogTime` a time picker dialog
+* FIX: `DialogDate` now supports `initialDate` correctly
+* FIX: `DialogDateRange` now supports `initialRange` correctly
+* FIX: `DialogDateMulti` now supports `initialDates` correctly
 * BREAKING: `DialogDate` `initialRange` changed to `initialDate`
 * BREAKING: `DialogDateMulti` `initialRange` changed to `initialDates`
 

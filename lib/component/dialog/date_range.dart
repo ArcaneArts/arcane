@@ -25,6 +25,15 @@ class _DialogDateRangeState extends State<DialogDateRange> {
   CalendarValue? value;
 
   @override
+  void initState() {
+    value = widget.initialRange != null
+        ? RangeCalendarValue(
+            widget.initialRange!.start, widget.initialRange!.end)
+        : null;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => ArcaneDialog(
         title: widget.title == null ? null : Text(widget.title!),
         content: LayoutBuilder(

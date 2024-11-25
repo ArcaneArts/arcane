@@ -1,34 +1,36 @@
 import 'package:arcane/arcane.dart';
 
-class DialogDate extends StatefulWidget with ArcaneDialogLauncher {
+class DialogTime extends StatefulWidget with ArcaneDialogLauncher {
   final String? title;
-  final ValueChanged<DateTime> onConfirm;
+  final ValueChanged<TimeOfDay> onConfirm;
   final DateStateBuilder? stateBuilder;
-  final DateTime? initialDate;
+  final TimeOfDay? initialTime;
   final String confirmText;
   final String cancelText;
+  final bool use24HourFormat;
+  final bool showSeconds;
 
-  const DialogDate(
+  const DialogTime(
       {super.key,
       this.title,
       required this.onConfirm,
       this.stateBuilder,
+      this.showSeconds = false,
+      this.use24HourFormat = false,
       this.confirmText = "Done",
       this.cancelText = "Cancel",
-      this.initialDate});
+      this.initialTime});
 
   @override
-  State<DialogDate> createState() => _DialogDateState();
+  State<DialogTime> createState() => _DialogTimeState();
 }
 
-class _DialogDateState extends State<DialogDate> {
-  CalendarValue? value;
+class _DialogTimeState extends State<DialogTime> {
+  TimeOfDay? value;
 
   @override
   void initState() {
-    value = widget.initialDate != null
-        ? SingleCalendarValue(widget.initialDate!)
-        : null;
+    value = widget.initialTime ?? TimeOfDay(hour: 0, minute: 0, second: 0);
     super.initState();
   }
 
@@ -36,15 +38,10 @@ class _DialogDateState extends State<DialogDate> {
   Widget build(BuildContext context) => ArcaneDialog(
         title: widget.title == null ? null : Text(widget.title!),
         content: LayoutBuilder(
-            builder: (context, constraints) => DatePickerDialog(
-                stateBuilder: widget.stateBuilder,
-                initialView: CalendarView.now(),
-                initialValue: widget.initialDate != null
-                    ? SingleCalendarValue(widget.initialDate!)
-                    : null,
-                initialViewType: CalendarViewType.date,
-                selectionMode: CalendarSelectionMode.single,
-                viewMode: CalendarSelectionMode.single,
+            builder: (context, constraints) => TimePickerDialog(
+                initialValue: widget.initialTime,
+                showSeconds: widget.showSeconds,
+                use24HourFormat: widget.use24HourFormat,
                 onChanged: (value) => setState(() {
                       this.value = value;
                     }))),
@@ -57,7 +54,7 @@ class _DialogDateState extends State<DialogDate> {
             enabled: value != null,
             onPressed: () {
               Navigator.of(context).pop(true);
-              widget.onConfirm(value!.toSingle().date);
+              widget.onConfirm(value!);
             },
             child: Text(widget.confirmText),
           ),

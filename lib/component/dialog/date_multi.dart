@@ -25,6 +25,14 @@ class _DialogDateMultiState extends State<DialogDateMulti> {
   CalendarValue? value;
 
   @override
+  void initState() {
+    value = widget.initialDates != null && widget.initialDates!.isNotEmpty
+        ? MultiCalendarValue(widget.initialDates!)
+        : null;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => ArcaneDialog(
         title: widget.title == null ? null : Text(widget.title!),
         content: LayoutBuilder(
