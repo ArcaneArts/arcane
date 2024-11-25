@@ -1,5 +1,7 @@
 ## 3.2.1
 * Pylons are automatically injected into popovers, menus, dropdowns, dialogs, drawers etc
+* BREAKING: `DialogDate` `initialRange` changed to `initialDate`
+* BREAKING: `DialogDateMulti` `initialRange` changed to `initialDates`
 
 ## 3.2.0
 * Added DateTime & DateTimeRange extensions for easier date manipulation
