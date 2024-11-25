@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   # https://github.com/Baseflow/flutter_cached_network_image/issues/981 
-  cached_network_image: ^3.4.1
+  cached_network_image: ^3.4.1 
   flutter_sticky_header: ^0.7.0
   padded: ^1.0.1 
   pylon: ^3.0.5
