@@ -1,3 +1,6 @@
+## 3.2.2
+* Fix `CardCarousel`
+
 ## 3.2.1
 * Pylons are automatically injected into popovers, menus, dropdowns, dialogs, drawers etc
 * FEAT: Added `DialogTime` a time picker dialog
