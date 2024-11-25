@@ -34,11 +34,11 @@ class _CardCarouselState extends State<CardCarousel> {
           scrollDirection: Axis.horizontal,
           child: Row(mainAxisSize: MainAxisSize.min, children: widget.children),
         ),
-        if (_controller.position.hasContentDimensions &&
-            (_controller.hasClients &&
-                (_controller.position.pixels > 0 ||
-                    _controller.position.pixels <
-                        _controller.position.maxScrollExtent)))
+        if (_controller.hasClients &&
+            _controller.position.hasContentDimensions &&
+            ((_controller.position.pixels > 0 ||
+                _controller.position.pixels <
+                    _controller.position.maxScrollExtent)))
           Positioned.fill(
               child: IgnorePointer(
                   ignoring: true,
@@ -50,7 +50,8 @@ class _CardCarouselState extends State<CardCarousel> {
                       if (_controller.position.pixels > 0) cs.background,
                       ...List.generate(widget.sharpness.clamp(1, 12).toInt(),
                           (_) => cs.background.withOpacity(0)),
-                      if (_controller.position.hasContentDimensions &&
+                      if (_controller.hasClients &&
+                          _controller.position.hasContentDimensions &&
                           _controller.position.pixels <
                               _controller.position.maxScrollExtent)
                         cs.background
