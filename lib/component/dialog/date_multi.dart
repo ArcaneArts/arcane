@@ -4,7 +4,7 @@ class DialogDateMulti extends StatefulWidget with ArcaneDialogLauncher {
   final String? title;
   final ValueChanged<List<DateTime>> onConfirm;
   final DateStateBuilder? stateBuilder;
-  final List<DateTime>? initialRange;
+  final List<DateTime>? initialDates;
   final String confirmText;
   final String cancelText;
 
@@ -15,7 +15,7 @@ class DialogDateMulti extends StatefulWidget with ArcaneDialogLauncher {
       this.stateBuilder,
       this.confirmText = "Done",
       this.cancelText = "Cancel",
-      this.initialRange});
+      this.initialDates});
 
   @override
   State<DialogDateMulti> createState() => _DialogDateMultiState();
@@ -31,9 +31,9 @@ class _DialogDateMultiState extends State<DialogDateMulti> {
             builder: (context, constraints) => DatePickerDialog(
                 stateBuilder: widget.stateBuilder,
                 initialView: CalendarView.now(),
-                initialValue: widget.initialRange != null &&
-                        widget.initialRange!.isNotEmpty
-                    ? MultiCalendarValue(widget.initialRange!)
+                initialValue: widget.initialDates != null &&
+                        widget.initialDates!.isNotEmpty
+                    ? MultiCalendarValue(widget.initialDates!)
                     : null,
                 initialViewType: CalendarViewType.date,
                 selectionMode: CalendarSelectionMode.multi,
