@@ -3,7 +3,6 @@ import 'package:arcane/arcane.dart';
 class DialogTime extends StatefulWidget with ArcaneDialogLauncher {
   final String? title;
   final ValueChanged<TimeOfDay> onConfirm;
-  final DateStateBuilder? stateBuilder;
   final TimeOfDay? initialTime;
   final String confirmText;
   final String cancelText;
@@ -14,7 +13,6 @@ class DialogTime extends StatefulWidget with ArcaneDialogLauncher {
       {super.key,
       this.title,
       required this.onConfirm,
-      this.stateBuilder,
       this.showSeconds = false,
       this.use24HourFormat = false,
       this.confirmText = "Done",

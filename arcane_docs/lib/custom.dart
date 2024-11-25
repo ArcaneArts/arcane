@@ -66,8 +66,9 @@ List<GoRoute> customRoutes = [
               exampleDialogEmail,
               exampleDialogCommand,
               exampleDialogDate,
-              exampleDialogRange,
-              exampleDialogMulti,
+              exampleDialogDateRange,
+              exampleDialogDateMulti,
+              exampleDialogTime,
             ],
           )),
   GoRoute(
@@ -921,7 +922,7 @@ PrimaryButton(
       child: Text("Date Dialog"),
     ));
 
-Widget get exampleDialogRange => ArcaneUsageExample(
+Widget get exampleDialogDateRange => ArcaneUsageExample(
     title: "Date Range Dialog",
     code: """
 PrimaryButton(
@@ -953,7 +954,7 @@ PrimaryButton(
       child: Text("Date Range Dialog"),
     ));
 
-Widget get exampleDialogMulti => ArcaneUsageExample(
+Widget get exampleDialogDateMulti => ArcaneUsageExample(
     title: "Multi Date Dialog",
     code: """
 PrimaryButton(
@@ -984,6 +985,35 @@ PrimaryButton(
             date.day % 7 == 0 ? DateState.disabled : DateState.enabled,
       ).open(_context),
       child: Text("Multi Date Dialog"),
+    ));
+
+Widget get exampleDialogTime => ArcaneUsageExample(
+    title: "Time Dialog",
+    code: """
+PrimaryButton(
+  leading: Icon(Icons.open_outline_ionic),
+  onPressed: () => DialogDateMulti(
+    showSeconds: false,
+    use24HourFormat: false,
+    title: "Title Text",
+    confirmText: "Confirm Text",
+    cancelText: "Cancel Text",
+    onConfirm: (t) => print(t),
+  ).open(_context),
+  child: Text("Time Dialog"),
+)
+    """,
+    child: PrimaryButton(
+      leading: Icon(Icons.open_outline_ionic),
+      onPressed: () => DialogTime(
+        showSeconds: false,
+        use24HourFormat: false,
+        title: "Title Text",
+        confirmText: "Confirm Text",
+        cancelText: "Cancel Text",
+        onConfirm: (t) => print(t),
+      ).open(_context),
+      child: Text("Time Dialog"),
     ));
 
 Widget get exampleDialogText => ArcaneUsageExample(
