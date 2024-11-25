@@ -1,4 +1,5 @@
 import 'package:pixel_snap/pixel_snap.dart';
+import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 class ModalContainer extends StatelessWidget {
@@ -219,6 +220,7 @@ Future<T?> showDialog<T>({
   TraversalEdgeBehavior? traversalEdgeBehavior,
   AlignmentGeometry? alignment,
 }) {
+  builder = Pylon.mirror(context, builder);
   var navigatorState = Navigator.of(
     context,
     rootNavigator: useRootNavigator,
@@ -348,6 +350,7 @@ class DialogOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
+    builder = Pylon.mirror(context, builder);
     var navigatorState = Navigator.of(
       context,
       rootNavigator: rootOverlay,

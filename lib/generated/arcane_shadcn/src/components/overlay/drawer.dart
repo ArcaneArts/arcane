@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
@@ -1410,6 +1411,7 @@ class SheetOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
+    builder = Pylon.mirror(context, builder);
     return openRawDrawer<T>(
       context: context,
       transformBackdrop: false,

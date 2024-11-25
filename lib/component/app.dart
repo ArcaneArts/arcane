@@ -13,8 +13,9 @@ class Arcane {
   static Future<T?> push<T extends Object?>(
           BuildContext context, Widget child) =>
       Pylon.push(context, child, type: PylonRouteType.material);
-  
-  static void closeDrawer(BuildContext context) => DrawerOverlay.maybeFind(context)?.overlay.closeLast();
+
+  static void closeDrawer(BuildContext context) =>
+      DrawerOverlay.maybeFind(context)?.overlay.closeLast();
 }
 
 class ArcaneApp extends StatefulWidget {

@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 class PopoverOverlayHandler extends OverlayHandler {
@@ -35,6 +36,7 @@ class PopoverOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
+    builder = Pylon.mirror(context, builder);
     TextDirection textDirection = Directionality.of(context);
     Alignment resolvedAlignment = alignment.resolve(textDirection);
     anchorAlignment ??= alignment * -1;
@@ -742,6 +744,7 @@ class PopoverController extends ChangeNotifier {
     if (closeOthers) {
       close();
     }
+    builder = Pylon.mirror(context, builder);
     key ??= GlobalKey<OverlayHandlerStateMixin>(
         debugLabel: 'PopoverAnchor$hashCode');
 
