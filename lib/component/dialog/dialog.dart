@@ -2,9 +2,8 @@ import 'package:arcane/arcane.dart';
 
 mixin ArcaneDialogLauncher on Widget {
   Future<T?> open<T>(BuildContext context) {
-    PylonBuilder builder = Pylon.mirror(context, (context) => this);
     return showDialog<T>(
-        context: context, barrierDismissible: true, builder: builder);
+        context: context, barrierDismissible: true, builder: (context) => this);
   }
 }
 

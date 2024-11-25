@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:pylon/pylon.dart';
 
 mixin ArcaneToastLauncher on Widget {
   bool get dismissible;

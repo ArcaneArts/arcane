@@ -1,3 +1,6 @@
+## 3.2.1
+* Pylons are automatically injected into popovers, menus, dropdowns, dialogs, drawers etc
+
 ## 3.2.0
 * Added DateTime & DateTimeRange extensions for easier date manipulation
 * Add WidgetStates to Clickable to allow control over the animation states
