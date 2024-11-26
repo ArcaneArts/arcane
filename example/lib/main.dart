@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:arcane/arcane.dart';
 
 bool v = false;
@@ -21,11 +23,7 @@ class ExampleNavigationScreen extends StatelessWidget {
   const ExampleNavigationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => FillScreen(
-      header: Bar(
-        titleText: "Example Navigation",
-      ),
-      child: Text("Derp"));
+  Widget build(BuildContext context) => VFSView(vfs: IOVFS(Directory.current));
 }
 
 extension _XContextVFS on BuildContext {
