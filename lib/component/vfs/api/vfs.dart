@@ -8,7 +8,11 @@ abstract class VFS {
 
   Stream<VEntity> onGetChildren(VFolder folder);
 
-  Stream<VEntity> getChildren(VFolder folder) async* {
+  Stream<VEntity> getChildren(
+    VFolder folder, {
+    VFSComparator? comparator,
+    bool reverse = false,
+  }) async* {
     if (!_childrenCache.containsKey(folder.path)) {
       List<String> children = [];
       await for (VEntity entity in onGetChildren(folder)) {
@@ -19,8 +23,18 @@ abstract class VFS {
       _childrenCache[folder.path] = children;
     }
 
-    yield* Stream.fromFutures(
-        _childrenCache[folder.path]!.map((i) => getEntity(i)));
+    List<VEntity> v = await Stream.fromFutures(
+        _childrenCache[folder.path]!.map((i) => getEntity(i))).toList();
+
+    if (comparator != null) {
+      v = v.sorted(reverse ? comparator.compareReversed : comparator.compare);
+    } else if (reverse) {
+      v = v.reversed.toList();
+    }
+
+    v = v.sorted(VFSComparatorEntityType().compare);
+
+    yield* Stream.fromIterable(v);
   }
 
   Future<VEntity> onGetEntity(String path);
