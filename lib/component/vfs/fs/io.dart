@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:arcane/arcane.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,5 +53,43 @@ class IOVFS extends VFS {
     } else {
       throw Exception('NO! (symlink?)');
     }
+  }
+
+  @override
+  Future<bool> onExists(String path) => FileSystemEntity.type(getRealPath(path))
+      .then((type) => type != FileSystemEntityType.notFound);
+
+  @override
+  Future<VFolder> onMakeDirectory(String path) => toDirectory(path)
+      .create(recursive: false)
+      .then((_) => VFolder(path: path, vfs: this));
+
+  @override
+  Future<void> onDeleteEmptyFolder(VFolder folder) =>
+      toDirectory(folder.path).delete(recursive: false);
+
+  @override
+  Future<void> onDeleteFile(VFile file) => toFile(file.path).delete();
+
+  @override
+  Future<void> onMoveFile(VFile entity, String newPath) =>
+      toFile(entity.path).rename(getRealPath(newPath));
+
+  @override
+  Stream<bool> onWatchDirectory(String path) => toDirectory(path)
+      .watch(events: FileSystemEvent.all, recursive: false)
+      .map((event) => true)
+      .handleError((e) => false);
+
+  @override
+  Stream<List<int>> onReadFileStream(String path) =>
+      toFile(path).openRead().map((event) => event);
+
+  @override
+  Future<void> onWriteFile(String path, Stream<List<int>> byteStream) async {
+    IOSink sink = toFile(path).openWrite();
+    await sink.addStream(byteStream);
+    await sink.flush();
+    await sink.close();
   }
 }
