@@ -16,6 +16,14 @@ class VPaths {
 
   static bool hasParent(String path) => sanitize(path) != "/";
 
+  static String appendName(String path, String append) {
+    path = sanitize(path);
+    String name = path.split('/').last;
+    List<String> seg = name.split('.');
+    seg[0] = seg[0] + append;
+    return join(parentOf(path), seg.join('.'));
+  }
+
   static String parentOf(String path) {
     List<String> parts = sanitize(path).split('/');
 
