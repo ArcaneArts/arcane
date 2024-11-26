@@ -22,12 +22,12 @@ class ExampleNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FillScreen(
-          child: Center(
-        child: PrimaryButton(
-          child: Text("Do"),
-          onPressed: () => DialogTime(
-            onConfirm: (d) => print(d),
-          ).open(context),
-        ),
-      ));
+      header: Bar(
+        titleText: "Example Navigation",
+      ),
+      child: Text("Derp"));
+}
+
+extension _XContextVFS on BuildContext {
+  VFSController get vfs => pylon<VFSController>();
 }

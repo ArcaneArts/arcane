@@ -25,7 +25,6 @@ export 'package:soft_edge_blur/soft_edge_blur.dart';
 export 'package:toxic/toxic.dart';
 export 'package:toxic_flutter/toxic_flutter.dart';
 
-// Arcane
 export 'component/adaptive.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
@@ -66,6 +65,13 @@ export 'component/sheet.dart';
 export 'component/table.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
+// Arcane
+export 'component/vfs/api/ventity.dart';
+export 'component/vfs/api/vfs.dart';
+export 'component/vfs/api/vpaths.dart';
+export 'component/vfs/component/vfs_controller.dart';
+export 'component/vfs/component/view.dart';
+export 'component/vfs/fs/io.dart';
 export 'util/blur.dart';
 export 'util/extensions.dart';
 export 'util/maybe.dart';
