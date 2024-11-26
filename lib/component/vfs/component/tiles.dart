@@ -10,7 +10,7 @@ class VFSEntityContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VEntity ent = context.vfsEntity;
-    return context.vfsController.selection
+    Widget container = context.vfsController.selection
         .map((i) => i.contains(ent))
         .build((selected) => Container(
               decoration: BoxDecoration(
@@ -23,7 +23,39 @@ class VFSEntityContainer extends StatelessWidget {
                   enabled: ent.hasContextMenu(context),
                   items: ent.buildContextMenu(context),
                   child: child),
-            ));
+            ))
+        .animate(
+          key: ValueKey(ent.path),
+        )
+        .fadeIn(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutExpo,
+        )
+        .blurXY(
+          begin: 16,
+          end: 0,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCirc,
+        );
+
+    Widget dg = Draggable<VEntity>(
+        key: ValueKey("drag_${ent.path}"),
+        data: ent,
+        feedback: SurfaceCard(
+          child: IgnorePointer(
+            ignoring: true,
+            child: child.iw.ih,
+          ),
+        ),
+        child: container);
+
+    return ent is VFolder
+        ? DragTarget<VEntity>(
+            onAcceptWithDetails: (data) =>
+                context.vfsController.moveInto(ent, data.data),
+            builder: (context, candidateData, rejectedData) => dg,
+          )
+        : dg;
   }
 }
 
