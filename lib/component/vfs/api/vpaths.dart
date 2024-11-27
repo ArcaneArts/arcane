@@ -5,6 +5,9 @@ class VPaths {
   static bool contains(String base, String path) =>
       "/${sanitize(path)}/".startsWith("/${sanitize(base)}/");
 
+  static String hideExtension(String name) =>
+      name.startsWith(".") ? name : name.split('.').first;
+
   static String name(String path) => sanitize(path).split('/').last;
 
   static String get root => '/';
@@ -45,6 +48,42 @@ class VPaths {
       throw Exception('Not a child');
     }
   }
+
+  static int getDepth(String path) {
+    path = sanitize(path);
+
+    if (path == '/') {
+      return 0;
+    }
+
+    if (!path.contains("/")) {
+      return 1;
+    }
+
+    return path.split('/').length;
+  }
+
+  static bool isValidFolderName(String name) => !(name.isEmpty ||
+      name.contains("/") ||
+      name.contains("\\") ||
+      name.contains(">") ||
+      name.contains("<") ||
+      name.contains(":") ||
+      name.contains("\"") ||
+      name.contains("|") ||
+      name.contains("?") ||
+      name.contains("*"));
+
+  static bool isValidFileName(String name) => !(name.isEmpty ||
+      name.contains("/") ||
+      name.contains("\\") ||
+      name.contains(">") ||
+      name.contains("<") ||
+      name.contains(":") ||
+      name.contains("\"") ||
+      name.contains("|") ||
+      name.contains("?") ||
+      name.contains("*"));
 
   static String sanitize(String path) {
     path = path.replaceAll(kIsWeb ? "\\" : Platform.pathSeparator, "/");

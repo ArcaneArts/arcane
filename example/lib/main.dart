@@ -26,7 +26,3 @@ class ExampleNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) => VFSView(
       vfs: IOVFS(Directory("${Directory.current.absolute.path}/build")));
 }
-
-extension _XContextVFS on BuildContext {
-  VFSController get vfs => pylon<VFSController>();
-}

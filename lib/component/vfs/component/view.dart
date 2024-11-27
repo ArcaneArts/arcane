@@ -1,76 +1,40 @@
-import 'dart:async';
-
 import 'package:arcane/arcane.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 
 extension XContextVFSEntity on BuildContext {
   VEntity get vfsEntity => pylon<VEntity>();
-  VFSController get vfsController => pylon<VFSController>();
+  VFS get vfs => pylon<VFS>();
   VFSViewState get vfsView => pylon<VFSViewState>();
 }
 
 class VFSView extends StatefulWidget {
-  final String workingDirectory;
   final VFS vfs;
-  final List<VFSLayout> layouts;
-  final List<VFSComparator> comparators;
-
-  const VFSView(
-      {super.key,
-      this.comparators = const [VFSComparatorName()],
-      required this.vfs,
-      this.layouts = const [VFSLayoutList(), VFSLayoutGrid()],
-      this.workingDirectory = "/"});
+  const VFSView({super.key, required this.vfs});
 
   @override
   State<VFSView> createState() => VFSViewState();
 }
 
 class VFSViewState extends State<VFSView> {
-  late VFSComparator comparator;
-  late bool reversedComparator;
-  late VFSController vfs;
-  late VFSLayout layout;
-  BehaviorSubject<int> updater = BehaviorSubject.seeded(0);
-  late StreamSubscription<int> _sub;
   late BehaviorSubject<bool> _dropZone = BehaviorSubject.seeded(false);
-
-  @override
-  void initState() {
-    vfs = VFSController(
-        vfs: widget.vfs, workingDirectory: widget.workingDirectory);
-    comparator = widget.comparators.first;
-    reversedComparator = true;
-    layout = widget.layouts.first;
-    _sub = vfs.vfs.listen.listen((_) => _update());
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _sub.cancel();
-    super.dispose();
-  }
-
-  void _update() => updater.add(updater.value + 1);
 
   @override
   Widget build(BuildContext context) => Pylon<VFSViewState>(
       value: this,
-      builder: (context) => updater.build((_) => Pylon<VFSController>(
-            value: vfs,
-            builder: (context) => vfs.workingVFolder.build(
+      builder: (context) => widget.vfs.listen.build((_) => Pylon<VFS>(
+            value: widget.vfs,
+            builder: (context) => widget.vfs.workingVFolder.build(
               (wd) => ContextMenu(
-                  enabled: true,
+                  enabled: false,
                   items: _buildMenu(context),
                   child: GestureDetector(
                     onTap: () {
-                      vfs.selection.add([]);
+                      widget.vfs.selection.add([]);
                     },
                     child: DropTarget(
                         onDragDone: (detail) {
                           _dropZone.add(false);
-                          vfs.insertDrop(context, detail.files);
+                          widget.vfs.insertDrop(context, detail.files);
                         },
                         onDragEntered: (detail) => _dropZone.add(true),
                         onDragExited: (detail) => _dropZone.add(false),
@@ -80,11 +44,13 @@ class VFSViewState extends State<VFSView> {
                             titleText: "VFS Explorer",
                             subtitleText: wd.path,
                             leading: [
-                              if (vfs.canGoUp)
+                              if (widget.vfs.canGoUp)
                                 IconButton(
                                   icon: const Icon(
                                       Icons.chevron_up_outline_ionic),
-                                  onPressed: vfs.canGoUp ? vfs.goUp : null,
+                                  onPressed: widget.vfs.canGoUp
+                                      ? widget.vfs.goUp
+                                      : null,
                                 ),
                             ],
                             trailing: [
@@ -93,17 +59,14 @@ class VFSViewState extends State<VFSView> {
                                   items: _buildMenu(context))
                             ],
                           ),
-                          sliver: vfs.vfs
-                              .getChildren(wd,
-                                  comparator: comparator,
-                                  reverse: reversedComparator)
-                              .toList()
-                              .build((l) => layout.build(context, vfs, l),
-                                  loading: const SliverFillRemaining(
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )),
+                          sliver: widget.vfs.getChildren(wd).toList().build(
+                              (l) => widget.vfs.currentLayout
+                                  .build(context, widget.vfs, l),
+                              loading: const SliverFillRemaining(
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )),
                         )),
                   )),
               loading: const FillScreen(
@@ -117,56 +80,16 @@ class VFSViewState extends State<VFSView> {
   List<MenuItem> _buildMenu(BuildContext context) => [
         MenuButton(
             leading: Icon(Icons.folder_plus),
-            onPressed: (_) => vfs.mkdir(context),
+            onPressed: (_) => widget.vfs.mkdirDialog(context),
             child: Text("New Folder")),
         MenuButton(
           leading: const Icon(Icons.eye),
-          subMenu: [
-            ...widget.layouts.map((l) => MenuButton(
-                  autoClose: true,
-                  onPressed: (_) {
-                    layout = l;
-                    _update();
-                  },
-                  trailing: updater.build((_) => layout == l
-                      ? const Icon(Icons.check)
-                      : const SizedBox.shrink()),
-                  leading: Icon(l.icon),
-                  child: Text(l.name),
-                ))
-          ],
+          subMenu: widget.vfs.buildLayoutMenuItems(context).toList(),
           child: Text("View"),
         ),
         MenuButton(
           leading: const Icon(Icons.arrows_down_up),
-          subMenu: [
-            ...widget.comparators.map((c) => MenuButton(
-                  autoClose: false,
-                  onPressed: (_) {
-                    if (comparator == c) {
-                      reversedComparator = !reversedComparator;
-                    } else {
-                      comparator = c;
-                      reversedComparator = true;
-                    }
-                    _update();
-                  },
-                  trailing: updater.build((_) => comparator == c
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.check),
-                            const Gap(4),
-                            reversedComparator
-                                ? const Icon(Icons.arrow_down)
-                                : const Icon(Icons.arrow_up),
-                          ],
-                        )
-                      : const SizedBox.shrink()),
-                  leading: Icon(c.icon),
-                  child: Text(c.name),
-                )),
-          ],
+          subMenu: widget.vfs.buildComparatorMenuItems(context).toList(),
           child: Text("Sort"),
         )
       ];

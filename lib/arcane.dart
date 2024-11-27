@@ -72,7 +72,6 @@ export 'component/vfs/api/vpaths.dart';
 export 'component/vfs/component/comparator.dart';
 export 'component/vfs/component/layout.dart';
 export 'component/vfs/component/tiles.dart';
-export 'component/vfs/component/vfs_controller.dart';
 export 'component/vfs/component/view.dart';
 export 'component/vfs/fs/io.dart';
 export 'util/blur.dart';

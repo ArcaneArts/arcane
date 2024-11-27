@@ -6,8 +6,7 @@ class VFSLayoutGrid extends VFSLayout {
   const VFSLayoutGrid({super.name = "Grid", super.icon = Icons.grid_four});
 
   @override
-  Widget build(
-      BuildContext context, VFSController vfs, List<VEntity> entities) {
+  Widget build(BuildContext context, VFS vfs, List<VEntity> entities) {
     double w = MediaQuery.of(context).size.width;
     return SGridView(
       mainAxisSpacing: 8,
@@ -22,8 +21,7 @@ class VFSLayoutList extends VFSLayout {
   const VFSLayoutList({super.name = "List", super.icon = Icons.list});
 
   @override
-  Widget build(
-          BuildContext context, VFSController vfs, List<VEntity> entities) =>
+  Widget build(BuildContext context, VFS vfs, List<VEntity> entities) =>
       SListView(
         children: [...entities.withPylons((context) => VFSEntityListTile())],
       );
@@ -35,5 +33,5 @@ abstract class VFSLayout {
 
   const VFSLayout({required this.name, required this.icon});
 
-  Widget build(BuildContext context, VFSController vfs, List<VEntity> entities);
+  Widget build(BuildContext context, VFS vfs, List<VEntity> entities);
 }

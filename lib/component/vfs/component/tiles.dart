@@ -12,20 +12,23 @@ class VFSEntityContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VEntity ent = context.vfsEntity;
-    Widget container = context.vfsController.selection
+    Widget container = context.vfs.selection
         .map((i) => i.contains(ent))
-        .build((selected) => Container(
-              decoration: BoxDecoration(
-                borderRadius: Theme.of(context).borderRadiusMd,
-                color: selected
-                    ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
-                    : null,
-              ),
-              child: ContextMenu(
-                  enabled: ent.hasContextMenu(context),
-                  items: ent.buildContextMenu(context),
-                  child: child),
-            ))
+        .build((selected) {
+          List<MenuItem> menu = context.vfs
+              .getEntityMenuItems(context, context.vfs.selectionWithFocus(ent))
+              .toList();
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: Theme.of(context).borderRadiusMd,
+              color: selected
+                  ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                  : null,
+            ),
+            child: ContextMenu(
+                enabled: menu.isNotEmpty, items: menu, child: child),
+          );
+        })
         .animate(
           key: ValueKey(ent.path),
         )
@@ -42,23 +45,21 @@ class VFSEntityContainer extends StatelessWidget {
 
     Widget dg = LongPressDraggable<VEntity>(
         onDragStarted: () {
-          if (!context.vfsController.selection.value.contains(ent)) {
-            context.vfsController.selection
-                .add([...context.vfsController.selection.value, ent]);
+          if (!context.vfs.selection.value.contains(ent)) {
+            context.vfs.selection.add([...context.vfs.selection.value, ent]);
           }
         },
         key: ValueKey("drag_${ent.path}"),
         data: ent,
-        feedback: Pylon<VFSController>(
-          value: context.vfsController,
+        feedback: Pylon<VFS>(
+          value: context.vfs,
           builder: (context) => VFSTileDraggablePreview(child: child),
         ),
         child: container);
 
     return ent is VFolder
         ? DragTarget<VEntity>(
-            onAcceptWithDetails: (data) =>
-                context.vfsController.moveInto(ent, data.data),
+            onAcceptWithDetails: (data) => context.vfs.moveInto(ent, data.data),
             builder: (context, candidateData, rejectedData) => dg,
           )
         : dg;
@@ -72,7 +73,7 @@ class VFSTileDraggablePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<VEntity> entity = context.vfsController.selection.value;
+    List<VEntity> entity = context.vfs.selection.value;
     int g = 0;
     return Stack(
       children: [
@@ -107,9 +108,7 @@ class VFSEntityListTile extends StatelessWidget {
       title: ent.buildTitle(context),
       subtitle: ent.buildSubtitle(context),
       trailing: ent.buildTrailing(context),
-      onPressed: () => context.vfsController.tap(context, ent,
-          comparator: context.vfsView.comparator,
-          reversed: context.vfsView.reversedComparator),
+      onPressed: () => context.vfs.tap(context, ent),
     ));
   }
 }
@@ -123,9 +122,7 @@ class VFSEntityGridTile extends StatelessWidget {
     return VFSEntityContainer(
         child: GhostButton(
       trailing: ent.buildTrailing(context),
-      onPressed: () => context.vfsController.tap(context, ent,
-          comparator: context.vfsView.comparator,
-          reversed: context.vfsView.reversedComparator),
+      onPressed: () => context.vfs.tap(context, ent),
       child: Column(
         children: [
           if (ent.iconBuilder != null)

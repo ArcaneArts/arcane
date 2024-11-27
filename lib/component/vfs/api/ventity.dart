@@ -9,7 +9,6 @@ Widget _buildTitle(BuildContext context) => Text(context.vfsEntity.name);
 abstract class VEntity {
   final VFS vfs;
   final String path;
-  final List<MenuItem> Function(BuildContext context)? onContextMenu;
   final Widget Function(BuildContext context, double? size)? iconBuilder;
   final Widget Function(BuildContext context)? titleBuilder;
   final Widget Function(BuildContext context)? subtitleBuilder;
@@ -18,7 +17,6 @@ abstract class VEntity {
   VEntity(
       {required String path,
       required this.vfs,
-      this.onContextMenu,
       this.iconBuilder,
       this.titleBuilder = _buildTitle,
       this.subtitleBuilder,
@@ -40,11 +38,6 @@ abstract class VEntity {
 
   Widget? buildTrailing(BuildContext context) => trailingBuilder?.call(context);
 
-  List<MenuItem> buildContextMenu(BuildContext context) =>
-      onContextMenu?.call(context) ?? [];
-
-  bool hasContextMenu(BuildContext context) => onContextMenu != null;
-
   Widget? buildIcon(BuildContext context, double? size) =>
       iconBuilder?.call(context, size);
 }
@@ -53,7 +46,6 @@ class VFolder extends VEntity {
   VFolder({
     required super.vfs,
     required super.path,
-    super.onContextMenu,
     super.iconBuilder = _buildIconFolder,
     super.titleBuilder = _buildTitle,
     super.subtitleBuilder,
@@ -66,7 +58,6 @@ class VFile extends VEntity {
   VFile({
     required super.vfs,
     required super.path,
-    super.onContextMenu,
     super.iconBuilder = _buildIconFile,
     super.titleBuilder = _buildTitle,
     super.subtitleBuilder,
