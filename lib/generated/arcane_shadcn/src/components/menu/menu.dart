@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 class MenuShortcut extends StatelessWidget {
@@ -820,14 +819,10 @@ class MenuOverlayHandler extends OverlayHandler {
       Duration? showDuration,
       Duration? dismissDuration,
       OverlayBarrier? overlayBarrier}) {
-    OverlayPylonReference reference = OverlayPylonReference();
-    OverlayCompleter<T?> completer = manager.showMenu(
+    return manager.showMenu(
       context: context,
       alignment: alignment,
-      builder: (context) => Pylon<OverlayPylonReference>(
-        value: reference,
-        builder: builder,
-      ),
+      builder: builder,
       position: position,
       anchorAlignment: anchorAlignment,
       widthConstraint: widthConstraint,
@@ -851,7 +846,5 @@ class MenuOverlayHandler extends OverlayHandler {
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
     );
-    reference.completer = completer;
-    return completer;
   }
 }

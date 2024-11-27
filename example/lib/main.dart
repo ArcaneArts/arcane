@@ -40,22 +40,54 @@ class ExampleNavigationScreen extends StatelessWidget {
                         Fab(
                             child: Icon(Icons.airplane),
                             onPressed: () {
-                              Arcane.closeDrawer(context);
+                              context.dismissOverlay();
                             }),
-                        Fab(child: Icon(Icons.activity), onPressed: () {}),
-                        Fab(child: Icon(Icons.alarm), onPressed: () {})
+                        Fab(
+                            child: Icon(Icons.activity),
+                            onPressed: () {
+                              context.dismissOverlay();
+                            }),
+                        Fab(
+                            child: Icon(Icons.alarm),
+                            onPressed: () {
+                              context.dismissOverlay();
+                            })
                       ],
                     ),
-                    Fab(child: Icon(Icons.activity), onPressed: () {}),
-                    Fab(child: Icon(Icons.alarm), onPressed: () {})
+                    Fab(
+                        child: Icon(Icons.activity),
+                        onPressed: () {
+                          context.dismissOverlay();
+                        }),
+                    Fab(
+                        child: Icon(Icons.alarm),
+                        onPressed: () {
+                          context.dismissOverlay();
+                        })
                   ],
                 ),
-                Fab(child: Icon(Icons.activity), onPressed: () {}),
-                Fab(child: Icon(Icons.alarm), onPressed: () {})
+                Fab(
+                    child: Icon(Icons.activity),
+                    onPressed: () {
+                      context.dismissOverlay();
+                    }),
+                Fab(
+                    child: Icon(Icons.alarm),
+                    onPressed: () {
+                      context.dismissOverlay();
+                    })
               ],
             ),
-            Fab(child: Icon(Icons.activity), onPressed: () {}),
-            Fab(child: Icon(Icons.alarm), onPressed: () {})
+            Fab(
+                child: Icon(Icons.activity),
+                onPressed: () {
+                  context.dismissOverlay();
+                }),
+            Fab(
+                child: Icon(Icons.alarm),
+                onPressed: () {
+                  context.dismissOverlay();
+                })
           ],
         ),
       );
