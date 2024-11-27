@@ -3,6 +3,7 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
+export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'
     show
         TableBorder,
@@ -34,6 +35,7 @@ export 'component/card_carousel.dart';
 export 'component/center_body.dart';
 export 'component/checkbox.dart';
 export 'component/conjured.dart';
+export 'component/data_table.dart';
 export 'component/dialog/confirm.dart';
 export 'component/dialog/confirm_text.dart';
 export 'component/dialog/date.dart';
@@ -62,7 +64,7 @@ export 'component/search.dart';
 export 'component/section.dart';
 export 'component/selector.dart';
 export 'component/sheet.dart';
-export 'component/table.dart';
+export 'component/static_table.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
 // Arcane
