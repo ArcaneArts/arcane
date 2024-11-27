@@ -82,7 +82,7 @@ class TD extends StatelessWidget {
       );
 }
 
-class Table extends StatelessWidget {
+class StaticTable extends StatelessWidget {
   final TableBorder? border;
   final List<TR> rows;
   final bool alternatingRowColor;
@@ -90,7 +90,7 @@ class Table extends StatelessWidget {
   final TableColumnWidth defaultColumnWidth;
   final TableCellVerticalAlignment defaultVerticalAlignment;
 
-  const Table(
+  const StaticTable(
       {super.key,
       required this.rows,
       this.alternatingRowColor = false,

@@ -13,7 +13,7 @@ List<ShadcnDocsSection> customSections = [
   ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
     ShadcnDocsPage("Chat", "chat"),
-    ShadcnDocsPage("Tables", "tables"),
+    ShadcnDocsPage("Static Table", "static_table"),
     ShadcnDocsPage("Dialogs", "dialogs"),
     ShadcnDocsPage("Search", "search"),
     ShadcnDocsPage("Image", "image"),
@@ -104,13 +104,13 @@ List<GoRoute> customRoutes = [
             children: [exampleChatBubblesScreen, exampleChatTilesScreen],
           )),
   GoRoute(
-      path: "tables",
-      name: "tables",
+      path: "static_table",
+      name: "static_table",
       builder: (_, __) => ArcaneComponentPage(
-            name: 'tables',
+            name: 'static_table',
             description:
                 'Tables for Arcane are designed to be simple to use and easy to extend.',
-            displayName: 'Tables',
+            displayName: 'Static Table',
             children: [
               exampleTables,
               exampleTableAltColors,
@@ -194,7 +194,7 @@ FillScreen(
 Widget get exampleTableColumnSizes => ArcaneUsageExample(
     title: "Column Sizing",
     code: r"""
-Table(
+StaticTable(
   defaultColumnWidth: const ComfyColumnWidth(),
   columnWidths: const {
     // You can use 
@@ -255,7 +255,7 @@ Table(
   ],
 )
     """,
-    child: Table(
+    child: StaticTable(
       defaultColumnWidth: const ComfyColumnWidth(),
       columnWidths: const {
         0: ComfyColumnWidth(flex: 1),
@@ -310,7 +310,7 @@ Table(
 Widget get exampleTables => ArcaneUsageExample(
     title: "Basic Tables",
     code: r"""
-Table(
+StaticTable(
   rows: [
     TR.header(
       column: [
@@ -360,7 +360,7 @@ Table(
     child: Row(
       children: [
         Expanded(
-            child: Table(
+            child: StaticTable(
           rows: [
             TR.header(
               column: [
@@ -412,7 +412,7 @@ Table(
 Widget get exampleTableAltColors => ArcaneUsageExample(
     title: "Alternating Row Color",
     code: r"""
-Table(
+StaticTable(
   alternatingRowColor: true,
   rows: [
     TR.header(
@@ -463,7 +463,7 @@ Table(
     child: Row(
       children: [
         Expanded(
-          child: Table(
+          child: StaticTable(
             alternatingRowColor: true,
             rows: [
               TR.header(
@@ -517,7 +517,7 @@ Table(
 Widget get exampleTableWithColors => ArcaneUsageExample(
     title: "Colored Cells & Rows",
     code: r"""
-Table(
+StaticTable(
   rows: [
     TR.header(
       column: [
@@ -568,7 +568,7 @@ Table(
     child: Row(
       children: [
         Expanded(
-          child: Table(
+          child: StaticTable(
             rows: [
               TR.header(
                 column: [

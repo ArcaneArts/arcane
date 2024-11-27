@@ -1,3 +1,10 @@
+## 3.3.0
+* Sync Upstream
+* ADDED `Scaffold.backgroundColor`
+* ADDED `leadingAlignment` and `trailingAlignment` to `TextField`
+* BREAKING Removed `ResizablePane.flex()`, `ResizableContainerData`,
+* BREAKING Renamed `Table` to `StaticTable` to use the new shadcn `Table` widget. The new `Table` widget is more unstable but offers more features.
+
 ## 3.2.3
 * Added `VFS` `VFSView` and `IOVFS` for a Virtual Filesystem Viewer
 * Added `FabGroup` and `context.dismissFabGroup()`
