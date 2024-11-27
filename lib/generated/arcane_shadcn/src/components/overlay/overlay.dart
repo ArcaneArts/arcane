@@ -224,10 +224,14 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
-    return widget.popoverHandler.show(
+    OverlayPylonReference reference = OverlayPylonReference();
+    OverlayCompleter<T?> completer = widget.popoverHandler.show(
       context: context,
       alignment: alignment,
-      builder: builder,
+      builder: (context) => Pylon<OverlayPylonReference>(
+        value: reference,
+        builder: builder,
+      ),
       position: position,
       anchorAlignment: anchorAlignment,
       widthConstraint: widthConstraint,
@@ -251,6 +255,8 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
     );
+    reference.completer = completer;
+    return completer;
   }
 
   @override

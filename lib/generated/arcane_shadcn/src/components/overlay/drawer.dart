@@ -1411,8 +1411,14 @@ class SheetOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
-    builder = Pylon.mirror(context, builder);
-    return openRawDrawer<T>(
+    OverlayPylonReference ref = OverlayPylonReference();
+    builder = Pylon.mirror(
+        context,
+        (context) => Pylon<OverlayPylonReference>(
+              value: ref,
+              builder: builder,
+            ));
+    DrawerOverlayCompleter<T?> completer = openRawDrawer<T>(
       context: context,
       transformBackdrop: false,
       useSafeArea: false,
@@ -1441,5 +1447,8 @@ class SheetOverlayHandler extends OverlayHandler {
       },
       position: this.position,
     );
+
+    ref.completer = completer;
+    return completer;
   }
 }

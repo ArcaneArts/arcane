@@ -36,7 +36,11 @@ class PopoverOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
-    builder = Pylon.mirror(context, builder);
+    OverlayPylonReference ref = OverlayPylonReference();
+    builder = Pylon.mirror(
+        context,
+        (context) =>
+            Pylon<OverlayPylonReference>(value: ref, builder: builder));
     TextDirection textDirection = Directionality.of(context);
     Alignment resolvedAlignment = alignment.resolve(textDirection);
     anchorAlignment ??= alignment * -1;
@@ -62,6 +66,7 @@ class PopoverOverlayHandler extends OverlayHandler {
     final OverlayPopoverEntry<T> popoverEntry = OverlayPopoverEntry();
     final completer = popoverEntry.completer;
     final animationCompleter = popoverEntry.animationCompleter;
+    ref.anyCompleter = completer;
     ValueNotifier<bool> isClosed = ValueNotifier(false);
     OverlayEntry? barrierEntry;
     late OverlayEntry overlayEntry;

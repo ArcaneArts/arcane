@@ -350,7 +350,11 @@ class DialogOverlayHandler extends OverlayHandler {
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
   }) {
-    builder = Pylon.mirror(context, builder);
+    OverlayPylonReference ref = OverlayPylonReference();
+    builder = Pylon.mirror(
+        context,
+        (context) =>
+            Pylon<OverlayPylonReference>(value: ref, builder: builder));
     var navigatorState = Navigator.of(
       context,
       rootNavigator: rootOverlay,
@@ -415,7 +419,9 @@ class DialogOverlayHandler extends OverlayHandler {
     navigatorState.push(
       dialogRoute,
     );
-    return DialogOverlayCompleter(dialogRoute);
+    OverlayCompleter<T> completer = DialogOverlayCompleter(dialogRoute);
+    ref.completer = completer;
+    return completer;
   }
 }
 

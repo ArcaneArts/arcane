@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 typedef Predicate<T> = bool Function(T value);
@@ -9,6 +10,20 @@ const kDefaultDuration = Duration(milliseconds: 150);
 
 typedef ContextedCallback = void Function(BuildContext context);
 typedef ContextedValueChanged<T> = void Function(BuildContext context, T value);
+
+class OverlayPylonReference {
+  OverlayCompleter? completer;
+  Completer? anyCompleter;
+
+  void complete() {
+    completer?.remove();
+    anyCompleter?.complete();
+  }
+}
+
+extension XContextDismissOverlay on BuildContext {
+  void dismissOverlay() => pylonOr<OverlayPylonReference>()?.complete();
+}
 
 BorderRadius? optionallyResolveBorderRadius(
     BuildContext context, BorderRadiusGeometry? radius) {
