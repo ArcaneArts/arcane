@@ -3,7 +3,8 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
-export 'package:flutter/material.dart' show DataCell;
+export 'package:flutter/material.dart'
+    show DataCell;
 export 'package:flutter/widgets.dart'
     show
         TableBorder,

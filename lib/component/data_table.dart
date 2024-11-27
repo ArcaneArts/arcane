@@ -8,8 +8,9 @@ import 'dart:math' as math;
 
 import 'package:arcane/arcane.dart' as a;
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' as m show DataColumn, DataRow, DataTable;
 import 'package:flutter/material.dart' hide DataColumn, DataRow, DataTable;
+import 'package:flutter/material.dart' as m
+    show DataColumn, DataRow, DataTable, CheckboxThemeData;
 
 bool dataTableShowLogs = true;
 
@@ -259,7 +260,7 @@ class DataTable extends m.DataTable {
 
   /// Overrides theme of the checkbox that is displayed in the checkbox column
   /// in each data row (should checkboxes be enabled)
-  final CheckboxThemeData? datarowCheckboxTheme;
+  final m.CheckboxThemeData? datarowCheckboxTheme;
 
   /// If set the table will have empty space added after the the last row and allow scroll the
   /// core of the table higher (e.g. if you would like to have iOS navigation UI at the bottom overlapping the table and
