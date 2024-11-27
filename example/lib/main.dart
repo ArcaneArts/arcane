@@ -23,7 +23,8 @@ class ExampleNavigationScreen extends StatelessWidget {
   const ExampleNavigationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => VFSView(vfs: IOVFS(Directory.current));
+  Widget build(BuildContext context) => VFSView(
+      vfs: IOVFS(Directory("${Directory.current.absolute.path}/build")));
 }
 
 extension _XContextVFS on BuildContext {

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 
+BehaviorSubject<Offset> _dragSlink = BehaviorSubject.seeded(Offset.zero);
+
 class VFSEntityContainer extends StatelessWidget {
   final Widget child;
 
@@ -38,14 +40,18 @@ class VFSEntityContainer extends StatelessWidget {
           curve: Curves.easeOutCirc,
         );
 
-    Widget dg = Draggable<VEntity>(
+    Widget dg = LongPressDraggable<VEntity>(
+        onDragStarted: () {
+          if (!context.vfsController.selection.value.contains(ent)) {
+            context.vfsController.selection
+                .add([...context.vfsController.selection.value, ent]);
+          }
+        },
         key: ValueKey("drag_${ent.path}"),
         data: ent,
-        feedback: SurfaceCard(
-          child: IgnorePointer(
-            ignoring: true,
-            child: child.iw.ih,
-          ),
+        feedback: Pylon<VFSController>(
+          value: context.vfsController,
+          builder: (context) => VFSTileDraggablePreview(child: child),
         ),
         child: container);
 
@@ -56,6 +62,36 @@ class VFSEntityContainer extends StatelessWidget {
             builder: (context, candidateData, rejectedData) => dg,
           )
         : dg;
+  }
+}
+
+class VFSTileDraggablePreview extends StatelessWidget {
+  final Widget child;
+
+  const VFSTileDraggablePreview({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    List<VEntity> entity = context.vfsController.selection.value;
+    int g = 0;
+    return Stack(
+      children: [
+        ...entity.take(5).withPylons((i) => Transform.translate(
+              offset: Offset(g * 8, (g++) * 8),
+              child: SurfaceCard(
+                surfaceBlur: (Theme.of(context).surfaceBlur ?? 36) * 1 / g,
+                surfaceOpacity:
+                    (Theme.of(context).surfaceOpacity ?? 0.5) * (1 / g),
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: child.iw.ih,
+                ),
+              ),
+            ))
+      ],
+    );
+
+    return const Placeholder();
   }
 }
 
