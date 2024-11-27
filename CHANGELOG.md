@@ -1,3 +1,7 @@
+## 3.2.3
+* Added `VFS` `VFSView` and `IOVFS` for a Virtual Filesystem Viewer
+* Added `FabGroup` and `context.dismissFabGroup()`
+
 ## 3.2.2
 * Fix `CardCarousel`
 
