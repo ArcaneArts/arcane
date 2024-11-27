@@ -14,6 +14,7 @@ class Scaffold extends StatefulWidget {
   final bool floatingFooter;
   final Color? headerBackgroundColor;
   final Color? footerBackgroundColor;
+  final Color? backgroundColor;
   final bool showLoadingSparks;
   final bool primary;
 
@@ -27,6 +28,7 @@ class Scaffold extends StatefulWidget {
     this.loadingProgressIndeterminate = false,
     this.floatingHeader = false,
     this.floatingFooter = false,
+    this.backgroundColor,
     this.headerBackgroundColor,
     this.footerBackgroundColor,
     this.showLoadingSparks = false,

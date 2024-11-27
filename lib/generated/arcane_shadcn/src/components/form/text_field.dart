@@ -9,7 +9,8 @@ class TextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool filled;
   final String? placeholder;
-  final AlignmentGeometry placeholderAlignment;
+  final AlignmentGeometry? leadingAlignment;
+  final AlignmentGeometry? trailingAlignment;
   final bool border;
   final Widget? leading;
   final Widget? trailing;
@@ -87,7 +88,8 @@ class TextField extends StatefulWidget {
     this.textInputAction,
     this.clipBehavior = Clip.hardEdge,
     this.autofocus = false,
-    this.placeholderAlignment = AlignmentDirectional.topStart,
+    this.leadingAlignment,
+    this.trailingAlignment,
     this.statesController,
   });
 
@@ -239,7 +241,12 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
         data: _statesController,
         child: Row(
           children: [
-            if (widget.leading != null) widget.leading!,
+            if (widget.leading != null)
+              widget.leadingAlignment != null
+                  ? Align(
+                      alignment: widget.leadingAlignment ?? Alignment.center,
+                      child: widget.leading!)
+                  : widget.leading!,
             if (widget.leading != null) SizedBox(width: 8 * scaling),
             Flexible(
               child: material.TextField(
@@ -325,7 +332,12 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
               ),
             ),
             if (widget.trailing != null) SizedBox(width: 8 * scaling),
-            if (widget.trailing != null) widget.trailing!,
+            if (widget.trailing != null)
+              widget.trailingAlignment != null
+                  ? Align(
+                      alignment: widget.trailingAlignment ?? Alignment.center,
+                      child: widget.trailing!)
+                  : widget.trailing!,
           ],
         ),
       ),
