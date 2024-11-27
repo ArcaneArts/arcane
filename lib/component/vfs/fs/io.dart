@@ -9,8 +9,13 @@ class IOVFS extends VFS {
   final Directory rootDirectory;
   final bool showExtensions;
 
-  IOVFS(this.rootDirectory, {this.showExtensions = true})
-      : assert(!kIsWeb, "RealVFS is not supported on the web");
+  IOVFS(
+    this.rootDirectory, {
+    this.showExtensions = true,
+    super.workingDirectory,
+    super.comparators,
+    super.layouts,
+  }) : assert(!kIsWeb, "RealVFS is not supported on the web");
 
   String get realRoot => rootDirectory.path;
 
@@ -196,17 +201,14 @@ class IOVFS extends VFS {
   }
 
   @override
-  Iterable<MenuItem> onEntityMenuItems(BuildContext context, List<VEntity> entities)sync* {
-
-  }
-
-  @override
-  Iterable<MenuItem> onFileMenuItems(BuildContext context, List<VFile> files)sync* {
-
-  }
+  Iterable<MenuItem> onEntityMenuItems(
+      BuildContext context, List<VEntity> entities) sync* {}
 
   @override
-  Iterable<MenuItem> onFolderMenuItems(BuildContext context, List<VFolder> folders) sync* {
+  Iterable<MenuItem> onFileMenuItems(
+      BuildContext context, List<VFile> files) sync* {}
 
-  }
+  @override
+  Iterable<MenuItem> onFolderMenuItems(
+      BuildContext context, List<VFolder> folders) sync* {}
 }
