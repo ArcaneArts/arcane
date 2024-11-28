@@ -1,3 +1,6 @@
+## 3.3.2
+* Sidebar Constraints for navigation screen
+
 ## 3.3.1
 * Added Keyboard Shortcuts to the VFSView
 * Lots of bugfixes with IOVFS
