@@ -20,6 +20,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
+    - family: RadixIcons
+      fonts:
+        - asset: "packages/arcane/resources/icons/RadixIcons.otf"
+    - family: BootstrapIcons
+      fonts:
+        - asset: "packages/arcane/resources/icons/BootstrapIcons.otf"
     - family: "GeistSans"
       fonts:
         - asset: "packages/arcane/resources/fonts/Geist-Black.otf"
