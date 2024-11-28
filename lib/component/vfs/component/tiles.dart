@@ -4,13 +4,20 @@ import 'package:arcane/arcane.dart';
 
 BehaviorSubject<Offset> _dragSlink = BehaviorSubject.seeded(Offset.zero);
 
-class VFSEntityContainer extends StatelessWidget {
+class VFSEntityContainer extends StatefulWidget {
   final Widget child;
 
   const VFSEntityContainer({super.key, required this.child});
 
   @override
+  State<VFSEntityContainer> createState() => _VFSEntityContainerState();
+}
+
+class _VFSEntityContainerState extends State<VFSEntityContainer>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     VEntity ent = context.vfsEntity;
     Widget container = context.vfs.selection
         .map((i) => i.contains(ent))
@@ -26,7 +33,7 @@ class VFSEntityContainer extends StatelessWidget {
                   : null,
             ),
             child: ContextMenu(
-                enabled: menu.isNotEmpty, items: menu, child: child),
+                enabled: menu.isNotEmpty, items: menu, child: widget.child),
           );
         })
         .animate(
@@ -53,7 +60,7 @@ class VFSEntityContainer extends StatelessWidget {
         data: ent,
         feedback: Pylon<VFS>(
           value: context.vfs,
-          builder: (context) => VFSTileDraggablePreview(child: child),
+          builder: (context) => VFSTileDraggablePreview(child: widget.child),
         ),
         child: container);
 
@@ -64,6 +71,9 @@ class VFSEntityContainer extends StatelessWidget {
           )
         : dg;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class VFSTileDraggablePreview extends StatelessWidget {

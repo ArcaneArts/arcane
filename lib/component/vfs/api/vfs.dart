@@ -714,4 +714,78 @@ abstract class VFS {
             : "Are you sure you want to delete ${all.whereType<VFile>().length} files and ${all.whereType<VFolder>().length} folders?",
         onConfirm: () => deleteAll(all)).open(context);
   }
+
+  Future<void> moveSelection(Offset drift) async {
+    if (selection.value.isEmpty) {
+      selection.add([await getChildren(workingVFolder.value).first]);
+    }
+
+    if (selection.value.length > 1) {
+      if (drift.dx > 0 || drift.dy > 0) {
+        selection.add([selection.value.last]);
+      } else {
+        selection.add([selection.value.first]);
+      }
+    }
+
+    int across = currentLayout.span;
+    VEntity selected = selection.value.first;
+    List<VEntity> view = await getChildren(workingVFolder.value).toList();
+    int index = view.indexOf(selected);
+    int newIndex =
+        _SpanUtil.move(index, drift.dx.round(), drift.dy.round(), span: across);
+    newIndex = max(0, min(view.length - 1, newIndex));
+    selection.add([view[newIndex]]);
+    _lastTapped = view[newIndex];
+  }
+
+  Future<void> expandSelection(Offset drift) async {
+    if (selection.value.isEmpty) {
+      return;
+    }
+
+    int across = currentLayout.span;
+    List<VEntity> view = await getChildren(workingVFolder.value).toList();
+    int startIndex = view.indexOf(selection.value.last);
+    if (selection.value.length > 1 && drift.dx > 0 || drift.dy > 0) {}
+
+    int newIndex = _SpanUtil.move(
+        startIndex, drift.dx.round(), drift.dy.round(),
+        span: across);
+    newIndex = max(0, min(view.length - 1, newIndex));
+    List<VEntity> newSelection = selection.value.toList();
+    bool added = false;
+    for (int i = min(startIndex, newIndex);
+        i <= max(startIndex, newIndex);
+        i++) {
+      if (!newSelection.contains(view[i])) {
+        newSelection.add(view[i]);
+        added = true;
+      }
+    }
+
+    if (!added) {
+      newSelection.remove(view[startIndex]);
+    }
+
+    selection.add(newSelection);
+    _lastTapped = view[newIndex];
+  }
+
+  Future<void> selectAll() async =>
+      selection.add(await getChildren(workingVFolder.value).toList());
+}
+
+class _SpanUtil {
+  static int move(int index, int x, int y, {int span = 1}) {
+    int nx = getX(index, span: span) + x;
+    int ny = getY(index, span: span) + y;
+    return getIndex(nx, ny, span: span);
+  }
+
+  static int getX(int index, {int span = 1}) => index % span;
+
+  static int getY(int index, {int span = 1}) => index ~/ span;
+
+  static int getIndex(int x, int y, {int span = 1}) => y * span + x;
 }
