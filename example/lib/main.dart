@@ -21,19 +21,5 @@ class ExampleNavigationScreen extends StatelessWidget {
   const ExampleNavigationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => FillScreen(
-        gutter: false,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GoogleSignInButton(),
-              Gap(8),
-              AppleSignInButton(),
-              Gap(8),
-              EmailPasswordSignIn()
-            ],
-          ),
-        ),
-      );
+  Widget build(BuildContext context) => Terminal();
 }

@@ -4,6 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class SliverScreen extends AbstractStatefulScreen {
   final Widget sliver;
   final ScrollController? scrollController;
+  final ScrollPhysics? physics;
 
   const SliverScreen({
     super.key,
@@ -17,6 +18,7 @@ class SliverScreen extends AbstractStatefulScreen {
     super.minContentFraction,
     super.minContentWidth,
     super.showLoadingSparks,
+    this.physics,
     super.foreground,
     this.scrollController,
     required this.sliver,
@@ -122,6 +124,7 @@ class _SliverScreenState extends State<SliverScreen> {
           children: [
             if (widget.background != null) widget.background!,
             CustomScrollView(
+              physics: widget.physics,
               controller: getController(context),
               slivers: [
                 if (widget.header != null)
