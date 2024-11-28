@@ -3,8 +3,7 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
-export 'package:flutter/material.dart'
-    show DataCell;
+export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'
     show
         TableBorder,
@@ -49,6 +48,9 @@ export 'component/dialog/time.dart';
 export 'component/fab.dart';
 export 'component/glass.dart';
 export 'component/gutter.dart';
+export 'component/iam/apple_sign_in_button.dart';
+export 'component/iam/google_sign_in_button.dart';
+export 'component/iam/oauth_sign_in_button.dart';
 export 'component/icon_button.dart';
 export 'component/icons.dart';
 export 'component/image.dart';
