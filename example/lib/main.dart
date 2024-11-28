@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:flutter/material.dart' show DataCell;
 
 bool v = false;
 String? vv;
@@ -23,27 +22,18 @@ class ExampleNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FillScreen(
-    gutter: false,
-        header: Bar(
-          titleText: "Data Table Test",
-        ),
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text("Name"), size: ColumnSize.L),
-            DataColumn(label: Text("Age"), size: ColumnSize.S),
-            DataColumn(label: Text("Address"), size: ColumnSize.L),
-            DataColumn(label: Text("Phone"), size: ColumnSize.M),
-            DataColumn(label: Text("Email"), size: ColumnSize.M),
-          ],
-          rows: List<DataRow>.generate(
-              100,
-              (index) => DataRow(cells: [
-                    DataCell(Text("Name $index")),
-                    DataCell(Text("$index")),
-                    DataCell(Text("Address $index")),
-                    DataCell(Text("Phone $index")),
-                    DataCell(Text("Email $index")),
-                  ])),
+        gutter: false,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GoogleSignInButton(),
+              Gap(8),
+              AppleSignInButton(),
+              Gap(8),
+              EmailPasswordSignIn()
+            ],
+          ),
         ),
       );
 }

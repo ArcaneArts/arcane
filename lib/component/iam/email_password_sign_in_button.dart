@@ -8,18 +8,16 @@
  */
 
 import 'package:arcane/arcane.dart';
-import 'package:common_svgs/common_svgs.dart';
-import 'package:flutter_svg/svg.dart';
 
-class AppleSignInButton extends StatelessWidget {
+class EmailPasswordSignIn extends StatelessWidget {
   final Widget? icon;
   final String? label;
   final VoidCallback? onPressed;
 
-  const AppleSignInButton(
+  const EmailPasswordSignIn(
       {super.key,
-      this.icon = const AppleLogo(),
-      this.label = "Sign in with Apple",
+      this.icon = const Icon(Icons.mail_ionic, size: 18),
+      this.label = "Sign in with Email",
       this.onPressed});
 
   @override
@@ -28,16 +26,4 @@ class AppleSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: onPressed,
       );
-}
-
-class AppleLogo extends StatelessWidget {
-  final double size;
-
-  const AppleLogo({super.key, this.size = 18});
-
-  @override
-  Widget build(BuildContext context) => SvgPicture.string(svgApple,
-      width: 18,
-      height: 18,
-      color: Theme.of(context).colorScheme.mutedForeground);
 }

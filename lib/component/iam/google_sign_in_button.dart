@@ -37,7 +37,7 @@ class GoogleLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SvgPicture.string(svgGoogle,
-      width: 24,
-      height: 24,
-      color: Theme.of(context).colorScheme.secondaryForeground);
+      width: 18,
+      height: 18,
+      color: Theme.of(context).colorScheme.mutedForeground);
 }

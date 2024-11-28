@@ -49,6 +49,7 @@ export 'component/fab.dart';
 export 'component/glass.dart';
 export 'component/gutter.dart';
 export 'component/iam/apple_sign_in_button.dart';
+export 'component/iam/email_password_sign_in_button.dart';
 export 'component/iam/google_sign_in_button.dart';
 export 'component/iam/oauth_sign_in_button.dart';
 export 'component/icon_button.dart';
