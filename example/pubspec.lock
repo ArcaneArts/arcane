@@ -711,6 +711,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.9.1"
+  precision_stopwatch:
+    dependency: transitive
+    description:
+      name: precision_stopwatch
+      sha256: "10ba0aea7853918ea344e00ec0658ff82388041d6de04f9e91d39ac548e77e8c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   pylon:
     dependency: transitive
     description:

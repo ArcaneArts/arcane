@@ -211,4 +211,7 @@ class IOVFS extends VFS {
   @override
   Iterable<MenuItem> onFolderMenuItems(
       BuildContext context, List<VFolder> folders) sync* {}
+
+  @override
+  Future<void> onTick() async {}
 }

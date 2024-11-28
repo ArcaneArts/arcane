@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:arcane/arcane.dart';
 
 bool v = false;
@@ -17,9 +19,11 @@ class ExampleArcaneApp extends StatelessWidget {
       );
 }
 
+VFS _vfs = IOVFS(Directory("${Directory.current.absolute.path}/build/iovfs"));
+
 class ExampleNavigationScreen extends StatelessWidget {
   const ExampleNavigationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Terminal();
+  Widget build(BuildContext context) => VFSView(vfs: _vfs);
 }

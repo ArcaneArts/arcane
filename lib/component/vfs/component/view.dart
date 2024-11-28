@@ -19,6 +19,11 @@ class VFSViewState extends State<VFSView> {
   late BehaviorSubject<bool> _dropZone = BehaviorSubject.seeded(false);
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Pylon<VFSViewState>(
       value: this,
       builder: (context) => widget.vfs.listen.build((_) => Pylon<VFS>(
@@ -45,13 +50,18 @@ class VFSViewState extends State<VFSView> {
                             subtitleText: wd.path,
                             leading: [
                               if (widget.vfs.canGoUp)
-                                IconButton(
-                                  icon: const Icon(
-                                      Icons.chevron_up_outline_ionic),
-                                  onPressed: widget.vfs.canGoUp
-                                      ? widget.vfs.goUp
-                                      : null,
-                                ),
+                                DragTarget<VEntity>(
+                                    onAcceptWithDetails: (data) =>
+                                        context.vfs.moveUpOut(data.data),
+                                    builder: (context, candidateData,
+                                            rejectedData) =>
+                                        IconButton(
+                                          icon: const Icon(
+                                              Icons.chevron_up_outline_ionic),
+                                          onPressed: widget.vfs.canGoUp
+                                              ? widget.vfs.goUp
+                                              : null,
+                                        )),
                             ],
                             trailing: [
                               IconButtonMenu(

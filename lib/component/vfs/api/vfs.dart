@@ -16,6 +16,7 @@ abstract class VFS {
   VEntity? _lastTapped;
   int? _lastTappedTime;
   StreamSubscription<bool>? _watcher;
+  StreamSubscription<bool>? _parentWatcher;
   late final StreamSubscription<String> _wdWatcher;
   final BehaviorSubject<int> _updater = BehaviorSubject.seeded(0);
   final Map<String, VEntity> _cache = {};
@@ -23,6 +24,7 @@ abstract class VFS {
   late int _currentLayout;
   late int _currentComparator;
   late bool _reversedComparator;
+  late bool _ticking;
 
   VFS({
     this.workingDirectory = "/",
@@ -40,17 +42,44 @@ abstract class VFS {
     workingVFolder =
         BehaviorSubject.seeded(VFolder(path: workingDirectory, vfs: this));
     _wdWatcher = _updater.map((i) => workingDirectory).distinct().listen((_) {
-      getEntity(workingDirectory).then((i) => workingVFolder.add(i as VFolder));
+      getEntity(workingDirectory).then((i) {
+        if (i == null) {
+          error("Working directory $workingDirectory does not exist");
+        } else {
+          workingVFolder.add(i as VFolder);
+        }
+      });
       String wd = workingDirectory;
       watchTargetDirectory(wd);
     });
+    _ticking = true;
+    Future.delayed(1.seconds, () async {
+      while (_ticking) {
+        await tick();
+        await Future.delayed(1.seconds);
+      }
+    });
+  }
+
+  Future<void> onTick();
+
+  Future<void> tick() async {
+    try {
+      if (await checkWorkingDirectory()) {
+        await onTick();
+      }
+    } catch (e, es) {
+      error("TICK ERROR $e $es");
+    }
   }
 
   void dispose() {
+    _ticking = false;
     selection.close();
     workingVFolder.close();
     _updater.close();
     _watcher?.cancel();
+    _wdWatcher.cancel();
   }
 
   void setLayoutIndex(int layout) {
@@ -92,9 +121,47 @@ abstract class VFS {
   }
 
   void watchTargetDirectory(String wd) {
+    _parentWatcher?.cancel();
+    _parentWatcher = null;
+
+    if (VPaths.hasParent(wd)) {
+      _parentWatcher =
+          watchDirectory(VPaths.parentOf(wd)).listen((event) async {
+        await checkWorkingDirectory();
+        update();
+      }, onDone: () {
+        verbose("PARENT WATCH ENDED");
+        checkWorkingDirectory();
+      }, onError: (e, es) {
+        error("PARENT WATCH ERROR $e $es");
+        checkWorkingDirectory();
+      });
+    }
+
     _watcher?.cancel();
     _watcher = null;
-    _watcher = watchDirectory(wd).listen((event) => update());
+    _watcher = watchDirectory(wd).listen((event) async {
+      update();
+    }, onDone: () {
+      verbose("WATCH ENDED");
+    }, onError: (e, es) {
+      error("WATCH ERROR $e $es");
+    });
+  }
+
+  Future<bool> checkWorkingDirectory() async {
+    bool ex = await exists(workingDirectory);
+    if (!ex && VPaths.hasParent(workingDirectory)) {
+      warn("Working directory $workingDirectory does not exist, going up.");
+      goUp();
+      return false;
+    } else if (!ex) {
+      error(
+          "Working directory $workingDirectory does not exist and has no parent!");
+      return false;
+    }
+
+    return true;
   }
 
   bool get canGoUp => VPaths.hasParent(workingDirectory);
@@ -180,11 +247,8 @@ abstract class VFS {
           selection.add([ent]);
         } else {
           List<VEntity> newSelection = [];
-
           int a = min(start, end);
           int b = max(start, end);
-
-          print("From $a to $b");
 
           for (int i = a; i <= b; i++) {
             newSelection.add(view[i]);
@@ -208,6 +272,22 @@ abstract class VFS {
   }
 
   bool isSelected(VEntity ent) => selection.value.contains(ent);
+
+  Future<void> moveUpOut(VEntity dragged) async {
+    List<VEntity> sel = selection.value;
+
+    if (!sel.contains(dragged)) {
+      sel.add(dragged);
+    }
+
+    for (VEntity i in sel) {
+      await move(
+          i, ((await getEntity(VPaths.parentOf(workingDirectory))) as VFolder));
+    }
+
+    selection.add([]);
+    update();
+  }
 
   Future<void> moveInto(VFolder ent, VEntity dragged) async {
     List<VEntity> sel = selection.value;

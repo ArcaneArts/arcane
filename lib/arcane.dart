@@ -17,6 +17,7 @@ export 'package:flutter/widgets.dart'
         TableCellVerticalAlignment;
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:padded/padded.dart';
+export 'package:precision_stopwatch/precision_stopwatch.dart';
 export 'package:pylon/pylon.dart';
 export 'package:rxdart/rxdart.dart' show BehaviorSubject;
 export 'package:skeletonizer/skeletonizer.dart';
@@ -25,6 +26,7 @@ export 'package:sliver_tools/sliver_tools.dart' hide MultiSliver;
 export 'package:soft_edge_blur/soft_edge_blur.dart';
 export 'package:toxic/toxic.dart';
 export 'package:toxic_flutter/toxic_flutter.dart';
+export 'package:universal_io/io.dart' show Platform;
 
 export 'component/adaptive.dart';
 export 'component/app.dart';
