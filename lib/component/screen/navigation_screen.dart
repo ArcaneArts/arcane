@@ -27,6 +27,7 @@ class NavigationScreen extends AbstractStatelessScreen {
   final bool endSide;
   final Widget? footer;
   final Widget? header;
+  final BoxConstraints sidebarConstraints;
   const NavigationScreen(
       {super.key,
       this.siderailRightPadding = 8,
@@ -35,6 +36,8 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.siderailTopPadding = 8,
       this.onIndexChanged,
       required this.tabs,
+      this.sidebarConstraints =
+          const BoxConstraints(minWidth: 100, maxWidth: 150),
       this.header,
       this.footer,
       this.endSide = false,
@@ -86,7 +89,7 @@ class NavigationScreen extends AbstractStatelessScreen {
   Widget buildSidebar(BuildContext context, int index, {bool drawer = false}) =>
       NavigationSidebar(
         labelType: NavigationLabelType.expanded,
-        constraints: const BoxConstraints(minWidth: 100, maxWidth: 150),
+        constraints: sidebarConstraints,
         index: index,
         surfaceOpacity: drawer ? 0 : null,
         surfaceBlur: drawer ? 0 : null,
