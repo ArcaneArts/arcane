@@ -1,3 +1,7 @@
+## 3.3.1
+* Added Keyboard Shortcuts to the VFSView
+* Lots of bugfixes with IOVFS
+
 ## 3.3.0
 * Sync Upstream
 * ADDED `Scaffold.backgroundColor`
