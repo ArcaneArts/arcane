@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:arcane/arcane.dart';
+import 'package:flutter/services.dart';
 
 enum ChatStyle {
   tiles,
@@ -54,10 +55,10 @@ class ChatScreen extends StatefulWidget {
       required this.sender});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatScreen> createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
   late ScrollController scrollController;
   late TextEditingController chatBoxController;
   late FocusNode chatBoxFocus;
@@ -158,61 +159,59 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildMessage(BuildContext context, AbstractChatMessage message) =>
-      Stack(
-        children: [
-          Visibility(
-              visible: false,
-              child: ChatMessageView(
-                avatar: buildUserAvatar(message.senderId),
-                header: buildUserHeader(message.senderId),
-                sender: message.senderId == widget.sender,
-                child: message.messageWidget,
-              )),
-          ChatMessageView(
-            avatarAlignment: widget.avatarAlignment,
-            avatar: buildUserAvatar(message.senderId),
-            header: buildUserHeader(message.senderId),
-            sender: message.senderId == widget.sender,
-            child: message.messageWidget,
-          )
-              .animate(
-                key: getMessageKey(message.id),
-                delay: 50.ms,
-              )
-              .fadeIn(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeOutExpo,
-              )
-              .blurXY(
-                begin: 36,
-                end: 0,
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeOutCirc,
-              )
-        ],
-      );
+      Pylon<AbstractChatMessage>(
+          value: message,
+          local: true,
+          builder: (context) => Stack(
+                children: [
+                  Visibility(
+                      visible: false,
+                      child: ChatMessageView(
+                        sender: message.senderId == widget.sender,
+                        child: message.messageWidget,
+                      )),
+                  ChatMessageView(
+                    sender: message.senderId == widget.sender,
+                    child: message.messageWidget,
+                  )
+                      .animate(
+                        key: getMessageKey(message.id),
+                        delay: 50.ms,
+                      )
+                      .fadeIn(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeOutExpo,
+                      )
+                      .blurXY(
+                        begin: 36,
+                        end: 0,
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeOutCirc,
+                      )
+                ],
+              ));
+
+  void send(String v) {
+    if (v.trim().isEmpty) return;
+    chatBoxController.clear();
+    widget.provider.sendMessage(v);
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => chatBoxFocus.requestFocus());
+  }
 
   @override
-  Widget build(BuildContext context) => Pylon<ChatStyle>(
-        value: widget.style,
-        local: true,
+  Widget build(BuildContext context) => PylonCluster(
+        pylons: [
+          Pylon<ChatStyle>.data(value: widget.style, local: true),
+          Pylon<ChatScreenState>.data(value: this, local: true),
+        ],
         builder: (context) => SliverScreen(
             header: widget.header,
             fab: widget.fab,
             gutter: widget.gutter,
             scrollController: scrollController,
-            footer: ChatBox(
-              maxMessageLength: widget.maxMessageLength,
-              placeholder: widget.placeholder,
-              focusNode: chatBoxFocus,
-              controller: chatBoxController,
-              onSend: (v) {
-                if (v.trim().isEmpty) return;
-                chatBoxController.clear();
-                widget.provider.sendMessage(v);
-                WidgetsBinding.instance
-                    .addPostFrameCallback((_) => chatBoxFocus.requestFocus());
-              },
+            footer: const ChatBox(
+              key: ValueKey("ChatBox"),
             ),
             sliver: messageBuffer.buildNullable((messages) => SListView.builder(
                   addAutomaticKeepAlives: true,
@@ -224,40 +223,32 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatBox extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final ValueChanged<String> onSend;
-  final String placeholder;
-  final int? maxMessageLength;
-
-  const ChatBox(
-      {super.key,
-      this.placeholder = "Send a message",
-      required this.controller,
-      required this.focusNode,
-      this.maxMessageLength,
-      required this.onSend});
+  const ChatBox({super.key});
 
   @override
-  Widget build(BuildContext context) => SurfaceCard(
-      borderRadius: BorderRadius.only(
-        topLeft: Theme.of(context).radiusXlRadius,
-        topRight: Theme.of(context).radiusXlRadius,
-      ),
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        maxLength: maxMessageLength,
-        autofocus: true,
-        border: false,
-        controller: controller,
-        focusNode: focusNode,
-        onSubmitted: onSend,
-        placeholder: placeholder,
-        trailing: IconButton(
-          icon: const Icon(Icons.send_ionic),
-          onPressed: () => onSend(controller.text),
+  Widget build(BuildContext context) {
+    ChatScreenState state = context.pylon<ChatScreenState>();
+    return SurfaceCard(
+        borderRadius: BorderRadius.only(
+          topLeft: Theme.of(context).radiusXlRadius,
+          topRight: Theme.of(context).radiusXlRadius,
         ),
-      ));
+        padding: const EdgeInsets.all(8),
+        child: TextField(
+          maxLength: state.widget.maxMessageLength,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          autofocus: true,
+          border: false,
+          controller: state.chatBoxController,
+          focusNode: state.chatBoxFocus,
+          onSubmitted: state.send,
+          placeholder: state.widget.placeholder,
+          trailing: IconButton(
+            icon: const Icon(Icons.send_ionic),
+            onPressed: () => state.send(state.chatBoxController.text),
+          ),
+        ));
+  }
 }
 
 class ChatMessageView extends StatefulWidget {
@@ -291,21 +282,12 @@ class _ChatMessageViewState extends State<ChatMessageView>
     return (context.pylonOr<ChatStyle>() ?? ChatStyle.bubbles) ==
             ChatStyle.bubbles
         ? ChatMessageBubble(
-            avatar: widget.avatar,
-            sender: widget.sender,
             onPressed: widget.onPressed,
             contextMenu: widget.contextMenu,
-            avatarAlignment: widget.avatarAlignment,
-            child: widget.child,
           )
         : ChatMessageTile(
-            avatar: widget.avatar,
-            header: widget.header,
-            sender: widget.sender,
             onPressed: widget.onPressed,
             contextMenu: widget.contextMenu,
-            avatarAlignment: widget.avatarAlignment,
-            child: widget.child,
           );
   }
 
@@ -314,25 +296,18 @@ class _ChatMessageViewState extends State<ChatMessageView>
 }
 
 class ChatMessageTile extends StatelessWidget {
-  final Widget child;
-  final Widget? avatar;
-  final Widget? header;
-  final bool sender;
   final VoidCallback? onPressed;
   final List<MenuItem>? contextMenu;
-  final CrossAxisAlignment avatarAlignment;
-  const ChatMessageTile(
-      {super.key,
-      required this.child,
-      this.header,
-      this.avatar,
-      this.onPressed,
-      this.contextMenu,
-      this.avatarAlignment = CrossAxisAlignment.start,
-      this.sender = false});
+
+  const ChatMessageTile({super.key, this.onPressed, this.contextMenu});
 
   @override
   Widget build(BuildContext context) {
+    ChatScreenState state = context.pylon<ChatScreenState>();
+    AbstractChatMessage message = context.pylon<AbstractChatMessage>();
+    Widget avatar = state.buildUserAvatar(message.senderId);
+    Widget header = state.buildUserHeader(message.senderId);
+    Widget child = message.messageWidget;
     return ContextMenu(
         enabled: contextMenu != null && contextMenu!.isNotEmpty,
         items: contextMenu ?? const [],
@@ -340,12 +315,10 @@ class ChatMessageTile extends StatelessWidget {
             onPressed: onPressed,
             child: Row(
               mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: state.widget.avatarAlignment,
               children: [
                 Gap(8),
-                if (avatar != null) ...[
-                  avatar!.padOnly(top: 8, bottom: 8),
-                  Gap(8)
-                ],
+                avatar.padOnly(top: 8, bottom: 8),
                 Gap(8),
                 Flexible(
                     child: Basic(
@@ -362,57 +335,51 @@ class ChatMessageTile extends StatelessWidget {
 }
 
 class ChatMessageBubble extends StatelessWidget {
-  final Widget child;
-  final Widget? avatar;
-  final bool sender;
   final VoidCallback? onPressed;
   final List<MenuItem>? contextMenu;
-  final CrossAxisAlignment avatarAlignment;
-  const ChatMessageBubble(
-      {super.key,
-      required this.child,
-      this.avatar,
-      this.onPressed,
-      this.contextMenu,
-      this.avatarAlignment = CrossAxisAlignment.start,
-      this.sender = false});
+  const ChatMessageBubble({super.key, this.onPressed, this.contextMenu});
 
   @override
-  Widget build(BuildContext context) => ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.65,
-          ),
-          child: Row(
-            crossAxisAlignment: avatarAlignment,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (!sender && avatar != null) ...[
-                avatar!.padOnly(top: 8, bottom: 8),
-                Gap(8)
+  Widget build(BuildContext context) {
+    ChatScreenState state = context.pylon<ChatScreenState>();
+    AbstractChatMessage message = context.pylon<AbstractChatMessage>();
+    Widget avatar = state.buildUserAvatar(message.senderId);
+    Widget child = message.messageWidget;
+    bool sender = message.senderId == state.widget.sender;
+
+    return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.65,
+            ),
+            child: Row(
+              crossAxisAlignment: state.widget.avatarAlignment,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!sender) ...[avatar.padOnly(top: 8, bottom: 8), Gap(8)],
+                Flexible(
+                    child: ContextMenu(
+                        enabled: contextMenu != null && contextMenu!.isNotEmpty,
+                        items: contextMenu ?? const [],
+                        child: Card(
+                          onPressed: onPressed,
+                          borderWidth: 0,
+                          borderColor: Colors.transparent,
+                          padding: const EdgeInsets.all(8),
+                          filled: true,
+                          fillColor: sender
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                          child: sender ? child.primaryForeground() : child,
+                        ))),
+                if (sender) ...[
+                  Gap(8),
+                  avatar.padOnly(top: 8, bottom: 8),
+                ],
               ],
-              Flexible(
-                  child: ContextMenu(
-                      enabled: contextMenu != null && contextMenu!.isNotEmpty,
-                      items: contextMenu ?? const [],
-                      child: Card(
-                        onPressed: onPressed,
-                        borderWidth: 0,
-                        borderColor: Colors.transparent,
-                        padding: const EdgeInsets.all(8),
-                        filled: true,
-                        fillColor: sender
-                            ? Theme.of(context).colorScheme.primary
-                            : null,
-                        child: sender ? child.primaryForeground() : child,
-                      ))),
-              if (sender && avatar != null) ...[
-                Gap(8),
-                avatar!.padOnly(top: 8, bottom: 8),
-              ],
-            ],
-          ).iw)
-      .withAlign(sender ? Alignment.centerRight : Alignment.centerLeft)
-      .pad(8);
+            ).iw)
+        .withAlign(sender ? Alignment.centerRight : Alignment.centerLeft)
+        .pad(8);
+  }
 }
 
 class ChatDivider extends StatelessWidget {
