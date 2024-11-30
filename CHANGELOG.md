@@ -1,3 +1,8 @@
+## 3.3.5
+* Added the spin property to themes for hue spinning
+* Added the contrast property for themes to color filter themes
+* Added color filtering utilities for ColorSchemes
+
 ## 3.3.4
 * Chat Screens support grouping, timestamps & fixed text styles / avatar alignment
 

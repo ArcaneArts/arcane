@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
@@ -33,8 +32,6 @@ class ContrastedColorScheme {
         dark: dark.filterColors(filter),
       );
 }
-
-
 
 extension XWidgetEffect on Widget {
   Widget get blurIn => animate()
@@ -72,9 +69,13 @@ class ArcaneTheme extends AbstractArcaneTheme {
   final double surfaceOpacity;
   final double surfaceBlur;
   final double scaling;
+  final double contrast;
+  final double spin;
 
   const ArcaneTheme({
     this.scheme,
+    this.contrast = 0.0,
+    this.spin = 0.0,
     this.scaling = 1.0,
     this.radius = 0.4,
     this.surfaceOpacity = 0.66,
@@ -88,7 +89,9 @@ class ArcaneTheme extends AbstractArcaneTheme {
                 ContrastedColorScheme(
                     light: ColorSchemes.lightZinc(),
                     dark: ColorSchemes.darkZinc()))
-            .scheme(brightness),
+            .scheme(brightness)
+            .spin(spin)
+            .contrast(contrast),
         radius: radius,
         scaling: scaling,
         surfaceOpacity: surfaceOpacity,
