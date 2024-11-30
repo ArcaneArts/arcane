@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 
 enum ChatStyle {
   tiles,
@@ -21,12 +22,60 @@ abstract class AbstractChatMessage {
   String get id;
 }
 
+class ChatMessageGroup implements AbstractChatMessage {
+  final ChatScreenState state;
+  final List<AbstractChatMessage> messages;
+
+  const ChatMessageGroup(this.messages, this.state);
+
+  @override
+  String get id => "group.${messages.map((e) => e.id).join(",")}";
+
+  @override
+  Widget get messageWidget => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: messages
+            .map((e) => ContextMenu(
+                  items:
+                      state.widget.onMessageMenu?.call(e).toList() ?? const [],
+                  enabled: state.widget.onMessageMenu != null &&
+                      state.widget.onMessageMenu!(e).isNotEmpty,
+                  child: Clickable(
+                      onPressed: state.widget.onMessageTap != null
+                          ? () => state.widget.onMessageTap!(e)
+                          : null,
+                      child: e.messageWidget),
+                ))
+            .toList(),
+      );
+
+  @override
+  String get senderId => messages.last.senderId;
+
+  DateTime get startTimestamp => messages.first.timestamp;
+
+  @override
+  DateTime get timestamp => messages.last.timestamp;
+}
+
 abstract class ChatProvider {
   Stream<List<AbstractChatMessage>> streamLastMessages();
 
   Future<AbstractChatUser> getUser(String id);
 
   Future<void> sendMessage(String message);
+}
+
+String _formatTime(DateTime at) {
+  Jiffy j = Jiffy.parseFromDateTime(at);
+  Jiffy now = Jiffy.now();
+
+  if (j.diff(now, unit: Unit.hour) < 24) {
+    return j.fromNow(withPrefixAndSuffix: true);
+  }
+
+  return j.yMMMMEEEEdjm;
 }
 
 class ChatScreen extends StatefulWidget {
@@ -42,10 +91,13 @@ class ChatScreen extends StatefulWidget {
   final int? maxMessageLength;
   final Iterable<MenuItem> Function(AbstractChatMessage message)? onMessageMenu;
   final ValueChanged<AbstractChatMessage>? onMessageTap;
+  final String Function(DateTime) messageTimeFormatter;
+  final Duration messageGroupDistance;
 
   const ChatScreen(
       {super.key,
       this.fab,
+      this.messageGroupDistance = const Duration(minutes: 5),
       this.maxMessageLength,
       this.gutter = false,
       this.header,
@@ -55,6 +107,7 @@ class ChatScreen extends StatefulWidget {
       this.style = ChatStyle.bubbles,
       this.onMessageMenu,
       this.onMessageTap,
+      this.messageTimeFormatter = _formatTime,
       required this.provider,
       required this.sender});
 
@@ -94,42 +147,75 @@ class ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  void updateMessageBuffer(List<AbstractChatMessage> messages) {
-    String lastAddedId =
-        messageBuffer.value.isNotEmpty ? messageBuffer.value.last.id : "";
-    Map<String, AbstractChatMessage> messageMap = {};
-    for (var message in messageBuffer.value) {
-      messageMap[message.id] = message;
-    }
-
+  List<ChatMessageGroup> groupMessages(
+      List<AbstractChatMessage> messages, Duration maxDistance) {
+    List<List<AbstractChatMessage>> groups = [];
+    List<AbstractChatMessage> group = [];
+    AbstractChatMessage? lastMessage;
     for (var message in messages) {
-      messageMap[message.id] = message;
-    }
-
-    messageBuffer.add(
-        messageMap.values.sorted((a, b) => a.timestamp.compareTo(b.timestamp)));
-
-    String lia =
-        messageBuffer.value.isNotEmpty ? messageBuffer.value.last.id : "";
-
-    if (lastAddedId != lia) {
-      bool self = messageBuffer.value.last.senderId == widget.sender;
-      bool mostlyDown = scrollController.position.maxScrollExtent -
-              scrollController.position.pixels <
-          250;
-
-      if (mostlyDown || self) {
-        Future.delayed(16.ms, () async {
-          int g = 5;
-          while (g-- > 0 &&
-              scrollController.position.pixels <
-                  scrollController.position.maxScrollExtent) {
-            scrollController.jumpTo(scrollController.position.maxScrollExtent);
-            await Future.delayed(Duration(milliseconds: 16));
-          }
-        });
+      if (lastMessage == null) {
+        group.add(message);
+        lastMessage = message;
+        continue;
       }
+
+      if (message.timestamp.difference(lastMessage.timestamp).abs() >
+              maxDistance ||
+          lastMessage.senderId != message.senderId) {
+        groups.add(group);
+        group = [];
+      }
+
+      group.add(message);
+      lastMessage = message;
     }
+
+    if (group.isNotEmpty) {
+      groups.add(group);
+    }
+
+    return groups.map((e) => ChatMessageGroup(e, this)).toList();
+  }
+
+  void updateMessageBuffer(List<AbstractChatMessage> messages) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String lastAddedId =
+          messageBuffer.value.isNotEmpty ? messageBuffer.value.last.id : "";
+      Map<String, AbstractChatMessage> messageMap = {};
+      for (var message in messageBuffer.value) {
+        messageMap[message.id] = message;
+      }
+
+      for (var message in messages) {
+        messageMap[message.id] = message;
+      }
+
+      messageBuffer.add(messageMap.values
+          .sorted((a, b) => a.timestamp.compareTo(b.timestamp)));
+
+      String lia =
+          messageBuffer.value.isNotEmpty ? messageBuffer.value.last.id : "";
+
+      if (lastAddedId != lia) {
+        bool self = messageBuffer.value.last.senderId == widget.sender;
+        bool mostlyDown = scrollController.position.maxScrollExtent -
+                scrollController.position.pixels <
+            250;
+
+        if (mostlyDown || self) {
+          Future.delayed(16.ms, () async {
+            int g = 5;
+            while (g-- > 0 &&
+                scrollController.position.pixels <
+                    scrollController.position.maxScrollExtent) {
+              scrollController
+                  .jumpTo(scrollController.position.maxScrollExtent);
+              await Future.delayed(Duration(milliseconds: 16));
+            }
+          });
+        }
+      }
+    });
   }
 
   Future<AbstractChatUser> getUser(String id) async {
@@ -142,15 +228,30 @@ class ChatScreenState extends State<ChatScreen> {
     return user;
   }
 
-  Widget buildUserAvatar(String id) => FutureBuilder<AbstractChatUser>(
-      future: getUser(id),
-      builder: (context, snap) =>
-          snap.hasData ? snap.data!.avatar : const SizedBox.shrink());
+  Widget buildUserAvatar(BuildContext context, String id) =>
+      FutureBuilder<AbstractChatUser>(
+          future: getUser(id),
+          builder: (context, snap) =>
+              snap.hasData ? snap.data!.avatar : const SizedBox.shrink());
 
-  Widget buildUserHeader(String id) => FutureBuilder<AbstractChatUser>(
-      future: getUser(id),
-      builder: (context, snap) =>
-          snap.hasData ? Text(snap.data!.name) : const SizedBox.shrink());
+  Widget buildUserHeader(BuildContext context, String id) =>
+      FutureBuilder<AbstractChatUser>(
+          future: getUser(id),
+          builder: (context, snap) => snap.hasData
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(snap.data!.name),
+                    Gap(8),
+                    Text(widget.messageTimeFormatter(
+                            context.pylon<AbstractChatMessage>().timestamp))
+                        .xSmall()
+                        .muted()
+                        .light()
+                  ],
+                )
+              : const SizedBox.shrink());
 
   GlobalKey getMessageKey(String id) {
     if (messageKeys.containsKey(id)) {
@@ -168,8 +269,14 @@ class ChatScreenState extends State<ChatScreen> {
           local: true,
           builder: (context) => Stack(
                 children: [
-                  Visibility(visible: false, child: ChatMessageView()),
-                  ChatMessageView()
+                  Visibility(
+                      visible: false,
+                      child: ChatMessageView(
+                        key: ValueKey("spc.${message.id}"),
+                      )),
+                  ChatMessageView(
+                    key: ValueKey(message.id),
+                  )
                       .animate(
                         key: getMessageKey(message.id),
                         delay: 50.ms,
@@ -209,12 +316,15 @@ class ChatScreenState extends State<ChatScreen> {
             footer: const ChatBox(
               key: ValueKey("ChatBox"),
             ),
-            sliver: messageBuffer.buildNullable((messages) => SListView.builder(
-                  addAutomaticKeepAlives: true,
-                  childCount: messages?.length ?? 0,
-                  builder: (context, index) =>
-                      buildMessage(context, messages![index]),
-                ))),
+            sliver: messageBuffer
+                .map((messages) =>
+                    groupMessages(messages, widget.messageGroupDistance))
+                .buildNullable((messages) => SListView.builder(
+                      addAutomaticKeepAlives: true,
+                      childCount: messages?.length ?? 0,
+                      builder: (context, index) =>
+                          buildMessage(context, messages![index]),
+                    ))),
       );
 }
 
@@ -276,8 +386,8 @@ class ChatMessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatScreenState state = context.pylon<ChatScreenState>();
     AbstractChatMessage message = context.pylon<AbstractChatMessage>();
-    Widget avatar = state.buildUserAvatar(message.senderId);
-    Widget header = state.buildUserHeader(message.senderId);
+    Widget avatar = state.buildUserAvatar(context, message.senderId);
+    Widget header = state.buildUserHeader(context, message.senderId);
     Widget child = message.messageWidget;
     List<MenuItem>? contextMenu =
         state.widget.onMessageMenu?.call(message).toList();
@@ -285,10 +395,14 @@ class ChatMessageTile extends StatelessWidget {
     ValueChanged<AbstractChatMessage>? onPressed = state.widget.onMessageTap;
 
     return ContextMenu(
-        enabled: contextMenu != null && contextMenu!.isNotEmpty,
+        enabled: message is! ChatMessageGroup &&
+            contextMenu != null &&
+            contextMenu!.isNotEmpty,
         items: contextMenu ?? const [],
         child: Clickable(
-            onPressed: onPressed != null ? () => onPressed(message) : null,
+            onPressed: message is! ChatMessageGroup && onPressed != null
+                ? () => onPressed(message)
+                : null,
             child: Row(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: state.widget.avatarAlignment,
@@ -297,9 +411,10 @@ class ChatMessageTile extends StatelessWidget {
                 avatar.padOnly(top: 8, bottom: 8),
                 Gap(8),
                 Flexible(
-                    child: Basic(
-                  title: header,
-                  subtitle: child,
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [header.xSmall(), child.small().msgMuted()],
                 )),
                 Gap(8),
               ],
@@ -310,6 +425,23 @@ class ChatMessageTile extends StatelessWidget {
   }
 }
 
+extension _MsgXT on Widget {
+  Widget msgMuted() {
+    return Builder(
+      builder: (context) {
+        final themeData = Theme.of(context);
+        return DefaultTextStyle.merge(
+          child: this,
+          style: TextStyle(
+            color: Color.lerp(themeData.colorScheme.mutedForeground,
+                themeData.colorScheme.foreground, 0.3),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class ChatMessageBubble extends StatelessWidget {
   const ChatMessageBubble({super.key});
 
@@ -317,7 +449,7 @@ class ChatMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatScreenState state = context.pylon<ChatScreenState>();
     AbstractChatMessage message = context.pylon<AbstractChatMessage>();
-    Widget avatar = state.buildUserAvatar(message.senderId);
+    Widget avatar = state.buildUserAvatar(context, message.senderId);
     Widget child = message.messageWidget;
     bool sender = message.senderId == state.widget.sender;
     List<MenuItem>? contextMenu =
@@ -336,12 +468,15 @@ class ChatMessageBubble extends StatelessWidget {
                 if (!sender) ...[avatar.padOnly(top: 8, bottom: 8), Gap(8)],
                 Flexible(
                     child: ContextMenu(
-                        enabled: contextMenu != null && contextMenu.isNotEmpty,
+                        enabled: message is! ChatMessageGroup &&
+                            contextMenu != null &&
+                            contextMenu.isNotEmpty,
                         items: contextMenu ?? const [],
                         child: Card(
-                          onPressed: onPressed != null
-                              ? () => onPressed(message)
-                              : null,
+                          onPressed:
+                              message is! ChatMessageGroup && onPressed != null
+                                  ? () => onPressed(message)
+                                  : null,
                           borderWidth: 0,
                           borderColor: Colors.transparent,
                           padding: const EdgeInsets.all(8),
