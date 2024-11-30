@@ -56,9 +56,11 @@ class ArcaneTheme extends AbstractArcaneTheme {
   final ContrastedColorScheme? scheme;
   final double surfaceOpacity;
   final double surfaceBlur;
+  final double scaling;
 
   const ArcaneTheme({
     this.scheme,
+    this.scaling = 1.0,
     this.radius = 0.4,
     this.surfaceOpacity = 0.66,
     this.surfaceBlur = 18,
@@ -73,6 +75,7 @@ class ArcaneTheme extends AbstractArcaneTheme {
                     dark: ColorSchemes.darkZinc()))
             .scheme(brightness),
         radius: radius,
+        scaling: scaling,
         surfaceOpacity: surfaceOpacity,
         surfaceBlur: surfaceBlur,
       );

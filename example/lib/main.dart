@@ -16,6 +16,11 @@ class ExampleArcaneApp extends StatelessWidget {
   Widget build(BuildContext context) => ArcaneApp(
         home: ExampleNavigationScreen(),
         theme: ArcaneTheme(
+            scaling: 1.0,
+            surfaceOpacity: 0.5,
+            surfaceBlur: 0.5,
+            radius: 0.4,
+            themeMode: ThemeMode.system,
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc)),
       );
 }
