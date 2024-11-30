@@ -48,6 +48,8 @@ class _ThemePageState extends State<ThemePage> {
   late double scaling;
   late double surfaceOpacity;
   late double surfaceBlur;
+  late double spin;
+  late double contrast;
   late ColorScheme colorScheme;
   bool customColorScheme = false;
   bool applyDirectly = true;
@@ -58,12 +60,16 @@ class _ThemePageState extends State<ThemePage> {
   final OnThisPage scalingKey = OnThisPage();
   final OnThisPage surfaceOpacityKey = OnThisPage();
   final OnThisPage surfaceBlurKey = OnThisPage();
+  final OnThisPage contrastKey = OnThisPage();
+  final OnThisPage spinKey = OnThisPage();
   final OnThisPage codeKey = OnThisPage();
 
   @override
   void initState() {
     super.initState();
     colors = ColorSchemes.darkZinc().toColorMap();
+    spin = 0;
+    contrast = 0;
   }
 
   @override
@@ -91,6 +97,8 @@ class _ThemePageState extends State<ThemePage> {
         'Scaling': scalingKey,
         'Surface opacity': surfaceOpacityKey,
         'Surface blur': surfaceBlurKey,
+        'Spin': spinKey,
+        'Contrast': contrastKey,
         'Code': codeKey,
       },
       child: Column(
@@ -131,7 +139,7 @@ class _ThemePageState extends State<ThemePage> {
             children:
                 colorSchemes.keys.map(buildPremadeColorSchemeButton).toList(),
           ).p(),
-          const Text('Radius').h2().anchored(radiusKey),
+          Text('Radius').h2().anchored(radiusKey),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -140,20 +148,33 @@ class _ThemePageState extends State<ThemePage> {
                       'You can customize how rounded your app looks by changing the radius.')),
             ],
           ).p(),
-          Slider(
-            value: SliderValue.single(radius),
-            onChanged: (value) {
-              setState(() {
-                radius = value.value;
-                if (applyDirectly) {
-                  state.changeRadius(radius);
-                }
-              });
-            },
-            min: 0,
-            max: 2,
-            divisions: 20,
-          ).p(),
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    radius = 0.4;
+                    if (applyDirectly) {
+                      state.changeRadius(radius);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(radius),
+                onChanged: (value) {
+                  setState(() {
+                    radius = value.value;
+                    if (applyDirectly) {
+                      state.changeRadius(radius);
+                    }
+                  });
+                },
+                min: 0,
+                max: 2,
+                divisions: 20,
+              ).p()),
           const Text('Scaling').h2().anchored(scalingKey),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,20 +184,33 @@ class _ThemePageState extends State<ThemePage> {
                       'You can customize the scale of shadcn_flutter components by changing the scaling.')),
             ],
           ).p(),
-          Slider(
-            value: SliderValue.single(scaling),
-            onChanged: (value) {
-              setState(() {
-                scaling = value.value;
-                if (applyDirectly) {
-                  state.changeScaling(scaling);
-                }
-              });
-            },
-            min: 0.5,
-            max: 1.5,
-            divisions: 20,
-          ).p(),
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    scaling = 1.0;
+                    if (applyDirectly) {
+                      state.changeScaling(scaling);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(scaling),
+                onChanged: (value) {
+                  setState(() {
+                    scaling = value.value;
+                    if (applyDirectly) {
+                      state.changeScaling(scaling);
+                    }
+                  });
+                },
+                min: 0.5,
+                max: 1.5,
+                divisions: 20,
+              ).p()),
           const Gap(16),
           const Alert(
             leading: Icon(RadixIcons.infoCircled),
@@ -192,20 +226,33 @@ class _ThemePageState extends State<ThemePage> {
                       'You can customize the opacity of the surface by changing the surface opacity.')),
             ],
           ).p(),
-          Slider(
-            value: SliderValue.single(surfaceOpacity),
-            onChanged: (value) {
-              setState(() {
-                surfaceOpacity = value.value;
-                if (applyDirectly) {
-                  state.changeSurfaceOpacity(surfaceOpacity);
-                }
-              });
-            },
-            min: 0,
-            max: 1,
-            divisions: 100,
-          ).p(),
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    surfaceOpacity = 0.66;
+                    if (applyDirectly) {
+                      state.changeSurfaceOpacity(surfaceOpacity);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(surfaceOpacity),
+                onChanged: (value) {
+                  setState(() {
+                    surfaceOpacity = value.value;
+                    if (applyDirectly) {
+                      state.changeSurfaceOpacity(surfaceOpacity);
+                    }
+                  });
+                },
+                min: 0,
+                max: 1,
+                divisions: 100,
+              ).p()),
           const Text('Surface blur').h2().anchored(surfaceBlurKey),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,20 +262,107 @@ class _ThemePageState extends State<ThemePage> {
                       'You can customize the blur of the surface by changing the surface blur.')),
             ],
           ).p(),
-          Slider(
-            value: SliderValue.single(surfaceBlur),
-            onChanged: (value) {
-              setState(() {
-                surfaceBlur = value.value;
-                if (applyDirectly) {
-                  state.changeSurfaceBlur(surfaceBlur);
-                }
-              });
-            },
-            min: 0,
-            max: 36,
-            divisions: 36,
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    surfaceBlur = 18;
+                    if (applyDirectly) {
+                      state.changeSurfaceBlur(surfaceBlur);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(surfaceBlur),
+                onChanged: (value) {
+                  setState(() {
+                    surfaceBlur = value.value;
+                    if (applyDirectly) {
+                      state.changeSurfaceBlur(surfaceBlur);
+                    }
+                  });
+                },
+                min: 0,
+                max: 36,
+                divisions: 36,
+              ).p()),
+
+          const Text('Spin').h2().anchored(spinKey),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can spin the hue of the entire color scheme in degrees')),
+            ],
           ).p(),
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    spin = 0;
+                    if (applyDirectly) {
+                      state.changeSpin(spin);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(spin),
+                onChanged: (value) {
+                  setState(() {
+                    spin = value.value;
+                    if (applyDirectly) {
+                      state.changeSpin(spin);
+                    }
+                  });
+                },
+                max: 360,
+                divisions: 360,
+              ).p()),
+
+          const Text('Contrast').h2().anchored(contrastKey),
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                      'You can change the contrast of the entire color scheme. -10 to 10')),
+            ],
+          ).p(),
+          ContextMenu(
+              items: [
+                MenuButton(
+                  leading: Icon(Icons.refresh_rounded),
+                  onPressed: (_) => setState(() {
+                    contrast = 0;
+                    if (applyDirectly) {
+                      state.changeContrast(contrast);
+                    }
+                  }),
+                  child: Text("Reset"),
+                )
+              ],
+              child: Slider(
+                value: SliderValue.single(contrast + 10),
+                onChanged: (value) {
+                  value = SliderValue.single(value.value - 10.0);
+                  setState(() {
+                    contrast = value.value;
+                    if (applyDirectly) {
+                      state.changeContrast(contrast);
+                    }
+                  });
+                },
+                min: 0,
+                max: 20,
+                divisions: 200,
+              ).p()),
 
           const Text('Code').h2().anchored(codeKey),
           const Text('Use the following code to apply the color scheme.').p(),
@@ -243,47 +377,60 @@ class _ThemePageState extends State<ThemePage> {
 
   String buildCustomCode() {
     bool isDark = colorScheme.background.computeLuminance() < 0.5;
-    String buffer = 'ShadcnApp(';
-    buffer += '\n...';
-    buffer += '\n\ttheme: ThemeData(';
-    buffer += '\n\t\tcolorScheme: ColorScheme(';
-    buffer +=
-        '\n\t\t\tbrightness: ${isDark ? 'Brightness.dark' : 'Brightness.light'},';
+    StringBuffer buffer = StringBuffer("ArcaneApp(\n");
+    buffer.writeln("\t...");
+    buffer.writeln("\ttheme: ArcaneTheme(");
+    buffer.writeln("\t\tthemeMode: ThemeMode.${isDark ? "dark" : "light"},");
+    buffer.writeln("\t\tscheme: ContrastedColorScheme(");
+    buffer.writeln("\t\t\t${isDark ? "dark" : "light"}: ColorScheme(");
+    buffer.writeln(
+        "\t\t\t\tbrightness: ${isDark ? "Brightness.dark" : "Brightness.light"},");
     for (var key in colors.keys) {
       String hex = colors[key]!.value.toRadixString(16);
-      buffer += '\n\t\t\t$key: Color(0x$hex),';
+      buffer.writeln("\t\t\t\t$key: Color(0x$hex),");
     }
-    buffer += '\n\t\t),';
-    buffer += '\n\t\tradius: $radius,';
-    buffer += '\n\t),';
-    if (scaling != 1) {
-      buffer += '\n\tscaling: const AdaptiveScaling($scaling),';
+    buffer.writeln("\t\t\t),");
+    buffer.writeln("\t\t\t${isDark ? "light" : "dark"}: ColorScheme(");
+    buffer.writeln(
+        "\t\t\t\tbrightness: ${isDark ? "Brightness.light" : "Brightness.dark"},");
+    buffer
+        .writeln("\t\t\t//TODO: Add ${isDark ? "light" : "dark"} scheme here");
+    buffer.writeln("\t\t\t),");
+    buffer.writeln("\t\t),");
+
+    if (surfaceBlur != 18) {
+      buffer.writeln("\t\tsurfaceBlur: $surfaceBlur,");
     }
-    if (surfaceOpacity != 1) {
-      buffer += '\n\tsurfaceOpacity: $surfaceOpacity,';
+
+    if (spin != 0) {
+      buffer.writeln("\t\tspin: $spin,");
     }
-    if (surfaceBlur != 0) {
-      buffer += '\n\tsurfaceBlur: $surfaceBlur,';
+
+    if (contrast != 0) {
+      buffer.writeln("\t\tcontrast: $contrast,");
     }
-    buffer += '\n...';
-    buffer += '\n)';
-    return buffer;
+
+    if (surfaceOpacity != 0.66) {
+      buffer.writeln("\t\tsurfaceOpacity: $surfaceOpacity,");
+    }
+
+    if (radius != 0.4) {
+      buffer.writeln("\t\tradius: $radius,");
+    }
+
+    if (scaling != 1.0) {
+      buffer.writeln("\t\tscaling: $scaling,");
+    }
+
+    buffer.writeln("\t)");
+    buffer.writeln(")");
+    return buffer.toString();
   }
 
   String buildPremadeCode() {
     // return 'ColorSchemes.${nameFromColorScheme(colorScheme)}()';
     String name = nameFromColorScheme(colorScheme)!;
     StringBuffer buffer = StringBuffer("ArcaneApp(\n");
-
-    // ArcaneApp(
-    //   home: ExampleNavigationScreen(),
-    //   theme: ArcaneTheme(
-    //       surfaceOpacity: 0.5,
-    //       surfaceBlur: 0.5,
-    //       radius: 0.5,
-    //       themeMode: ThemeMode.system,
-    //       scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc)),
-    // );
 
     buffer.writeln("\t...");
     buffer.writeln("\ttheme: ArcaneTheme(");
@@ -296,6 +443,14 @@ class _ThemePageState extends State<ThemePage> {
 
     if (surfaceBlur != 18) {
       buffer.writeln("\t\tsurfaceBlur: $surfaceBlur,");
+    }
+
+    if (spin != 0) {
+      buffer.writeln("\t\tspin: $spin,");
+    }
+
+    if (contrast != 0) {
+      buffer.writeln("\t\tcontrast: $contrast,");
     }
 
     if (surfaceOpacity != 0.66) {

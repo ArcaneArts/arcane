@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
@@ -19,7 +20,21 @@ class ContrastedColorScheme {
 
   ColorScheme scheme(Brightness brightness) =>
       brightness == Brightness.light ? light : dark;
+
+  ContrastedColorScheme spin(double degrees) => ContrastedColorScheme(
+        light: light.spin(degrees),
+        dark: dark.spin(degrees),
+      );
+
+  ContrastedColorScheme filterColors(
+          Map<String, Color> Function(Map<String, Color>) filter) =>
+      ContrastedColorScheme(
+        light: light.filterColors(filter),
+        dark: dark.filterColors(filter),
+      );
 }
+
+
 
 extension XWidgetEffect on Widget {
   Widget get blurIn => animate()

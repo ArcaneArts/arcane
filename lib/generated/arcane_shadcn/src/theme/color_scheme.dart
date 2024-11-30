@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
@@ -384,6 +385,37 @@ class ColorScheme implements ChartColorScheme {
                 .firstOrNull ??
             Brightness.light;
 
+  /// Apply a filter over all colors
+  ColorScheme filterColors(
+      Map<String, Color> Function(Map<String, Color>) filter) {
+    Map<String, Color> colors = toColorMap();
+    Map<String, Color> newColors = filter(colors);
+
+    for (String key in colors.keys) {
+      colors[key] = (newColors[key] ?? colors[key])!;
+    }
+
+    return ColorScheme.fromMap({
+      ...toMap(),
+      ...colors.map((k, v) => MapEntry(k, hexFromColor(v))),
+    });
+  }
+
+  /// Apply a contrast filter to the color scheme
+  /// Valid range is -10 to 10, where 0 is no change and 10 is maximum contrast, -10 is inverted luminance maximum contrast
+  ColorScheme contrast(double contrast) {
+    return filterColors(
+        (colors) => colorSchemeContrastFilter(colors, contrast));
+  }
+
+  /// Spin the color scheme hue by the given degrees
+  ColorScheme spin(double degrees) =>
+      filterColors((colors) => colors.map((k, v) {
+            HSLColor hsl = HSLColor.fromColor(v);
+            hsl = hsl.withHue((hsl.hue + degrees) % 360);
+            return MapEntry(k, hsl.toColor());
+          }));
+
   Map<String, String> toMap() {
     return {
       'background': hexFromColor(background),
@@ -650,4 +682,39 @@ extension _DynamicMapColorGetter on Map<String, dynamic> {
     assert(parse != null, 'ColorScheme: Invalid hex color value $value');
     return Color(parse!);
   }
+}
+
+Map<String, Color> colorSchemeContrastFilter(
+    Map<String, Color> colors, double contrast) {
+  Map<String, Color> newColors = {};
+  List<double> lightnesses = [];
+
+  for (String key in colors.keys) {
+    HSLColor hsl = HSLColor.fromColor(colors[key]!);
+    lightnesses.add(hsl.lightness);
+  }
+
+  double avgLightness =
+      lightnesses.reduce((a, b) => a + b) / lightnesses.length;
+  double stdDev = sqrt(
+      lightnesses.map((l) => pow(l - avgLightness, 2)).reduce((a, b) => a + b) /
+          lightnesses.length);
+
+  for (String key in colors.keys) {
+    HSLColor hsl = HSLColor.fromColor(colors[key]!);
+    double distanceFromMean =
+        (hsl.lightness - avgLightness) / max(stdDev, 0.001);
+    double newLightness = hsl.lightness + (distanceFromMean * contrast * 0.1);
+    newLightness = newLightness.clamp(0.0, 1.0);
+    HSLColor newHsl = HSLColor.fromAHSL(
+      hsl.alpha,
+      hsl.hue,
+      hsl.saturation,
+      newLightness,
+    );
+
+    newColors[key] = newHsl.toColor();
+  }
+
+  return newColors;
 }
