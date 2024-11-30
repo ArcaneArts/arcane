@@ -40,6 +40,8 @@ class ChatScreen extends StatefulWidget {
   final Widget? fab;
   final CrossAxisAlignment avatarAlignment;
   final int? maxMessageLength;
+  final Iterable<MenuItem> Function(AbstractChatMessage message)? onMessageMenu;
+  final ValueChanged<AbstractChatMessage>? onMessageTap;
 
   const ChatScreen(
       {super.key,
@@ -51,6 +53,8 @@ class ChatScreen extends StatefulWidget {
       this.placeholder = "Send a message",
       this.streamBuffer,
       this.style = ChatStyle.bubbles,
+      this.onMessageMenu,
+      this.onMessageTap,
       required this.provider,
       required this.sender});
 
@@ -164,16 +168,8 @@ class ChatScreenState extends State<ChatScreen> {
           local: true,
           builder: (context) => Stack(
                 children: [
-                  Visibility(
-                      visible: false,
-                      child: ChatMessageView(
-                        sender: message.senderId == widget.sender,
-                        child: message.messageWidget,
-                      )),
-                  ChatMessageView(
-                    sender: message.senderId == widget.sender,
-                    child: message.messageWidget,
-                  )
+                  Visibility(visible: false, child: ChatMessageView()),
+                  ChatMessageView()
                       .animate(
                         key: getMessageKey(message.id),
                         delay: 50.ms,
@@ -252,23 +248,7 @@ class ChatBox extends StatelessWidget {
 }
 
 class ChatMessageView extends StatefulWidget {
-  final Widget child;
-  final Widget? avatar;
-  final Widget? header;
-  final bool sender;
-  final VoidCallback? onPressed;
-  final List<MenuItem>? contextMenu;
-  final CrossAxisAlignment avatarAlignment;
-
-  const ChatMessageView(
-      {super.key,
-      required this.child,
-      this.header,
-      this.avatar,
-      this.onPressed,
-      this.contextMenu,
-      this.avatarAlignment = CrossAxisAlignment.start,
-      this.sender = false});
+  const ChatMessageView({super.key});
 
   @override
   State<ChatMessageView> createState() => _ChatMessageViewState();
@@ -281,14 +261,8 @@ class _ChatMessageViewState extends State<ChatMessageView>
     super.build(context);
     return (context.pylonOr<ChatStyle>() ?? ChatStyle.bubbles) ==
             ChatStyle.bubbles
-        ? ChatMessageBubble(
-            onPressed: widget.onPressed,
-            contextMenu: widget.contextMenu,
-          )
-        : ChatMessageTile(
-            onPressed: widget.onPressed,
-            contextMenu: widget.contextMenu,
-          );
+        ? ChatMessageBubble()
+        : ChatMessageTile();
   }
 
   @override
@@ -296,10 +270,7 @@ class _ChatMessageViewState extends State<ChatMessageView>
 }
 
 class ChatMessageTile extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final List<MenuItem>? contextMenu;
-
-  const ChatMessageTile({super.key, this.onPressed, this.contextMenu});
+  const ChatMessageTile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -308,11 +279,16 @@ class ChatMessageTile extends StatelessWidget {
     Widget avatar = state.buildUserAvatar(message.senderId);
     Widget header = state.buildUserHeader(message.senderId);
     Widget child = message.messageWidget;
+    List<MenuItem>? contextMenu =
+        state.widget.onMessageMenu?.call(message).toList();
+    contextMenu = (contextMenu?.isEmpty ?? true) ? null : contextMenu;
+    ValueChanged<AbstractChatMessage>? onPressed = state.widget.onMessageTap;
+
     return ContextMenu(
         enabled: contextMenu != null && contextMenu!.isNotEmpty,
         items: contextMenu ?? const [],
         child: Clickable(
-            onPressed: onPressed,
+            onPressed: onPressed != null ? () => onPressed(message) : null,
             child: Row(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: state.widget.avatarAlignment,
@@ -335,9 +311,7 @@ class ChatMessageTile extends StatelessWidget {
 }
 
 class ChatMessageBubble extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final List<MenuItem>? contextMenu;
-  const ChatMessageBubble({super.key, this.onPressed, this.contextMenu});
+  const ChatMessageBubble({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -346,6 +320,10 @@ class ChatMessageBubble extends StatelessWidget {
     Widget avatar = state.buildUserAvatar(message.senderId);
     Widget child = message.messageWidget;
     bool sender = message.senderId == state.widget.sender;
+    List<MenuItem>? contextMenu =
+        state.widget.onMessageMenu?.call(message).toList();
+    contextMenu = (contextMenu?.isEmpty ?? true) ? null : contextMenu;
+    ValueChanged<AbstractChatMessage>? onPressed = state.widget.onMessageTap;
 
     return ConstrainedBox(
             constraints: BoxConstraints(
@@ -358,10 +336,12 @@ class ChatMessageBubble extends StatelessWidget {
                 if (!sender) ...[avatar.padOnly(top: 8, bottom: 8), Gap(8)],
                 Flexible(
                     child: ContextMenu(
-                        enabled: contextMenu != null && contextMenu!.isNotEmpty,
+                        enabled: contextMenu != null && contextMenu.isNotEmpty,
                         items: contextMenu ?? const [],
                         child: Card(
-                          onPressed: onPressed,
+                          onPressed: onPressed != null
+                              ? () => onPressed(message)
+                              : null,
                           borderWidth: 0,
                           borderColor: Colors.transparent,
                           padding: const EdgeInsets.all(8),
