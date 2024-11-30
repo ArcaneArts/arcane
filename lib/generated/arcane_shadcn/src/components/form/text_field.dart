@@ -53,6 +53,7 @@ class TextField extends StatefulWidget {
   final double? cursorHeight;
   final TextCapitalization textCapitalization;
   final EdgeInsets scrollPadding;
+  final EdgeInsets contentPadding;
 
   const TextField(
       {super.key,
@@ -102,6 +103,9 @@ class TextField extends StatefulWidget {
       this.leadingAlignment,
       this.trailingAlignment,
       this.statesController,
+      this.contentPadding = const EdgeInsets.symmetric(
+        vertical: 4,
+      ),
       this.scrollPadding = const EdgeInsets.all(20.0)});
 
   static Widget _defaultContextMenuBuilder(
@@ -324,8 +328,6 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                             color: theme.colorScheme.mutedForeground,
                           ),
                   isCollapsed: widget.isCollapsed,
-                  // prefixIcon: widget.leading,
-                  // suffixIcon: widget.trailing,
                   isDense: true,
                   border: material.InputBorder.none,
                   hoverColor: Colors.transparent,
@@ -334,14 +336,7 @@ class _TextFieldState extends State<TextField> with FormValueSupplier {
                   disabledBorder: material.InputBorder.none,
                   errorBorder: material.InputBorder.none,
                   focusedErrorBorder: material.InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 4,
-                  ),
-                  // contentPadding: EdgeInsets.zero
-                  // contentPadding: widget.padding ??
-                  //     EdgeInsets.symmetric(
-                  //       horizontal: 12 * scaling,
-                  //       vertical: (4 + 8) * scaling,
+                  contentPadding: widget.contentPadding,
                   //     ),
                 ),
                 cursorColor: theme.colorScheme.primary,
