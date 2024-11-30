@@ -404,17 +404,26 @@ class ColorScheme implements ChartColorScheme {
   /// Apply a contrast filter to the color scheme
   /// Valid range is -10 to 10, where 0 is no change and 10 is maximum contrast, -10 is inverted luminance maximum contrast
   ColorScheme contrast(double contrast) {
+    if (contrast == 0 || contrast.isNaN || contrast.isInfinite) {
+      return this;
+    }
+
     return filterColors(
         (colors) => colorSchemeContrastFilter(colors, contrast));
   }
 
   /// Spin the color scheme hue by the given degrees
-  ColorScheme spin(double degrees) =>
-      filterColors((colors) => colors.map((k, v) {
-            HSLColor hsl = HSLColor.fromColor(v);
-            hsl = hsl.withHue((hsl.hue + degrees) % 360);
-            return MapEntry(k, hsl.toColor());
-          }));
+  ColorScheme spin(double degrees) {
+    if (degrees == 0 || degrees.isNaN || degrees.isInfinite) {
+      return this;
+    }
+
+    return filterColors((colors) => colors.map((k, v) {
+          HSLColor hsl = HSLColor.fromColor(v);
+          hsl = hsl.withHue((hsl.hue + degrees) % 360);
+          return MapEntry(k, hsl.toColor());
+        }));
+  }
 
   Map<String, String> toMap() {
     return {
