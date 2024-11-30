@@ -1,3 +1,6 @@
+## 3.3.4
+* Chat Screens support grouping, timestamps & fixed text styles / avatar alignment
+
 ## 3.3.3
 * Expose TextField properties
 

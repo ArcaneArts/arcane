@@ -36,7 +36,7 @@ class ExampleNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) => ChatScreen(
       gutter: false,
       header: const Bar(titleText: "Chat Tiles"),
-      style: ChatStyle.tiles,
+      style: ChatStyle.bubbles,
       onMessageMenu: (message) => [
             MenuButton(child: Text("MSG ${message.id}"), onPressed: (_) {}),
           ],
