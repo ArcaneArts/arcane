@@ -38,10 +38,12 @@ class ChatScreen extends StatefulWidget {
   final Widget? header;
   final Widget? fab;
   final CrossAxisAlignment avatarAlignment;
+  final int? maxMessageLength;
 
   const ChatScreen(
       {super.key,
       this.fab,
+      this.maxMessageLength,
       this.gutter = false,
       this.header,
       this.avatarAlignment = CrossAxisAlignment.start,
@@ -200,6 +202,7 @@ class _ChatScreenState extends State<ChatScreen> {
             gutter: widget.gutter,
             scrollController: scrollController,
             footer: ChatBox(
+              maxMessageLength: widget.maxMessageLength,
               placeholder: widget.placeholder,
               focusNode: chatBoxFocus,
               controller: chatBoxController,
@@ -225,12 +228,14 @@ class ChatBox extends StatelessWidget {
   final FocusNode focusNode;
   final ValueChanged<String> onSend;
   final String placeholder;
+  final int? maxMessageLength;
 
   const ChatBox(
       {super.key,
       this.placeholder = "Send a message",
       required this.controller,
       required this.focusNode,
+      this.maxMessageLength,
       required this.onSend});
 
   @override
@@ -241,6 +246,7 @@ class ChatBox extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(8),
       child: TextField(
+        maxLength: maxMessageLength,
         autofocus: true,
         border: false,
         controller: controller,
@@ -330,8 +336,7 @@ class ChatMessageTile extends StatelessWidget {
     return ContextMenu(
         enabled: contextMenu != null && contextMenu!.isNotEmpty,
         items: contextMenu ?? const [],
-        child: GhostButton(
-            density: ButtonDensity.compact,
+        child: Clickable(
             onPressed: onPressed,
             child: Row(
               mainAxisSize: MainAxisSize.max,
