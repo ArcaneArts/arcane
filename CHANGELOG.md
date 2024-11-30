@@ -1,15 +1,18 @@
 ## 3.4.0
+* FEAT `Table` now supports Resizing
+* FEAT `ScrollableClient` + DOC
+* FEAT Added support for frozen rows in `Table`
 * ADD `Resizer` and `ResizerItem` for resizable panes and items
+* ADD `SearchPredicate` and `SortDirection` utilities
+* ADD the spin property to themes for hue spinning
+* ADD the contrast property for themes to color filter themes
+* ADD color filtering utilities for ColorSchemes
 * FIX `CodeSnippet` copy error when context not mounted (toast)
 * FIX `ColorInput` eye dropper icon size
 * FIX `PhoneInput` `popupWidthConstraint` is now `flexible`
 * FIX `Resizable` overhauled to better handle flexible panes
-* FEAT `Table` now supports Resizing
-* ADD `SearchPredicate` and `SortDirection` utilities
 * REM File Picker example docs
 * DOC `Resizable` examples
-* FEAT `ScrollableClient` + DOC
-* FEAT Added support for frozen rows in `Table`
 * DOC `Table` example 2
 
 ## 3.3.5
