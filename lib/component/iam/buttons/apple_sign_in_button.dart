@@ -11,16 +11,17 @@ import 'package:arcane/arcane.dart';
 import 'package:common_svgs/common_svgs.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AppleSignInButton extends StatelessWidget {
+class AppleSignInButton extends StatelessWidget implements AbstractIAMButton {
   final Widget? icon;
   final String? label;
-  final VoidCallback? onPressed;
+  @override
+  final VoidCallback onPressed;
 
   const AppleSignInButton(
       {super.key,
       this.icon = const AppleLogo(),
       this.label = "Sign in with Apple",
-      this.onPressed});
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) => OAuthSignInButton(
@@ -28,6 +29,24 @@ class AppleSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: onPressed,
       );
+
+  @override
+  AppleSignInButton withOnPressed(VoidCallback onPressed) => AppleSignInButton(
+        key: key,
+        icon: icon,
+        label: label,
+        onPressed: onPressed,
+      );
+
+  @override
+  Widget buildContent(BuildContext context) => const Center(
+        child: CircularProgressIndicator(
+          size: 48,
+        ),
+      );
+
+  @override
+  bool get isAutorun => true;
 }
 
 class AppleLogo extends StatelessWidget {

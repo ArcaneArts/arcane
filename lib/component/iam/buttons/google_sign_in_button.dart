@@ -11,21 +11,41 @@ import 'package:arcane/arcane.dart';
 import 'package:common_svgs/common_svgs.dart';
 import 'package:flutter_svg/svg.dart';
 
-class GoogleSignInButton extends StatelessWidget {
+class GoogleSignInButton extends StatelessWidget implements AbstractIAMButton {
   final Widget? icon;
   final String? label;
-  final VoidCallback? onPressed;
+  @override
+  final VoidCallback onPressed;
 
   const GoogleSignInButton(
       {super.key,
       this.icon = const GoogleLogo(),
       this.label = "Sign in with Google",
-      this.onPressed});
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) => OAuthSignInButton(
         label: label,
         icon: icon,
+        onPressed: onPressed,
+      );
+
+  @override
+  bool get isAutorun => true;
+
+  @override
+  Widget buildContent(BuildContext context) => const Center(
+        child: CircularProgressIndicator(
+          size: 48,
+        ),
+      );
+
+  @override
+  GoogleSignInButton withOnPressed(VoidCallback onPressed) =>
+      GoogleSignInButton(
+        key: key,
+        icon: icon,
+        label: label,
         onPressed: onPressed,
       );
 }
