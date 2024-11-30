@@ -1,3 +1,6 @@
+## 3.3.3
+* Expose TextField properties
+
 ## 3.3.2
 * Sidebar Constraints for navigation screen
 
