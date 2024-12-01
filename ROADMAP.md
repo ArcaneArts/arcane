@@ -1,0 +1,7 @@
+# Roadmap
+
+* [ ] Imperative Routing with Widgets instead of string named routes, but with the benefits of named routes such as path variables, query parameters and url generation.
+* [ ] Authentication via IAM / Email Password UI only, but provide an authentication package that can be used with the login UI
+* [ ] Fully functional VFS browser, with picker support & preview support
+* [ ] Chat UI fully customizable, with support for custom message types, and new layout types
+* [ ] Basic Chat support 
