@@ -355,6 +355,13 @@ class ColorScheme implements ChartColorScheme {
     required this.chart5,
   });
 
+  String get toDartSRC => """
+ColorScheme(
+  brightness: Brightness.${brightness.name},
+${toColorMap().entries.map((e) => '  ${e.key}: Color(0x${e.value.value.toRadixString(16)}),').join("\n")}
+);
+""";
+
   ColorScheme.fromMap(Map<String, dynamic> map)
       : background = map._col('background'),
         foreground = map._col('foreground'),
