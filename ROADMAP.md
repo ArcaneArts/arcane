@@ -4,4 +4,4 @@
 * [ ] Authentication via IAM / Email Password UI only, but provide an authentication package that can be used with the login UI
 * [ ] Fully functional VFS browser, with picker support & preview support
 * [ ] Chat UI fully customizable, with support for custom message types, and new layout types
-* [ ] Basic Chat support 
+* [ ] A service package `arcane_fluf` to provide a service layer for Firebase Auth, Firestore & Storage

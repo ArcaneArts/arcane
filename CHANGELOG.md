@@ -1,3 +1,13 @@
+## 3.4.1
+* FEAT Added `Sortable` component
+* DOC Updated Total Component Count in Docs
+* DOC Added `Sortable` example 1,2 & 3
+* DOC Updated `Table` example 2
+* DOC Updated `NumberInput` example
+* FIX Changed Render Order on `Table` for frozen columns
+* FIX Updated `NumberInput` design
+* ADD `toDartSRC` utility on `ColorScheme` for generating Dart code from a mutated scheme
+
 ## 3.4.0
 * FEAT `Table` now supports Resizing
 * FEAT `ScrollableClient` + DOC
