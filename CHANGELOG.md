@@ -1,3 +1,6 @@
+## 3.4.2
+* Fix BasicCard onPressed not working
+
 ## 3.4.1
 * FEAT Added `Sortable` component
 * DOC Updated Total Component Count in Docs

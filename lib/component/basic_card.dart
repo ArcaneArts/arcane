@@ -61,6 +61,7 @@ class BasicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
+      onPressed: onPressed,
       padding: padding,
       surfaceOpacity: surfaceOpacity,
       surfaceBlur: surfaceBlur,
