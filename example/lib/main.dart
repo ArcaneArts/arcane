@@ -23,15 +23,6 @@ class ExampleNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FillScreen(
-          child: LoginContent(buttons: [
-        GoogleSignInButton(onPressed: () {
-          print("Google Signed In");
-        }),
-        AppleSignInButton(onPressed: () {
-          print("Apple Signed In");
-        }),
-        EmailPasswordSignIn(onPressed: () {
-          print("Email Signed In");
-        })
-      ]));
+        child: Text("d"),
+      );
 }
