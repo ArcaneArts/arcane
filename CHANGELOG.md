@@ -1,5 +1,6 @@
 ## 3.4.2
 * Fix BasicCard onPressed not working
+* Remove auth widgets
 
 ## 3.4.1
 * FEAT Added `Sortable` component
