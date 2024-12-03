@@ -69,6 +69,11 @@ export 'component/sheet.dart';
 export 'component/static_table.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
+export 'component/auth/buttons/apple_sign_in_button.dart';
+export 'component/auth/buttons/google_sign_in_button.dart';
+export 'component/auth/buttons/oauth_sign_in_button.dart';
+export 'component/auth/api.dart';
+export 'component/auth/screen/login_screen.dart';
 // Arcane
 export 'component/vfs/api/ventity.dart';
 export 'component/vfs/api/vfs.dart';
