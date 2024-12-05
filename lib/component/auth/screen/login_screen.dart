@@ -4,7 +4,7 @@ import 'package:fast_log/fast_log.dart';
 
 class LoginScreen extends StatefulWidget {
   final Widget header;
-  final bool allowEmailPassword; 
+  final bool allowEmailPassword;
   final List<Widget> loginButtons;
   final ArcanePasswordPolicy passwordPolicy;
   final bool allowViewPassword;
@@ -432,9 +432,9 @@ class _ArcaneEmailPasswordCardState extends State<ArcaneEmailPasswordCard> {
                                 ],
                                 Gap(16),
                                 PrimaryButton(
-                                    child: Text("Register"),
                                     onPressed:
-                                        isValid ? () => _register() : null)
+                                        isValid ? () => _register() : null,
+                                    child: Text("Register"))
                               ],
                             ))
                       ],
