@@ -24,7 +24,7 @@ class AppleSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: () => context
             .pylon<ArcaneAuthProvider>()
-            .signInWithProvider(ArcaneSignInProviderType.apple),
+            .signInWithProvider(context, ArcaneSignInProviderType.apple),
       );
 }
 

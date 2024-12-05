@@ -3,6 +3,7 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'
     show
@@ -69,9 +70,12 @@ export 'component/sheet.dart';
 export 'component/static_table.dart';
 export 'component/tile.dart';
 export 'component/toast.dart';
+export 'component/auth/buttons/facebook_sign_in_button.dart';
+export 'component/auth/buttons/microsoft_sign_in_button.dart';
 export 'component/auth/buttons/apple_sign_in_button.dart';
 export 'component/auth/buttons/google_sign_in_button.dart';
 export 'component/auth/buttons/oauth_sign_in_button.dart';
+export 'component/auth/social/social_buttons.dart';
 export 'component/auth/api.dart';
 export 'component/auth/screen/login_screen.dart';
 // Arcane

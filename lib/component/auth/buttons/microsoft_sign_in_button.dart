@@ -9,12 +9,12 @@
 
 import 'package:arcane/arcane.dart';
 
-class FacebookSignInButton extends StatelessWidget {
+class MicrosoftSignInButton extends StatelessWidget {
   final Widget? icon;
   final String? label;
 
-  const FacebookSignInButton(
-      {super.key, this.icon = const FacebookLogo(), this.label = "Facebook"});
+  const MicrosoftSignInButton(
+      {super.key, this.icon = const MicrosoftLogo(), this.label = "Microsoft"});
 
   @override
   Widget build(BuildContext context) => CredentialSignInButton(
@@ -22,15 +22,16 @@ class FacebookSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: () => context
             .pylon<ArcaneAuthProvider>()
-            .signInWithProvider(context, ArcaneSignInProviderType.facebook),
+            .signInWithProvider(context, ArcaneSignInProviderType.microsoft),
       );
 }
 
-class FacebookLogo extends StatelessWidget {
+class MicrosoftLogo extends StatelessWidget {
   final double size;
 
-  const FacebookLogo({super.key, this.size = 14});
+  const MicrosoftLogo({super.key, this.size = 14});
 
   @override
-  Widget build(BuildContext context) => Icon(Icons.facebook_logo, size: size);
+  Widget build(BuildContext context) =>
+      Icon(Icons.logo_microsoft_ionic, size: size);
 }

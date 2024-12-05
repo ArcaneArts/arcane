@@ -1,3 +1,10 @@
+## 3.5.0
+* ADD `SignInButton` to support basically all the auth provider logos
+* ADD `FontAwesomeIcons` (promoted in arcane.dart)
+* ADD `ArcaneSignInProviderType` types for facebook & microsoft
+* BREAKING `ArcaneAuthProvider`.`signInWithProvider` now requires `BuildContext`
+* BREAKING now compatible with `arcane_auth` >=1.2.0
+
 ## 3.4.2
 * Fix BasicCard onPressed not working
 * Remove auth widgets

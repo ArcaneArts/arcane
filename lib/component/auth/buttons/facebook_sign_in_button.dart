@@ -8,15 +8,13 @@
  */
 
 import 'package:arcane/arcane.dart';
-import 'package:common_svgs/common_svgs.dart';
-import 'package:flutter_svg/svg.dart';
 
-class AppleSignInButton extends StatelessWidget {
+class FacebookSignInButton extends StatelessWidget {
   final Widget? icon;
   final String? label;
 
-  const AppleSignInButton(
-      {super.key, this.icon = const AppleLogo(), this.label = "Apple"});
+  const FacebookSignInButton(
+      {super.key, this.icon = const FacebookLogo(), this.label = "Facebook"});
 
   @override
   Widget build(BuildContext context) => CredentialSignInButton(
@@ -24,18 +22,15 @@ class AppleSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: () => context
             .pylon<ArcaneAuthProvider>()
-            .signInWithProvider(context, ArcaneSignInProviderType.apple),
+            .signInWithProvider(context, ArcaneSignInProviderType.facebook),
       );
 }
 
-class AppleLogo extends StatelessWidget {
+class FacebookLogo extends StatelessWidget {
   final double size;
 
-  const AppleLogo({super.key, this.size = 14});
+  const FacebookLogo({super.key, this.size = 14});
 
   @override
-  Widget build(BuildContext context) => SvgPicture.string(svgApple,
-      width: size,
-      height: size,
-      color: Theme.of(context).colorScheme.mutedForeground);
+  Widget build(BuildContext context) => Icon(Icons.facebook_logo, size: size);
 }

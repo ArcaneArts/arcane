@@ -1,5 +1,8 @@
+import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+
 abstract class ArcaneAuthProvider {
-  Future<void> signInWithProvider(ArcaneSignInProviderType type);
+  Future<void> signInWithProvider(
+      BuildContext context, ArcaneSignInProviderType type);
 
   Future<void> signInWithEmailPassword(
       {required String email, required String password});
@@ -8,7 +11,4 @@ abstract class ArcaneAuthProvider {
       {required String email, required String password});
 }
 
-enum ArcaneSignInProviderType {
-  google,
-  apple
-}
+enum ArcaneSignInProviderType { google, apple, microsoft, facebook }

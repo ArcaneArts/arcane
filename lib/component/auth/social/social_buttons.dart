@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-enum Buttons {
+enum SocialButtons {
   email,
   google,
   facebook,
@@ -201,7 +201,7 @@ class SignInButton extends StatelessWidget {
   final Function onPressed;
 
   /// button should be used from the enum class `Buttons`
-  final Buttons button;
+  final SocialButtons button;
 
   /// mini is a boolean field which specify whether to use a square mini button.
   final bool mini;
@@ -229,7 +229,7 @@ class SignInButton extends StatelessWidget {
   /// The constructor is fairly self-explanatory.
   const SignInButton(
     this.button, {
-    Key? key,
+    super.key,
     required this.onPressed,
     this.mini = false,
     this.padding = EdgeInsets.zero,
@@ -238,14 +238,14 @@ class SignInButton extends StatelessWidget {
     this.elevation = 2.0,
     this.clipBehavior = Clip.none,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   /// The build function is used to build the widget which will switch to
   /// desired widget based on the enum class `Buttons`
   @override
   Widget build(BuildContext context) {
     switch (button) {
-      case Buttons.google:
+      case SocialButtons.google:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Google'),
@@ -261,7 +261,7 @@ class SignInButton extends StatelessWidget {
           height: 36.0,
           clipBehavior: clipBehavior,
         );
-      case Buttons.facebook:
+      case SocialButtons.facebook:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Facebook'),
@@ -275,7 +275,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.gitHub:
+      case SocialButtons.gitHub:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('GitHub'),
@@ -289,20 +289,18 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.apple:
-      case Buttons.appleDark:
+      case SocialButtons.apple:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Apple'),
           mini: mini,
           text: text ?? 'Sign in with Apple',
           textStyle: textStyle,
-          textColor: button == Buttons.apple
-              ? const Color.fromRGBO(0, 0, 0, 0.9)
-              : Colors.white,
+          textColor: const Color.fromRGBO(0, 0, 0, 0.9),
           icon: FontAwesomeIcons.apple,
-          iconColor: button == Buttons.apple ? Colors.black : Colors.white,
-          backgroundColor: button == Buttons.apple
+          iconColor:
+              button == SocialButtons.apple ? Colors.black : Colors.white,
+          backgroundColor: button == SocialButtons.apple
               ? const Color(0xFFFFFFFF)
               : const Color(0xFF000000),
           onPressed: onPressed,
@@ -310,7 +308,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.linkedIn:
+      case SocialButtons.linkedIn:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('LinkedIn'),
@@ -324,7 +322,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.pinterest:
+      case SocialButtons.pinterest:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Pinterest'),
@@ -338,7 +336,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.tumblr:
+      case SocialButtons.tumblr:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Tumblr'),
@@ -352,7 +350,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.twitter:
+      case SocialButtons.twitter:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Twitter'),
@@ -366,7 +364,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.reddit:
+      case SocialButtons.reddit:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Reddit'),
@@ -380,7 +378,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.quora:
+      case SocialButtons.quora:
         return SignInButtonBuilder(
           key: const ValueKey('Quora'),
           mini: mini,
@@ -393,7 +391,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.yahoo:
+      case SocialButtons.yahoo:
         return SignInButtonBuilder(
           key: const ValueKey('Yahoo'),
           mini: mini,
@@ -406,7 +404,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.hotmail:
+      case SocialButtons.hotmail:
         return SignInButtonBuilder(
           key: const ValueKey('Hotmail'),
           mini: mini,
@@ -419,7 +417,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.xbox:
+      case SocialButtons.xbox:
         return SignInButtonBuilder(
           key: const ValueKey('Xbox'),
           mini: mini,
@@ -432,7 +430,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.microsoft:
+      case SocialButtons.microsoft:
         return SignInButtonBuilder(
           key: const ValueKey('Microsoft'),
           mini: mini,
@@ -445,7 +443,7 @@ class SignInButton extends StatelessWidget {
           shape: shape,
           clipBehavior: clipBehavior,
         );
-      case Buttons.anonymous:
+      case SocialButtons.anonymous:
         return SignInButtonBuilder(
           elevation: elevation,
           key: const ValueKey('Anonymous'),
@@ -462,7 +460,7 @@ class SignInButton extends StatelessWidget {
           height: 36.0,
           clipBehavior: clipBehavior,
         );
-      case Buttons.email:
+      case SocialButtons.email:
       default:
         return SignInButtonBuilder(
           elevation: elevation,

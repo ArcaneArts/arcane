@@ -60,6 +60,7 @@ dependencies:
   fast_log: ^1.0.7
   desktop_drop: ^0.5.0
   precision_stopwatch: ^1.0.2
+  font_awesome_flutter: ^10.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

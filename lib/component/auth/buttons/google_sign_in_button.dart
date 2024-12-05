@@ -24,7 +24,7 @@ class GoogleSignInButton extends StatelessWidget {
         icon: icon,
         onPressed: () => context
             .pylon<ArcaneAuthProvider>()
-            .signInWithProvider(ArcaneSignInProviderType.google),
+            .signInWithProvider(context, ArcaneSignInProviderType.google),
       );
 }
 
