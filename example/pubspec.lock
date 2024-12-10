@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.6.0"
+    version: "3.6.1"
   archive:
     dependency: transitive
     description:
@@ -755,10 +755,10 @@ packages:
     dependency: transitive
     description:
       name: pylon
-      sha256: "03346d92ab4b7b39afb20eea1c896336033cb7f699d7ddaedbfbf0b34ac2abea"
+      sha256: "8a0c1f30a1fe8843af4cf0c5854b2d04ea77d60357a0aafe3fdd0bf9b7708965"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   pylon_codec:
     dependency: transitive
     description:

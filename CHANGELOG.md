@@ -1,3 +1,6 @@
+## 3.6.2
+* Upgrade Pylon
+
 ## 3.6.1
 * Upgrade Pylon
 
