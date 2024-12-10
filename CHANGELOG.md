@@ -1,3 +1,6 @@
+## 3.6.1
+* Upgrade Pylon
+
 ## 3.6.0
 * BREAKING: Removed Auth UI from Arcane
 
