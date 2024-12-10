@@ -11,7 +11,6 @@ class ExampleArcaneApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ArcaneApp(
-        home: ExampleNavigationScreen(),
         theme: ArcaneTheme(
             themeMode: ThemeMode.system,
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
