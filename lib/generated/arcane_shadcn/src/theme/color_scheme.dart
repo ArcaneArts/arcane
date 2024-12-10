@@ -263,41 +263,41 @@ class ColorShades implements ColorSwatch {
     assert(color != null, 'ColorShades: Missing color for $index');
     return color!;
   }
-
-  @override
-  double get a => shade400.a;
-
-  @override
-  double get b => shade400.b;
-
-  @override
-  ColorSpace get colorSpace => shade400.colorSpace;
-
-  @override
-  double get g => shade400.g;
+  
+  // @override
+  // double get a => shade400.a;
+  //
+  // @override
+  // double get b => shade400.b;
+  //
+  // @override
+  // ColorSpace get colorSpace => shade400.colorSpace;
+  //
+  // @override
+  // double get g => shade400.g;
 
   @override
   Iterable get keys => _colors.keys;
-
-  @override
-  double get r => shade400.r;
-
-  @override
-  int toARGB32() => shade400.toARGB32();
-
-  @override
-  Color withValues(
-          {double? alpha,
-          double? red,
-          double? green,
-          double? blue,
-          ColorSpace? colorSpace}) =>
-      shade400.withValues(
-          alpha: alpha,
-          red: red,
-          green: green,
-          blue: blue,
-          colorSpace: colorSpace);
+  //
+  // @override
+  // double get r => shade400.r;
+  //
+  // @override
+  // int toARGB32() => shade400.toARGB32();
+  //
+  // @override
+  // Color withValues(
+  //         {double? alpha,
+  //         double? red,
+  //         double? green,
+  //         double? blue,
+  //         ColorSpace? colorSpace}) =>
+  //     shade400.withValues(
+  //         alpha: alpha,
+  //         red: red,
+  //         green: green,
+  //         blue: blue,
+  //         colorSpace: colorSpace);
 }
 
 String hexFromColor(Color color) {
