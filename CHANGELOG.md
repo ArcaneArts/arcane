@@ -1,3 +1,6 @@
+## 3.5.1
+* Continued improvements on the new Table widget
+
 ## 3.5.0
 * ADD `SignInButton` to support basically all the auth provider logos
 * ADD `FontAwesomeIcons` (promoted in arcane.dart)
