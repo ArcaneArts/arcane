@@ -1,3 +1,6 @@
+## 3.6.0
+* BREAKING: Removed Auth UI from Arcane
+
 ## 3.5.1
 * Continued improvements on the new Table widget
 
