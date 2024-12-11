@@ -1,3 +1,8 @@
+## 3.7.0
+* ADD `GhostButtonMenu` to support ghost buttons menu launchers
+* ADD `ArcaneRoute`
+* FEAT ArcaneRouting is now possible with Pylon Codecs
+
 ## 3.6.2
 * Upgrade Pylon
 
