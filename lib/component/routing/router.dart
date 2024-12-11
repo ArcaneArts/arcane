@@ -1,10 +1,5 @@
 import 'package:arcane/arcane.dart';
 
-class ArcaneRouter extends StatelessWidget {
-  const ArcaneRouter({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+mixin ArcaneRoute on Widget {
+  String get path;
 }

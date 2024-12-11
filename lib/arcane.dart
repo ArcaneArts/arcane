@@ -3,7 +3,6 @@ library arcane;
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
     hide Icons, IconButton;
 export 'package:conjure/conjure.dart';
-export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'
     show
@@ -17,6 +16,7 @@ export 'package:flutter/widgets.dart'
         FlexColumnWidth,
         TableCellVerticalAlignment;
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:padded/padded.dart';
 export 'package:precision_stopwatch/precision_stopwatch.dart';
 export 'package:pylon/pylon.dart';
@@ -57,6 +57,7 @@ export 'component/image.dart';
 export 'component/logo.dart';
 export 'component/popup_menu.dart';
 export 'component/radio_cards.dart';
+export 'component/routing/router.dart';
 export 'component/screen/abstract_screen.dart';
 export 'component/screen/chat_screen.dart';
 export 'component/screen/fill_screen.dart';

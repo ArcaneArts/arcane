@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
+import 'package:fast_log/fast_log.dart';
 import 'package:flutter/material.dart' as m;
 
 class Arcane {
@@ -12,7 +13,10 @@ class Arcane {
 
   static Future<T?> push<T extends Object?>(
           BuildContext context, Widget child) =>
-      Pylon.push(context, child, type: PylonRouteType.material);
+      Pylon.push(context, child,
+          type: PylonRouteType.material,
+          settings:
+              RouteSettings(name: child is ArcaneRoute ? child.path : null));
 
   static void closeDrawer(BuildContext context) =>
       DrawerOverlay.maybeFind(context)?.overlay.closeLast();
@@ -23,7 +27,7 @@ class ArcaneApp extends StatefulWidget {
   final AdaptiveScaling? scaling;
   final Widget? home;
   final Map<String, WidgetBuilder>? routes;
-  final String? initialRoute;
+  final String initialRoute;
   final RouteFactory? onGenerateRoute;
   final InitialRouteListFactory? onGenerateInitialRoutes;
   final RouteFactory? onUnknownRoute;
@@ -53,14 +57,16 @@ class ArcaneApp extends StatefulWidget {
   final bool debugShowMaterialGrid;
   final bool disableBrowserContextMenu;
   final AbstractArcaneTheme? theme;
+  final List<ArcaneRoute> arcaneRoutes;
 
   const ArcaneApp({
     super.key,
     this.theme,
     this.navigatorKey,
     this.home,
+    this.arcaneRoutes = const <ArcaneRoute>[],
     Map<String, WidgetBuilder> this.routes = const <String, WidgetBuilder>{},
-    this.initialRoute,
+    this.initialRoute = "/",
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
@@ -126,20 +132,64 @@ class ArcaneApp extends StatefulWidget {
         onGenerateInitialRoutes = null,
         onUnknownRoute = null,
         routes = null,
-        initialRoute = null;
+        initialRoute = "/",
+        arcaneRoutes = const <ArcaneRoute>[];
 
   @override
   State<ArcaneApp> createState() => ArcaneAppState();
 }
 
 class ArcaneAppState extends State<ArcaneApp> {
+  RouteFactory? routeFactory;
   late AbstractArcaneTheme _theme;
+  late Map<String, WidgetBuilder> dynamicRoutes;
+  bool usesArcaneRouting = false;
 
   @override
   void initState() {
+    dynamicRoutes = {};
+    routeFactory = widget.onGenerateRoute;
     Arcane._app = this;
     super.initState();
     _theme = widget.theme ?? AbstractArcaneTheme.defaultArcaneTheme;
+    buildDynamicRoutes();
+  }
+
+  void buildDynamicRoutes() {
+    if (usesRouter ||
+        (widget.home is! ArcaneRoute && widget.arcaneRoutes.isEmpty)) {
+      return;
+    }
+
+    info("=== Building Dynamic Route Map ===");
+
+    dynamicRoutes = {...(widget.routes ?? {})};
+
+    for (ArcaneRoute route in widget.arcaneRoutes) {
+      dynamicRoutes[route.path] = (context) => route;
+      verbose("${route.path} -> ${route.runtimeType}");
+    }
+
+    if (!dynamicRoutes.containsKey(widget.initialRoute) &&
+        widget.home is ArcaneRoute) {
+      dynamicRoutes[widget.initialRoute] = (context) => widget.home!;
+      verbose("${widget.initialRoute} -> ${widget.home!.runtimeType}");
+    }
+
+    routeFactory = (RouteSettings settings) {
+      if (settings.name?.isNotEmpty ?? false) {
+        String route = Uri.parse(settings.name!).path;
+
+        if (dynamicRoutes.containsKey(route)) {
+          return MaterialPageRoute(
+              builder: dynamicRoutes[route]!, settings: settings);
+        }
+      }
+
+      return null;
+    };
+
+    usesArcaneRouting = true;
   }
 
   void setTheme(AbstractArcaneTheme theme) {
@@ -199,12 +249,20 @@ class ArcaneAppState extends State<ArcaneApp> {
         )
       : ShadcnApp(
           navigatorKey: widget.navigatorKey,
-          home: widget.home,
-          routes: widget.routes ?? {},
+          home: usesArcaneRouting ? null : widget.home,
+          routes: {
+            ...dynamicRoutes,
+            ...widget.routes ?? {},
+          },
           initialRoute: widget.initialRoute,
-          onGenerateRoute: widget.onGenerateRoute,
+          onGenerateRoute: routeFactory,
           onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-          onUnknownRoute: widget.onUnknownRoute,
+          onUnknownRoute: usesArcaneRouting
+              ? widget.onUnknownRoute ??
+                  (rs) => MaterialPageRoute(
+                      builder: dynamicRoutes[widget.initialRoute]!,
+                      settings: RouteSettings(name: widget.initialRoute))
+              : widget.onUnknownRoute,
           onNavigationNotification: widget.onNavigationNotification,
           navigatorObservers: widget.navigatorObservers ?? [],
           builder: widget.builder,

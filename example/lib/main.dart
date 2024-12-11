@@ -1,9 +1,28 @@
+import 'dart:async';
+
 import 'package:arcane/arcane.dart';
+import 'package:example/model/note.dart';
+import 'package:example/screen/home.dart';
+import 'package:example/screen/note_view.dart';
+import 'package:example/screen/notes.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 bool v = false;
 String? vv;
 void main() {
-  runApp(const ExampleArcaneApp());
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
+
+  setupNotes();
+
+  runZonedGuarded(() {
+    runApp(ExampleArcaneApp());
+  }, (error, stackTrace) {
+    print("Error: $error");
+    print("Stack: $stackTrace");
+  });
 }
 
 class ExampleArcaneApp extends StatelessWidget {
@@ -11,17 +30,13 @@ class ExampleArcaneApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ArcaneApp(
+        arcaneRoutes: [
+          HomeScreen(),
+          NotesScreen(),
+          NoteScreen(),
+        ],
         theme: ArcaneTheme(
             themeMode: ThemeMode.system,
             scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
-      );
-}
-
-class ExampleNavigationScreen extends StatelessWidget {
-  const ExampleNavigationScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => FillScreen(
-        child: Text("d"),
       );
 }
