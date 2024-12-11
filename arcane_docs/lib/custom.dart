@@ -261,6 +261,60 @@ void main(){
                   Gap(4),
                 ],
               ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("SEO & Metadata").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "You can optionally provide metadata on routes. Supports standard seo meta + any opengraph reader + twitter"),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+class NoteScreen extends StatelessWidget with ArcaneRoute {
+  const NoteScreen({super.key});
+  @override 
+  Widget build(BuildContext context) => FillScreen(
+    child: PrimaryButton(
+      child: Text("UpdateSEO"),
+      onPressed: () {
+        
+        // You can also update any meta on the fly
+        ArcanePageMeta(
+          themeColor: const Color(0xFF1A6AC4),
+          title: "Note \${context.note.name}",
+        ).apply();
+      },
+    )
+  );
+
+  // Defining a nested path is just a name not really nested
+  @override
+  String get path => "/notes/view";
+  
+  // Define the meta data for the page
+  @override
+  ArcanePageMeta? get pageMeta => ArcanePageMeta(
+        author: "Dan",
+        charset: "UTF-8",
+        description: "This is the home screen",
+        facebookAppID: "123456789",
+        image: "https://example/image.png",
+        keywords: ["a", "b", "c"],
+        robotsName: RobotsName.google,
+        robotsContent: "index, follow",
+        themeColor: const Color(0xFF1269DB),
+        title: "Home",
+        twitterCard: TwitterCard.summary,
+        type: "website",
+        url: "https://otherplace.com",
+      );
+}""",
+                    mode: 'dart',
+                    summarize: true,
+                  )
+                ],
+              ),
             ],
           )),
   GoRoute(

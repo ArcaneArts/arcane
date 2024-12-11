@@ -583,6 +583,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  meta_seo:
+    dependency: transitive
+    description:
+      name: meta_seo
+      sha256: fb1984710baca873da6ca9cd411d869bc56370f0cfb8e140dd42827424c681b5
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.9"
   modal_bottom_sheet:
     dependency: transitive
     description:

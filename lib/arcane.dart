@@ -1,7 +1,7 @@
 library arcane;
 
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
-    hide Icons, IconButton;
+    hide Icons, IconButton, runApp;
 export 'package:conjure/conjure.dart';
 export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'
@@ -17,6 +17,7 @@ export 'package:flutter/widgets.dart'
         TableCellVerticalAlignment;
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
+export 'package:meta_seo/meta_seo.dart';
 export 'package:padded/padded.dart';
 export 'package:precision_stopwatch/precision_stopwatch.dart';
 export 'package:pylon/pylon.dart';

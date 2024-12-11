@@ -1,3 +1,7 @@
+## 3.7.1
+* ADD Meta SEO overrides for ArcaneRoutes
+* DOC Update Routing to include SEO
+
 ## 3.7.0
 * ADD `GhostButtonMenu` to support ghost buttons menu launchers
 * ADD `ArcaneRoute`

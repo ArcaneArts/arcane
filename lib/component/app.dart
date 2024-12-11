@@ -2,7 +2,26 @@ import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
 import 'package:fast_log/fast_log.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:flutter_web_plugins/url_strategy.dart';
+
+void runApp(Widget app,
+    {bool usePathStrategy = true, bool setupMetaSEO = true}) async {
+  if (kIsWeb) {
+    if (usePathStrategy) {
+      try {
+        usePathUrlStrategy();
+      } catch (e) {}
+    }
+    if (setupMetaSEO) {
+      try {
+        MetaSEO().config();
+      } catch (e) {}
+    }
+  }
+  m.runApp(app);
+}
 
 class Arcane {
   static ArcaneAppState? _app;
@@ -264,7 +283,12 @@ class ArcaneAppState extends State<ArcaneApp> {
                       settings: RouteSettings(name: widget.initialRoute))
               : widget.onUnknownRoute,
           onNavigationNotification: widget.onNavigationNotification,
-          navigatorObservers: widget.navigatorObservers ?? [],
+          navigatorObservers: [
+            ...widget.navigatorObservers ?? [],
+            ArcaneRoutingNavigationObserver(
+              routes: widget.arcaneRoutes,
+            )
+          ],
           builder: widget.builder,
           title: widget.title,
           onGenerateTitle: widget.onGenerateTitle,
@@ -290,6 +314,45 @@ class ArcaneAppState extends State<ArcaneApp> {
         );
 }
 
+class ArcaneRoutingNavigationObserver extends NavigatorObserver {
+  final List<ArcaneRoute> routes;
+
+  ArcaneRoutingNavigationObserver({this.routes = const <ArcaneRoute>[]});
+
+  void _applyRouteIfExists(Route<dynamic>? route) {
+    if (route == null) return;
+    String routeName = Uri.parse(route.settings.name!).path;
+    ArcaneRoute? art = routes.select((i) => i.path == routeName);
+    if (art != null) {
+      art.$applyRoute();
+    }
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _applyRouteIfExists(route);
+    super.didPush(route, previousRoute);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _applyRouteIfExists(previousRoute);
+    super.didPop(route, previousRoute);
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _applyRouteIfExists(previousRoute);
+    super.didRemove(route, previousRoute);
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    _applyRouteIfExists(newRoute);
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+  }
+}
+
 class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
   final bool allowMouseDragging;
 
@@ -306,8 +369,6 @@ class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
         PointerDeviceKind.stylus,
         PointerDeviceKind.invertedStylus,
         PointerDeviceKind.trackpad,
-        // The VoiceAccess sends pointer events with unknown type when scrolling
-        // scrollables.
         PointerDeviceKind.unknown,
       };
 }

@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 3.7.0
+version: 3.7.1
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -8,9 +8,11 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
   flutter: ">=1.17.0"
 dependencies:
-  boxy: ">=2.2.0 <3.0.0"
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  boxy: ">=2.2.0 <3.0.0"
   cached_network_image: ">=3.4.0 <4.0.0"
   flutter_sticky_header: ">=0.7.0 <1.0.0"
   padded: ">=1.0.1 <2.0.0"
@@ -60,6 +62,7 @@ dependencies:
   desktop_drop: ">=0.5.0 <0.6.0"
   precision_stopwatch: ">=1.0.2 <1.1.0"
   font_awesome_flutter: ">=10.8.0 <10.9.0"
+  meta_seo: ">=3.0.9 <3.1.0"
 dev_dependencies:
   flutter_test:
     sdk: flutter

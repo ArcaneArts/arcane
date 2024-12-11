@@ -20,4 +20,12 @@ class NoteScreen extends StatelessWidget with ArcaneRoute {
 
   @override
   String get path => "/notes/view";
+
+  @override
+  void onApplySEO(MetaSEO seo) {
+    seo.author(author: "Dan 2");
+    seo.ogTitle(ogTitle: "Note View");
+    seo.keywords(keywords: "a, b, c, d");
+    seo.description(description: "This is the home fff screen");
+  }
 }
