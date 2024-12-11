@@ -12,6 +12,7 @@ late BuildContext _context;
 List<ShadcnDocsSection> customSections = [
   ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
+    ShadcnDocsPage("Routing", "routing"),
     ShadcnDocsPage("Chat", "chat"),
     ShadcnDocsPage("Static Table", "static_table"),
     ShadcnDocsPage("Dialogs", "dialogs"),
@@ -49,6 +50,217 @@ List<GoRoute> customRoutes = [
               exampleScreenSliver,
               exampleScreenSliverSections,
               exampleScreenNavigation
+            ],
+          )),
+  GoRoute(
+      path: "routing",
+      name: "routing",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'routing',
+            description:
+                'Arcane Routing allows you to continue pusing delcarative screens but with the benefits of path navigation.',
+            displayName: 'Routing',
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Enable Path Routing").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "This is optional but it allows you to display web addresses that dont have the hash path /#/ style."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+void main() {
+  if (kIsWeb) {
+    // Removes the /#/ from the url
+    usePathUrlStrategy();
+  }
+  
+  // continue initialization
+}""",
+                    mode: 'dart',
+                    summarize: true,
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Define Arcane Routes").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "Arcane Routes are defined in the screen class itself instead of a route mapping in the main application widget. Each screen defines a path. Typically starting with / however this can technically be /a/b/c even though it's not actually a hierarchical setup."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+class HomeScreen extends StatelessWidget with ArcaneRoute {
+                                 // add mixin ArcaneRoute
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => FillScreen(
+    // Build any widget or screen here   
+  );
+
+  @override
+  String get path => "/"; // Define path here
+}""",
+                    mode: 'dart',
+                    summarize: true,
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Reference Routes in Application").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "Once you have arcane routes defined, simply list them in your ArcaneApp so the app can route to those screens when hit with a path."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+ArcaneApp(
+  arcaneRoutes: [
+    HomeScreen(),
+    NotesScreen(),
+    NoteScreen(),
+  ],
+  // Don't define a home, you may define an initialRoute. Defaults to "/"
+  initialRoute: "/",
+  ...
+);""",
+                    mode: 'dart',
+                    summarize: true,
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Pushing").h2(),
+                  Gap(4),
+                  SelectableText("Pushing to screens is extremely simple."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+// If this screen is an ArcaneRoute, the path will be updated in the url
+// Otherwise it just functions like a regular push
+Arcane.push(context, NotesScreen())""",
+                    mode: 'dart',
+                    summarize: true,
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Transferring Data via Pylon").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "If you are already using pylon, you can expose specific pylons to the browser uri & supply a codec for decoding from the url in the event the data is unavailable from a previous screen."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+class NoteScreen extends StatelessWidget with ArcaneRoute {
+                                // with mixin ArcaneRoute
+  const NoteScreen({super.key});
+
+  @override              // We define a PylonPort of Note
+  Widget build(BuildContext context) => PylonPort<Note>(
+      // Tag is the data key in the uri i.e. https://website/notes/view?note=<DATA>
+      tag: "note",
+      
+      // A widget if the data is not available or fails to decode
+      error: const FillScreen(child: Center(child: Text("Error"))),
+      
+      // A widget to show while the data is loading if it cant be accessed immediately
+      loading: const FillScreen(
+          child: Center(
+        child: Text("Loading"),
+      )),
+      
+      // A regular builder which allows you to obtain the note from context
+      // PylonPort will add the decoded note if it was unavailable before calling this.
+      builder: (context) => FillScreen(
+          header: Bar(
+            // context.note is a method extension on BuildContext 
+            // Note get note => pylon<Note>();
+            titleText: context.note.name,
+          ),
+          child: Text(context.note.description)));
+
+  // Defining a nested path is just a name not really nested
+  @override
+  String get path => "/notes/view";
+}
+""",
+                    mode: 'dart',
+                    summarize: true,
+                  ),
+                  Gap(4),
+                  SelectableText(
+                      "Navigating to this screen with Arcane.push(context, NoteScreen()) will update the uri of the browser to /notes/view?note=<DATA>. Accessing this uri directly will use the pylon port to decode a note and inject it into a pylon so the note is still available."),
+                  Gap(4),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SelectableText("Pylon Codecs").h2(),
+                  Gap(4),
+                  SelectableText(
+                      "Because we don't want to actually encode the full data of the object into the uri, it's best to reference the data so it can be retrieved from the source."),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+// A note class representing our data model
+class Note implements PylonCodec<Note> {
+  // Implement the codec directly in your models
+  final int id;
+  final String name;
+  final String description;
+  ...
+
+  const Note({
+    required this.id,
+    required this.name,
+    required this.description,
+    ...
+  });
+
+  Map<String, dynamic> toMap() ...
+
+  factory Note.fromMap(Map<String, dynamic> map) ...
+
+  @override
+  // Make sure to encode VALUE.id, and not id.
+  String pylonEncode(Note value) => value.id.toString();
+
+  @override
+  // This supports a future of decoding
+  Future<Note> pylonDecode(String value) async => notes[int.parse(value)];
+}""",
+                    mode: 'dart',
+                    summarize: true,
+                  ),
+                  Gap(4),
+                  ArcaneCodeSnippetBuilder(
+                    code: """
+void main(){
+  // register your codecs
+  registerPylonCodec(const Note(id: -1, name: "", description: ""));
+}""",
+                    mode: 'dart',
+                    summarize: true,
+                  ),
+                  Gap(4),
+                  SelectableText(
+                      "Note: If you are using fire_crud models, the pylon_codec is already included with all of your models. They use the full document path as uri data."),
+                  Gap(4),
+                ],
+              ),
             ],
           )),
   GoRoute(
