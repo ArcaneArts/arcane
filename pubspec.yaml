@@ -74,3 +74,4 @@ topics:
   - shadcn-ui
 scripts:
   sync_upstream: sh ./script_sync_shadcn.sh
+  hotload_docs: sh ./script_sync_docs_live.sh
