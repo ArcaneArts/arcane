@@ -320,7 +320,7 @@ class ArcaneRoutingNavigationObserver extends NavigatorObserver {
   ArcaneRoutingNavigationObserver({this.routes = const <ArcaneRoute>[]});
 
   void _applyRouteIfExists(Route<dynamic>? route) {
-    if (route == null) return;
+    if (route == null || route.settings.name == null) return;
     String routeName = Uri.parse(route.settings.name!).path;
     ArcaneRoute? art = routes.select((i) => i.path == routeName);
     if (art != null) {

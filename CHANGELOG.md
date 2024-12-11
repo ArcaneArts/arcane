@@ -1,3 +1,7 @@
+## 3.7.3
+* Widen dependency constraints
+* Removed unused dependencies
+
 ## 3.7.2
 * FIX critical issue with non arcane routes unnamed crash
 
