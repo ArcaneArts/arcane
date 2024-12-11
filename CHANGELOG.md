@@ -1,3 +1,6 @@
+## 3.7.2
+* FIX critical issue with non arcane routes unnamed crash
+
 ## 3.7.1
 * ADD Meta SEO overrides for ArcaneRoutes
 * DOC Update Routing to include SEO
