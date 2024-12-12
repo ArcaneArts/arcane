@@ -3,6 +3,7 @@
 * ADD `placeholder` to NumberInput
 * ADD `pointerSignals` to NumberInput defaults to true
 * ADD `ArcaneForm` for creating forms and mapping to models easily, WIP.
+* ADD `barHeader` and `barFooter` to `Bar` which have zero padding & ignore safe area, but are in the bar's blur context
 
 ## 3.7.4
 * Hide showXXX(context) methods in favor of dialog apis in arcane. You can still import these via `import 'package:arcane/generated/arcane_shadcn/src/components/menu/dropdown_menu.dart';` for example. 

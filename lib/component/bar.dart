@@ -9,6 +9,8 @@ class Bar extends StatelessWidget {
   final List<Widget> leading;
   final Widget? child;
   final Widget? title;
+  final Widget? barHeader;
+  final Widget? barFooter;
   final String? titleText;
   final String? headerText;
   final String? subtitleText;
@@ -48,12 +50,16 @@ class Bar extends StatelessWidget {
       this.leadingGap,
       this.trailingGap,
       this.height,
+      this.barHeader,
+      this.barFooter,
       this.useGlass = true});
 
   Bar copyWith({
     Key? key,
     List<Widget>? trailing,
     List<Widget>? leading,
+    Widget? barHeader,
+    Widget? barFooter,
     Widget? child,
     Widget? title,
     String? titleText,
@@ -73,6 +79,7 @@ class Bar extends StatelessWidget {
     bool? ignoreContextSignals,
   }) =>
       Bar(
+        barHeader: barHeader ?? this.barHeader,
         key: key ?? this.key,
         trailing: trailing ?? this.trailing,
         leading: leading ?? this.leading,
@@ -93,6 +100,7 @@ class Bar extends StatelessWidget {
         backButton: backButton ?? this.backButton,
         ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
         child: child ?? this.child,
+        barFooter: barFooter ?? this.barFooter,
       );
 
   @override
@@ -106,39 +114,48 @@ class Bar extends StatelessWidget {
               ignoreContextSignals: ignoreContextSignals,
               disabled: !useGlass,
               blur: Theme.of(context).surfaceBlur ?? 16,
-              child: SafeBar.withSafety(
-                  context,
-                  AppBar(
-                    leading: InjectBarLeading.mutate(context, [
-                      if ((backButton == BarBackButtonMode.always ||
-                              (backButton == BarBackButtonMode.whenPinned &&
-                                  !GlassStopper.isStopping(context))) &&
-                          Navigator.canPop(context) &&
-                          !BlockBackButton.isBlocking(context))
-                        GhostButton(
-                            density: ButtonDensity.icon,
-                            child: context.inSheet
-                                ? const Icon(PhosphorIcons.x_bold)
-                                : const Icon(PhosphorIcons.caret_left_bold),
-                            onPressed: () => Arcane.pop(context)),
-                      ...leading
-                    ]),
-                    surfaceOpacity: 0,
-                    trailing: InjectBarTrailing.mutate(
-                        context, [...trailing, if (actions != null) actions!]),
-                    title: titleText?.text ?? title,
-                    header: headerText?.text ?? header,
-                    subtitle: subtitleText?.text ?? subtitle,
-                    trailingExpanded: trailingExpanded,
-                    alignment: alignment,
-                    padding: padding,
-                    backgroundColor: backgroundColor,
-                    leadingGap: leadingGap,
-                    trailingGap: trailingGap,
-                    height: height,
-                    surfaceBlur: 0,
-                    child: child,
-                  )))
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (barHeader != null) barHeader!,
+                  SafeBar.withSafety(
+                      context,
+                      AppBar(
+                        leading: InjectBarLeading.mutate(context, [
+                          if ((backButton == BarBackButtonMode.always ||
+                                  (backButton == BarBackButtonMode.whenPinned &&
+                                      !GlassStopper.isStopping(context))) &&
+                              Navigator.canPop(context) &&
+                              !BlockBackButton.isBlocking(context))
+                            GhostButton(
+                                density: ButtonDensity.icon,
+                                child: context.inSheet
+                                    ? const Icon(PhosphorIcons.x_bold)
+                                    : const Icon(PhosphorIcons.caret_left_bold),
+                                onPressed: () => Arcane.pop(context)),
+                          ...leading
+                        ]),
+                        surfaceOpacity: 0,
+                        trailing: InjectBarTrailing.mutate(context,
+                            [...trailing, if (actions != null) actions!]),
+                        title: titleText?.text ?? title,
+                        header: headerText?.text ?? header,
+                        subtitle: subtitleText?.text ?? subtitle,
+                        trailingExpanded: trailingExpanded,
+                        alignment: alignment,
+                        padding: padding,
+                        backgroundColor: backgroundColor,
+                        leadingGap: leadingGap,
+                        trailingGap: trailingGap,
+                        height: height,
+                        surfaceBlur: 0,
+                        child: child,
+                      )),
+                  if (barFooter != null) barFooter!,
+                ],
+              ))
         ],
       );
 }

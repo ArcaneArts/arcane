@@ -18,6 +18,9 @@ extension XDateTimeStartEnds on DateTime {
 }
 
 extension XWidgetArcane on Widget {
+  Widget withTooltip(String tooltip) =>
+      Tooltip(tooltip: TooltipContainer(child: Text(tooltip)), child: this);
+
   Widget get iw => IntrinsicWidth(child: this);
 
   Widget get ih => IntrinsicHeight(child: this);

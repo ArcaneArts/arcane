@@ -6,7 +6,9 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
 
   @override
   Widget build(BuildContext context) => FillScreen(
-      header: Bar(titleText: "Home"),
+      header: Bar(
+        titleText: "Home",
+      ),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
