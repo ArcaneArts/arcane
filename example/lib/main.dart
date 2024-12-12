@@ -5,16 +5,10 @@ import 'package:example/model/note.dart';
 import 'package:example/screen/home.dart';
 import 'package:example/screen/note_view.dart';
 import 'package:example/screen/notes.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 bool v = false;
 String? vv;
 void main() {
-  if (kIsWeb) {
-    usePathUrlStrategy();
-  }
-
   setupNotes();
 
   runZonedGuarded(() {

@@ -8,11 +8,17 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
   Widget build(BuildContext context) => FillScreen(
       header: Bar(titleText: "Home"),
       child: Center(
-        child: PrimaryButton(
-            child: Text("Open Notes"),
-            onPressed: () {
-              Arcane.push(context, NotesScreen());
-            }),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PrimaryButton(
+                child: Text("Open Notes"),
+                onPressed: () {
+                  Arcane.push(context, NotesScreen());
+                }),
+            PrimaryButton(child: Text("Open Color Picker"), onPressed: () {})
+          ],
+        ),
       ));
 
   @override

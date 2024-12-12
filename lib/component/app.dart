@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/io_web_noop.dart' show usePathUrlStrategy
+    if (dart.library.html) 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 void runApp(Widget app,
     {bool usePathStrategy = true, bool setupMetaSEO = true}) async {
