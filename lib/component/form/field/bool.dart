@@ -24,34 +24,56 @@ class ArcaneFormBool<T> extends ArcaneFormFieldStateless
 
   @override
   Widget build(BuildContext context) => ArcaneFormFieldContainer(
-        label: label,
         subLabel: subLabel,
         child: builder?.call(context) ??
-            Row(
-              children: [
-                Checkbox(
-                    state: reader(getData(context)) == true
-                        ? CheckboxState.checked
-                        : reader(getData(context)) == false
-                            ? CheckboxState.unchecked
-                            : tristate
-                                ? CheckboxState.indeterminate
-                                : CheckboxState.unchecked,
-                    onChanged: (v) {
-                      setData(
-                          context,
-                          writer(
-                              getData(context),
-                              v == CheckboxState.checked
-                                  ? true
-                                  : v == CheckboxState.unchecked
-                                      ? false
-                                      : tristate
-                                          ? null
-                                          : false));
-                    }),
-                Flexible(child: Text(label!))
-              ],
-            ),
+            Clickable(
+                mouseCursor:
+                    const WidgetStatePropertyAll(SystemMouseCursors.click),
+                onPressed: () {
+                  bool? v = reader(getData(context));
+                  if (tristate) {
+                    setData(
+                        context,
+                        writer(
+                            getData(context),
+                            v == true
+                                ? null
+                                : v == false
+                                    ? true
+                                    : false));
+                  } else {
+                    setData(context,
+                        writer(getData(context), v == true ? false : true));
+                  }
+                },
+                child: Row(
+                  children: [
+                    getStream(context).build((b) => Checkbox(
+                        padding: 0,
+                        state: reader(b) == true
+                            ? CheckboxState.checked
+                            : reader(b) == false
+                                ? CheckboxState.unchecked
+                                : tristate
+                                    ? CheckboxState.indeterminate
+                                    : CheckboxState.unchecked,
+                        onChanged: (v) {
+                          setData(
+                              context,
+                              writer(
+                                  b,
+                                  v == CheckboxState.checked
+                                      ? true
+                                      : v == CheckboxState.unchecked
+                                          ? false
+                                          : tristate
+                                              ? null
+                                              : false));
+                        })),
+                    Flexible(
+                        child: Text(label!)
+                            .padLeft(8 * Theme.of(context).scaling)),
+                  ],
+                )),
       );
 }

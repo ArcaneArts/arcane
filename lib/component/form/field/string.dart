@@ -28,7 +28,9 @@ class ArcaneFormStringState<T> extends State<ArcaneFormString<T>>
 
   @override
   void initState() {
-    controller = TextEditingController();
+    controller = TextEditingController(
+      text: widget.reader(getData(context)),
+    );
     super.initState();
   }
 

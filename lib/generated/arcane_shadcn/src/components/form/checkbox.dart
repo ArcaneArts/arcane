@@ -17,9 +17,11 @@ class Checkbox extends StatefulWidget {
   final Widget? leading;
   final Widget? trailing;
   final bool tristate;
+  final double padding;
 
   const Checkbox({
     super.key,
+    this.padding = 8,
     required this.state,
     required this.onChanged,
     this.leading,
@@ -96,7 +98,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.leading != null) widget.leading!.small().medium(),
-          SizedBox(width: theme.scaling * 8),
+          SizedBox(width: theme.scaling * widget.padding),
           AnimatedContainer(
             duration: kDefaultDuration,
             width: theme.scaling * 16,
@@ -160,7 +162,7 @@ class _CheckboxState extends State<Checkbox> with FormValueSupplier {
                     ),
                   ),
           ),
-          SizedBox(width: theme.scaling * 8),
+          SizedBox(width: theme.scaling * widget.padding),
           if (widget.trailing != null) widget.trailing!.small().medium(),
         ],
       ),

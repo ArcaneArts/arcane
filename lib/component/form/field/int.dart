@@ -33,7 +33,8 @@ class ArcaneFormIntegerState<T> extends State<ArcaneFormInteger<T>>
 
   @override
   void initState() {
-    controller = TextEditingController();
+    controller =
+        TextEditingController(text: widget.reader(getData(context)).toString());
     super.initState();
   }
 

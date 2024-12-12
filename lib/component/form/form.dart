@@ -16,17 +16,17 @@ class ArcaneForm<T> extends StatefulWidget {
 }
 
 class ArcaneFormState<T> extends State<ArcaneForm<T>> {
-  late T data;
+  late BehaviorSubject<T> data;
 
   @override
   void initState() {
-    data = widget.initialData;
+    data = BehaviorSubject<T>.seeded(widget.initialData);
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) => Pylon<ArcaneFormState<T>>(
-        value: this,
+  Widget build(BuildContext context) => Pylon<BehaviorSubject<T>>(
+        value: data,
         builder: (context) => Column(
           children: widget.children.joinSeparator(Gap(8)),
         ),
@@ -48,15 +48,12 @@ abstract class ArcaneFormFieldStateless extends StatelessWidget {
 }
 
 mixin ArcaneFormMixin<T> {
-  ArcaneFormState<T> getForm(BuildContext context) =>
-      context.pylon<ArcaneFormState<T>>();
+  BehaviorSubject<T> getStream(BuildContext context) =>
+      context.pylon<BehaviorSubject<T>>();
 
-  T getData(BuildContext context) => getForm(context).data;
+  T getData(BuildContext context) => getStream(context).value;
 
-  void setData(BuildContext context, T data) => getForm(context).setState(() {
-        getForm(context).data = data;
-        print("Set data to $data");
-      });
+  void setData(BuildContext context, T data) => getStream(context).add(data);
 }
 
 class ArcaneFormFieldContainer extends StatelessWidget {
