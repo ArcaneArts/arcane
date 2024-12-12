@@ -22,10 +22,13 @@ class NumberInput extends StatefulWidget {
   final TextStyle? style;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onEditingComplete;
+  final String? placeholder;
+  final bool pointerSignals;
 
   const NumberInput({
     super.key,
     this.padding,
+    this.pointerSignals = true,
     this.controller,
     this.initialValue = 0,
     this.leading,
@@ -41,6 +44,7 @@ class NumberInput extends StatefulWidget {
     this.buttonStyle,
     this.style,
     this.onEditingComplete,
+    this.placeholder,
   });
 
   @override
@@ -88,51 +92,55 @@ class _NumberInputState extends State<NumberInput> {
       width: 24 * theme.scaling,
       height: 32 * theme.scaling,
       child: GestureDetector(
-        onPanUpdate: (details) {
-          if (details.delta.dy > 0) {
-            if (widget.max == null || _lastValidValue < widget.max!) {
-              double oldValue = _value.toDouble();
-              _lastValidValue = oldValue - widget.step;
-              _controller.text = widget.allowDecimals
-                  ? _lastValidValue.toString()
-                  : _lastValidValue.toInt().toString();
-              widget.onChanged?.call(_lastValidValue);
-            }
-          } else if (details.delta.dy < 0) {
-            if (widget.min == null || _lastValidValue > widget.min!) {
-              double oldValue = _value.toDouble();
-              _lastValidValue = oldValue + widget.step;
-              _controller.text = widget.allowDecimals
-                  ? _lastValidValue.toString()
-                  : _lastValidValue.toInt().toString();
-              widget.onChanged?.call(_lastValidValue);
-            }
-          }
-        },
-        child: Listener(
-          onPointerSignal: (event) {
-            if (event is PointerScrollEvent) {
-              if (event.scrollDelta.dy > 0) {
-                if (widget.max == null || _lastValidValue < widget.max!) {
-                  double oldValue = _value.toDouble();
-                  _lastValidValue = oldValue - widget.step;
-                  _controller.text = widget.allowDecimals
-                      ? _lastValidValue.toString()
-                      : _lastValidValue.toInt().toString();
-                  widget.onChanged?.call(_lastValidValue);
-                }
-              } else {
-                if (widget.min == null || _lastValidValue > widget.min!) {
-                  double oldValue = _value.toDouble();
-                  _lastValidValue = oldValue + widget.step;
-                  _controller.text = widget.allowDecimals
-                      ? _lastValidValue.toString()
-                      : _lastValidValue.toInt().toString();
-                  widget.onChanged?.call(_lastValidValue);
+        onPanUpdate: widget.pointerSignals
+            ? (details) {
+                if (details.delta.dy > 0) {
+                  if (widget.max == null || _lastValidValue < widget.max!) {
+                    double oldValue = _value.toDouble();
+                    _lastValidValue = oldValue - widget.step;
+                    _controller.text = widget.allowDecimals
+                        ? _lastValidValue.toString()
+                        : _lastValidValue.toInt().toString();
+                    widget.onChanged?.call(_lastValidValue);
+                  }
+                } else if (details.delta.dy < 0) {
+                  if (widget.min == null || _lastValidValue > widget.min!) {
+                    double oldValue = _value.toDouble();
+                    _lastValidValue = oldValue + widget.step;
+                    _controller.text = widget.allowDecimals
+                        ? _lastValidValue.toString()
+                        : _lastValidValue.toInt().toString();
+                    widget.onChanged?.call(_lastValidValue);
+                  }
                 }
               }
-            }
-          },
+            : null,
+        child: Listener(
+          onPointerSignal: widget.pointerSignals
+              ? (event) {
+                  if (event is PointerScrollEvent) {
+                    if (event.scrollDelta.dy > 0) {
+                      if (widget.max == null || _lastValidValue < widget.max!) {
+                        double oldValue = _value.toDouble();
+                        _lastValidValue = oldValue - widget.step;
+                        _controller.text = widget.allowDecimals
+                            ? _lastValidValue.toString()
+                            : _lastValidValue.toInt().toString();
+                        widget.onChanged?.call(_lastValidValue);
+                      }
+                    } else {
+                      if (widget.min == null || _lastValidValue > widget.min!) {
+                        double oldValue = _value.toDouble();
+                        _lastValidValue = oldValue + widget.step;
+                        _controller.text = widget.allowDecimals
+                            ? _lastValidValue.toString()
+                            : _lastValidValue.toInt().toString();
+                        widget.onChanged?.call(_lastValidValue);
+                      }
+                    }
+                  }
+                }
+              : null,
           child: Stack(
             fit: StackFit.passthrough,
             children: [
@@ -186,16 +194,17 @@ class _NumberInputState extends State<NumberInput> {
                   ),
                 ],
               ),
-              const Positioned.fill(
-                child: Center(
-                    child: MouseRegion(
-                        cursor: SystemMouseCursors.resizeUpDown,
-                        hitTestBehavior: HitTestBehavior.translucent,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 8,
-                        ))),
-              )
+              if (widget.pointerSignals)
+                const Positioned.fill(
+                  child: Center(
+                      child: MouseRegion(
+                          cursor: SystemMouseCursors.resizeUpDown,
+                          hitTestBehavior: HitTestBehavior.translucent,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 8,
+                          ))),
+                )
             ],
           ),
         ),
@@ -233,6 +242,7 @@ class _NumberInputState extends State<NumberInput> {
       ),
       child: TextField(
         border: false,
+        placeholder: widget.placeholder,
         minLines: 1,
         maxLines: 1,
         leading: widget.leading,

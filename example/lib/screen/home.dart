@@ -16,7 +16,36 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                 onPressed: () {
                   Arcane.push(context, NotesScreen());
                 }),
-            PrimaryButton(child: Text("Open Color Picker"), onPressed: () {})
+            Gap(8),
+            Divider(),
+            Gap(8),
+            ArcaneForm<DataExample>(
+              initialData: DataExample(),
+              onSubmitted: (t) {
+                print("Submitted $t");
+              },
+              children: [
+                ArcaneFormString<DataExample>(
+                    label: "String",
+                    subLabel: "This is a sublabel helper text (optional)",
+                    reader: (t) => t.aString,
+                    placeholder: "Optional Placeholder",
+                    writer: (t, s) => t.copyWith(aString: s)),
+                ArcaneFormInteger<DataExample>(
+                    showButtons: true,
+                    maxValue: 100,
+                    minValue: 0,
+                    placeholder: "Optional Placeholder",
+                    label: "Integer",
+                    subLabel: "The description of the note",
+                    reader: (t) => t.aInt,
+                    writer: (t, s) => t.copyWith(aInt: s)),
+                ArcaneFormBool<DataExample>(
+                    reader: (t) => t.aBool,
+                    writer: (t, b) => t.copyWith(aBool: b ?? false),
+                    label: "A Boolean")
+              ],
+            )
           ],
         ),
       ));
@@ -40,4 +69,38 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
         type: "website",
         url: "https://otherplace.com",
       );
+}
+
+class DataExample {
+  final int aInt;
+  final String aString;
+  final double aDouble;
+  final bool aBool;
+  final Color aColor;
+
+  const DataExample({
+    this.aInt = 0,
+    this.aString = "",
+    this.aDouble = 0.0,
+    this.aBool = false,
+    this.aColor = const Color(0xFF000000),
+  });
+
+  DataExample copyWith({
+    int? aInt,
+    String? aString,
+    double? aDouble,
+    bool? aBool,
+    Color? aColor,
+  }) =>
+      DataExample(
+        aInt: aInt ?? this.aInt,
+        aString: aString ?? this.aString,
+        aDouble: aDouble ?? this.aDouble,
+        aBool: aBool ?? this.aBool,
+        aColor: aColor ?? this.aColor,
+      );
+
+  String toString() =>
+      "DataExample(aInt: $aInt, aString: $aString, aDouble: $aDouble, aBool: $aBool, aColor: $aColor)";
 }

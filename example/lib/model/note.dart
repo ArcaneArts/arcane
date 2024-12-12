@@ -32,6 +32,17 @@ class Note implements PylonCodec<Note> {
     required this.description,
   });
 
+  Note copyWith({
+    int? id,
+    String? name,
+    String? description,
+  }) =>
+      Note(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        description: description ?? this.description,
+      );
+
   Map<String, dynamic> toMap() => {
         'name': name,
         'id': id,
