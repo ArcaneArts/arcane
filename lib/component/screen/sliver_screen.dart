@@ -7,6 +7,7 @@ class SliverScreen extends AbstractStatefulScreen {
   final ScrollPhysics? physics;
 
   const SliverScreen({
+    super.overrideBackgroundColor,
     super.key,
     super.background,
     super.fab,
@@ -118,6 +119,7 @@ class _SliverScreenState extends State<SliverScreen> {
         widget.footer ?? InjectScreenFooter.getFooterWidget(context);
 
     return Scaffold(
+        overrideBackgroundColor: widget.overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
           fit: StackFit.expand,

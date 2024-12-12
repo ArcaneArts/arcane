@@ -4,6 +4,7 @@ class FillScreen extends AbstractStatelessScreen {
   final Widget child;
 
   const FillScreen({
+    super.overrideBackgroundColor,
     super.key,
     super.background,
     super.fab,
@@ -29,6 +30,7 @@ class FillScreen extends AbstractStatelessScreen {
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
 
     return Scaffold(
+        overrideBackgroundColor: overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: MaybeStack(
           fit: StackFit.expand,

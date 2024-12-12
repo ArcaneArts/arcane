@@ -17,6 +17,7 @@ class Scaffold extends StatefulWidget {
   final Color? backgroundColor;
   final bool showLoadingSparks;
   final bool primary;
+  final Color? overrideBackgroundColor;
 
   const Scaffold({
     super.key,
@@ -32,6 +33,7 @@ class Scaffold extends StatefulWidget {
     this.headerBackgroundColor,
     this.footerBackgroundColor,
     this.showLoadingSparks = false,
+    this.overrideBackgroundColor,
   });
 
   @override
@@ -151,7 +153,7 @@ class ScaffoldState extends State<Scaffold> {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
     Widget w = Container(
-      color: theme.colorScheme.background,
+      color: widget.overrideBackgroundColor ?? theme.colorScheme.background,
       child: _ScaffoldFlex(
         floatingHeader: widget.floatingHeader,
         floatingFooter: widget.floatingFooter,

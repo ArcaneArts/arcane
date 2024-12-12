@@ -12,9 +12,11 @@ abstract class AbstractStatefulScreen extends StatefulWidget {
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
   final bool showLoadingSparks;
+  final Color? overrideBackgroundColor;
 
   const AbstractStatefulScreen({
     super.key,
+    this.overrideBackgroundColor,
     this.fab,
     this.foreground,
     this.background,
@@ -41,9 +43,11 @@ abstract class AbstractStatelessScreen extends StatelessWidget {
   final double? loadingProgress;
   final bool loadingProgressIndeterminate;
   final bool showLoadingSparks;
+  final Color? overrideBackgroundColor;
 
   const AbstractStatelessScreen({
     super.key,
+    this.overrideBackgroundColor,
     this.fab,
     this.foreground,
     this.background,
