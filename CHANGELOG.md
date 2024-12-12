@@ -1,3 +1,6 @@
+## 3.7.4
+* Hide showXXX(context) methods in favor of dialog apis in arcane. You can still import these via `import 'package:arcane/generated/arcane_shadcn/src/components/menu/dropdown_menu.dart';` for example. 
+
 ## 3.7.3
 * Widen dependency constraints
 * Removed unused dependencies

@@ -1,7 +1,18 @@
 library arcane;
 
 export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
-    hide Icons, IconButton, runApp;
+    hide
+        Icons,
+        IconButton,
+        runApp,
+        showDialog,
+        showToast,
+        showDropdown,
+        showPopover,
+        showGeneralDialog,
+        showCommandDialog,
+        showColorPickerDialog,
+        showColorPicker;
 export 'package:conjure/conjure.dart';
 export 'package:flutter/material.dart' show DataCell;
 export 'package:flutter/widgets.dart'

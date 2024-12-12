@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/menu/dropdown_menu.dart';
 
 class IconButtonMenu extends StatelessWidget {
   final IconData icon;

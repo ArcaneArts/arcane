@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/overlay/dialog.dart';
 
 mixin ArcaneDialogLauncher on Widget {
   Future<T?> open<T>(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/overlay/toast.dart';
 
 mixin ArcaneToastLauncher on Widget {
   bool get dismissible;

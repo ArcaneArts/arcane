@@ -1,4 +1,6 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/menu/dropdown_menu.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/overlay/popover.dart';
 
 class FabSocket extends StatelessWidget {
   final Widget child;
