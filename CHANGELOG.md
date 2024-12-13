@@ -1,6 +1,7 @@
 ## 3.7.5
 * FIX `ArcaneFieldBool` checkbox tristate logic
 * ADD `ArcaneSidebar` and `SidebarScreen` for creating sidebars
+* DOC `SidebarScreen` example
 
 ## 3.7.4
 * ADD `padding` to Checkbox, defaults to 8
