@@ -1,3 +1,6 @@
+## 3.7.6
+* FIX failed compilation on master
+
 ## 3.7.5
 * FIX `ArcaneFieldBool` checkbox tristate logic
 * ADD `ArcaneSidebar` and `SidebarScreen` for creating sidebars
