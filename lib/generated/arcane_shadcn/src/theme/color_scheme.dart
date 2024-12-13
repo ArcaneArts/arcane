@@ -263,7 +263,7 @@ class ColorShades implements ColorSwatch {
     assert(color != null, 'ColorShades: Missing color for $index');
     return color!;
   }
-  
+
   // @override
   // double get a => shade400.a;
   //
@@ -278,12 +278,30 @@ class ColorShades implements ColorSwatch {
 
   @override
   Iterable get keys => _colors.keys;
-  //
-  // @override
-  // double get r => shade400.r;
-  //
-  // @override
-  // int toARGB32() => shade400.toARGB32();
+
+  ///////////////////////////////////////////////////////////
+  // Dont override these because stable doesnt have this
+  // This is sort of a hack for now but it makes master builds work
+  // Without breaking stable.
+  double get a => alpha / 255;
+  double get b => blue / 255;
+  ColorSpace get colorSpace => ColorSpace.sRGB;
+  double get g => green / 255;
+  double get r => red / 255;
+  int toARGB32() =>
+      ((alpha & 0xFF) << 24) |
+      ((red & 0xFF) << 16) |
+      ((green & 0xFF) << 8) |
+      (blue & 0xFF);
+  Color withValues(
+          {double? alpha,
+          double? red,
+          double? green,
+          double? blue,
+          ColorSpace? colorSpace}) =>
+      this;
+///////////////////////////////////////////////////////////
+
   //
   // @override
   // Color withValues(
