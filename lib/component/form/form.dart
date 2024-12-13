@@ -28,7 +28,7 @@ class ArcaneFormState<T> extends State<ArcaneForm<T>> {
   Widget build(BuildContext context) => Pylon<BehaviorSubject<T>>(
         value: data,
         builder: (context) => Column(
-          children: widget.children.joinSeparator(Gap(8)),
+          children: widget.children.joinSeparator(Gap(16)),
         ),
       );
 }

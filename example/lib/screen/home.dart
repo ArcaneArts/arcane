@@ -5,51 +5,31 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => FillScreen(
+  Widget build(BuildContext context) => SidebarScreen(
+      sidebar: (context) => ArcaneSidebar(
+            children: (context) => List.generate(
+                100,
+                (i) => ArcaneSidebarButton(
+                      icon: Icon(Icons.accessibility_ionic),
+                      onTap: () {},
+                      selected: i == 4,
+                      label: "Item $i",
+                    )),
+            footer: (context) => ArcaneSidebarFooter(
+              content: Text("Im a footer"),
+            ),
+          ),
       header: Bar(
         titleText: "Home",
+        trailing: [
+          IconButton(
+            icon: Icon(Icons.accessibility_ionic),
+            onPressed: () => Arcane.push(context, NotesScreen()),
+          )
+        ],
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            PrimaryButton(
-                child: Text("Open Notes"),
-                onPressed: () {
-                  Arcane.push(context, NotesScreen());
-                }),
-            Gap(8),
-            Divider(),
-            Gap(8),
-            ArcaneForm<DataExample>(
-              initialData: DataExample(),
-              onSubmitted: (t) {
-                print("Submitted $t");
-              },
-              children: [
-                ArcaneFormString<DataExample>(
-                    label: "String",
-                    subLabel: "This is a sublabel helper text (optional)",
-                    reader: (t) => t.aString,
-                    placeholder: "Optional Placeholder",
-                    writer: (t, s) => t.copyWith(aString: s)),
-                ArcaneFormInteger<DataExample>(
-                    showButtons: true,
-                    maxValue: 100,
-                    minValue: 0,
-                    placeholder: "Optional Placeholder",
-                    label: "Integer",
-                    subLabel: "The description of the note",
-                    reader: (t) => t.aInt,
-                    writer: (t, s) => t.copyWith(aInt: s)),
-                ArcaneFormBool<DataExample>(
-                    reader: (t) => t.aBool,
-                    writer: (t, b) => t.copyWith(aBool: b ?? false),
-                    label: "A Boolean")
-              ],
-            )
-          ],
-        ),
+      sliver: SListView(
+        children: List.generate(100, (i) => Text("Item $i")),
       ));
 
   @override
@@ -77,7 +57,7 @@ class DataExample {
   final int aInt;
   final String aString;
   final double aDouble;
-  final bool aBool;
+  final bool? aBool;
   final Color aColor;
 
   const DataExample({
@@ -99,7 +79,7 @@ class DataExample {
         aInt: aInt ?? this.aInt,
         aString: aString ?? this.aString,
         aDouble: aDouble ?? this.aDouble,
-        aBool: aBool ?? this.aBool,
+        aBool: aBool,
         aColor: aColor ?? this.aColor,
       );
 
