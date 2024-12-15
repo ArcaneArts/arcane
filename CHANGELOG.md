@@ -8,6 +8,9 @@
   * Along with `NavTab` you can now use `NavDivider` or just `NavWidget` to add custom widgets to the navigation. Currently only supported by drawers, rails, & sidebars.
   * DOC Updated `Screens` tab for new nav tabs (hiding custom)
 * Updated Dependencies & Promoted UUID
+* Synced & Updated Upstream
+  * FIX `Sortable` not updating on data change
+  * DOC reorganized several docs routes
 
 ## 3.7.6
 * FIX failed compilation on master
