@@ -16,6 +16,7 @@ class SidebarScreen extends AbstractStatefulScreen {
     super.background,
     super.fab,
     super.header,
+    super.footer,
     super.gutter,
     super.loadingProgress,
     super.loadingProgressIndeterminate,
@@ -40,7 +41,10 @@ class _SidebarScreenState extends State<SidebarScreen> {
   BehaviorSubject<bool> headerBlurTop = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> headerBlurSidebar = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> headerBlur = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> footerBlur = BehaviorSubject.seeded(true);
+  GlobalKey footerKey = GlobalKey();
   GlobalKey headerKey = GlobalKey();
+  double footerSize = 0;
   double headerSize = 0;
   List<StreamSubscription<bool>> _listeners = [];
 
@@ -192,6 +196,25 @@ class _SidebarScreenState extends State<SidebarScreen> {
                 )
               ],
             )),
+            if (widget.footer != null)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: IntrinsicHeight(
+                  child: footerBlur.build((footerHas) => GlassStopper(
+                        key: footerKey,
+                        builder: (context) => KeyedSubtree(
+                          key: ValueKey("fblur.$footerHas"),
+                          child: Pylon<AntiFlickerDirection>(
+                            value: AntiFlickerDirection.bottom,
+                            builder: (context) => SafeBar(
+                                bottom: true,
+                                builder: (context) => widget.footer!),
+                          ),
+                        ),
+                        stopping: !(footerHas || widget.background != null),
+                      )),
+                ),
+              ),
             if (widget.fab != null)
               Positioned.fill(
                   child: Padding(

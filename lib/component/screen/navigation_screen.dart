@@ -173,18 +173,10 @@ class NavigationScreen extends AbstractStatelessScreen {
                             buildBottomNavigationBar(context, index),
                         builder: (context) => tabs[index].builder(context)),
                     NavigationType.sidebar => Scaffold(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            buildSidebar(context, index),
-                            overrideSidebarGap ?? Gap(siderailRightPadding),
-                            Expanded(
-                              child: BlockBackButton(
-                                  builder: (context) =>
-                                      tabs[index].builder(context)),
-                            ),
-                          ],
+                        child: Pylon<ArcaneSidebarInjector>(
+                          value: ArcaneSidebarInjector((context) =>
+                              buildSidebar(context, index, drawer: false)),
+                          builder: tabs[index].builder,
                         ),
                       ),
                     NavigationType.navigationRail => Scaffold(
@@ -206,4 +198,10 @@ class NavigationScreen extends AbstractStatelessScreen {
               .toList(),
         ),
       ));
+}
+
+class ArcaneSidebarInjector {
+  final Widget Function(BuildContext) builder;
+
+  const ArcaneSidebarInjector(this.builder);
 }

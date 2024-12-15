@@ -33,10 +33,10 @@ class _SliverScreenState extends State<SliverScreen> {
   ScrollController? _controller;
   BehaviorSubject<bool> headerBlur = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> footerBlur = BehaviorSubject.seeded(true);
-  GlobalKey headerKey = GlobalKey();
   GlobalKey footerKey = GlobalKey();
-  double headerSize = 0;
   double footerSize = 0;
+  GlobalKey headerKey = GlobalKey();
+  double headerSize = 0;
 
   @override
   void initState() {
