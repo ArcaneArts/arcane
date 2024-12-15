@@ -2,7 +2,7 @@
   "hosting": {
     "public": "docs/build/web",
     "predeploy": [
-      "cd docs && flutter build web --release --wasm"
+      "cd docs && flutter build web --release"
     ],
     "ignore": [
       "firebase.json",
