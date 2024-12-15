@@ -40,6 +40,7 @@ export 'package:soft_edge_blur/soft_edge_blur.dart';
 export 'package:toxic/toxic.dart';
 export 'package:toxic_flutter/toxic_flutter.dart';
 export 'package:universal_io/io.dart' show Platform;
+export 'package:uuid/uuid.dart' hide ValidationMode;
 
 export 'component/adaptive.dart';
 export 'component/app.dart';
