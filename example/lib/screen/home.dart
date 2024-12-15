@@ -1,36 +1,51 @@
 import 'package:arcane/arcane.dart';
-import 'package:example/screen/notes.dart';
 
 class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => SidebarScreen(
-      sidebar: (context) => ArcaneSidebar(
-            children: (context) => List.generate(
-                100,
-                (i) => ArcaneSidebarButton(
-                      icon: Icon(Icons.accessibility_ionic),
-                      onTap: () {},
-                      selected: i == 4,
-                      label: "Item $i",
-                    )),
-            footer: (context) => ArcaneSidebarFooter(
-              content: Text("Im a footer"),
-            ),
-          ),
-      header: Bar(
-        titleText: "Home",
-        trailing: [
-          IconButton(
-            icon: Icon(Icons.accessibility_ionic),
-            onPressed: () => Arcane.push(context, NotesScreen()),
-          )
-        ],
-      ),
-      sliver: SListView(
-        children: List.generate(100, (i) => Text("Item $i")),
-      ));
+  Widget build(BuildContext context) => MutablePylon<int>(
+        rebuildChildren: true,
+        local: true,
+        value: 0,
+        builder: (context) => NavigationScreen(
+            type: NavigationType.sidebar,
+            index: context.pylon<int>(),
+            onIndexChanged: (index) => context.setPylon<int>(index),
+            tabs: [
+              NavTab(
+                  label: "Home",
+                  icon: Icons.airplane,
+                  selectedIcon: Icons.airplane_fill,
+                  builder: (context) => SliverScreen(
+                      header: Bar(
+                        titleText: "This is bar 1",
+                      ),
+                      sliver: SListView.builder(
+                        childCount: 1000,
+                        builder: (context, i) => Tile(
+                          title: Text("Tile $i"),
+                        ),
+                      ))),
+              NavTab(
+                  label: "Fill",
+                  icon: Icons.activity,
+                  selectedIcon: Icons.activity_fill,
+                  builder: (context) => FillScreen(
+                      // using fill screen
+                      child: CenterBody(
+                          icon: Icons.activity,
+                          message: "Notice there is no app bar here"))),
+              NavTab(
+                  label: "Another",
+                  icon: Icons.address_book,
+                  selectedIcon: Icons.address_book_fill,
+                  builder: (context) => FillScreen(
+                      // using fill screen
+                      child: CenterBody(
+                          icon: Icons.activity, message: "Another screen"))),
+            ]),
+      );
 
   @override
   String get path => "/";
