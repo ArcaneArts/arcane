@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
           type: NavigationType.sidebar,
           index: context.pylon<int>(),
           onIndexChanged: (index) => context.setPylon<int>(index),
-          tabs: [
+          tabs: <NavItem>[
             NavTab(
                 label: "Home",
                 icon: Icons.airplane,
@@ -27,7 +27,6 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                         title: Text("Tile $i"),
                       ),
                     ))),
-            NavDivider(),
             NavTab(
                 label: "Fill",
                 icon: Icons.activity,
@@ -51,8 +50,24 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                     // using fill screen
                     child: CenterBody(
                         icon: Icons.activity, message: "Another screen"))),
-          ],
-          sidebarFooter: (context) => ArcaneSidebarFooter(),
+            NavTab(
+                label: "SLV",
+                icon: Icons.activity,
+                selectedIcon: Icons.activity_fill,
+                builder: (context) => SliverScreen(
+                    header: Bar(
+                      titleText: "This is bar 5",
+                    ),
+                    // using fill screen
+                    sliver: SliverFillRemainingBoxAdapter(
+                      child: CenterBody(
+                          icon: Icons.activity,
+                          message: "Notice there is no app bar here"),
+                    ))),
+          ].toList(),
+          sidebarFooter: (context) => ArcaneSidebarFooter(
+            content: Text("Derp"),
+          ),
         ),
       );
 

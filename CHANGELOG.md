@@ -10,7 +10,8 @@
 * Updated Dependencies & Promoted UUID
 * Synced & Updated Upstream
   * FIX `Sortable` not updating on data change
-  * DOC reorganized several docs routes
+  * DOC reorganized several docs routes 
+* FIX Spacing & Padding in `ArcaneSidebar`
 
 ## 3.7.6
 * FIX failed compilation on master

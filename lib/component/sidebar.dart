@@ -228,23 +228,32 @@ class ArcaneSidebarButton extends StatelessWidget {
       this.selected = false});
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-      decoration: BoxDecoration(
-        color: selected ? Theme.of(context).colorScheme.muted : null,
-        borderRadius: Theme.of(context).borderRadiusMd,
-      ),
-      duration: const Duration(milliseconds: 100),
-      child: context.isSidebarExpanded
-          ? GhostButton(
-              leading: icon,
-              onPressed: onTap,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (label != null) Text(label!).normal(),
-                  if (subLabel != null) Text(subLabel!).muted().small(),
-                ],
-              ),
-            )
-          : IconButton(icon: icon, onPressed: onTap));
+  Widget build(BuildContext context) => AnimatedPadding(
+      padding:
+          EdgeInsets.symmetric(horizontal: context.isSidebarExpanded ? 16 : 0),
+      duration: const Duration(milliseconds: 250),
+      child: AnimatedContainer(
+          decoration: BoxDecoration(
+            color: selected ? Theme.of(context).colorScheme.muted : null,
+            borderRadius: Theme.of(context).borderRadiusMd,
+          ),
+          duration: const Duration(milliseconds: 150),
+          child: context.isSidebarExpanded
+              ? GhostButton(
+                  density: ButtonDensity.compact,
+                  onPressed: onTap,
+                  child: Row(
+                    children: [
+                      icon.pad(8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (label != null) Text(label!).normal(),
+                          if (subLabel != null) Text(subLabel!).muted().small(),
+                        ],
+                      )
+                    ],
+                  ).padLeft(8),
+                )
+              : IconButton(icon: icon, onPressed: onTap)));
 }

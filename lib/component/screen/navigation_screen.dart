@@ -43,6 +43,7 @@ enum NavigationType {
 
 class NavigationScreen extends AbstractStatelessScreen {
   final int index;
+  final double sidebarSpacing;
   final NavigationType type;
   final ValueChanged<int>? onIndexChanged;
   final double railRightPadding;
@@ -61,6 +62,7 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.index = 0,
       this.overrideSidebarGap,
       this.railTopPadding = 8,
+      this.sidebarSpacing = 4,
       this.drawerTransformsBackdrop = false,
       this.onIndexChanged,
       this.sidebarFooter,
@@ -137,7 +139,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                         ),
                       NavItem e => e.builder(context),
                     })
-              ],
+              ].joinSeparator(SizedBox(height: sidebarSpacing)),
           footer: sidebarFooter == null
               ? null
               : drawer
