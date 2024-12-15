@@ -1,3 +1,13 @@
+## 3.8.0
+* BREAKING: Removed `SidebarScreen`
+* BREAKING: Overhauled `NavigationScreen`
+  * Dramatically improved NavigationType.sidebar to use the new `ArcaneSidebar`
+  * Drawers now also use the new `ArcaneSidebar`
+  * `ArcaneSidebarExpansionToggle` now autocloses the drawer if in drawe
+  * Added NavigationType.custom and `Widget Function(BuildContext, NavigationScreen, int)?customNavigationBuilder` for building it.
+  * Along with `NavTab` you can now use `NavDivider` or just `NavWidget` to add custom widgets to the navigation. Currently only supported by drawers, rails, & sidebars.
+  * DOC Updated `Screens` tab for new nav tabs (hiding custom)
+
 ## 3.7.6
 * FIX failed compilation on master
 

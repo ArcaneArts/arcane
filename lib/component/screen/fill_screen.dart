@@ -2,6 +2,7 @@ import 'package:arcane/arcane.dart';
 
 class FillScreen extends AbstractStatelessScreen {
   final Widget child;
+  final PylonBuilder? sidebar;
 
   const FillScreen({
     super.overrideBackgroundColor,
@@ -17,6 +18,7 @@ class FillScreen extends AbstractStatelessScreen {
     super.minContentWidth,
     super.showLoadingSparks,
     super.foreground,
+    this.sidebar,
     required this.child,
   });
 
@@ -28,7 +30,8 @@ class FillScreen extends AbstractStatelessScreen {
         : 0;
 
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
-
+    PylonBuilder? sidebar =
+        this.sidebar ?? context.pylonOr<ArcaneSidebarInjector>()?.builder;
     return Scaffold(
         overrideBackgroundColor: overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
@@ -51,10 +54,19 @@ class FillScreen extends AbstractStatelessScreen {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: MaybeStack(
+                      child: Stack(
                         fit: StackFit.passthrough,
                         children: [
-                          child.padOnly(left: gutterWidth, right: gutterWidth),
+                          Positioned.fill(
+                              child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              if (sidebar != null) sidebar(context),
+                              Expanded(
+                                  child: child.padOnly(
+                                      left: gutterWidth, right: gutterWidth)),
+                            ],
+                          )),
                           if (fab != null) FabSocket(child: fab!),
                           if (foreground != null) foreground!,
                         ],

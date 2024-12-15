@@ -1,51 +1,78 @@
 import 'package:arcane/arcane.dart';
 
-class NavTab {
+Widget _defaultDivider(BuildContext context) => const Divider();
+
+abstract class NavItem {
+  final Widget Function(BuildContext) builder;
+
+  const NavItem({
+    required this.builder,
+  });
+}
+
+class NavDivider extends NavWidget {
+  const NavDivider() : super(builder: _defaultDivider);
+}
+
+class NavWidget extends NavItem {
+  const NavWidget({
+    required super.builder,
+  });
+}
+
+class NavTab extends NavWidget {
   final String? label;
   final IconData icon;
   final IconData? selectedIcon;
-  final Widget Function(BuildContext) builder;
 
   const NavTab({
     this.label,
     required this.icon,
     this.selectedIcon,
-    required this.builder,
+    required super.builder,
   });
 }
 
-enum NavigationType { bottomNavigationBar, navigationRail, sidebar, drawer }
+enum NavigationType {
+  bottomNavigationBar,
+  navigationRail,
+  sidebar,
+  drawer,
+  custom
+}
 
 class NavigationScreen extends AbstractStatelessScreen {
   final int index;
   final NavigationType type;
   final ValueChanged<int>? onIndexChanged;
-  final double siderailRightPadding;
-  final List<NavTab> tabs;
+  final double railRightPadding;
+  final List<NavItem> tabs;
   final Widget? overrideSidebarGap;
-  final double siderailTopPadding;
+  final double railTopPadding;
   final bool endSide;
-  final Widget? footer;
-  final Widget? header;
-  final BoxConstraints sidebarConstraints;
+  final PylonBuilder? sidebarFooter;
+  final bool drawerTransformsBackdrop;
+  final Widget Function(BuildContext, NavigationScreen, int)?
+      customNavigationBuilder;
+
   const NavigationScreen(
       {super.key,
-      this.siderailRightPadding = 8,
+      this.railRightPadding = 8,
       this.index = 0,
       this.overrideSidebarGap,
-      this.siderailTopPadding = 8,
+      this.railTopPadding = 8,
+      this.drawerTransformsBackdrop = false,
       this.onIndexChanged,
+      this.sidebarFooter,
       required this.tabs,
-      this.sidebarConstraints =
-          const BoxConstraints(minWidth: 100, maxWidth: 150),
-      this.header,
-      this.footer,
+      this.customNavigationBuilder,
       this.endSide = false,
       this.type = NavigationType.bottomNavigationBar});
 
   Widget buildBottomNavigationBar(BuildContext context, int index) => ButtonBar(
       selectedIndex: index,
       buttons: tabs
+          .whereType<NavTab>()
           .mapIndexed((tab, barIndex) => IconTab(
                 icon: tab.icon,
                 selectedIcon: tab.selectedIcon ?? tab.icon,
@@ -70,132 +97,133 @@ class NavigationScreen extends AbstractStatelessScreen {
                         : const Icon(Icons.caret_left_bold),
                     onPressed: () => Arcane.pop(context))),
           ...tabs
-              .mapIndexed((tab, railIndex) => IconButton(
-                    icon: Icon(
-                        railIndex == index
-                            ? (tab.selectedIcon ?? tab.icon)
-                            : tab.icon,
-                        color: railIndex == index
-                            ? Theme.of(context).colorScheme.primary
-                            : null),
-                    onPressed: index == railIndex
-                        ? null
-                        : () => onIndexChanged?.call(railIndex),
-                  ))
+              .mapIndexed((tab, railIndex) => switch (tab) {
+                    NavTab tab => IconButton(
+                        icon: Icon(
+                            railIndex == index
+                                ? (tab.selectedIcon ?? tab.icon)
+                                : tab.icon,
+                            color: railIndex == index
+                                ? Theme.of(context).colorScheme.primary
+                                : null),
+                        onPressed: index == railIndex
+                            ? null
+                            : () => onIndexChanged?.call(railIndex),
+                      ),
+                    NavItem item => item.builder(context),
+                  })
               .toList(),
         ],
-      ).padTop(siderailTopPadding);
+      ).padTop(railTopPadding);
 
   Widget buildSidebar(BuildContext context, int index, {bool drawer = false}) =>
-      NavigationSidebar(
-        labelType: NavigationLabelType.expanded,
-        constraints: sidebarConstraints,
-        index: index,
-        surfaceOpacity: drawer ? 0 : null,
-        surfaceBlur: drawer ? 0 : null,
-        children: [
-          if (!drawer && Navigator.canPop(context)) ...[
-            NavigationButton(
-              index: -1,
-              child: Icon(Icons.caret_left_bold),
-              onChanged: (e) => Arcane.pop(context),
-              label: Text("Back"),
-            ),
-            NavigationGap(16)
-          ],
-          if (header != null) ...[
-            NavigationWidget(
-              child: SliverToBoxAdapter(child: header!),
-            ),
-            NavigationGap(16)
-          ],
-          ...tabs.mapIndexed((e, i) => NavigationButton(
-              onChanged: (e) {
-                if (drawer) {
-                  Arcane.closeDrawer(context);
-                }
+      ArcaneSidebar(
+          children: (context) => [
+                ...tabs.mapIndexed((e, i) => switch (e) {
+                      NavTab e => ArcaneSidebarButton(
+                          icon: Icon(
+                              index == i ? e.selectedIcon ?? e.icon : e.icon),
+                          label: e.label ?? "Item ${index + 1}",
+                          selected: index == i,
+                          onTap: () {
+                            if (drawer) {
+                              Arcane.closeDrawer(context);
+                            }
 
-                if (index != i) {
-                  onIndexChanged?.call(i);
-                }
-              },
-              index: i,
-              label: Text(e.label ?? "Item ${index + 1}"),
-              child: Icon(index == i ? e.selectedIcon ?? e.icon : e.icon))),
-          if (footer != null) ...[
-            NavigationGap(16),
-            NavigationWidget(
-              child: SliverToBoxAdapter(child: footer!),
-            )
-          ],
-        ],
-      ).padTop(siderailTopPadding);
+                            if (index != i) {
+                              onIndexChanged?.call(i);
+                            }
+                          },
+                        ),
+                      NavItem e => e.builder(context),
+                    })
+              ],
+          footer: sidebarFooter == null
+              ? null
+              : drawer
+                  ? (context) =>
+                      context.streamPylon<ArcaneSidebarState>().build((st) {
+                        if (st == ArcaneSidebarState.collapsed) {
+                          Arcane.closeDrawer(context);
+                        }
+
+                        context.setPylon(ArcaneSidebarState.expanded);
+                        return Pylon<ArcaneDrawerSignal>(
+                          value: ArcaneDrawerSignal(true),
+                          builder: sidebarFooter,
+                        );
+                      })
+                  : sidebarFooter);
 
   @override
   Widget build(BuildContext context) => DrawerOverlay(
           child: Pylon<NavigationType>(
         value: type,
-        local: true,
-        builder: (context) => IndexedStack(
-          index: index,
-          children: tabs
-              .mapIndexed((tab, index) => switch (type) {
-                    NavigationType.drawer => InjectBarEnds(
-                        trailing: endSide,
-                        start: !endSide,
-                        children: (context) => [
-                          IconButton(
-                              icon: Icon(Icons.menu_ionic),
-                              onPressed: () {
-                                openDrawer(
-                                    expands: false,
-                                    showDragHandle: false,
-                                    context: context,
-                                    builder: (context) => Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            SingleChildScrollView(
-                                              child: buildSidebar(
-                                                  context, index,
-                                                  drawer: true),
-                                            )
-                                          ],
-                                        ),
-                                    position: endSide
-                                        ? OverlayPosition.right
-                                        : OverlayPosition.left);
-                              })
-                        ],
-                        builder: (context) => tabs[index].builder(context),
-                      ),
-                    NavigationType.bottomNavigationBar => InjectScreenFooter(
-                        footer: (context) =>
-                            buildBottomNavigationBar(context, index),
-                        builder: (context) => tabs[index].builder(context)),
-                    NavigationType.sidebar => Scaffold(
-                        child: Pylon<ArcaneSidebarInjector>(
-                          value: ArcaneSidebarInjector((context) =>
-                              buildSidebar(context, index, drawer: false)),
-                          builder: tabs[index].builder,
-                        ),
-                      ),
-                    NavigationType.navigationRail => Scaffold(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            buildNavigationRail(context, index),
-                            Gap(siderailRightPadding),
-                            Expanded(
-                              child: BlockBackButton(
-                                  builder: (context) =>
-                                      tabs[index].builder(context)),
-                            ),
+        local: false,
+        builder: (context) => MutablePylon<ArcaneSidebarState>(
+          value: ArcaneSidebarState.expanded,
+          builder: (context) => IndexedStack(
+            index: index,
+            children: tabs
+                .mapIndexed((tab, index) => switch (type) {
+                      NavigationType.custom =>
+                        customNavigationBuilder!(context, this, index),
+                      NavigationType.drawer => InjectBarEnds(
+                          trailing: endSide,
+                          start: !endSide,
+                          children: (context) => [
+                            IconButton(
+                                icon: Icon(Icons.menu_ionic),
+                                onPressed: () {
+                                  openDrawer(
+                                      expands: false,
+                                      showDragHandle: false,
+                                      transformBackdrop:
+                                          drawerTransformsBackdrop,
+                                      context: context,
+                                      builder: (context) =>
+                                          MutablePylon<ArcaneSidebarState>(
+                                              value:
+                                                  ArcaneSidebarState.expanded,
+                                              builder: (context) =>
+                                                  buildSidebar(context, index,
+                                                      drawer: true)),
+                                      position: endSide
+                                          ? OverlayPosition.right
+                                          : OverlayPosition.left);
+                                })
                           ],
+                          builder: (context) => tabs[index].builder(context),
                         ),
-                      ),
-                  })
-              .toList(),
+                      NavigationType.bottomNavigationBar => InjectScreenFooter(
+                          footer: (context) =>
+                              buildBottomNavigationBar(context, index),
+                          builder: (context) => tabs[index].builder(context)),
+                      NavigationType.sidebar => Scaffold(
+                          child: Pylon<ArcaneSidebarInjector>(
+                            value: ArcaneSidebarInjector((context) =>
+                                buildSidebar(context, index, drawer: false)),
+                            builder: tabs[index].builder,
+                          ),
+                        ),
+                      NavigationType.navigationRail => Scaffold(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              buildNavigationRail(context, index),
+                              Gap(railRightPadding),
+                              Expanded(
+                                child: BlockBackButton(
+                                    builder: (context) =>
+                                        tabs[index].builder(context)),
+                              ),
+                            ],
+                          ),
+                        ),
+                    })
+                .toList(),
+          ),
         ),
       ));
 }
@@ -204,4 +232,10 @@ class ArcaneSidebarInjector {
   final Widget Function(BuildContext) builder;
 
   const ArcaneSidebarInjector(this.builder);
+}
+
+class ArcaneDrawerSignal {
+  final bool open;
+
+  const ArcaneDrawerSignal(this.open);
 }

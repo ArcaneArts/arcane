@@ -9,42 +9,51 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
         local: true,
         value: 0,
         builder: (context) => NavigationScreen(
-            type: NavigationType.sidebar,
-            index: context.pylon<int>(),
-            onIndexChanged: (index) => context.setPylon<int>(index),
-            tabs: [
-              NavTab(
-                  label: "Home",
-                  icon: Icons.airplane,
-                  selectedIcon: Icons.airplane_fill,
-                  builder: (context) => SliverScreen(
-                      header: Bar(
-                        titleText: "This is bar 1",
+          type: NavigationType.sidebar,
+          index: context.pylon<int>(),
+          onIndexChanged: (index) => context.setPylon<int>(index),
+          tabs: [
+            NavTab(
+                label: "Home",
+                icon: Icons.airplane,
+                selectedIcon: Icons.airplane_fill,
+                builder: (context) => SliverScreen(
+                    header: Bar(
+                      titleText: "This is bar 1",
+                    ),
+                    sliver: SListView.builder(
+                      childCount: 1000,
+                      builder: (context, i) => Tile(
+                        title: Text("Tile $i"),
                       ),
-                      sliver: SListView.builder(
-                        childCount: 1000,
-                        builder: (context, i) => Tile(
-                          title: Text("Tile $i"),
-                        ),
-                      ))),
-              NavTab(
-                  label: "Fill",
-                  icon: Icons.activity,
-                  selectedIcon: Icons.activity_fill,
-                  builder: (context) => FillScreen(
-                      // using fill screen
-                      child: CenterBody(
-                          icon: Icons.activity,
-                          message: "Notice there is no app bar here"))),
-              NavTab(
-                  label: "Another",
-                  icon: Icons.address_book,
-                  selectedIcon: Icons.address_book_fill,
-                  builder: (context) => FillScreen(
-                      // using fill screen
-                      child: CenterBody(
-                          icon: Icons.activity, message: "Another screen"))),
-            ]),
+                    ))),
+            NavDivider(),
+            NavTab(
+                label: "Fill",
+                icon: Icons.activity,
+                selectedIcon: Icons.activity_fill,
+                builder: (context) => FillScreen(
+                    header: Bar(
+                      titleText: "This is bar 2",
+                    ),
+                    // using fill screen
+                    child: CenterBody(
+                        icon: Icons.activity,
+                        message: "Notice there is no app bar here"))),
+            NavTab(
+                label: "Another",
+                icon: Icons.address_book,
+                selectedIcon: Icons.address_book_fill,
+                builder: (context) => FillScreen(
+                    header: Bar(
+                      titleText: "This is bar 3",
+                    ),
+                    // using fill screen
+                    child: CenterBody(
+                        icon: Icons.activity, message: "Another screen"))),
+          ],
+          sidebarFooter: (context) => ArcaneSidebarFooter(),
+        ),
       );
 
   @override

@@ -80,7 +80,6 @@ export 'component/screen/chat_screen.dart';
 export 'component/screen/fill_screen.dart';
 export 'component/screen/navigation_screen.dart';
 export 'component/screen/settings_screen.dart';
-export 'component/screen/sidebar_screen.dart';
 export 'component/screen/sliver_screen.dart';
 export 'component/search.dart';
 export 'component/section.dart';

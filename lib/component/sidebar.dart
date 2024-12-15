@@ -14,6 +14,12 @@ extension XArcaneSidebarStatePylon on BuildContext {
 List<Widget> _defWList(BuildContext context) => [];
 Widget _defSliver(BuildContext context) => SliverToBoxAdapter();
 
+class ArbitraryHeaderSpace {
+  final double height;
+
+  const ArbitraryHeaderSpace(this.height);
+}
+
 class ArcaneSidebar extends StatefulWidget {
   final List<Widget> Function(BuildContext context) children;
   final PylonBuilder sliver;
@@ -91,61 +97,62 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
       }
     });
 
-    return MutablePylon<ArcaneSidebarState>(
-        local: true,
-        rebuildChildren: true,
-        value: ArcaneSidebarState.expanded,
-        builder: (context) => AnimatedSize(
-              alignment: Alignment.centerLeft,
-              duration: widget.expansionAnimationDuration,
-              curve: widget.expansionAnimationCurve,
-              child: Stack(
-                children: [
-                  SizedBox(
-                    width: context.isSidebarExpanded
-                        ? widget.width
-                        : widget.collapsedWidth,
-                    child: CustomScrollView(
-                        controller: context
-                            .pylonOr<SidebarScrollController>()
-                            ?.controller,
-                        slivers: [
-                          SliverStickyHeader.builder(
-                              builder: (context, _) => SizedBox(
-                                  height: context
-                                          .pylonOr<ArbitraryHeaderSpace>()
-                                          ?.height ??
-                                      0),
-                              sliver: MultiSliver(
-                                children: [
-                                  buildSliverContent(context),
-                                  SliverToBoxAdapter(
-                                    child: SizedBox(height: footerSize),
-                                  ),
-                                ],
-                              ))
-                        ]),
-                  ),
-                  if (widget.footer != null)
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: KeyedSubtree(
-                          key: footerKey, child: widget.footer!(context)),
+    return AnimatedSize(
+      alignment: Alignment.centerLeft,
+      duration: widget.expansionAnimationDuration,
+      curve: widget.expansionAnimationCurve,
+      child: context
+          .streamPylon<ArcaneSidebarState>()
+          .build((sbs) => Pylon<ArcaneSidebarState>(
+                value: sbs,
+                builder: (context) => Stack(
+                  children: [
+                    SizedBox(
+                      width: context.isSidebarExpanded
+                          ? widget.width
+                          : widget.collapsedWidth,
+                      child: CustomScrollView(
+                          controller: context
+                              .pylonOr<SidebarScrollController>()
+                              ?.controller,
+                          slivers: [
+                            SliverStickyHeader.builder(
+                                builder: (context, _) => SizedBox(
+                                    height: context
+                                            .pylonOr<ArbitraryHeaderSpace>()
+                                            ?.height ??
+                                        0),
+                                sliver: MultiSliver(
+                                  children: [
+                                    buildSliverContent(context),
+                                    SliverToBoxAdapter(
+                                      child: SizedBox(height: footerSize),
+                                    ),
+                                  ],
+                                ))
+                          ]),
                     ),
-                  if (widget.sidebarDivider)
-                    Positioned(
-                        top: 0,
-                        right: 0,
+                    if (widget.footer != null)
+                      Positioned(
                         bottom: 0,
-                        child: Container(
-                          color: Theme.of(context).colorScheme.muted,
-                          width: 1,
-                        )),
-                ],
-              ),
-            ));
+                        left: 0,
+                        right: 0,
+                        child: KeyedSubtree(
+                            key: footerKey, child: widget.footer!(context)),
+                      ),
+                    if (widget.sidebarDivider)
+                      Positioned(
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            color: Theme.of(context).colorScheme.muted,
+                            width: 1,
+                          )),
+                  ],
+                ),
+              )),
+    );
   }
 }
 
@@ -190,10 +197,12 @@ class ArcaneSidebarExpansionToggle extends StatelessWidget {
             g == ArcaneSidebarState.expanded
                 ? Icon(Icons.chevron_back_ionic)
                 : Icon(Icons.chevron_forward_ionic)),
-        onPressed: () => context.modPylon<ArcaneSidebarState>((i) =>
-            i == ArcaneSidebarState.expanded
-                ? ArcaneSidebarState.collapsed
-                : ArcaneSidebarState.expanded),
+        onPressed: (context.pylonOr<ArcaneDrawerSignal>()?.open ?? false)
+            ? () => Arcane.closeDrawer(context)
+            : () => context.modPylon<ArcaneSidebarState>((i) =>
+                i == ArcaneSidebarState.expanded
+                    ? ArcaneSidebarState.collapsed
+                    : ArcaneSidebarState.expanded),
       );
 }
 

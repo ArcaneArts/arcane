@@ -49,7 +49,6 @@ List<GoRoute> customRoutes = [
               exampleScreenFill,
               exampleScreenSliver,
               exampleScreenSliverSections,
-              exampleScreenSidebar,
               exampleScreenNavigation
             ],
           )),
@@ -1496,7 +1495,7 @@ NavigationScreen(
                   RadioCards<NavigationType>(
                       builder: (nt) => Basic(title: Text(nt.name)),
                       onChanged: (nt) => setState(() => type = nt),
-                      items: NavigationType.values,
+                      items: NavigationType.values.where((e) => e != NavigationType.custom).toList(),
                       value: type)
                 ],
               ),
@@ -1696,125 +1695,6 @@ SliverScreen(
       ),
     );
 
-Widget get exampleScreenSidebar => ArcaneUsageExample(
-      padding: 0,
-      title: 'Sidebar Screens',
-      code: r"""
-SidebarScreen(
-  gutter: false,
-  header: Bar(titleText: "Header", trailing: [
-    IconButton(
-      icon: Icon(Icons.activity),
-      onPressed: () {},
-    )
-  ]),
-  sidebar: (context) => ArcaneSidebar(
-        children: (context) => [
-          ArcaneSidebarButton(
-              icon: Icon(Icons.activity),
-              label: "Activity",
-              onTap: () {}),
-          ArcaneSidebarButton(
-              icon: Icon(Icons.airplane),
-              label: "Airplane",
-              onTap: () {}),
-          ArcaneSidebarButton(
-              icon: Icon(Icons.address_book),
-              label: "Address Book",
-              onTap: () {}),
-
-          // Make Custom Widgets
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            width: double.infinity,
-            height: 50,
-            color:
-                context.isSidebarExpanded ? Colors.red : Colors.blue,
-          )
-        ],
-        footer: (context) => ArcaneSidebarFooter(
-          content: Text("FOOTER!"),
-        ),
-      ),
-  sliver: SliverPadding(
-    padding: EdgeInsets.symmetric(horizontal: 8),
-    sliver: SGridView.builder(
-      childCount: 24,
-      crossAxisSpacing: 8,
-      childAspectRatio: 2,
-      mainAxisSpacing: 8,
-      maxCrossAxisExtent: 200,
-      builder: (context, index) => Card(
-        child: Center(
-          child: Basic(
-            title: Text("Item $index"),
-            subtitle: Text("Subtitle or something"),
-          ),
-        ),
-      ),
-    ),
-  )
-)
-""",
-      child: SizedBox(
-        height: 500,
-        child: SidebarScreen(
-            gutter: false,
-            header: Bar(titleText: "Header", trailing: [
-              IconButton(
-                icon: Icon(Icons.activity),
-                onPressed: () {},
-              )
-            ]),
-            sidebar: (context) => ArcaneSidebar(
-                  children: (context) => [
-                    ArcaneSidebarButton(
-                        icon: Icon(Icons.activity),
-                        label: "Activity",
-                        onTap: () {}),
-                    ArcaneSidebarButton(
-                        icon: Icon(Icons.airplane),
-                        label: "Airplane",
-                        onTap: () {}),
-                    ArcaneSidebarButton(
-                        icon: Icon(Icons.address_book),
-                        label: "Address Book",
-                        onTap: () {}),
-
-                    // Make Custom Widgets
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: double.infinity,
-                      height: 1,
-                      color:
-                          context.isSidebarExpanded ? Colors.red : Colors.blue,
-                    )
-                  ],
-                  footer: (context) => ArcaneSidebarFooter(
-                    content: Text("FOOTER!"),
-                  ),
-                ),
-            sliver: SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              sliver: SGridView.builder(
-                childCount: 24,
-                crossAxisSpacing: 8,
-                childAspectRatio: 2,
-                mainAxisSpacing: 8,
-                maxCrossAxisExtent: 200,
-                builder: (context, index) => Card(
-                  child: Center(
-                    child: Basic(
-                      title: Text("Item $index"),
-                      subtitle: Text("Subtitle or something"),
-                    ),
-                  ),
-                ),
-              ),
-            )),
-      ),
-    );
-
 Widget get exampleScreenFill => ArcaneUsageExample(
       padding: 0,
       title: 'Fill Screens',
@@ -1907,7 +1787,9 @@ class _ExampleNavigationScreenState extends State<ExampleNavigationScreen> {
                           RadioCards<NavigationType>(
                               builder: (nt) => Basic(title: Text(nt.name)),
                               onChanged: (nt) => setState(() => type = nt),
-                              items: NavigationType.values,
+                              items: NavigationType.values
+                                  .where((e) => e != NavigationType.custom)
+                                  .toList(),
                               value: type)
                         ],
                       ),
