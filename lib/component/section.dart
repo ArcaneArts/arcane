@@ -19,6 +19,82 @@ class GlassSection extends StatelessWidget {
       );
 }
 
+class ExpansionBarSection extends StatelessWidget {
+  final Widget? title;
+  final Widget? subtitle;
+  final Widget? header;
+  final String? titleText;
+  final String? subtitleText;
+  final String? headerText;
+  final List<Widget> leading;
+  final List<Widget> trailing;
+  final Widget sliver;
+  final BarBackButtonMode backButton;
+  final bool initiallyExpanded;
+
+  ExpansionBarSection(
+      {super.key,
+      this.backButton = BarBackButtonMode.never,
+      this.title,
+      required this.sliver,
+      this.subtitle,
+      this.header,
+      this.titleText,
+      this.subtitleText,
+      this.headerText,
+      this.leading = const [],
+      this.trailing = const [],
+      this.initiallyExpanded = true});
+
+  @override
+  Widget build(BuildContext context) => MutablePylon<ExpansionBarState>(
+        local: true,
+        value: ExpansionBarState(initiallyExpanded),
+        builder: (context) {
+          Widget icon = context.streamPylon<ExpansionBarState>().buildNullable(
+              (state) => (state?.expanded ?? true)
+                  ? const Icon(Icons.chevron_up_ionic)
+                  : const Icon(Icons.chevron_down_ionic));
+
+          return SliverStickyHeader.builder(
+            builder: (context, state) => GhostButton(
+                density: ButtonDensity.compact,
+                onPressed: () => context.modPylon<ExpansionBarState>(
+                    (i) => ExpansionBarState(!i.expanded)),
+                child: Bar(
+                  ignoreContextSignals: true,
+                  useGlass: state.isPinned,
+                  backButton: backButton,
+                  title: context.isSidebarExpandedOrAbsent ? title : icon,
+                  header: header,
+                  subtitle: subtitle,
+                  titleText: titleText,
+                  subtitleText: subtitleText,
+                  headerText: headerText,
+                  leading: leading,
+                  trailing: [
+                    ...trailing,
+                    if (context.isSidebarExpandedOrAbsent) icon
+                  ],
+                )),
+            sliver: SliverAnimatedPaintExtent(
+                duration: Duration(milliseconds: 333),
+                curve: Curves.easeOutCirc,
+                child: context.streamPylon<ExpansionBarState>().buildNullable(
+                    (state) => (state?.expanded ?? true)
+                        ? sliver
+                        : const SliverToBoxAdapter())),
+          );
+        },
+      );
+}
+
+class ExpansionBarState {
+  final bool expanded;
+
+  const ExpansionBarState(this.expanded);
+}
+
 class BarSection extends StatelessWidget {
   final Widget? title;
   final Widget? subtitle;

@@ -9,6 +9,9 @@ enum ArcaneSidebarState {
 extension XArcaneSidebarStatePylon on BuildContext {
   bool get isSidebarExpanded =>
       pylonOr<ArcaneSidebarState>() == ArcaneSidebarState.expanded;
+  bool get isSidebarExpandedOrAbsent =>
+      (pylonOr<ArcaneSidebarState>() ?? ArcaneSidebarState.expanded) ==
+      ArcaneSidebarState.expanded;
 }
 
 List<Widget> _defWList(BuildContext context) => [];
@@ -34,8 +37,8 @@ class ArcaneSidebar extends StatefulWidget {
   const ArcaneSidebar({
     super.key,
     this.width = 250,
-    this.expansionAnimationCurve = Curves.easeOutExpo,
-    this.expansionAnimationDuration = const Duration(milliseconds: 450),
+    this.expansionAnimationCurve = Curves.easeOutCirc,
+    this.expansionAnimationDuration = const Duration(milliseconds: 333),
     this.footer,
     this.collapsedWidth = 52,
     this.sidebarDivider = true,
@@ -47,8 +50,8 @@ class ArcaneSidebar extends StatefulWidget {
       {super.key,
       this.sidebarDivider = true,
       this.width = 250,
-      this.expansionAnimationCurve = Curves.easeOutExpo,
-      this.expansionAnimationDuration = const Duration(milliseconds: 450),
+      this.expansionAnimationCurve = Curves.easeOutCirc,
+      this.expansionAnimationDuration = const Duration(milliseconds: 333),
       this.footer,
       this.collapsedWidth = 50,
       required this.sliver})
@@ -160,7 +163,9 @@ class ArcaneSidebarFooter extends StatelessWidget {
   final Widget content;
   final Widget trailing;
 
-  const ArcaneSidebarFooter(
+  // Cant be const because pylon
+  // ignore: prefer_const_constructors_in_immutables
+  ArcaneSidebarFooter(
       {super.key,
       this.trailing = const ArcaneSidebarExpansionToggle(),
       this.content = const SizedBox.shrink()});
@@ -231,13 +236,15 @@ class ArcaneSidebarButton extends StatelessWidget {
   Widget build(BuildContext context) => AnimatedPadding(
       padding:
           EdgeInsets.symmetric(horizontal: context.isSidebarExpanded ? 16 : 0),
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 333),
+      curve: Curves.easeOutCirc,
       child: AnimatedContainer(
           decoration: BoxDecoration(
             color: selected ? Theme.of(context).colorScheme.muted : null,
             borderRadius: Theme.of(context).borderRadiusMd,
           ),
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 333),
+          curve: Curves.easeOutCirc,
           child: context.isSidebarExpanded
               ? GhostButton(
                   density: ButtonDensity.compact,

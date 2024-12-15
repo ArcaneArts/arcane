@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 export 'package:sliver_tools/src/rendering/multi_sliver.dart';
 
+typedef SliverFill = SliverFillRemainingBoxAdapter;
+
 class SnappingScrollNotificationHandler {
   final double expandedBarHeight;
   final double collapsedBarHeight;

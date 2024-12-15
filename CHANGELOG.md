@@ -1,3 +1,7 @@
+## 3.8.1
+* ADD `ExpansionBarSection`
+* DOC Sidebar Examples
+
 ## 3.8.0
 * BREAKING: Removed `SidebarScreen`
 * BREAKING: Overhauled `NavigationScreen`
