@@ -1,6 +1,5 @@
 import 'package:arcane/arcane.dart';
 import 'package:flutter/foundation.dart';
-import 'package:universal_html/html.dart' as html;
 
 mixin ArcaneRoute on Widget {
   String get path;
@@ -61,7 +60,7 @@ class ArcanePageMeta {
 
     if (title != null) {
       seo.ogTitle(ogTitle: title!);
-      html.document.title = title!;
+      // html.document.title = title!; TODO NEED JS INTEROP FOR WASM
       seo.twitterTitle(twitterTitle: title!);
     }
     if (description != null) {

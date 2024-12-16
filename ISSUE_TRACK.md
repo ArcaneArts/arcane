@@ -1,5 +1,4 @@
 ## Waiting
-* [WASM + universal_html](https://github.com/flutter/flutter/issues/160318)
 * [WASM Compile Crash](https://github.com/flutter/flutter/issues/159760)
 
 ## Fixed
