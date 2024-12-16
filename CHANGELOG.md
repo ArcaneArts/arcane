@@ -1,3 +1,6 @@
+## 3.8.3
+* Upgrade pylon to include conduits
+
 ## 3.8.2
 * FIX compilation on WASM caused by Pylon
 * FIX Disabled the web title change on routing metadata to fix wasm builds
