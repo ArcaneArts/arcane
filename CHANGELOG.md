@@ -4,7 +4,6 @@
 * Modified how chips work, removed `_ChipSuggestionItem` in chip
 * Merged with upstream on master colorscheme fix
 * BREAKING removed pixel snap promotion (Dont use PixelSnap.of(context) anymore)
-* 
 
 ## 3.8.3
 * Upgrade pylon to include conduits
