@@ -1,6 +1,5 @@
-import 'package:pixel_snap/pixel_snap.dart';
-import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:pylon/pylon.dart';
 
 class ModalContainer extends StatelessWidget {
   static bool shouldClipSurface(double? surfaceOpacity) {
