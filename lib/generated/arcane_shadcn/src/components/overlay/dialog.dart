@@ -37,13 +37,12 @@ class ModalContainer extends StatelessWidget {
     var textDirection = Directionality.of(context);
     var resolvedBorderRadius = borderRadius.resolve(textDirection);
     var resolvedPadding = padding.resolve(textDirection);
-    var snap = PixelSnap.of(context);
     Widget paintWidget = CustomPaint(
       painter: SurfaceBarrierPainter(
         clip: surfaceClip,
-        borderRadius: resolvedBorderRadius.pixelSnap(snap),
+        borderRadius: resolvedBorderRadius,
         barrierColor: barrierColor,
-        padding: resolvedPadding.pixelSnap(snap),
+        padding: resolvedPadding,
       ),
     );
     if (fadeAnimation != null) {
