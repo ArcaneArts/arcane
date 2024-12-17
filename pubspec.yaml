@@ -67,3 +67,4 @@ scripts:
   sync_upstream: sh ./script_sync_shadcn.sh
   hotload_docs: sh ./script_sync_docs_live.sh
   deploy_docs: sh ./script_deploy_docs_fast.sh
+  validate_dependencies: dart pub global activate dependency_validator && dart pub global run dependency_validator
