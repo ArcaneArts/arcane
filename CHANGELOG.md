@@ -1,3 +1,11 @@
+## 3.9.0
+* Removed the use of PixelSnap widgets and replaced them with their originals
+* ADD `CrossFadedTransition` for transitioning between two widgets
+* Modified how chips work, removed `_ChipSuggestionItem` in chip
+* Merged with upstream on master colorscheme fix
+* BREAKING removed pixel snap promotion (Dont use PixelSnap.of(context) anymore)
+* 
+
 ## 3.8.3
 * Upgrade pylon to include conduits
 
