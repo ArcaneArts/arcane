@@ -264,18 +264,6 @@ class ColorShades implements ColorSwatch {
     return color!;
   }
 
-  // @override
-  // double get a => shade400.a;
-  //
-  // @override
-  // double get b => shade400.b;
-  //
-  // @override
-  // ColorSpace get colorSpace => shade400.colorSpace;
-  //
-  // @override
-  // double get g => shade400.g;
-
   @override
   Iterable get keys => _colors.keys;
 
@@ -283,39 +271,37 @@ class ColorShades implements ColorSwatch {
   // Dont override these because stable doesnt have this
   // This is sort of a hack for now but it makes master builds work
   // Without breaking stable.
-  double get a => alpha / 255;
-  double get b => blue / 255;
-  ColorSpace get colorSpace => ColorSpace.sRGB;
-  double get g => green / 255;
-  double get r => red / 255;
+  double get a => _primary.a;
+  double get b => _primary.b;
+  ColorSpace get colorSpace => _primary.colorSpace;
+  double get g => _primary.g;
+  double get r => _primary.r;
+
   int toARGB32() =>
       ((alpha & 0xFF) << 24) |
       ((red & 0xFF) << 16) |
       ((green & 0xFF) << 8) |
       (blue & 0xFF);
-  Color withValues(
-          {double? alpha,
-          double? red,
-          double? green,
-          double? blue,
-          ColorSpace? colorSpace}) =>
-      this;
-///////////////////////////////////////////////////////////
 
-  //
-  // @override
-  // Color withValues(
-  //         {double? alpha,
-  //         double? red,
-  //         double? green,
-  //         double? blue,
-  //         ColorSpace? colorSpace}) =>
-  //     shade400.withValues(
-  //         alpha: alpha,
-  //         red: red,
-  //         green: green,
-  //         blue: blue,
-  //         colorSpace: colorSpace);
+  Color withValues(
+      {double? alpha,
+      double? red,
+      double? green,
+      double? blue,
+      ColorSpace? colorSpace}) {
+    Map<int, Color> colors = {};
+    for (final key in _shadeValues) {
+      colors[key] = _colors[key]!.withValues(
+        alpha: alpha,
+        red: red,
+        green: green,
+        blue: blue,
+        colorSpace: colorSpace,
+      );
+    }
+    return ColorShades._direct(colors);
+  }
+///////////////////////////////////////////////////////////
 }
 
 String hexFromColor(Color color) {
