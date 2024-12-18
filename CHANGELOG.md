@@ -1,3 +1,7 @@
+## 3.9.1
+* Updated Pylon to fix /#/ navigation when using ports without urlStrat
+* Fixed navigator proliferation via pylons into nested sub-screens when using sidebar injectors
+
 ## 3.9.0
 * Removed the use of PixelSnap widgets and replaced them with their originals
 * ADD `CrossFadedTransition` for transitioning between two widgets

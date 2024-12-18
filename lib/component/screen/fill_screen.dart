@@ -30,8 +30,8 @@ class FillScreen extends AbstractStatelessScreen {
         : 0;
 
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
-    PylonBuilder? sidebar =
-        this.sidebar ?? context.pylonOr<ArcaneSidebarInjector>()?.builder;
+    PylonBuilder? isidebar = context.pylonOr<ArcaneSidebarInjector>()?.builder;
+    PylonBuilder? sidebar = this.sidebar ?? isidebar;
     return Scaffold(
         overrideBackgroundColor: overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
@@ -62,9 +62,11 @@ class FillScreen extends AbstractStatelessScreen {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               if (sidebar != null) sidebar(context),
-                              Expanded(
-                                  child: child.padOnly(
-                                      left: gutterWidth, right: gutterWidth)),
+                              PylonRemove<ArcaneSidebarInjector>(
+                                builder: (context) => Expanded(
+                                    child: child.padOnly(
+                                        left: gutterWidth, right: gutterWidth)),
+                              ),
                             ],
                           )),
                           if (fab != null) FabSocket(child: fab!),

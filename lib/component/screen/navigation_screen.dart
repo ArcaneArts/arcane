@@ -144,13 +144,14 @@ class NavigationScreen extends AbstractStatelessScreen {
               ? null
               : drawer
                   ? (context) =>
-                      context.streamPylon<ArcaneSidebarState>().build((st) {
+                      context.streamPylon<ArcaneSidebarState?>().build((st) {
                         if (st == ArcaneSidebarState.collapsed) {
                           Arcane.closeDrawer(context);
                         }
 
                         context.setPylon(ArcaneSidebarState.expanded);
-                        return Pylon<ArcaneDrawerSignal>(
+                        return Pylon<ArcaneDrawerSignal?>(
+                          local: true,
                           value: ArcaneDrawerSignal(true),
                           builder: sidebarFooter,
                         );
@@ -159,7 +160,7 @@ class NavigationScreen extends AbstractStatelessScreen {
 
   @override
   Widget build(BuildContext context) => DrawerOverlay(
-          child: Pylon<NavigationType>(
+          child: Pylon<NavigationType?>(
         value: type,
         local: false,
         builder: (context) => MutablePylon<ArcaneSidebarState>(
@@ -202,7 +203,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                               buildBottomNavigationBar(context, index),
                           builder: (context) => tabs[index].builder(context)),
                       NavigationType.sidebar => Scaffold(
-                          child: Pylon<ArcaneSidebarInjector>(
+                          child: Pylon<ArcaneSidebarInjector?>(
                             value: ArcaneSidebarInjector((context) =>
                                 buildSidebar(context, index, drawer: false)),
                             builder: tabs[index].builder,

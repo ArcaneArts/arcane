@@ -203,26 +203,28 @@ class _SliverScreenState extends State<SliverScreen> {
                     ),
                   ], builder: sidebar),
                 Expanded(
-                  child: CustomScrollView(
-                    physics: widget.physics,
-                    controller: getController(context),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: headerSize,
-                        ),
-                      ),
-                      SliverPadding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: gutterWidth,
+                  child: PylonRemove<ArcaneSidebarInjector>(
+                    builder: (context) => CustomScrollView(
+                      physics: widget.physics,
+                      controller: getController(context),
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: headerSize,
                           ),
-                          sliver: widget.sliver),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: footerSize,
                         ),
-                      )
-                    ],
+                        SliverPadding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: gutterWidth,
+                            ),
+                            sliver: widget.sliver),
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: footerSize,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
