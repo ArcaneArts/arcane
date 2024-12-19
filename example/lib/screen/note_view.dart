@@ -16,7 +16,7 @@ class NoteScreen extends StatelessWidget with ArcaneRoute {
           header: Bar(
             titleText: context.note.name,
           ),
-          child: Text(context.note.description)));
+          child: TestContent()));
 
   @override
   String get path => "/notes/view";
@@ -28,4 +28,24 @@ class NoteScreen extends StatelessWidget with ArcaneRoute {
     seo.keywords(keywords: "a, b, c, d");
     seo.description(description: "This is the home fff screen");
   }
+}
+
+class TestContent extends StatefulWidget {
+  const TestContent({super.key});
+
+  @override
+  State<TestContent> createState() => _TestContentState();
+}
+
+class _TestContentState extends State<TestContent> {
+  String content = "Hello World";
+
+  @override
+  Widget build(BuildContext context) => Text(
+        content,
+      ).mutable(
+        (a) => setState(() {
+          content = a;
+        }),
+      );
 }

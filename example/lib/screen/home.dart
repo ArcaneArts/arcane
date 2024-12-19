@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:example/screen/note_view.dart';
 
 // We need a builder to actually build our nav tabs into custom widgets
 extension XNavTabBuilder on NavTab {
@@ -42,8 +43,9 @@ NavTab s2 = NavTab(
         header: Bar(
           titleText: "This is bar 2",
         ),
-        child:
-            CenterBody(icon: Icons.activity, message: "This is Fill Screen")));
+        child: Center(
+          child: TestContent(),
+        )));
 
 NavTab s3 = NavTab(
     label: "Sliver Fill",

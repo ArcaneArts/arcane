@@ -1,4 +1,5 @@
 ## 3.9.2
+* ADD `MutableText` & `Text.mutable()` extension
 * Fixed issues where the Sidebar Injector proliferated into nested sub screens via fabs, action buttons etc
 
 ## 3.9.1

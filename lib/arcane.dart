@@ -73,6 +73,7 @@ export 'component/icon_button.dart';
 export 'component/icons.dart';
 export 'component/image.dart';
 export 'component/logo.dart';
+export 'component/mutable_text.dart';
 export 'component/popup_menu.dart';
 export 'component/radio_cards.dart';
 export 'component/routing/router.dart';
