@@ -19,11 +19,24 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Search", "search"),
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
+    ShadcnDocsPage("Mutable Text", "mutable_text"),
   ])
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [
+  GoRoute(
+      path: "mutable_text",
+      name: "mutable_text",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'mutable_text',
+            description: 'Make text editable easily',
+            displayName: 'Mutable Text',
+            children: [
+              exampleMutableText2,
+              exampleMutableText,
+            ],
+          )),
   GoRoute(
       path: "search",
       name: "search",
@@ -1087,6 +1100,40 @@ class MyChatProvider extends ChatProvider {
               MyUser(id: "3", name: "Charlie"),
             ], messages: BehaviorSubject.seeded([])),
             sender: "0")));
+
+Widget get exampleMutableText => ArcaneUsageExample(
+    title: "Mutable Text Extension",
+    code: r"""
+String content = "Hello World";
+
+@override
+Widget build(BuildContext context) => Text(
+  content,
+).mutable(
+      (a) => setState(() {
+    content = a;
+  }),
+);
+    """,
+    child: ExampleMutableTextState1());
+
+Widget get exampleMutableText2 => ArcaneUsageExample(
+    title: "Mutable Text with Properties",
+    code: r"""
+String content = "Hello World";
+
+@override
+Widget build(BuildContext context) => MutableText(
+  content,
+  onChanged: (a) => setState(() {
+    content = a;
+  }),
+  border: true,
+  buttonType: EditButtonType.ghost,
+  style: TextStyle(color: Colors.red),
+)
+    """,
+    child: ExampleMutableTextState2());
 
 Widget get exampleImage => ArcaneUsageExample(
     title: "Image with Thumbhash",
@@ -2989,5 +3036,49 @@ class CustomNavigationExample extends StatelessWidget {
           // Reference our tabs here
           tabs: _tabs,
         ),
+      );
+}
+
+class ExampleMutableTextState1 extends StatefulWidget {
+  const ExampleMutableTextState1({super.key});
+
+  @override
+  State<ExampleMutableTextState1> createState() =>
+      _ExampleMutableTextState1State();
+}
+
+class _ExampleMutableTextState1State extends State<ExampleMutableTextState1> {
+  String content = "Hello World";
+
+  @override
+  Widget build(BuildContext context) => Text(
+        content,
+      ).mutable(
+        (a) => setState(() {
+          content = a;
+        }),
+      );
+}
+
+class ExampleMutableTextState2 extends StatefulWidget {
+  const ExampleMutableTextState2({super.key});
+
+  @override
+  State<ExampleMutableTextState2> createState() =>
+      _ExampleMutableTextState2State();
+}
+
+class _ExampleMutableTextState2State extends State<ExampleMutableTextState2> {
+  String content = "Hello World";
+
+  @override
+  Widget build(BuildContext context) => MutableText(
+        content,
+        onChanged: (a) => setState(() {
+          content = a;
+        }),
+        border: true,
+        buttonType: EditButtonType.ghost,
+        style: TextStyle(color: Colors.red),
       );
 }
