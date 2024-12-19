@@ -184,7 +184,9 @@ class _SliverScreenState extends State<SliverScreen> {
         child: Stack(
           fit: StackFit.passthrough,
           children: [
-            if (widget.background != null) widget.background!,
+            if (widget.background != null)
+              PylonRemove<ArcaneSidebarInjector>(
+                  builder: (context) => widget.background!),
             Positioned.fill(
                 child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +242,10 @@ class _SliverScreenState extends State<SliverScreen> {
                           child: Pylon<AntiFlickerDirection>(
                             value: AntiFlickerDirection.bottom,
                             builder: (context) => SafeBar(
-                                bottom: true, builder: (context) => footer),
+                                bottom: true,
+                                builder: (context) =>
+                                    PylonRemove<ArcaneSidebarInjector>(
+                                        builder: (context) => footer)),
                           ),
                         ),
                         stopping: !(footerHas || widget.background != null),
@@ -250,11 +255,14 @@ class _SliverScreenState extends State<SliverScreen> {
             if (widget.fab != null)
               Padding(
                   padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
-                  child: FabSocket(child: widget.fab!)),
+                  child: FabSocket(
+                      child: PylonRemove<ArcaneSidebarInjector>(
+                          builder: (context) => widget.fab!))),
             if (widget.foreground != null)
               Padding(
                   padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
-                  child: widget.foreground!),
+                  child: PylonRemove<ArcaneSidebarInjector>(
+                      builder: (context) => widget.foreground!)),
             if (widget.header != null)
               Positioned(
                   top: 0,
@@ -269,7 +277,8 @@ class _SliverScreenState extends State<SliverScreen> {
                                 top: true,
                                 builder: (context) => KeyedSubtree(
                                       key: headerKey,
-                                      child: widget.header!,
+                                      child: PylonRemove<ArcaneSidebarInjector>(
+                                          builder: (context) => widget.header!),
                                     )),
                           ),
                         ),

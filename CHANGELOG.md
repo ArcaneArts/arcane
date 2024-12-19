@@ -1,3 +1,6 @@
+## 3.9.2
+* Fixed issues where the Sidebar Injector proliferated into nested sub screens via fabs, action buttons etc
+
 ## 3.9.1
 * Updated Pylon to fix /#/ navigation when using ports without urlStrat
 * Fixed navigator proliferation via pylons into nested sub-screens when using sidebar injectors

@@ -38,7 +38,9 @@ class FillScreen extends AbstractStatelessScreen {
         child: MaybeStack(
           fit: StackFit.expand,
           children: [
-            if (background != null) background!,
+            if (background != null)
+              PylonRemove<ArcaneSidebarInjector>(
+                  builder: (context) => background!),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.max,
@@ -47,7 +49,10 @@ class FillScreen extends AbstractStatelessScreen {
                   SafeBar(
                       top: true,
                       builder: (context) => GlassStopper(
-                          builder: (context) => header!, stopping: false)),
+                          builder: (context) =>
+                              PylonRemove<ArcaneSidebarInjector>(
+                                  builder: (context) => header!),
+                          stopping: false)),
                 Expanded(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -62,15 +67,20 @@ class FillScreen extends AbstractStatelessScreen {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               if (sidebar != null) sidebar(context),
-                              PylonRemove<ArcaneSidebarInjector>(
-                                builder: (context) => Expanded(
-                                    child: child.padOnly(
+                              Expanded(
+                                child: PylonRemove<ArcaneSidebarInjector>(
+                                    builder: (context) => child.padOnly(
                                         left: gutterWidth, right: gutterWidth)),
                               ),
                             ],
                           )),
-                          if (fab != null) FabSocket(child: fab!),
-                          if (foreground != null) foreground!,
+                          if (fab != null)
+                            FabSocket(
+                                child: PylonRemove<ArcaneSidebarInjector>(
+                                    builder: (context) => fab!)),
+                          if (foreground != null)
+                            PylonRemove<ArcaneSidebarInjector>(
+                                builder: (context) => foreground!),
                         ],
                       ),
                     ),
@@ -78,7 +88,10 @@ class FillScreen extends AbstractStatelessScreen {
                       SafeBar(
                           bottom: true,
                           builder: (context) => GlassStopper(
-                              builder: (context) => footer, stopping: false)),
+                              builder: (context) =>
+                                  PylonRemove<ArcaneSidebarInjector>(
+                                      builder: (context) => footer),
+                              stopping: false)),
                   ],
                 ))
               ],

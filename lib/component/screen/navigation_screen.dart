@@ -204,6 +204,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                           builder: (context) => tabs[index].builder(context)),
                       NavigationType.sidebar => Scaffold(
                           child: Pylon<ArcaneSidebarInjector?>(
+                            local: true,
                             value: ArcaneSidebarInjector((context) =>
                                 buildSidebar(context, index, drawer: false)),
                             builder: tabs[index].builder,
