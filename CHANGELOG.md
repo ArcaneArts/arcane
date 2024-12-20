@@ -1,3 +1,9 @@
+## 3.9.4
+* Added InjectBarHeader
+
+## 3.9.3
+* Loosen dependency constraints
+
 ## 3.9.2
 * ADD `MutableText` & `Text.mutable()` extension
 * Fixed issues where the Sidebar Injector proliferated into nested sub screens via fabs, action buttons etc

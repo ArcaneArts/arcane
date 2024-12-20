@@ -218,7 +218,11 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                               ? Icons.user_circle_fill
                               : Icons.user_circle),
                           onPressed: () {
-                            nav.onIndexChanged?.call(_tabs.indexOf(s8));
+                            DialogText(
+                              title: "Confirm",
+                              onConfirm: (_) {},
+                            ).open(context);
+                            // nav.onIndexChanged?.call(_tabs.indexOf(s8));
                           },
                         ),
                       ))),

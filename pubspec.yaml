@@ -1,6 +1,6 @@
 name: arcane
 description: "Speeds up Flutter App Stuff"
-version: 3.9.2
+version: 3.9.4
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -12,11 +12,11 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  cached_network_image: ">=3.4.0 <4.0.0"
+  cached_network_image: ">=3.0.0 <4.0.0"
   flutter_sticky_header: ">=0.7.0 <1.0.0"
   padded: ">=1.0.1 <2.0.0"
   pylon: ">=3.1.7 <4.0.0"
-  rxdart: ">=0.28.0"
+  rxdart: ">=0.26.0"
   sliver_tools: ">=0.2.12 <1.0.0"
   toxic: ">=1.3.2 <2.0.0"
   toxic_flutter: ">=1.1.0 <2.0.0"

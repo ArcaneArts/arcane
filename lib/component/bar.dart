@@ -104,60 +104,64 @@ class Bar extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => Stack(
-        children: [
-          Glass(
-              tint: Theme.of(context)
-                  .colorScheme
-                  .background
-                  .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
-              ignoreContextSignals: ignoreContextSignals,
-              disabled: !useGlass,
-              blur: Theme.of(context).surfaceBlur ?? 16,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (barHeader != null) barHeader!,
-                  SafeBar.withSafety(
-                      context,
-                      AppBar(
-                        leading: InjectBarLeading.mutate(context, [
-                          if ((backButton == BarBackButtonMode.always ||
-                                  (backButton == BarBackButtonMode.whenPinned &&
-                                      !GlassStopper.isStopping(context))) &&
-                              Navigator.canPop(context) &&
-                              !BlockBackButton.isBlocking(context))
-                            GhostButton(
-                                density: ButtonDensity.icon,
-                                child: context.inSheet
-                                    ? const Icon(PhosphorIcons.x_bold)
-                                    : const Icon(PhosphorIcons.caret_left_bold),
-                                onPressed: () => Arcane.pop(context)),
-                          ...leading
-                        ]),
-                        surfaceOpacity: 0,
-                        trailing: InjectBarTrailing.mutate(context,
-                            [...trailing, if (actions != null) actions!]),
-                        title: titleText?.text ?? title,
-                        header: headerText?.text ?? header,
-                        subtitle: subtitleText?.text ?? subtitle,
-                        trailingExpanded: trailingExpanded,
-                        alignment: alignment,
-                        padding: padding,
-                        backgroundColor: backgroundColor,
-                        leadingGap: leadingGap,
-                        trailingGap: trailingGap,
-                        height: height,
-                        surfaceBlur: 0,
-                        child: child,
-                      )),
-                  if (barFooter != null) barFooter!,
-                ],
-              ))
-        ],
-      );
+  Widget build(BuildContext context) {
+    Widget? barHeader = this.barHeader ??
+        context.pylonOr<InjectBarHeader>()?.header.call(context);
+    return Stack(
+      children: [
+        Glass(
+            tint: Theme.of(context)
+                .colorScheme
+                .background
+                .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
+            ignoreContextSignals: ignoreContextSignals,
+            disabled: !useGlass,
+            blur: Theme.of(context).surfaceBlur ?? 16,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (barHeader != null) barHeader!,
+                SafeBar.withSafety(
+                    context,
+                    AppBar(
+                      leading: InjectBarLeading.mutate(context, [
+                        if ((backButton == BarBackButtonMode.always ||
+                                (backButton == BarBackButtonMode.whenPinned &&
+                                    !GlassStopper.isStopping(context))) &&
+                            Navigator.canPop(context) &&
+                            !BlockBackButton.isBlocking(context))
+                          GhostButton(
+                              density: ButtonDensity.icon,
+                              child: context.inSheet
+                                  ? const Icon(PhosphorIcons.x_bold)
+                                  : const Icon(PhosphorIcons.caret_left_bold),
+                              onPressed: () => Arcane.pop(context)),
+                        ...leading
+                      ]),
+                      surfaceOpacity: 0,
+                      trailing: InjectBarTrailing.mutate(context,
+                          [...trailing, if (actions != null) actions!]),
+                      title: titleText?.text ?? title,
+                      header: headerText?.text ?? header,
+                      subtitle: subtitleText?.text ?? subtitle,
+                      trailingExpanded: trailingExpanded,
+                      alignment: alignment,
+                      padding: padding,
+                      backgroundColor: backgroundColor,
+                      leadingGap: leadingGap,
+                      trailingGap: trailingGap,
+                      height: height,
+                      surfaceBlur: 0,
+                      child: child,
+                    )),
+                if (barFooter != null) barFooter!,
+              ],
+            ))
+      ],
+    );
+  }
 }
 
 extension XAST on Widget {
@@ -365,4 +369,10 @@ class InjectBarLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Pylon<InjectBarLeading>(value: this, builder: builder, local: true);
+}
+
+class InjectBarHeader {
+  final PylonBuilder header;
+
+  const InjectBarHeader({required this.header});
 }
