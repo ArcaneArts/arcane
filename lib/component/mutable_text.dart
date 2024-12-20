@@ -24,10 +24,13 @@ class MutableText extends StatefulWidget {
   final String? placeholder;
   final bool border;
   final EditButtonType buttonType;
+  final bool autoCorrect;
+  final List<TextInputFormatter>? inputFormatters;
 
   const MutableText(this.value,
       {super.key,
       this.onChanged,
+      this.autoCorrect = true,
       this.minLines,
       this.style,
       this.maxLines,
@@ -35,6 +38,7 @@ class MutableText extends StatefulWidget {
       this.selectionColor,
       this.overflow,
       this.semanticsLabel,
+      this.inputFormatters,
       this.softWrap,
       this.strutStyle,
       this.textAlign,
@@ -85,6 +89,8 @@ class _MutableTextState extends State<MutableText> {
                         })),
               },
               child: TextField(
+                inputFormatters: widget.inputFormatters,
+                autocorrect: widget.autoCorrect,
                 textInputAction: TextInputAction.done,
                 autofocus: true,
                 style: widget.style,
@@ -140,11 +146,13 @@ extension XText on Text {
           {String? placeholder,
           int? minLines,
           bool border = false,
+          bool autoCorrect = true,
           EditButtonType buttonType = EditButtonType.pencil}) =>
       MutableText(data ?? "",
           placeholder: placeholder,
           minLines: minLines,
           maxLines: maxLines,
+          autoCorrect: autoCorrect,
           buttonType: buttonType,
           textAlign: textAlign,
           style: style,

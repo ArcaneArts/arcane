@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:rxdart/rxdart.dart';
 
 BehaviorSubject<int> _su = BehaviorSubject.seeded(0);
 void _settingsUpdate() => _su.add(_su.value++);
