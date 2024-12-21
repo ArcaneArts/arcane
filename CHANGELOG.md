@@ -1,3 +1,12 @@
+## 3.9.5
+* Sync Upstream 
+* ADD `none` to `SortDirection`
+* ADD `FadeScroll` effect for scrollables
+* ADD `clipBehavior` prop to `SortableLayer`
+* FIX `TableLayoutResult` widths & heights lists
+* ADD locale for data table next, previous & columns
+* ADD `TabPane`, `TabItem` for tabbed navigation
+
 ## 3.9.4
 * Added InjectBarHeader
 
