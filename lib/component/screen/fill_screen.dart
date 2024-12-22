@@ -14,8 +14,6 @@ class FillScreen extends AbstractStatelessScreen {
     super.gutter,
     super.loadingProgress,
     super.loadingProgressIndeterminate,
-    super.minContentFraction,
-    super.minContentWidth,
     super.showLoadingSparks,
     super.foreground,
     this.sidebar,

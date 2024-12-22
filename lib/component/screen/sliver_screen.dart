@@ -21,8 +21,6 @@ class SliverScreen extends AbstractStatefulScreen {
     super.gutter,
     super.loadingProgress,
     super.loadingProgressIndeterminate,
-    super.minContentFraction,
-    super.minContentWidth,
     super.showLoadingSparks,
     this.physics,
     super.foreground,

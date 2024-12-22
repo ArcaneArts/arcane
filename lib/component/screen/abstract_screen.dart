@@ -3,8 +3,6 @@ import 'package:arcane/arcane.dart';
 abstract class AbstractStatefulScreen extends StatefulWidget {
   final Widget? fab;
   final bool gutter;
-  final double minContentFraction;
-  final double minContentWidth;
   final Widget? header;
   final Widget? footer;
   final Widget? foreground;
@@ -21,8 +19,6 @@ abstract class AbstractStatefulScreen extends StatefulWidget {
     this.foreground,
     this.background,
     this.gutter = true,
-    this.minContentWidth = 500,
-    this.minContentFraction = 0.75,
     this.header,
     this.footer,
     this.loadingProgress,
@@ -34,8 +30,6 @@ abstract class AbstractStatefulScreen extends StatefulWidget {
 abstract class AbstractStatelessScreen extends StatelessWidget {
   final Widget? fab;
   final bool gutter;
-  final double minContentFraction;
-  final double minContentWidth;
   final Widget? header;
   final Widget? footer;
   final Widget? foreground;
@@ -52,8 +46,6 @@ abstract class AbstractStatelessScreen extends StatelessWidget {
     this.foreground,
     this.background,
     this.gutter = true,
-    this.minContentWidth = 500,
-    this.minContentFraction = 0.75,
     this.header,
     this.footer,
     this.loadingProgress,

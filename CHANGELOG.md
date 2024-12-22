@@ -1,6 +1,7 @@
 ## 3.10.0
 * BREAKING: Removed `Adaptive`
 * BREAKING: Removed `AbstractArcaneTheme`
+* BREAKING: Removed `FillScreen` & `SliverScreen` `minContentFraction` & `minContentWidth`
 * ADD `GutterTheme` to `ArcaneTheme`
 * ADD `ArcaneTheme.of(context)` for accessing themes
 
