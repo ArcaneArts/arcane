@@ -6,6 +6,8 @@
 * ADD `ArcaneTheme.of(context)` for accessing themes
 * ADD `messageGroupDistance` to `ChatTheme`
 * ADD `NavigationTheme` to `ArcaneTheme` for `NavigationScreen` defaults
+* ADD `ArcaneShortcuts` a much simpler shortcuts system for basic actions
+* ADD `Arcane.pushReplacement` & `Arcane.pushAndRemoveUntil` for replacing routes
 
 ## 3.9.6
 * Sync Upstream

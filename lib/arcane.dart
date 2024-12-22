@@ -102,5 +102,6 @@ export 'component/vfs/fs/io.dart';
 export 'util/blur.dart';
 export 'util/extensions.dart';
 export 'util/maybe.dart';
+export 'util/shortcuts.dart';
 export 'util/sliver.dart';
 export 'util/theme.dart';

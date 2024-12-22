@@ -14,6 +14,7 @@ class ArcaneTheme {
   final double spin;
   final ChatTheme chat;
   final GutterTheme gutter;
+  final CardCarouselTheme cardCarousel;
   final NavigationTheme navigationScreen;
   final m.MaterialScrollBehavior scrollBehavior;
   final ThemeMode themeMode;
@@ -25,6 +26,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.cardCarousel = const CardCarouselTheme(),
     this.navigationScreen = const NavigationTheme(),
     this.scrollBehavior = const ArcaneScrollBehavior(),
     this.chat = const ChatTheme(),
@@ -51,6 +53,7 @@ class ArcaneTheme {
     double? contrast,
     double? spin,
     ChatTheme? chat,
+    CardCarouselTheme? cardCarousel,
     GutterTheme? gutter,
     NavigationTheme? navigationScreen,
     m.MaterialScrollBehavior? scrollBehavior,
@@ -63,6 +66,7 @@ class ArcaneTheme {
         shadThemeBuilder,
   }) =>
       ArcaneTheme(
+        cardCarousel: cardCarousel ?? this.cardCarousel,
         navigationScreen: navigationScreen ?? this.navigationScreen,
         radius: radius ?? this.radius,
         scheme: scheme ?? this.scheme,
