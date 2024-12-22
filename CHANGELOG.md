@@ -1,3 +1,6 @@
+## 3.10.1
+* Remove Gutter Logging
+
 ## 3.10.0
 * BREAKING: Removed the context parameter for `MenuButton` `onPressed`. If you need the menu button context specifically, use `onContextPressed` in the `MenuButton` instead. Both callbacks will fire if both are defined.
 * BREAKING: Removed `Adaptive`

@@ -2,12 +2,8 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 
-double _defaultGutterCalc(double screenWidth) {
-  double d =
-      max(0, min(max(0, 25 + ((screenWidth * 0.25) - 250)), screenWidth / 3));
-  print("$screenWidth -> $d");
-  return d;
-}
+double _defaultGutterCalc(double screenWidth) =>
+    max(0, min(max(0, 25 + ((screenWidth * 0.25) - 250)), screenWidth / 3));
 
 class GutterTheme {
   /// The value returned is both applied on the left and right.
