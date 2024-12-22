@@ -95,12 +95,12 @@ class ChatScreen extends StatefulWidget {
   final Iterable<MenuItem> Function(AbstractChatMessage message)? onMessageMenu;
   final ValueChanged<AbstractChatMessage>? onMessageTap;
   final String Function(DateTime) messageTimeFormatter;
-  final Duration messageGroupDistance;
+  final Duration? messageGroupDistance;
 
   const ChatScreen(
       {super.key,
       this.fab,
-      this.messageGroupDistance = const Duration(minutes: 5),
+      this.messageGroupDistance,
       this.maxMessageLength,
       this.gutter = true,
       this.header,
@@ -323,8 +323,10 @@ class ChatScreenState extends State<ChatScreen> {
               key: ValueKey("ChatBox"),
             ),
             sliver: messageBuffer
-                .map((messages) =>
-                    groupMessages(messages, widget.messageGroupDistance))
+                .map((messages) => groupMessages(
+                    messages,
+                    widget.messageGroupDistance ??
+                        ArcaneTheme.of(context).chat.messageGroupDistance))
                 .buildNullable((messages) => SListView.builder(
                       addAutomaticKeepAlives: true,
                       childCount: messages?.length ?? 0,
@@ -532,11 +534,27 @@ class ChatTheme {
   final ChatBubbleTheme bubbleTheme;
   final ChatTileTheme tileTheme;
   final ChatStyle style;
+  final Duration messageGroupDistance;
 
   const ChatTheme(
       {this.bubbleTheme = const ChatBubbleTheme(),
       this.tileTheme = const ChatTileTheme(),
-      this.style = ChatStyle.bubbles});
+      this.style = ChatStyle.bubbles,
+      this.messageGroupDistance = const Duration(minutes: 5)});
+
+  ChatTheme copyWith({
+    ChatBubbleTheme? bubbleTheme,
+    ChatTileTheme? tileTheme,
+    ChatStyle? style,
+    Duration? messageGroupDistance,
+  }) {
+    return ChatTheme(
+      bubbleTheme: bubbleTheme ?? this.bubbleTheme,
+      tileTheme: tileTheme ?? this.tileTheme,
+      style: style ?? this.style,
+      messageGroupDistance: messageGroupDistance ?? this.messageGroupDistance,
+    );
+  }
 }
 
 class ChatMessageTheme {
@@ -545,8 +563,16 @@ class ChatMessageTheme {
 
 class ChatBubbleTheme extends ChatMessageTheme {
   const ChatBubbleTheme();
+
+  ChatBubbleTheme copyWith() {
+    return const ChatBubbleTheme();
+  }
 }
 
 class ChatTileTheme extends ChatMessageTheme {
   const ChatTileTheme();
+
+  ChatTileTheme copyWith() {
+    return const ChatTileTheme();
+  }
 }

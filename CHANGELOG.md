@@ -4,6 +4,8 @@
 * BREAKING: Removed `FillScreen` & `SliverScreen` `minContentFraction` & `minContentWidth`
 * ADD `GutterTheme` to `ArcaneTheme`
 * ADD `ArcaneTheme.of(context)` for accessing themes
+* ADD `messageGroupDistance` to `ChatTheme`
+* ADD `NavigationTheme` to `ArcaneTheme` for `NavigationScreen` defaults
 
 ## 3.9.6
 * Sync Upstream

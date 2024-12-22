@@ -41,35 +41,69 @@ enum NavigationType {
   custom
 }
 
-class NavigationScreen extends AbstractStatelessScreen {
-  final int index;
-  final double sidebarSpacing;
+class NavigationTheme {
   final NavigationType type;
-  final ValueChanged<int>? onIndexChanged;
+  final double sidebarSpacing;
   final double railRightPadding;
-  final List<NavItem> tabs;
-  final Widget? overrideSidebarGap;
   final double railTopPadding;
   final bool endSide;
-  final PylonBuilder? sidebarFooter;
   final bool drawerTransformsBackdrop;
+
+  const NavigationTheme({
+    this.railRightPadding = 8,
+    this.railTopPadding = 8,
+    this.sidebarSpacing = 4,
+    this.endSide = false,
+    this.drawerTransformsBackdrop = false,
+    this.type = NavigationType.bottomNavigationBar,
+  });
+
+  NavigationTheme copyWith({
+    NavigationType? type,
+    double? sidebarSpacing,
+    double? railRightPadding,
+    double? railTopPadding,
+    bool? endSide,
+    bool? drawerTransformsBackdrop,
+  }) =>
+      NavigationTheme(
+        type: type ?? this.type,
+        sidebarSpacing: sidebarSpacing ?? this.sidebarSpacing,
+        railRightPadding: railRightPadding ?? this.railRightPadding,
+        railTopPadding: railTopPadding ?? this.railTopPadding,
+        endSide: endSide ?? this.endSide,
+        drawerTransformsBackdrop:
+            drawerTransformsBackdrop ?? this.drawerTransformsBackdrop,
+      );
+}
+
+class NavigationScreen extends AbstractStatelessScreen {
+  final int index;
+  final double? sidebarSpacing;
+  final NavigationType? type;
+  final ValueChanged<int>? onIndexChanged;
+  final double? railRightPadding;
+  final List<NavItem> tabs;
+  final double? railTopPadding;
+  final bool? endSide;
+  final PylonBuilder? sidebarFooter;
+  final bool? drawerTransformsBackdrop;
   final Widget Function(BuildContext, NavigationScreen, int)?
       customNavigationBuilder;
 
   const NavigationScreen(
       {super.key,
-      this.railRightPadding = 8,
+      this.railRightPadding,
       this.index = 0,
-      this.overrideSidebarGap,
-      this.railTopPadding = 8,
-      this.sidebarSpacing = 4,
-      this.drawerTransformsBackdrop = false,
+      this.railTopPadding,
+      this.sidebarSpacing,
+      this.drawerTransformsBackdrop,
       this.onIndexChanged,
       this.sidebarFooter,
       required this.tabs,
       this.customNavigationBuilder,
-      this.endSide = false,
-      this.type = NavigationType.bottomNavigationBar});
+      this.endSide,
+      this.type});
 
   Widget buildBottomNavigationBar(BuildContext context, int index) => ButtonBar(
       selectedIndex: index,
@@ -116,7 +150,8 @@ class NavigationScreen extends AbstractStatelessScreen {
                   })
               .toList(),
         ],
-      ).padTop(railTopPadding);
+      ).padTop(railTopPadding ??
+          ArcaneTheme.of(context).navigationScreen.railTopPadding);
 
   Widget buildSidebar(BuildContext context, int index, {bool drawer = false}) =>
       ArcaneSidebar(
@@ -139,7 +174,9 @@ class NavigationScreen extends AbstractStatelessScreen {
                         ),
                       NavItem e => e.builder(context),
                     })
-              ].joinSeparator(SizedBox(height: sidebarSpacing)),
+              ].joinSeparator(SizedBox(
+                  height: sidebarSpacing ??
+                      ArcaneTheme.of(context).navigationScreen.sidebarSpacing)),
           footer: sidebarFooter == null
               ? null
               : drawer
@@ -161,19 +198,22 @@ class NavigationScreen extends AbstractStatelessScreen {
   @override
   Widget build(BuildContext context) => DrawerOverlay(
           child: Pylon<NavigationType?>(
-        value: type,
+        value: type ?? ArcaneTheme.of(context).navigationScreen.type,
         local: false,
         builder: (context) => MutablePylon<ArcaneSidebarState>(
           value: ArcaneSidebarState.expanded,
           builder: (context) => IndexedStack(
             index: index,
             children: tabs
-                .mapIndexed((tab, index) => switch (type) {
+                .mapIndexed((tab, index) => switch (
+                        type ?? ArcaneTheme.of(context).navigationScreen.type) {
                       NavigationType.custom =>
                         customNavigationBuilder!(context, this, index),
                       NavigationType.drawer => InjectBarEnds(
-                          trailing: endSide,
-                          start: !endSide,
+                          trailing: endSide ??
+                              ArcaneTheme.of(context).navigationScreen.endSide,
+                          start: !(endSide ??
+                              ArcaneTheme.of(context).navigationScreen.endSide),
                           children: (context) => [
                             IconButton(
                                 icon: Icon(Icons.menu_ionic),
@@ -182,7 +222,10 @@ class NavigationScreen extends AbstractStatelessScreen {
                                       expands: false,
                                       showDragHandle: false,
                                       transformBackdrop:
-                                          drawerTransformsBackdrop,
+                                          drawerTransformsBackdrop ??
+                                              ArcaneTheme.of(context)
+                                                  .navigationScreen
+                                                  .drawerTransformsBackdrop,
                                       context: context,
                                       builder: (context) =>
                                           MutablePylon<ArcaneSidebarState>(
@@ -191,7 +234,10 @@ class NavigationScreen extends AbstractStatelessScreen {
                                               builder: (context) =>
                                                   buildSidebar(context, index,
                                                       drawer: true)),
-                                      position: endSide
+                                      position: (endSide ??
+                                              ArcaneTheme.of(context)
+                                                  .navigationScreen
+                                                  .endSide)
                                           ? OverlayPosition.right
                                           : OverlayPosition.left);
                                 })
@@ -216,7 +262,10 @@ class NavigationScreen extends AbstractStatelessScreen {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               buildNavigationRail(context, index),
-                              Gap(railRightPadding),
+                              Gap(railRightPadding ??
+                                  ArcaneTheme.of(context)
+                                      .navigationScreen
+                                      .railRightPadding),
                               Expanded(
                                 child: BlockBackButton(
                                     builder: (context) =>

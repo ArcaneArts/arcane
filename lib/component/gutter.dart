@@ -14,6 +14,9 @@ class GutterTheme {
   final double Function(double screenWidth) gutterCalc;
 
   const GutterTheme({this.gutterCalc = _defaultGutterCalc});
+
+  GutterTheme copyWith({double Function(double screenWidth)? gutterCalc}) =>
+      GutterTheme(gutterCalc: gutterCalc ?? this.gutterCalc);
 }
 
 class SliverGutter extends StatelessWidget {
