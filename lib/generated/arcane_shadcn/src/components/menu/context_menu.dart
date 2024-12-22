@@ -42,7 +42,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     var liveTextInput = take(ContextMenuButtonType.liveTextInput);
     var cutButtonWidget = MenuButton(
       enabled: cutButton != null,
-      onPressed: (context) {
+      onPressed: () {
         cutButton?.onPressed?.call();
       },
       trailing: const MenuShortcut(
@@ -55,7 +55,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     );
     var copyButtonWidget = MenuButton(
       enabled: copyButton != null,
-      onPressed: (context) {
+      onPressed: () {
         copyButton?.onPressed?.call();
       },
       trailing: const MenuShortcut(
@@ -68,7 +68,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     );
     var pasteButtonWidget = MenuButton(
       enabled: pasteButton != null,
-      onPressed: (context) {
+      onPressed: () {
         pasteButton?.onPressed?.call();
       },
       trailing: const MenuShortcut(
@@ -81,7 +81,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     );
     var selectAllButtonWidget = MenuButton(
       enabled: selectAllButton != null,
-      onPressed: (context) {
+      onPressed: () {
         // somehow, we lost focus upon context menu open
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           selectAllButton?.onPressed?.call();
@@ -98,7 +98,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     List<MenuItem> extras = [];
     if (shareButton != null) {
       extras.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           shareButton.onPressed?.call();
         },
         child: Text(localizations.menuShare),
@@ -106,7 +106,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     }
     if (searchWebButton != null) {
       extras.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           searchWebButton.onPressed?.call();
         },
         child: Text(localizations.menuSearchWeb),
@@ -114,7 +114,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
     }
     if (liveTextInput != null) {
       extras.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           liveTextInput.onPressed?.call();
         },
         child: Text(localizations.menuLiveTextInput),
@@ -152,7 +152,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
                 children: [
                   MenuButton(
                     enabled: undoHistoryController.value.canUndo,
-                    onPressed: (context) {
+                    onPressed: () {
                       undoHistoryController.undo();
                     },
                     trailing: const MenuShortcut(
@@ -165,7 +165,7 @@ class DesktopEditableTextContextMenu extends StatelessWidget {
                   ),
                   MenuButton(
                     enabled: undoHistoryController.value.canRedo,
-                    onPressed: (context) {
+                    onPressed: () {
                       undoHistoryController.redo();
                     },
                     trailing: const MenuShortcut(
@@ -236,7 +236,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
     List<MenuItem> modificationCategory = [];
     if (cutButton != null) {
       modificationCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           cutButton.onPressed?.call();
         },
         child: Text(localizations.menuCut),
@@ -244,7 +244,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
     }
     if (copyButton != null) {
       modificationCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           copyButton.onPressed?.call();
         },
         child: Text(localizations.menuCopy),
@@ -252,7 +252,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
     }
     if (pasteButton != null) {
       modificationCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           pasteButton.onPressed?.call();
         },
         child: Text(localizations.menuPaste),
@@ -260,7 +260,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
     }
     if (selectAllButton != null) {
       modificationCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           selectAllButton.onPressed?.call();
         },
         child: Text(localizations.menuSelectAll),
@@ -270,7 +270,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
     List<MenuItem> destructiveCategory = [];
     if (deleteButton != null) {
       destructiveCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           deleteButton.onPressed?.call();
         },
         child: Text(localizations.menuDelete),
@@ -279,7 +279,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
 
     if (shareButton != null) {
       destructiveCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           shareButton.onPressed?.call();
         },
         child: Text(localizations.menuShare),
@@ -288,7 +288,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
 
     if (searchWebButton != null) {
       destructiveCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           searchWebButton.onPressed?.call();
         },
         child: Text(localizations.menuSearchWeb),
@@ -297,7 +297,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
 
     if (liveTextInput != null) {
       destructiveCategory.add(MenuButton(
-        onPressed: (context) {
+        onPressed: () {
           liveTextInput.onPressed?.call();
         },
         child: Text(localizations.menuLiveTextInput),
@@ -339,7 +339,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
               if (undoHistoryController.value.canUndo) {
                 historyCategory.add(MenuButton(
                   enabled: undoHistoryController.value.canUndo,
-                  onPressed: (context) {
+                  onPressed: () {
                     undoHistoryController.undo();
                   },
                   child: Text(localizations.menuUndo),
@@ -348,7 +348,7 @@ class MobileEditableTextContextMenu extends StatelessWidget {
               if (undoHistoryController.value.canRedo) {
                 historyCategory.add(MenuButton(
                   enabled: undoHistoryController.value.canRedo,
-                  onPressed: (context) {
+                  onPressed: () {
                     undoHistoryController.redo();
                   },
                   child: Text(localizations.menuRedo),

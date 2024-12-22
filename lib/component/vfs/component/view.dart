@@ -221,7 +221,7 @@ class VFSViewState extends State<VFSView> {
   List<MenuItem> _buildMenu(BuildContext context) => [
         MenuButton(
             leading: Icon(Icons.folder_plus),
-            onPressed: (_) => widget.vfs.mkdirDialog(context),
+            onPressed: () => widget.vfs.mkdirDialog(context),
             child: Text("New Folder")),
         MenuButton(
           leading: const Icon(Icons.eye),

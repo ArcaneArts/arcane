@@ -106,7 +106,7 @@ class MenuRadio<T> extends StatelessWidget {
                 ).iconSmall(),
               )
             : SizedBox(width: 16 * scaling),
-        onPressed: (context) {
+        onContextPressed: (context) {
           radioGroup.onChanged?.call(context, value);
         },
         enabled: enabled,
@@ -178,7 +178,8 @@ class MenuGap extends StatelessWidget implements MenuItem {
 class MenuButton extends StatefulWidget implements MenuItem {
   final Widget child;
   final List<MenuItem>? subMenu;
-  final ContextedCallback? onPressed;
+  final ContextedCallback? onContextPressed;
+  final VoidCallback? onPressed;
   final Widget? trailing;
   final Widget? leading;
   final bool enabled;
@@ -191,6 +192,7 @@ class MenuButton extends StatefulWidget implements MenuItem {
     required this.child,
     this.subMenu,
     this.onPressed,
+    this.onContextPressed,
     this.trailing,
     this.leading,
     this.enabled = true,
@@ -296,7 +298,7 @@ class MenuCheckbox extends StatelessWidget implements MenuItem {
               ).iconSmall(),
             )
           : SizedBox(width: 16 * scaling),
-      onPressed: (context) {
+      onContextPressed: (context) {
         onChanged?.call(context, !value);
       },
       enabled: enabled,
@@ -486,7 +488,8 @@ class _MenuButtonState extends State<MenuButton> {
                     }
                   },
                   onPressed: () {
-                    widget.onPressed?.call(context);
+                    widget.onPressed?.call();
+                    widget.onContextPressed?.call(context);
                     if (widget.subMenu != null && widget.subMenu!.isNotEmpty) {
                       if (!menuData.popoverController.hasOpenPopover) {
                         openSubMenu(context);

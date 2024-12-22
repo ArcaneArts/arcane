@@ -262,7 +262,7 @@ class BarActions extends StatelessWidget {
       BarAction c = col.removeAt(0);
       menu.add(MenuButton(
         leading: Icon(c.icon),
-        onPressed: (context) => c.onPressed(),
+        onPressed: () => c.onPressed(),
         child: Text(
           c.label,
         ),

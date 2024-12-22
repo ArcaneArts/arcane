@@ -152,7 +152,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     radius = 0.4;
                     if (applyDirectly) {
                       state.changeRadius(radius);
@@ -188,7 +188,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     scaling = 1.0;
                     if (applyDirectly) {
                       state.changeScaling(scaling);
@@ -230,7 +230,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     surfaceOpacity = 0.66;
                     if (applyDirectly) {
                       state.changeSurfaceOpacity(surfaceOpacity);
@@ -266,7 +266,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     surfaceBlur = 18;
                     if (applyDirectly) {
                       state.changeSurfaceBlur(surfaceBlur);
@@ -303,7 +303,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     spin = 0;
                     if (applyDirectly) {
                       state.changeSpin(spin);
@@ -339,7 +339,7 @@ class _ThemePageState extends State<ThemePage> {
               items: [
                 MenuButton(
                   leading: Icon(Icons.refresh_rounded),
-                  onPressed: (_) => setState(() {
+                  onPressed: () => setState(() {
                     contrast = 0;
                     if (applyDirectly) {
                       state.changeContrast(contrast);

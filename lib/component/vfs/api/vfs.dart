@@ -189,7 +189,7 @@ abstract class VFS {
   Iterable<MenuItem> buildLayoutMenuItems(BuildContext context) sync* {
     yield* layouts.map((l) => MenuButton(
           autoClose: true,
-          onPressed: (_) {
+          onPressed: () {
             setLayout(l);
           },
           trailing: listen.build((_) => currentLayout == l
@@ -203,7 +203,7 @@ abstract class VFS {
   Iterable<MenuItem> buildComparatorMenuItems(BuildContext context) sync* {
     yield* comparators.map((c) => MenuButton(
           autoClose: false,
-          onPressed: (_) {
+          onPressed: () {
             if (currentComparator == c) {
               setComparator(currentComparator, reversed: !isComparatorReversed);
             } else {
@@ -436,14 +436,14 @@ abstract class VFS {
     if (entities.length == 1) {
       yield MenuButton(
         leading: Icon(Icons.pencil),
-        onPressed: (_) => renameDialog(context, entities.first),
+        onPressed: () => renameDialog(context, entities.first),
         child: Text("Rename"),
       );
     }
 
     yield MenuButton(
         leading: Icon(Icons.trash),
-        onPressed: (_) => deleteDialog(context, entities),
+        onPressed: () => deleteDialog(context, entities),
         child: Text("Delete"));
   }
 
