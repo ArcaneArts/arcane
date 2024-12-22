@@ -136,7 +136,8 @@ class _SliverScreenState extends State<SliverScreen> {
 
   bool updateHeaderSize() {
     try {
-      double v = headerKey.currentContext?.size?.height ?? 0;
+      double v = headerKey.currentContext?.size?.height ??
+          ArcaneTheme.of(context).defaultHeaderHeight;
       if (v != headerSize) {
         headerSize = v;
         return true;

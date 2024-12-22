@@ -12,6 +12,7 @@ class ArcaneTheme {
   final double scaling;
   final double contrast;
   final double spin;
+  final double defaultHeaderHeight;
   final ChatTheme chat;
   final GutterTheme gutter;
   final CardCarouselTheme cardCarousel;
@@ -26,6 +27,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.defaultHeaderHeight = 0,
     this.cardCarousel = const CardCarouselTheme(),
     this.navigationScreen = const NavigationTheme(),
     this.scrollBehavior = const ArcaneScrollBehavior(),
@@ -46,6 +48,7 @@ class ArcaneTheme {
 
   ArcaneTheme copyWith({
     double? radius,
+    double? defaultHeaderHeight,
     ContrastedColorScheme? scheme,
     double? surfaceOpacity,
     double? surfaceBlur,
@@ -66,6 +69,7 @@ class ArcaneTheme {
         shadThemeBuilder,
   }) =>
       ArcaneTheme(
+        defaultHeaderHeight: defaultHeaderHeight ?? this.defaultHeaderHeight,
         cardCarousel: cardCarousel ?? this.cardCarousel,
         navigationScreen: navigationScreen ?? this.navigationScreen,
         radius: radius ?? this.radius,
