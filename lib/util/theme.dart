@@ -72,7 +72,11 @@ class ArcaneTheme extends AbstractArcaneTheme {
   final double contrast;
   final double spin;
 
+  @override
+  final ChatTheme chatTheme;
+
   const ArcaneTheme({
+    this.chatTheme = const ChatTheme(),
     this.scheme,
     this.contrast = 0.0,
     this.spin = 0.0,
@@ -110,6 +114,8 @@ class ArcaneTheme extends AbstractArcaneTheme {
 }
 
 abstract class AbstractArcaneTheme {
+  ChatTheme get chatTheme;
+
   static final AbstractArcaneTheme defaultArcaneTheme =
       ArcaneTheme(scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc));
 

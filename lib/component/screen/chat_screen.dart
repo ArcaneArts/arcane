@@ -79,8 +79,11 @@ String _formatTime(DateTime at) {
 }
 
 class ChatScreen extends StatefulWidget {
+  ChatTheme get chatTheme => Arcane.app.currentTheme.chatTheme;
+  ChatStyle _getChatStyle() => style ?? chatTheme.style;
+
   final bool gutter;
-  final ChatStyle style;
+  final ChatStyle? style;
   final ChatProvider provider;
   final String sender;
   final int? streamBuffer;
@@ -104,7 +107,7 @@ class ChatScreen extends StatefulWidget {
       this.avatarAlignment = CrossAxisAlignment.start,
       this.placeholder = "Send a message",
       this.streamBuffer,
-      this.style = ChatStyle.bubbles,
+      this.style,
       this.onMessageMenu,
       this.onMessageTap,
       this.messageTimeFormatter = _formatTime,
@@ -242,8 +245,10 @@ class ChatScreenState extends State<ChatScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(snap.data!.name),
-                    Gap(8),
+                    if (widget._getChatStyle() == ChatStyle.tiles) ...[
+                      Text(snap.data!.name),
+                      Gap(8),
+                    ],
                     Text(widget.messageTimeFormatter(
                             context.pylon<AbstractChatMessage>().timestamp))
                         .xSmall()
@@ -305,7 +310,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) => PylonCluster(
         pylons: [
-          Pylon<ChatStyle>.data(value: widget.style, local: true),
+          Pylon<ChatStyle>.data(value: widget._getChatStyle(), local: true),
           Pylon<ChatScreenState>.data(value: this, local: true),
         ],
         builder: (context) => SliverScreen(
@@ -344,6 +349,9 @@ class ChatBox extends StatelessWidget {
           maxLength: state.widget.maxMessageLength,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
           autofocus: true,
+          maxLines: 3,
+          minLines: 1,
+          textInputAction: TextInputAction.done,
           border: false,
           controller: state.chatBoxController,
           focusNode: state.chatBoxFocus,
@@ -449,6 +457,7 @@ class ChatMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatScreenState state = context.pylon<ChatScreenState>();
     AbstractChatMessage message = context.pylon<AbstractChatMessage>();
+    Widget header = state.buildUserHeader(context, message.senderId);
     Widget avatar = state.buildUserAvatar(context, message.senderId);
     Widget child = message.messageWidget;
     bool sender = message.senderId == state.widget.sender;
@@ -467,7 +476,13 @@ class ChatMessageBubble extends StatelessWidget {
               children: [
                 if (!sender) ...[avatar.padOnly(top: 8, bottom: 8), Gap(8)],
                 Flexible(
-                    child: ContextMenu(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: sender
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    ContextMenu(
                         enabled: message is! ChatMessageGroup &&
                             contextMenu != null &&
                             contextMenu.isNotEmpty,
@@ -485,7 +500,11 @@ class ChatMessageBubble extends StatelessWidget {
                               ? Theme.of(context).colorScheme.primary
                               : null,
                           child: sender ? child.primaryForeground() : child,
-                        ))),
+                        )),
+                    Gap(8),
+                    header,
+                  ],
+                )),
                 if (sender) ...[
                   Gap(8),
                   avatar.padOnly(top: 8, bottom: 8),
@@ -506,4 +525,27 @@ class ChatDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Divider(color: color, child: child).padOnly(top: 8, bottom: 8);
+}
+
+class ChatTheme {
+  final ChatBubbleTheme bubbleTheme;
+  final ChatTileTheme tileTheme;
+  final ChatStyle style;
+
+  const ChatTheme(
+      {this.bubbleTheme = const ChatBubbleTheme(),
+      this.tileTheme = const ChatTileTheme(),
+      this.style = ChatStyle.bubbles});
+}
+
+class ChatMessageTheme {
+  const ChatMessageTheme();
+}
+
+class ChatBubbleTheme extends ChatMessageTheme {
+  const ChatBubbleTheme();
+}
+
+class ChatTileTheme extends ChatMessageTheme {
+  const ChatTileTheme();
 }

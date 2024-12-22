@@ -1,3 +1,13 @@
+## 3.9.6
+* Sync Upstream
+* FEAT Chat message box now word wraps
+* ADD ChatTheme for defaulting style in the ArcaneTheme
+* ADD `SortableDragHandle` component for sortable items
+* FIX TabPane sortable drop fallback
+* FIX colors docs page
+* FIX Chat Bubbles now show timestamps
+* FIX Improved sortable animation and tab pane animation
+
 ## 3.9.5
 * Sync Upstream 
 * ADD `none` to `SortDirection`

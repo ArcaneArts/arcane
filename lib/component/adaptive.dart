@@ -38,8 +38,9 @@ class Adaptive extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) {
-          double width = constraints.maxWidth;
-          double height = constraints.maxHeight;
+          Size size = MediaQuery.of(context).size;
+          double width = size.width;
+          double height = size.width;
 
           AdaptiveSize? last;
 
