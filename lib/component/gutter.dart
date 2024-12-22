@@ -2,49 +2,49 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 
+double _defaultGutterCalc(double screenWidth) {
+  double d =
+      max(0, min(max(0, 25 + ((screenWidth * 0.25) - 250)), screenWidth / 3));
+  print("$screenWidth -> $d");
+  return d;
+}
+
+class GutterTheme {
+  /// The value returned is both applied on the left and right.
+  final double Function(double screenWidth) gutterCalc;
+
+  const GutterTheme({this.gutterCalc = _defaultGutterCalc});
+}
+
 class SliverGutter extends StatelessWidget {
   final Widget sliver;
+  final bool enabled;
 
-  const SliverGutter({super.key, required this.sliver});
+  const SliverGutter({super.key, required this.sliver, this.enabled = true});
 
   @override
-  Widget build(BuildContext context) {
-    Size s = MediaQuery.of(context).size;
-    double p = min(
-        max(0, 25 + ((MediaQuery.of(context).size.width * 0.25) - 250)),
-        s.width / 3);
-    return p > 0
-        ? SliverPadding(
-            sliver: sliver, padding: EdgeInsets.symmetric(horizontal: p))
-        : sliver;
-  }
+  Widget build(BuildContext context) => SliverPadding(
+      sliver: sliver,
+      padding: EdgeInsets.symmetric(
+          horizontal: enabled
+              ? Arcane.themeOf(context)
+                  .gutter
+                  .gutterCalc(MediaQuery.of(context).size.width)
+              : 0));
 }
 
 class Gutter extends StatelessWidget {
-  final Key? treeKey;
   final Widget child;
+  final bool enabled;
 
-  const Gutter({super.key, required this.child, this.treeKey});
+  const Gutter({super.key, required this.child, this.enabled = true});
 
   @override
-  Widget build(BuildContext context) => Adaptive(
-        treeKey: treeKey,
-        builders: {
-          const AdaptiveSize.mobile(): (context) => child,
-          const AdaptiveSize.tablet(): (context) => Builder(
-                builder: (context) => PaddingHorizontal(
-                  padding: max(0,
-                      25 + ((MediaQuery.of(context).size.width * 0.25) - 250)),
-                  child: child,
-                ),
-              ),
-          const AdaptiveSize.desktop(): (context) => Builder(
-                builder: (context) => PaddingHorizontal(
-                  padding:
-                      80 + ((MediaQuery.of(context).size.width * 0.25) - 300),
-                  child: child,
-                ),
-              ),
-        },
-      );
+  Widget build(BuildContext context) => PaddingHorizontal(
+      padding: enabled
+          ? Arcane.themeOf(context)
+              .gutter
+              .gutterCalc(MediaQuery.of(context).size.width)
+          : 0,
+      child: child);
 }

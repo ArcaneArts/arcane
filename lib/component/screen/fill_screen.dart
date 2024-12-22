@@ -24,11 +24,6 @@ class FillScreen extends AbstractStatelessScreen {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double gutterWidth = gutter && width > minContentWidth
-        ? (width * ((1 - minContentFraction) / 2)) - 25
-        : 0;
-
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
     PylonBuilder? isidebar = context.pylonOr<ArcaneSidebarInjector>()?.builder;
     PylonBuilder? sidebar = this.sidebar ?? isidebar;
@@ -69,8 +64,8 @@ class FillScreen extends AbstractStatelessScreen {
                               if (sidebar != null) sidebar(context),
                               Expanded(
                                 child: PylonRemove<ArcaneSidebarInjector>(
-                                    builder: (context) => child.padOnly(
-                                        left: gutterWidth, right: gutterWidth)),
+                                    builder: (context) =>
+                                        Gutter(enabled: gutter, child: child)),
                               ),
                             ],
                           )),

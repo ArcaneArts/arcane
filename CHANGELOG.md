@@ -1,3 +1,9 @@
+## 3.10.0
+* BREAKING: Removed `Adaptive`
+* BREAKING: Removed `AbstractArcaneTheme`
+* ADD `GutterTheme` to `ArcaneTheme`
+* ADD `ArcaneTheme.of(context)` for accessing themes
+
 ## 3.9.6
 * Sync Upstream
 * FEAT Chat message box now word wraps

@@ -42,7 +42,6 @@ export 'package:toxic_flutter/toxic_flutter.dart';
 export 'package:universal_io/io.dart' show Platform;
 export 'package:uuid/uuid.dart' hide ValidationMode;
 
-export 'component/adaptive.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
 export 'component/basic_card.dart';

@@ -167,11 +167,6 @@ class _SliverScreenState extends State<SliverScreen> {
       }
     });
 
-    double width = MediaQuery.of(context).size.width;
-    double gutterWidth = widget.gutter && width > widget.minContentWidth
-        ? (width * ((1 - widget.minContentFraction) / 2)) - 25
-        : 0;
-
     Widget Function(BuildContext context)? sidebar =
         widget.sidebar ?? context.pylonOr<ArcaneSidebarInjector>()?.builder;
 
@@ -215,11 +210,8 @@ class _SliverScreenState extends State<SliverScreen> {
                             height: headerSize,
                           ),
                         ),
-                        SliverPadding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: gutterWidth,
-                            ),
-                            sliver: widget.sliver),
+                        SliverGutter(
+                            sliver: widget.sliver, enabled: widget.gutter),
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: footerSize,

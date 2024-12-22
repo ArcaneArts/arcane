@@ -4,6 +4,129 @@ import 'package:arcane/arcane.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
 
+class ArcaneTheme {
+  final double radius;
+  final ContrastedColorScheme? scheme;
+  final double surfaceOpacity;
+  final double surfaceBlur;
+  final double scaling;
+  final double contrast;
+  final double spin;
+  final ChatTheme chat;
+  final GutterTheme gutter;
+  final m.MaterialScrollBehavior scrollBehavior;
+  final ThemeMode themeMode;
+  final m.ThemeData Function(ArcaneTheme theme, Brightness brightness)
+      materialThemeBuilder;
+  final c.CupertinoThemeData Function(ArcaneTheme theme, Brightness brightness)
+      cupertinoThemeBuilder;
+  final ThemeData Function(ArcaneTheme theme, Brightness brightness)
+      shadThemeBuilder;
+
+  const ArcaneTheme({
+    this.scrollBehavior = const ArcaneScrollBehavior(),
+    this.chat = const ChatTheme(),
+    this.gutter = const GutterTheme(),
+    this.materialThemeBuilder = _defaultMaterialThemeBuilder,
+    this.cupertinoThemeBuilder = _defaultCupertinoThemeBuilder,
+    this.shadThemeBuilder = _defaultShadThemeBuilder,
+    this.scheme,
+    this.contrast = 0.0,
+    this.spin = 0.0,
+    this.scaling = 1.0,
+    this.radius = 0.4,
+    this.surfaceOpacity = 0.66,
+    this.surfaceBlur = 18,
+    this.themeMode = ThemeMode.system,
+  });
+
+  ArcaneTheme copyWith({
+    double? radius,
+    ContrastedColorScheme? scheme,
+    double? surfaceOpacity,
+    double? surfaceBlur,
+    double? scaling,
+    double? contrast,
+    double? spin,
+    ChatTheme? chat,
+    GutterTheme? gutter,
+    m.MaterialScrollBehavior? scrollBehavior,
+    ThemeMode? themeMode,
+    m.ThemeData Function(ArcaneTheme theme, Brightness brightness)?
+        materialThemeBuilder,
+    c.CupertinoThemeData Function(ArcaneTheme theme, Brightness brightness)?
+        cupertinoThemeBuilder,
+    ThemeData Function(ArcaneTheme theme, Brightness brightness)?
+        shadThemeBuilder,
+  }) =>
+      ArcaneTheme(
+        radius: radius ?? this.radius,
+        scheme: scheme ?? this.scheme,
+        surfaceOpacity: surfaceOpacity ?? this.surfaceOpacity,
+        surfaceBlur: surfaceBlur ?? this.surfaceBlur,
+        scaling: scaling ?? this.scaling,
+        contrast: contrast ?? this.contrast,
+        spin: spin ?? this.spin,
+        chat: chat ?? this.chat,
+        gutter: gutter ?? this.gutter,
+        scrollBehavior: scrollBehavior ?? this.scrollBehavior,
+        themeMode: themeMode ?? this.themeMode,
+        materialThemeBuilder: materialThemeBuilder ?? this.materialThemeBuilder,
+        cupertinoThemeBuilder:
+            cupertinoThemeBuilder ?? this.cupertinoThemeBuilder,
+        shadThemeBuilder: shadThemeBuilder ?? this.shadThemeBuilder,
+      );
+
+  static ArcaneTheme of(BuildContext context) => Arcane.themeOf(context);
+
+  ThemeData get shadThemeData => shadThemeBuilder(this, themeMode.brightness);
+
+  m.ThemeData get materialThemeData =>
+      materialThemeBuilder(this, themeMode.brightness);
+
+  c.CupertinoThemeData get cupertinoThemeData =>
+      cupertinoThemeBuilder(this, themeMode.brightness);
+}
+
+m.ThemeData _defaultMaterialThemeBuilder(
+    ArcaneTheme theme, Brightness brightness) {
+  m.ThemeData mat = (brightness == Brightness.dark
+      ? m.ThemeData.dark()
+      : m.ThemeData.light());
+  return mat.copyWith(
+      colorScheme: mat.colorScheme.copyWith(
+          surface:
+              theme.shadThemeBuilder(theme, brightness).colorScheme.background),
+      pageTransitionsTheme: m.PageTransitionsTheme(builders: {
+        ...Map.fromEntries(
+          m.TargetPlatform.values.map((e) => MapEntry(
+              e,
+              const m.ZoomPageTransitionsBuilder(
+                  allowSnapshotting: true, allowEnterRouteSnapshotting: true))),
+        ),
+        // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
+      }));
+}
+
+c.CupertinoThemeData _defaultCupertinoThemeBuilder(
+        ArcaneTheme theme, Brightness brightness) =>
+    c.CupertinoThemeData(brightness: brightness);
+
+ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
+    ThemeData(
+      colorScheme: (theme.scheme ??
+              ContrastedColorScheme(
+                  light: ColorSchemes.lightZinc(),
+                  dark: ColorSchemes.darkZinc()))
+          .scheme(brightness)
+          .spin(theme.spin)
+          .contrast(theme.contrast),
+      radius: theme.radius,
+      scaling: theme.scaling,
+      surfaceOpacity: theme.surfaceOpacity,
+      surfaceBlur: theme.surfaceBlur,
+    );
+
 class ContrastedColorScheme {
   final ColorScheme light;
   final ColorScheme dark;
@@ -63,94 +186,14 @@ extension XThemeModeToBrightness on ThemeMode {
       };
 }
 
-class ArcaneTheme extends AbstractArcaneTheme {
-  final double radius;
-  final ContrastedColorScheme? scheme;
-  final double surfaceOpacity;
-  final double surfaceBlur;
-  final double scaling;
-  final double contrast;
-  final double spin;
+class ArcaneThemeOverride extends StatelessWidget {
+  final ArcaneTheme Function(ArcaneTheme theme) mutator;
+  final PylonBuilder builder;
+
+  const ArcaneThemeOverride(
+      {super.key, required this.mutator, required this.builder});
 
   @override
-  final ChatTheme chatTheme;
-
-  const ArcaneTheme({
-    this.chatTheme = const ChatTheme(),
-    this.scheme,
-    this.contrast = 0.0,
-    this.spin = 0.0,
-    this.scaling = 1.0,
-    this.radius = 0.4,
-    this.surfaceOpacity = 0.66,
-    this.surfaceBlur = 18,
-    super.themeMode = ThemeMode.system,
-  });
-
-  @override
-  ThemeData buildTheme(Brightness brightness) => ThemeData(
-        colorScheme: (scheme ??
-                ContrastedColorScheme(
-                    light: ColorSchemes.lightZinc(),
-                    dark: ColorSchemes.darkZinc()))
-            .scheme(brightness)
-            .spin(spin)
-            .contrast(contrast),
-        radius: radius,
-        scaling: scaling,
-        surfaceOpacity: surfaceOpacity,
-        surfaceBlur: surfaceBlur,
-      );
-
-  @override
-  m.ThemeData buildMaterialTheme(Brightness brightness) =>
-      (brightness == Brightness.dark
-          ? m.ThemeData.dark()
-          : m.ThemeData.light());
-
-  @override
-  c.CupertinoThemeData buildCupertinoTheme(Brightness brightness) =>
-      c.CupertinoThemeData(brightness: brightness);
-}
-
-abstract class AbstractArcaneTheme {
-  ChatTheme get chatTheme;
-
-  static final AbstractArcaneTheme defaultArcaneTheme =
-      ArcaneTheme(scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc));
-
-  final ThemeMode themeMode;
-
-  const AbstractArcaneTheme({this.themeMode = ThemeMode.system});
-
-  m.MaterialScrollBehavior get scrollBehavior => const ArcaneScrollBehavior();
-
-  ThemeData buildTheme(Brightness brightness);
-
-  m.ThemeData buildMaterialTheme(Brightness brightness);
-
-  c.CupertinoThemeData buildCupertinoTheme(Brightness brightness);
-
-  m.ThemeData colorMaterialTheme(ThemeData arcane, m.ThemeData theme) =>
-      theme.copyWith(
-          colorScheme: theme.colorScheme
-              .copyWith(surface: arcane.colorScheme.background),
-          pageTransitionsTheme: m.PageTransitionsTheme(builders: {
-            ...Map.fromEntries(
-              m.TargetPlatform.values.map((e) => MapEntry(
-                  e,
-                  const m.ZoomPageTransitionsBuilder(
-                      allowSnapshotting: true,
-                      allowEnterRouteSnapshotting: true))),
-            ),
-            // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
-          }));
-
-  ThemeData getArcaneTheme() => buildTheme(themeMode.brightness);
-
-  m.ThemeData getMaterialTheme() => colorMaterialTheme(
-      getArcaneTheme(), buildMaterialTheme(themeMode.brightness));
-
-  c.CupertinoThemeData getCupertinoTheme() =>
-      buildCupertinoTheme(themeMode.brightness);
+  Widget build(BuildContext context) => Pylon<ArcaneTheme?>(
+      builder: builder, value: mutator(Arcane.themeOf(context)));
 }

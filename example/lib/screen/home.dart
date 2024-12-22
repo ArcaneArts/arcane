@@ -7,7 +7,6 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
 
   @override
   Widget build(BuildContext context) => ChatScreen(
-      gutter: true,
       header: Bar(titleText: "Chat Bubbles"),
       provider: MyChatProvider(users: [
         MyUser(id: "0", name: "Dan"),

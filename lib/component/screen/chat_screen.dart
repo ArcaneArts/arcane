@@ -79,8 +79,8 @@ String _formatTime(DateTime at) {
 }
 
 class ChatScreen extends StatefulWidget {
-  ChatTheme get chatTheme => Arcane.app.currentTheme.chatTheme;
-  ChatStyle _getChatStyle() => style ?? chatTheme.style;
+  ChatStyle _getChatStyle(BuildContext context) =>
+      style ?? Arcane.themeOf(context).chat.style;
 
   final bool gutter;
   final ChatStyle? style;
@@ -102,7 +102,7 @@ class ChatScreen extends StatefulWidget {
       this.fab,
       this.messageGroupDistance = const Duration(minutes: 5),
       this.maxMessageLength,
-      this.gutter = false,
+      this.gutter = true,
       this.header,
       this.avatarAlignment = CrossAxisAlignment.start,
       this.placeholder = "Send a message",
@@ -245,7 +245,7 @@ class ChatScreenState extends State<ChatScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (widget._getChatStyle() == ChatStyle.tiles) ...[
+                    if (widget._getChatStyle(context) == ChatStyle.tiles) ...[
                       Text(snap.data!.name),
                       Gap(8),
                     ],
@@ -310,7 +310,8 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) => PylonCluster(
         pylons: [
-          Pylon<ChatStyle>.data(value: widget._getChatStyle(), local: true),
+          Pylon<ChatStyle>.data(
+              value: widget._getChatStyle(context), local: true),
           Pylon<ChatScreenState>.data(value: this, local: true),
         ],
         builder: (context) => SliverScreen(

@@ -27,6 +27,9 @@ void runApp(Widget app,
 class Arcane {
   static ArcaneAppState? _app;
   static ArcaneAppState get app => _app!;
+  static ArcaneTheme get globalTheme => _app!.currentTheme;
+  static ArcaneTheme themeOf(BuildContext context) =>
+      context.pylonOr<ArcaneTheme>() ?? globalTheme;
 
   static void pop<T extends Object?>(BuildContext context, [T? result]) =>
       Navigator.pop(context, result);
@@ -76,7 +79,7 @@ class ArcaneApp extends StatefulWidget {
   final String? restorationScopeId;
   final bool debugShowMaterialGrid;
   final bool disableBrowserContextMenu;
-  final AbstractArcaneTheme? theme;
+  final ArcaneTheme? theme;
   final List<ArcaneRoute> arcaneRoutes;
 
   const ArcaneApp({
@@ -161,7 +164,7 @@ class ArcaneApp extends StatefulWidget {
 
 class ArcaneAppState extends State<ArcaneApp> {
   RouteFactory? routeFactory;
-  late AbstractArcaneTheme _theme;
+  late ArcaneTheme _theme;
   late Map<String, WidgetBuilder> dynamicRoutes;
   bool usesArcaneRouting = false;
 
@@ -171,7 +174,7 @@ class ArcaneAppState extends State<ArcaneApp> {
     routeFactory = widget.onGenerateRoute;
     Arcane._app = this;
     super.initState();
-    _theme = widget.theme ?? AbstractArcaneTheme.defaultArcaneTheme;
+    _theme = widget.theme ?? const ArcaneTheme();
     buildDynamicRoutes();
   }
 
@@ -212,7 +215,7 @@ class ArcaneAppState extends State<ArcaneApp> {
     usesArcaneRouting = true;
   }
 
-  void setTheme(AbstractArcaneTheme theme) {
+  void setTheme(ArcaneTheme theme) {
     setState(() {
       _theme = theme;
     });
@@ -225,94 +228,97 @@ class ArcaneAppState extends State<ArcaneApp> {
   bool get usesRouter =>
       widget.routerDelegate != null || widget.routerConfig != null;
 
-  AbstractArcaneTheme get currentTheme => _theme;
+ArcaneTheme get currentTheme => _theme;
 
   @override
   void didUpdateWidget(ArcaneApp oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.theme != widget.theme) {
-      _theme = widget.theme ?? AbstractArcaneTheme.defaultArcaneTheme;
+      _theme = widget.theme ?? const ArcaneTheme();
     }
   }
 
   @override
-  Widget build(BuildContext context) => usesRouter
-      ? ShadcnApp.router(
-          routeInformationProvider: widget.routeInformationProvider,
-          routeInformationParser: widget.routeInformationParser,
-          routerDelegate: widget.routerDelegate,
-          routerConfig: widget.routerConfig,
-          backButtonDispatcher: widget.backButtonDispatcher,
-          builder: widget.builder,
-          title: widget.title,
-          onGenerateTitle: widget.onGenerateTitle,
-          onNavigationNotification: widget.onNavigationNotification,
-          color: widget.color,
-          theme: currentTheme.getArcaneTheme(),
-          locale: widget.locale,
-          localizationsDelegates: widget.localizationsDelegates,
-          localeListResolutionCallback: widget.localeListResolutionCallback,
-          localeResolutionCallback: widget.localeResolutionCallback,
-          supportedLocales: widget.supportedLocales,
-          debugShowMaterialGrid: widget.debugShowMaterialGrid,
-          showPerformanceOverlay: widget.showPerformanceOverlay,
-          showSemanticsDebugger: widget.showSemanticsDebugger,
-          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-          shortcuts: widget.shortcuts,
-          actions: widget.actions,
-          restorationScopeId: widget.restorationScopeId,
-          scrollBehavior: currentTheme.scrollBehavior,
-          materialTheme: currentTheme.getMaterialTheme(),
-          cupertinoTheme: currentTheme.getCupertinoTheme(),
-          scaling: widget.scaling,
-          disableBrowserContextMenu: widget.disableBrowserContextMenu,
-        )
-      : ShadcnApp(
-          navigatorKey: widget.navigatorKey,
-          home: usesArcaneRouting ? null : widget.home,
-          routes: {
-            ...dynamicRoutes,
-            ...widget.routes ?? {},
-          },
-          initialRoute: widget.initialRoute,
-          onGenerateRoute: routeFactory,
-          onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-          onUnknownRoute: usesArcaneRouting
-              ? widget.onUnknownRoute ??
-                  (rs) => MaterialPageRoute(
-                      builder: dynamicRoutes[widget.initialRoute]!,
-                      settings: RouteSettings(name: widget.initialRoute))
-              : widget.onUnknownRoute,
-          onNavigationNotification: widget.onNavigationNotification,
-          navigatorObservers: [
-            ...widget.navigatorObservers ?? [],
-            ArcaneRoutingNavigationObserver(
-              routes: widget.arcaneRoutes,
-            )
-          ],
-          builder: widget.builder,
-          title: widget.title,
-          onGenerateTitle: widget.onGenerateTitle,
-          color: widget.color,
-          theme: currentTheme.getArcaneTheme(),
-          locale: widget.locale,
-          localizationsDelegates: widget.localizationsDelegates,
-          localeListResolutionCallback: widget.localeListResolutionCallback,
-          localeResolutionCallback: widget.localeResolutionCallback,
-          supportedLocales: widget.supportedLocales,
-          debugShowMaterialGrid: widget.debugShowMaterialGrid,
-          showPerformanceOverlay: widget.showPerformanceOverlay,
-          showSemanticsDebugger: widget.showSemanticsDebugger,
-          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-          shortcuts: widget.shortcuts,
-          actions: widget.actions,
-          restorationScopeId: widget.restorationScopeId,
-          scrollBehavior: currentTheme.scrollBehavior,
-          materialTheme: currentTheme.getMaterialTheme(),
-          cupertinoTheme: currentTheme.getCupertinoTheme(),
-          scaling: widget.scaling,
-          disableBrowserContextMenu: widget.disableBrowserContextMenu,
-        );
+  Widget build(BuildContext context) => Pylon<ArcaneTheme?>(
+    value: _theme,
+    builder: (context) => usesRouter
+      ? ShadcnApp.router( 
+      routeInformationProvider: widget.routeInformationProvider,
+      routeInformationParser: widget.routeInformationParser,
+      routerDelegate: widget.routerDelegate,
+      routerConfig: widget.routerConfig,
+      backButtonDispatcher: widget.backButtonDispatcher,
+      builder: widget.builder,
+      title: widget.title,
+      onGenerateTitle: widget.onGenerateTitle,
+      onNavigationNotification: widget.onNavigationNotification,
+      color: widget.color,
+      theme: currentTheme.shadThemeData,
+      locale: widget.locale,
+      localizationsDelegates: widget.localizationsDelegates,
+      localeListResolutionCallback: widget.localeListResolutionCallback,
+      localeResolutionCallback: widget.localeResolutionCallback,
+      supportedLocales: widget.supportedLocales,
+      debugShowMaterialGrid: widget.debugShowMaterialGrid,
+      showPerformanceOverlay: widget.showPerformanceOverlay,
+      showSemanticsDebugger: widget.showSemanticsDebugger,
+      debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+      shortcuts: widget.shortcuts,
+      actions: widget.actions,
+      restorationScopeId: widget.restorationScopeId,
+      scrollBehavior: currentTheme.scrollBehavior,
+      materialTheme: currentTheme.materialThemeData,
+      cupertinoTheme: currentTheme.cupertinoThemeData,
+      scaling: widget.scaling,
+      disableBrowserContextMenu: widget.disableBrowserContextMenu,
+      )
+          : ShadcnApp(
+      navigatorKey: widget.navigatorKey,
+      home: usesArcaneRouting ? null : widget.home,
+      routes: {
+      ...dynamicRoutes,
+      ...widget.routes ?? {},
+      },
+      initialRoute: widget.initialRoute,
+      onGenerateRoute: routeFactory,
+      onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
+      onUnknownRoute: usesArcaneRouting
+      ? widget.onUnknownRoute ??
+      (rs) => MaterialPageRoute(
+      builder: dynamicRoutes[widget.initialRoute]!,
+      settings: RouteSettings(name: widget.initialRoute))
+          : widget.onUnknownRoute,
+      onNavigationNotification: widget.onNavigationNotification,
+      navigatorObservers: [
+      ...widget.navigatorObservers ?? [],
+      ArcaneRoutingNavigationObserver(
+      routes: widget.arcaneRoutes,
+      )
+      ],
+        builder: widget.builder,
+        title: widget.title,
+        onGenerateTitle: widget.onGenerateTitle,
+        color: widget.color,
+        theme: currentTheme.shadThemeData,
+        locale: widget.locale,
+        localizationsDelegates: widget.localizationsDelegates,
+        localeListResolutionCallback: widget.localeListResolutionCallback,
+        localeResolutionCallback: widget.localeResolutionCallback,
+        supportedLocales: widget.supportedLocales,
+        debugShowMaterialGrid: widget.debugShowMaterialGrid,
+        showPerformanceOverlay: widget.showPerformanceOverlay,
+        showSemanticsDebugger: widget.showSemanticsDebugger,
+        debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+        shortcuts: widget.shortcuts,
+        actions: widget.actions,
+        restorationScopeId: widget.restorationScopeId,
+        scrollBehavior: currentTheme.scrollBehavior,
+        materialTheme: currentTheme.materialThemeData,
+        cupertinoTheme: currentTheme.cupertinoThemeData,
+        scaling: widget.scaling,
+        disableBrowserContextMenu: widget.disableBrowserContextMenu,
+      ),
+    );
 }
 
 class ArcaneRoutingNavigationObserver extends NavigatorObserver {
