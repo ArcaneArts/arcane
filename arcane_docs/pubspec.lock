@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.8.3"
+    version: "3.9.5"
   archive:
     dependency: transitive
     description:
@@ -598,14 +598,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.3"
-  pixel_snap:
-    dependency: transitive
-    description:
-      name: pixel_snap
-      sha256: "677410ea37b07cd37ecb6d5e6c0d8d7615a7cf3bd92ba406fd1ac57e937d1fb0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.5"
   platform:
     dependency: transitive
     description:
@@ -650,10 +642,10 @@ packages:
     dependency: transitive
     description:
       name: pylon
-      sha256: "50983f72df1732c046dcffc90bec6f1bc0aa3f46ef48ad92b372803681791116"
+      sha256: "43d34e00e5174edf33616623e8482752545ebae77a8132042757b0433e5bd866"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.5"
+    version: "3.1.8"
   pylon_codec:
     dependency: transitive
     description:
@@ -782,10 +774,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
+      sha256: "254ee5351d6cb365c859e20ee823c3bb479bf4a293c22d17a9f1bf144ce86f7c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.0"
+    version: "1.10.1"
   sprintf:
     dependency: transitive
     description:
@@ -886,10 +878,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "664d3a9a64782fcdeb83ce9c6b39e78fd2971d4e37827b9b06c3aa1edc5e760c"
+      sha256: fb31f383e2ee25fbbfe06b40fe21e1e458d14080e3c67e7ba0acfde4df4e0bbd
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.3"
+    version: "0.7.4"
   thumbhash:
     dependency: transitive
     description:
