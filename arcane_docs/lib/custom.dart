@@ -4,6 +4,7 @@ import 'package:arcane/arcane.dart';
 import 'package:arcane/component/dialog/command.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' as sh hide TextExtension;
 
@@ -20,11 +21,23 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
     ShadcnDocsPage("Mutable Text", "mutable_text"),
+    ShadcnDocsPage("Shortcuts", "shortcuts"),
   ])
 ];
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [
+  GoRoute(
+      path: "shortcuts",
+      name: "shortcuts",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shortcuts',
+            description: 'Simplified shortcuts for actions',
+            displayName: 'Shortcuts',
+            children: [
+              exampleShortcuts,
+            ],
+          )),
   GoRoute(
       path: "mutable_text",
       name: "mutable_text",
@@ -795,6 +808,27 @@ StaticTable(
         )
       ],
     ));
+
+BehaviorSubject<int> counter = BehaviorSubject.seeded(0);
+
+Widget get exampleShortcuts => ArcaneUsageExample(
+    title: "Simple Shortcuts",
+    code: r"""
+ArcaneShortcuts(shortcuts: {
+      LogicalKeySet(
+        LogicalKeyboardKey.control,
+        LogicalKeyboardKey.alt,
+        LogicalKeyboardKey.keyF,
+      ): () => counter.add(counter.value + 1)
+    }, child: counter.build((i) => Text("CTRL + ALT + F Pressed $i times")))
+    """,
+    child: ArcaneShortcuts(shortcuts: {
+      LogicalKeySet(
+        LogicalKeyboardKey.control,
+        LogicalKeyboardKey.alt,
+        LogicalKeyboardKey.keyF,
+      ): () => counter.add(counter.value + 1)
+    }, child: counter.build((i) => Text("CTRL + ALT + F Pressed $i times"))));
 
 Widget get exampleTableWithColors => ArcaneUsageExample(
     title: "Colored Cells & Rows",

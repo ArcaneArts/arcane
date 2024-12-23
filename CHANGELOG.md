@@ -1,3 +1,7 @@
+## 3.10.2
+* Added `ToastTheme` to `ArcaneTheme` supporting `location`, `showDuration` and `entryDuration`
+* DOC example for `ArcaneShortcuts`
+
 ## 3.10.1
 * Remove Gutter Logging
 * ADD `defaultHeaderHeight` defaulting to 0 in arcane theme

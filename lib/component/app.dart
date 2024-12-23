@@ -57,6 +57,8 @@ class Arcane {
 
   static void closeDrawer(BuildContext context) =>
       DrawerOverlay.maybeFind(context)?.overlay.closeLast();
+  
+  static void closeMenus(BuildContext context) => Data.maybeOf<MenuGroupData>(context)?.closeAll();
 }
 
 class ArcaneApp extends StatefulWidget {
