@@ -6,15 +6,58 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => ChatScreen(
-      header: Bar(titleText: "Chat Bubbles"),
-      provider: MyChatProvider(users: [
-        MyUser(id: "0", name: "Dan"),
-        MyUser(id: "1", name: "Alice"),
-        MyUser(id: "2", name: "Bob"),
-        MyUser(id: "3", name: "Charlie"),
-      ], messages: BehaviorSubject.seeded([])),
-      sender: "0");
+  Widget build(BuildContext context) => NavigationScreen(tabs: [
+        NavTab(
+            icon: Icons.airplane,
+            builder: (context) => SliverScreen(
+                header: Bar(titleText: "---"),
+                sliver: MultiSliver(
+                  children: [
+                    SliverToBoxAdapter(
+                      child: Container(
+                        width: double.infinity,
+                        height: 5,
+                        color: Colors.red,
+                      ),
+                    ),
+                    BarSection(
+                        titleText: "Chat",
+                        sliver: SListView.builder(
+                            childCount: 10,
+                            builder: (context, i) => ListTile(
+                                  title: Text("A$i"),
+                                ))),
+                    BarSection(
+                        titleText: "Chat",
+                        sliver: SListView.builder(
+                            childCount: 10,
+                            builder: (context, i) => ListTile(
+                                  title: Text("A$i"),
+                                ))),
+                    BarSection(
+                        titleText: "Chat",
+                        sliver: SListView.builder(
+                            childCount: 10,
+                            builder: (context, i) => ListTile(
+                                  title: Text("A$i"),
+                                ))),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        width: double.infinity,
+                        height: 5,
+                        color: Colors.red,
+                      ),
+                    ),
+                    BarSection(
+                        titleText: "Chat",
+                        sliver: SListView.builder(
+                            childCount: 10,
+                            builder: (context, i) => ListTile(
+                                  title: Text("A$i"),
+                                )))
+                  ],
+                )))
+      ], type: NavigationType.sidebar);
 
   @override
   String get path => "/";

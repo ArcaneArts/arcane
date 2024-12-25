@@ -172,6 +172,44 @@ class _SliverScreenState extends State<SliverScreen> {
     Widget? footer =
         widget.footer ?? InjectScreenFooter.getFooterWidget(context);
 
+    Widget cont = CustomScrollView(
+      physics: widget.physics,
+      controller: getController(context),
+      slivers: [
+        if (widget.header != null)
+          SliverPinnedHeader(
+            child: headerBlur.unique.build((blurring) => GlassStopper(
+                  key: headerKey,
+                  builder: (context) => KeyedSubtree(
+                    key: ValueKey("hblur.$blurring"),
+                    child: Pylon<AntiFlickerDirection>(
+                      value: AntiFlickerDirection.top,
+                      builder: (context) => SafeBar(
+                          top: true, builder: (context) => widget.header!),
+                    ),
+                  ),
+                  stopping: !(blurring || widget.background != null),
+                )),
+          ),
+        PylonRemove<InjectBarLeading>(
+            local: true,
+            builder: (context) => PylonRemove<InjectBarTrailing>(
+                local: true,
+                builder: (context) => SliverGutter(
+                    enabled: widget.gutter,
+                    sliver: Pylon<ArbitraryHeaderSpace?>(
+                      value: ArbitraryHeaderSpace(headerSize),
+                      local: true,
+                      builder: (context) => widget.sliver,
+                    )))),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: footerSize,
+          ),
+        )
+      ],
+    );
+
     return Scaffold(
         overrideBackgroundColor: widget.overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
@@ -200,22 +238,12 @@ class _SliverScreenState extends State<SliverScreen> {
                   ], builder: sidebar),
                 Expanded(
                   child: PylonRemove<ArcaneSidebarInjector>(
-                    builder: (context) => CustomScrollView(
-                      physics: widget.physics,
-                      controller: getController(context),
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: headerSize,
-                          ),
-                        ),
-                        SliverGutter(
-                            sliver: widget.sliver, enabled: widget.gutter),
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: footerSize,
-                          ),
-                        )
+                    builder: (context) => Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        footer != null
+                            ? cont
+                            : cont.bottomEdgeBlur(autoMode: true),
                       ],
                     ),
                   ),
@@ -254,27 +282,27 @@ class _SliverScreenState extends State<SliverScreen> {
                   padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
                   child: PylonRemove<ArcaneSidebarInjector>(
                       builder: (context) => widget.foreground!)),
-            if (widget.header != null)
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: headerBlur.unique.build((blurring) => GlassStopper(
-                        builder: (context) => KeyedSubtree(
-                          key: ValueKey("hblur.$blurring"),
-                          child: Pylon<AntiFlickerDirection>(
-                            value: AntiFlickerDirection.top,
-                            builder: (context) => SafeBar(
-                                top: true,
-                                builder: (context) => KeyedSubtree(
-                                      key: headerKey,
-                                      child: PylonRemove<ArcaneSidebarInjector>(
-                                          builder: (context) => widget.header!),
-                                    )),
-                          ),
-                        ),
-                        stopping: !(blurring || widget.background != null),
-                      )))
+            // if (widget.header != null)
+            //   Positioned(
+            //       top: 0,
+            //       left: 0,
+            //       right: 0,
+            //       child: headerBlur.unique.build((blurring) => GlassStopper(
+            //             builder: (context) => KeyedSubtree(
+            //               key: ValueKey("hblur.$blurring"),
+            //               child: Pylon<AntiFlickerDirection>(
+            //                 value: AntiFlickerDirection.top,
+            //                 builder: (context) => SafeBar(
+            //                     top: true,
+            //                     builder: (context) => KeyedSubtree(
+            //                           key: headerKey,
+            //                           child: PylonRemove<ArcaneSidebarInjector>(
+            //                               builder: (context) => widget.header!),
+            //                         )),
+            //               ),
+            //             ),
+            //             stopping: !(blurring || widget.background != null),
+            //           )))
           ],
         ));
   }

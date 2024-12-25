@@ -62,8 +62,12 @@ class FillScreen extends AbstractStatelessScreen {
                               if (sidebar != null) sidebar(context),
                               Expanded(
                                 child: PylonRemove<ArcaneSidebarInjector>(
-                                    builder: (context) =>
-                                        Gutter(enabled: gutter, child: child)),
+                                    builder: (context) => Gutter(
+                                        enabled: gutter,
+                                        child: footer != null
+                                            ? child
+                                            : child.bottomEdgeBlur(
+                                                autoMode: true))),
                               ),
                             ],
                           )),

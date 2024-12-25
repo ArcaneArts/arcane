@@ -343,7 +343,7 @@ class InjectBarTrailing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Pylon<InjectBarTrailing>(value: this, builder: builder, local: true);
+      Pylon<InjectBarTrailing?>(value: this, builder: builder, local: true);
 }
 
 class InjectBarLeading extends StatelessWidget {
@@ -368,7 +368,7 @@ class InjectBarLeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Pylon<InjectBarLeading>(value: this, builder: builder, local: true);
+      Pylon<InjectBarLeading?>(value: this, builder: builder, local: true);
 }
 
 class InjectBarHeader {

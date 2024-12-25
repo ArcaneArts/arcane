@@ -39,9 +39,6 @@ class ExampleArcaneApp extends StatelessWidget {
               HomeScreen(),
             ],
             theme: ArcaneTheme(
-                gutter: GutterTheme(
-                  gutterCalc: (inWidth) => inWidth * 0.25,
-                ),
                 themeMode: ThemeMode.system,
                 scheme: ContrastedColorScheme.fromScheme(ColorSchemes.zinc)),
           ));

@@ -1,6 +1,11 @@
+## 3.10.4
+* Added .edgeBlur methods to widget extensions
+* Added `EdgeTheme` to `ArcaneTheme` for `edgeBlur` defaults
+
 ## 3.10.2
 * Added `ToastTheme` to `ArcaneTheme` supporting `location`, `showDuration` and `entryDuration`
 * DOC example for `ArcaneShortcuts`
+* FIX `SliverScreen` bar section header spacing
 
 ## 3.10.1
 * Remove Gutter Logging

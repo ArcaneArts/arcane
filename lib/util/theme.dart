@@ -16,6 +16,7 @@ class ArcaneTheme {
   final ChatTheme chat;
   final ToastTheme toast;
   final GutterTheme gutter;
+  final EdgeTheme edge;
   final CardCarouselTheme cardCarousel;
   final NavigationTheme navigationScreen;
   final m.MaterialScrollBehavior scrollBehavior;
@@ -28,6 +29,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.edge = const EdgeTheme(),
     this.defaultHeaderHeight = 0,
     this.toast = const ToastTheme(),
     this.cardCarousel = const CardCarouselTheme(),
@@ -58,6 +60,7 @@ class ArcaneTheme {
     double? contrast,
     double? spin,
     ChatTheme? chat,
+    EdgeTheme? edge,
     ToastTheme? toast,
     CardCarouselTheme? cardCarousel,
     GutterTheme? gutter,
@@ -72,6 +75,7 @@ class ArcaneTheme {
         shadThemeBuilder,
   }) =>
       ArcaneTheme(
+        edge: edge ?? this.edge,
         toast: toast ?? this.toast,
         defaultHeaderHeight: defaultHeaderHeight ?? this.defaultHeaderHeight,
         cardCarousel: cardCarousel ?? this.cardCarousel,
