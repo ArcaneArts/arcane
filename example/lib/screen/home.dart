@@ -1,63 +1,56 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
+import 'package:fast_log/fast_log.dart';
+
+class MySliver extends StatefulWidget {
+  const MySliver({super.key});
+
+  @override
+  State<MySliver> createState() => _MySliverState();
+}
+
+class _MySliverState extends State<MySliver> {
+  @override
+  void didChangeDependencies() {
+    if (isSliverInspectionActive) {
+      warn("DID CHANGE DEPS");
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    if (isSliverInspectionActive) {
+      warn("INIT STATE");
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (isSliverInspectionActive) {
+      warn("DISPOSE");
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView();
+  }
+}
 
 class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => NavigationScreen(tabs: [
-        NavTab(
-            icon: Icons.airplane,
-            builder: (context) => SliverScreen(
-                header: Bar(titleText: "---"),
-                sliver: MultiSliver(
-                  children: [
-                    SliverToBoxAdapter(
-                      child: Container(
-                        width: double.infinity,
-                        height: 5,
-                        color: Colors.red,
-                      ),
-                    ),
-                    BarSection(
-                        titleText: "Chat",
-                        sliver: SListView.builder(
-                            childCount: 10,
-                            builder: (context, i) => ListTile(
-                                  title: Text("A$i"),
-                                ))),
-                    BarSection(
-                        titleText: "Chat",
-                        sliver: SListView.builder(
-                            childCount: 10,
-                            builder: (context, i) => ListTile(
-                                  title: Text("A$i"),
-                                ))),
-                    BarSection(
-                        titleText: "Chat",
-                        sliver: SListView.builder(
-                            childCount: 10,
-                            builder: (context, i) => ListTile(
-                                  title: Text("A$i"),
-                                ))),
-                    SliverToBoxAdapter(
-                      child: Container(
-                        width: double.infinity,
-                        height: 5,
-                        color: Colors.red,
-                      ),
-                    ),
-                    BarSection(
-                        titleText: "Chat",
-                        sliver: SListView.builder(
-                            childCount: 10,
-                            builder: (context, i) => ListTile(
-                                  title: Text("A$i"),
-                                )))
-                  ],
-                )))
-      ], type: NavigationType.sidebar);
+  Widget build(BuildContext context) => SliverScreen(
+        header: Bar(
+          titleText: "Test",
+        ),
+        sliver: FlutterLogo(),
+      );
 
   @override
   String get path => "/";

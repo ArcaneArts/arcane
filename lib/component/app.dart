@@ -10,7 +10,7 @@ import 'package:flutter/material.dart' as m;
 void runApp(Widget app,
     {bool usePathStrategy = true, bool setupMetaSEO = true}) async {
   if (kIsWeb) {
-    if (usePathStrategy) {
+    if (usePathStrategy) { 
       try {
         usePathUrlStrategy();
       } catch (e) {}
@@ -21,6 +21,8 @@ void runApp(Widget app,
       } catch (e) {}
     }
   }
+  setupArcaneDebug();
+  
   m.runApp(app);
 }
 

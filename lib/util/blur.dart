@@ -27,10 +27,10 @@ class EdgeTheme {
   final double size;
 
   const EdgeTheme({
-    this.blurIntensity = 0.333,
-    this.blurAddedIntensity = 0.333,
+    this.blurIntensity = 0.15,
+    this.blurAddedIntensity = 0.15,
     this.blurCount = 5,
-    this.size = 36,
+    this.size = 28,
     this.autoEdge = true,
   });
 }

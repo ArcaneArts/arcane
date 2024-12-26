@@ -1,3 +1,7 @@
+## 3.10.5
+* Reduce default blur effect
+* Improved debug logging
+
 ## 3.10.4
 * Added .edgeBlur methods to widget extensions
 * Added `EdgeTheme` to `ArcaneTheme` for `edgeBlur` defaults

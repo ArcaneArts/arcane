@@ -200,7 +200,8 @@ class _SliverScreenState extends State<SliverScreen> {
                     sliver: Pylon<ArbitraryHeaderSpace?>(
                       value: ArbitraryHeaderSpace(headerSize),
                       local: true,
-                      builder: (context) => widget.sliver,
+                      builder: (context) =>
+                          widget.sliver.toSliver(context, fillRemaining: true),
                     )))),
         SliverToBoxAdapter(
           child: SizedBox(
