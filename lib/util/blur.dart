@@ -31,7 +31,7 @@ class EdgeTheme {
     this.blurAddedIntensity = 0.15,
     this.blurCount = 5,
     this.size = 28,
-    this.autoEdge = true,
+    this.autoEdge = false,
   });
 }
 

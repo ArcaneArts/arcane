@@ -1,3 +1,10 @@
+## 3.10.8
+* Remove InjectScreenFooter from children of FillScreen & SliverScreens
+* Make InjectScreenFooter a nullable pylon so it can be removed
+* Default Auto Edge false in ArcaneTheme
+* ADD `GutterTheme.enabled` defaulted to true in ArcaneTheme
+* ADD `Collection` & `Section`
+
 ## 3.10.7
 * Additional Sliver Fixes
 * ADD `ArcaneScreen` which switches between `FillScreen` and `SliverScreen` based on the child provided

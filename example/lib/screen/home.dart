@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/collection/collection.dart';
 import 'package:fast_log/fast_log.dart';
 
 class MySliver extends StatefulWidget {
@@ -49,7 +50,28 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
         header: Bar(
           titleText: "Test",
         ),
-        child: FlutterLogo(),
+        child: Collection(
+          children: [
+            Collection(
+              children: [
+                Text("Hello"),
+                Text("World"),
+                Text("ffff"),
+                Text("Coolio")
+              ],
+            ),
+            Section(
+                titleText: "Section 2",
+                child: Collection(
+                  children: [
+                    Text("Hello"),
+                    Text("World"),
+                    Text("ffff"),
+                    Text("Coolio")
+                  ],
+                )),
+          ],
+        ),
       );
 
   @override

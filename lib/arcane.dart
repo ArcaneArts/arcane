@@ -49,6 +49,7 @@ export 'component/bottom_navigation_bar.dart';
 export 'component/card_carousel.dart';
 export 'component/center_body.dart';
 export 'component/checkbox.dart';
+export 'component/collection/collection.dart';
 export 'component/conjured.dart';
 export 'component/data_table.dart';
 export 'component/dialog/confirm.dart';

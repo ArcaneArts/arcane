@@ -63,7 +63,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
 
 abstract class AbstractStatefulScreen extends StatefulWidget {
   final Widget? fab;
-  final bool gutter;
+  final bool? gutter;
   final Widget? header;
   final Widget? footer;
   final Widget? foreground;
@@ -79,7 +79,7 @@ abstract class AbstractStatefulScreen extends StatefulWidget {
     this.fab,
     this.foreground,
     this.background,
-    this.gutter = true,
+    this.gutter,
     this.header,
     this.footer,
     this.loadingProgress,
@@ -90,7 +90,7 @@ abstract class AbstractStatefulScreen extends StatefulWidget {
 
 abstract class AbstractStatelessScreen extends StatelessWidget {
   final Widget? fab;
-  final bool gutter;
+  final bool? gutter;
   final Widget? header;
   final Widget? footer;
   final Widget? foreground;
@@ -106,7 +106,7 @@ abstract class AbstractStatelessScreen extends StatelessWidget {
     this.fab,
     this.foreground,
     this.background,
-    this.gutter = true,
+    this.gutter,
     this.header,
     this.footer,
     this.loadingProgress,
@@ -129,7 +129,7 @@ class InjectScreenFooter extends StatelessWidget {
       {super.key, required this.footer, required this.builder});
 
   @override
-  Widget build(BuildContext context) => Pylon<InjectScreenFooter>(
+  Widget build(BuildContext context) => Pylon<InjectScreenFooter?>(
         local: true,
         value: this,
         builder: builder,

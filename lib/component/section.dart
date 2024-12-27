@@ -106,6 +106,8 @@ class BarSection extends StatelessWidget {
   final List<Widget> trailing;
   final Widget sliver;
   final BarBackButtonMode backButton;
+  final bool expandable;
+  final bool initiallyExpanded;
 
   const BarSection(
       {super.key,
@@ -118,23 +120,54 @@ class BarSection extends StatelessWidget {
       this.subtitleText,
       this.headerText,
       this.leading = const [],
+      this.expandable = false,
+      this.initiallyExpanded = true,
       this.trailing = const []});
 
+  const BarSection.expandable(
+      {super.key,
+      this.backButton = BarBackButtonMode.never,
+      this.title,
+      required this.sliver,
+      this.subtitle,
+      this.header,
+      this.titleText,
+      this.subtitleText,
+      this.headerText,
+      this.leading = const [],
+      this.initiallyExpanded = true,
+      this.trailing = const []})
+      : expandable = true;
+
   @override
-  Widget build(BuildContext context) => SliverStickyHeader.builder(
-        builder: (context, state) => Bar(
-          ignoreContextSignals: true,
-          useGlass: state.isPinned,
-          backButton: backButton,
+  Widget build(BuildContext context) => expandable
+      ? ExpansionBarSection(
           title: title,
-          header: header,
           subtitle: subtitle,
+          header: header,
           titleText: titleText,
           subtitleText: subtitleText,
           headerText: headerText,
           leading: leading,
           trailing: trailing,
-        ),
-        sliver: sliver,
-      );
+          sliver: sliver,
+          backButton: backButton,
+          initiallyExpanded: initiallyExpanded,
+        )
+      : SliverStickyHeader.builder(
+          builder: (context, state) => Bar(
+            ignoreContextSignals: true,
+            useGlass: state.isPinned,
+            backButton: backButton,
+            title: title,
+            header: header,
+            subtitle: subtitle,
+            titleText: titleText,
+            subtitleText: subtitleText,
+            headerText: headerText,
+            leading: leading,
+            trailing: trailing,
+          ),
+          sliver: sliver,
+        );
 }

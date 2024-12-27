@@ -191,17 +191,19 @@ class _SliverScreenState extends State<SliverScreen> {
                   stopping: !(blurring || widget.background != null),
                 )),
           ),
-        PylonRemove<InjectBarLeading>(
-            local: true,
-            builder: (context) => PylonRemove<InjectBarTrailing>(
+        PylonRemove<InjectScreenFooter>(
+            builder: (context) => PylonRemove<InjectBarLeading>(
                 local: true,
-                builder: (context) => SliverGutter(
-                    enabled: widget.gutter,
-                    sliver: Pylon<ArbitraryHeaderSpace?>(
-                      value: ArbitraryHeaderSpace(headerSize),
-                      local: true,
-                      builder: (context) => widget.sliver,
-                    )))),
+                builder: (context) => PylonRemove<InjectBarTrailing>(
+                    local: true,
+                    builder: (context) => SliverGutter(
+                        enabled: widget.gutter ??
+                            ArcaneTheme.of(context).gutter.enabled,
+                        sliver: Pylon<ArbitraryHeaderSpace?>(
+                          value: ArbitraryHeaderSpace(headerSize),
+                          local: true,
+                          builder: (context) => widget.sliver,
+                        ))))),
         SliverToBoxAdapter(
           child: SizedBox(
             height: footerSize,
@@ -217,8 +219,9 @@ class _SliverScreenState extends State<SliverScreen> {
           fit: StackFit.passthrough,
           children: [
             if (widget.background != null)
-              PylonRemove<ArcaneSidebarInjector>(
-                  builder: (context) => widget.background!),
+              PylonRemove<InjectScreenFooter>(
+                  builder: (context) => PylonRemove<ArcaneSidebarInjector>(
+                      builder: (context) => widget.background!)),
             Positioned.fill(
                 child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,16 +240,17 @@ class _SliverScreenState extends State<SliverScreen> {
                     ),
                   ], builder: sidebar),
                 Expanded(
-                  child: PylonRemove<ArcaneSidebarInjector>(
-                    builder: (context) => Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        footer != null
-                            ? cont
-                            : cont.bottomEdgeBlur(autoMode: true),
-                      ],
-                    ),
-                  ),
+                  child: PylonRemove<InjectScreenFooter>(
+                      builder: (context) => PylonRemove<ArcaneSidebarInjector>(
+                            builder: (context) => Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                footer != null
+                                    ? cont
+                                    : cont.bottomEdgeBlur(autoMode: true),
+                              ],
+                            ),
+                          )),
                 )
               ],
             )),
@@ -263,8 +267,10 @@ class _SliverScreenState extends State<SliverScreen> {
                             builder: (context) => SafeBar(
                                 bottom: true,
                                 builder: (context) =>
-                                    PylonRemove<ArcaneSidebarInjector>(
-                                        builder: (context) => footer)),
+                                    PylonRemove<InjectScreenFooter>(
+                                        builder: (context) =>
+                                            PylonRemove<ArcaneSidebarInjector>(
+                                                builder: (context) => footer))),
                           ),
                         ),
                         stopping: !(footerHas || widget.background != null),
@@ -275,13 +281,16 @@ class _SliverScreenState extends State<SliverScreen> {
               Padding(
                   padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
                   child: FabSocket(
-                      child: PylonRemove<ArcaneSidebarInjector>(
-                          builder: (context) => widget.fab!))),
+                      child: PylonRemove<InjectScreenFooter>(
+                          builder: (context) =>
+                              PylonRemove<ArcaneSidebarInjector>(
+                                  builder: (context) => widget.fab!)))),
             if (widget.foreground != null)
               Padding(
                   padding: EdgeInsets.only(top: headerSize, bottom: footerSize),
-                  child: PylonRemove<ArcaneSidebarInjector>(
-                      builder: (context) => widget.foreground!)),
+                  child: PylonRemove<InjectScreenFooter>(
+                      builder: (context) => PylonRemove<ArcaneSidebarInjector>(
+                          builder: (context) => widget.foreground!))),
             // if (widget.header != null)
             //   Positioned(
             //       top: 0,

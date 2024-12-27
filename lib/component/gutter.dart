@@ -8,11 +8,16 @@ double _defaultGutterCalc(double screenWidth) =>
 class GutterTheme {
   /// The value returned is both applied on the left and right.
   final double Function(double screenWidth) gutterCalc;
+  final bool enabled;
 
-  const GutterTheme({this.gutterCalc = _defaultGutterCalc});
+  const GutterTheme(
+      {this.gutterCalc = _defaultGutterCalc, this.enabled = true});
 
-  GutterTheme copyWith({double Function(double screenWidth)? gutterCalc}) =>
-      GutterTheme(gutterCalc: gutterCalc ?? this.gutterCalc);
+  GutterTheme copyWith(
+          {double Function(double screenWidth)? gutterCalc, bool? enabled}) =>
+      GutterTheme(
+          gutterCalc: gutterCalc ?? this.gutterCalc,
+          enabled: enabled ?? this.enabled);
 }
 
 class SliverGutter extends StatelessWidget {
