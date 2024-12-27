@@ -64,8 +64,9 @@ void setupArcaneDebug() {
     int lengthBuffer = 10;
 
     lLogOverride = (level, message) {
+      message = message.replaceAll("@", "★");
       String bl =
-          "&r${" " * max(1, lengthBuffer - message.length)}\t\t@(#FF0c0024)&(#FF6940b8)&o${blame()}";
+          "&r${" " * max(1, min(lengthBuffer - message.length, 20))}\t\t@(#FF0c0024)&(#FF6940b8)&o${blame()}";
       String s = switch (level) {
         LogCategory.info => "@(#FFade5ff) &r &(#FFd6e7ff)$message$bl",
         LogCategory.error =>
@@ -78,7 +79,8 @@ void setupArcaneDebug() {
         LogCategory.network => "@(#FF0099ff) &r &(#FF1ca4ff)$message$bl",
         LogCategory.warning => "@(#FFfffb00) &r &(#FFffed85)&l$message$bl",
       }
-          .chatColor;
+          .chatColor
+          .replaceAll("★", "@");
 
       if (message.length > lengthBuffer) {
         lengthBuffer = message.length;

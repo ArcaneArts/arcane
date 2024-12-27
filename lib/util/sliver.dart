@@ -237,6 +237,11 @@ extension XSliverWidget on Widget {
         Scrollable() => false,
         SliverList() => true,
         AnimatedContainer() => false,
+        AnimatedOpacity() => false,
+        SliverPadding() => true,
+        SliverToBoxAdapter() => true,
+        SliverFillRemainingBoxAdapter() => true,
+        SliverFillRemaining() => true,
         _ => _isSliverDeep(context)
       };
 
@@ -297,3 +302,21 @@ extension XSliverWidget on Widget {
 
 mixin SliverSignal {}
 mixin BoxSignal {}
+
+class TrustSliver extends StatelessWidget with SliverSignal {
+  final Widget child;
+
+  const TrustSliver(this.child, {super.key});
+
+  @override
+  Widget build(BuildContext context) => child;
+}
+
+class TrustBox extends StatelessWidget with BoxSignal {
+  final Widget child;
+
+  const TrustBox(this.child, {super.key});
+
+  @override
+  Widget build(BuildContext context) => child;
+}

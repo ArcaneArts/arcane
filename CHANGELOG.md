@@ -1,3 +1,6 @@
+## 3.10.6
+* Sliver Fixes
+
 ## 3.10.5
 * Reduce default blur effect
 * Improved debug logging
