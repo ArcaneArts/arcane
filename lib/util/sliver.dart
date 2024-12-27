@@ -232,16 +232,43 @@ extension XSliverWidget on Widget {
   }
 
   bool isSliver(BuildContext context) => switch (this) {
-        SliverSignal() => true,
-        BoxSignal() => false,
-        Scrollable() => false,
-        SliverList() => true,
-        AnimatedContainer() => false,
-        AnimatedOpacity() => false,
-        SliverPadding() => true,
-        SliverToBoxAdapter() => true,
-        SliverFillRemainingBoxAdapter() => true,
-        SliverFillRemaining() => true,
+        Text() ||
+        Container() ||
+        Padding() ||
+        Align() ||
+        Center() ||
+        Column() ||
+        Row() ||
+        Stack() ||
+        Positioned() ||
+        Expanded() ||
+        SizedBox() ||
+        Spacer() ||
+        AnimatedOpacity() ||
+        BoxSignal() ||
+        ListView() ||
+        GridView() ||
+        SingleChildScrollView() ||
+        Scrollable() ||
+        FlutterLogo() ||
+        Bar() ||
+        AppBar() ||
+        AnimatedContainer() =>
+          false,
+        BarSection() ||
+        ExpansionBarSection() ||
+        GlassSection() ||
+        SliverSignal() ||
+        SliverList() ||
+        SliverPadding() ||
+        SliverToBoxAdapter() ||
+        SliverFillRemainingBoxAdapter() ||
+        SliverFillRemaining() ||
+        SliverGrid() ||
+        SListView() ||
+        SGridView() ||
+        SliverGutter() =>
+          true,
         _ => _isSliverDeep(context)
       };
 

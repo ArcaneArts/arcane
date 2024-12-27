@@ -1,5 +1,66 @@
 import 'package:arcane/arcane.dart';
 
+class ArcaneScreen extends AbstractStatelessScreen {
+  final Widget child;
+  final PylonBuilder? sidebar;
+  final ScrollController? scrollController;
+  final ScrollPhysics? physics;
+  final ScrollController? sidebarController;
+
+  const ArcaneScreen({
+    super.overrideBackgroundColor,
+    super.key,
+    super.background,
+    super.fab,
+    super.footer,
+    super.header,
+    super.gutter,
+    super.loadingProgress,
+    super.loadingProgressIndeterminate,
+    super.showLoadingSparks,
+    super.foreground,
+    this.sidebar,
+    this.scrollController,
+    this.sidebarController,
+    this.physics,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) => child.isSliver(context)
+      ? SliverScreen(
+          sliver: child,
+          overrideBackgroundColor: overrideBackgroundColor,
+          fab: fab,
+          footer: footer,
+          header: header,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+          foreground: foreground,
+          background: background,
+          sidebar: sidebar,
+          scrollController: scrollController,
+          sidebarController: sidebarController,
+          physics: physics,
+        )
+      : FillScreen(
+          overrideBackgroundColor: overrideBackgroundColor,
+          fab: fab,
+          footer: footer,
+          header: header,
+          gutter: gutter,
+          loadingProgress: loadingProgress,
+          loadingProgressIndeterminate: loadingProgressIndeterminate,
+          showLoadingSparks: showLoadingSparks,
+          foreground: foreground,
+          background: background,
+          sidebar: sidebar,
+          child: child,
+        );
+}
+
 abstract class AbstractStatefulScreen extends StatefulWidget {
   final Widget? fab;
   final bool gutter;

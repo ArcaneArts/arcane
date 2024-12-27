@@ -65,11 +65,9 @@ class FillScreen extends AbstractStatelessScreen {
                                     builder: (context) => Gutter(
                                         enabled: gutter,
                                         child: footer != null
-                                            ? child.toBox(context)
-                                            : child
-                                                .toBox(context)
-                                                .bottomEdgeBlur(
-                                                    autoMode: true))),
+                                            ? child
+                                            : child.bottomEdgeBlur(
+                                                autoMode: true))),
                               ),
                             ],
                           )),

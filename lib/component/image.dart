@@ -24,7 +24,7 @@ class ImageStyle {
         assert(fit != BoxFit.none, "Fit cannot be none. Use contain instead.");
 }
 
-class ImageView extends StatefulWidget {
+class ImageView extends StatefulWidget with BoxSignal {
   final String? thumbHash;
   final String? blurHash;
   final Future<String> url;

@@ -45,11 +45,11 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => SliverScreen(
+  Widget build(BuildContext context) => ArcaneScreen(
         header: Bar(
           titleText: "Test",
         ),
-        sliver: FlutterLogo(),
+        child: FlutterLogo(),
       );
 
   @override
