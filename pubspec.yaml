@@ -55,6 +55,7 @@ dependencies:
   chat_color: ">=1.0.0 <2.0.0"
   color: ^3.0.0
   tinycolor2: ^3.0.1
+  flutter_shaders: ^0.1.3
 dev_dependencies:
   flutter_lints: ^5.0.0
   intl: ">=0.19.0 <0.20.0"

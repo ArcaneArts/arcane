@@ -21,8 +21,15 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 flutter:
   uses-material-design: true
+  shaders:
+    - packages/arcane/resources/shaders/frost.frag
+    - packages/arcane/resources/shaders/pixelate.frag
+    - packages/arcane/resources/shaders/pixelate_blur.frag
+    - packages/arcane/resources/shaders/rgb.frag
+    - packages/arcane/resources/shaders/loader.frag
+    - packages/arcane/resources/shaders/glyph.frag
   fonts:
-    - family: RadixIcons
+    - family: RadixIcons 
       fonts:
         - asset: "packages/arcane/resources/icons/RadixIcons.otf"
     - family: BootstrapIcons

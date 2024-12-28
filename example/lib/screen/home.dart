@@ -15,27 +15,18 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                 onPressed: () => Arcane.push(context, AScreen()))
           ],
         ),
-        child: Collection(
-          children: [
-            Collection(
-              children: [
-                Text("Hello"),
-                Text("World"),
-                Text("ffff"),
-                Text("Coolio")
-              ],
-            ),
-            Section(
-                titleText: "Section 2",
-                child: Collection(
-                  children: [
-                    Text("Hello"),
-                    Text("World"),
-                    Text("ffff"),
-                    Text("Coolio")
-                  ],
-                )),
-          ],
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GlyphEffect(
+                size: const Size(800, 800),
+              ),
+              Gap(8),
+              Text("Please Wait")
+            ],
+          ),
         ),
       );
 

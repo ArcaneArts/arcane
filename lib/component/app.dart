@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/io_web_noop.dart' show usePathUrlStrategy
     if (dart.library.html) 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:arcane/util/shaders.dart';
 import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ bool get isUsingUrlPathStrategy => _usedPathStrategy;
 void runApp(Widget app,
     {bool usePathStrategy = true, bool setupMetaSEO = true}) async {
 setupArcaneDebug();
+ArcaneShader.loadAll();
   if (kIsWeb) {
     if (usePathStrategy) { 
       try {
