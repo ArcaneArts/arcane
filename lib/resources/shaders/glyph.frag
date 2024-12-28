@@ -7,6 +7,13 @@ uniform float uSpeed;
 uniform float uRotationSpeed;
 uniform float uThreshold;
 uniform float uComplex;
+uniform float uColorBias;
+uniform float uZoom;
+uniform float uInvert;
+uniform float uBloom;
+uniform float uPower;
+uniform vec3 color1;
+uniform vec3 color2;
         
 out vec4 fragColor;
 
@@ -17,11 +24,11 @@ vec2 rotate2D(vec2 p, float a) {
 }
 
 vec3 palette(float d) {
-    return mix(vec3(0.2, 0.7, 0.9), vec3(1.0, 0.0, 1.0), d);
+    return mix(color1, color2, d);
 }
 
 float mapFunc(vec3 p) {
-    for (int i = 0; i < 128 ; i++) {
+    for (int i = 0; i < 64 ; i++) {
         if(i > uComplex) break;
         float t = iTime * 0.2 * uSpeed;
         p.xz = rotate2D(p.xz, t);
@@ -32,7 +39,7 @@ float mapFunc(vec3 p) {
         p.xz -= 0.5;
     }
     
-    return dot(sign(p), p) / 6.0;
+    return dot(sign(p), p) / uBloom;
 }
 
 vec4 raymarch(vec3 ro, vec3 rd) {
@@ -42,14 +49,14 @@ vec4 raymarch(vec3 ro, vec3 rd) {
     
     for (int i = 0; i < 64; i++) {
         vec3 p = ro + rd * t;
-        d = mapFunc(p) * 2;
+        d = mapFunc(p) * 1;
         if (d < uThreshold) break;
-        if (d > 100.0) break;
-        col += palette(length(p) * 0.1) / (uIntensity * d); 
-        t += d;
+        if (d > 100.0) break; 
+        col += palette(length(p) * (1.0/uComplex)*uColorBias) / (uIntensity * d * 1); 
+        t += d; 
     }
 
-    return vec4(col, 1.0 / (d * 100.0));
+    return pow(vec4(col, 1.0 / (d * 100.0)), vec4(uPower));
 }
 
 void main() {
@@ -60,9 +67,9 @@ void main() {
     vec3 forward = normalize(-ro);
     vec3 right = normalize(cross(forward, vec3(0.0, 1.0, 0.0)));
     vec3 up = normalize(cross(forward, right));
-    vec3 center = ro + forward * 1.0;
+    vec3 center = ro + forward * (1/ (uComplex*0.1) * uZoom);
     vec3 uuv = center + uv.x * right + uv.y * up;
     vec3 rd = normalize(uuv - ro);
     vec4 color = raymarch(ro, rd);
-    fragColor = vec4(color.rgb, color.a);
+    fragColor = vec4(color.rgb * uInvert, color.a);
 }

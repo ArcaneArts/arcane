@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/shaders/invert.dart';
+import 'package:arcane/util/shaders/warp.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -65,11 +67,14 @@ class ArcaneShader {
         PixelateBlurShader(),
         RGBShader(),
         LoaderShader(),
-        GlyphShader()
+        GlyphShader(),
+        InvertShader(),
+        WarpShader(),
       ]);
 }
 
 class AnimatedShadedSurface extends StatefulWidget {
+  final double fpsLimit;
   final FragmentProgram program;
   final Size size;
   final FragmentShader Function(FragmentProgram program, Duration elapsed)
@@ -78,6 +83,7 @@ class AnimatedShadedSurface extends StatefulWidget {
   const AnimatedShadedSurface(
       {super.key,
       required this.program,
+      this.fpsLimit = 24,
       required this.size,
       required this.shaderBuilder});
 
@@ -89,13 +95,17 @@ class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface>
     with SingleTickerProviderStateMixin {
   late Ticker _ticker;
   late FragmentShader shader;
+  double lastTime = 0;
 
   @override
   void initState() {
     shader = widget.shaderBuilder(widget.program, Duration(milliseconds: 1));
-
+    PrecisionStopwatch p = PrecisionStopwatch.start();
+    lastTime = p.getMilliseconds();
     super.initState();
     _ticker = createTicker((elapsed) {
+      if (p.getMilliseconds() - lastTime < 1000 / widget.fpsLimit) return;
+      lastTime = p.getMilliseconds();
       setState(() {
         shader = widget.shaderBuilder(widget.program, elapsed);
       });

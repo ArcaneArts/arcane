@@ -28,6 +28,8 @@ flutter:
     - packages/arcane/resources/shaders/rgb.frag
     - packages/arcane/resources/shaders/loader.frag
     - packages/arcane/resources/shaders/glyph.frag
+    - packages/arcane/resources/shaders/invert.frag
+    - packages/arcane/resources/shaders/warp.frag
   fonts:
     - family: RadixIcons 
       fonts:

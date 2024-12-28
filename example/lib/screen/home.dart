@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/shaders/warp.dart';
 
 class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
@@ -16,17 +17,10 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
           ],
         ),
         child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GlyphEffect(
-                size: const Size(800, 800),
-              ),
-              Gap(8),
-              Text("Please Wait")
-            ],
-          ),
+          child: Container(
+            color: Colors.red,
+            child: Text("Hello World").x9Large().pad(64),
+          ).shadeWarp(),
         ),
       );
 
