@@ -1,9 +1,7 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders/black_hole.dart';
 import 'package:arcane/util/shaders/invert.dart';
-import 'package:arcane/util/shaders/warp.dart';
 import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/scheduler.dart';
@@ -82,7 +80,9 @@ class ArcaneShader {
         GlyphShader(),
         InvertShader(),
         WarpShader(),
-        BlackHoleShader()
+        BlackHoleShader(),
+        LuxShader(),
+        CascadeShader()
       ]);
 }
 

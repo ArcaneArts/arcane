@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders/black_hole.dart';
 
 class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
@@ -17,8 +16,11 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
           ],
         ),
         child: Center(
-            child: BlackHoleEffect(
-          size: 500,
+            child: Container(
+          decoration: BoxDecoration(),
+          child: BlackHoleEffect(
+            size: 800,
+          ),
         )),
       );
 

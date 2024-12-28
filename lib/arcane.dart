@@ -1,11 +1,15 @@
 library arcane;
 
+export 'package:arcane/util/shaders/black_hole.dart';
+export 'package:arcane/util/shaders/cascade.dart';
 export 'package:arcane/util/shaders/frost.dart';
 export 'package:arcane/util/shaders/glyph.dart';
 export 'package:arcane/util/shaders/loader.dart';
+export 'package:arcane/util/shaders/lux.dart';
 export 'package:arcane/util/shaders/pixelate.dart';
 export 'package:arcane/util/shaders/pixelate_blur.dart';
 export 'package:arcane/util/shaders/rgb.dart';
+export 'package:arcane/util/shaders/warp.dart';
 
 export 'component/app.dart';
 export 'component/bar.dart';

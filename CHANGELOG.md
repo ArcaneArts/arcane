@@ -1,3 +1,6 @@
+## 3.10.10
+* More Shaders
+
 ## 3.10.9
 * ADD `logAnnounce` methods
 * Routing Fixes

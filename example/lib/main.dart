@@ -44,6 +44,6 @@ class ExampleArcaneApp extends StatelessWidget {
             },
             theme: ArcaneTheme(
                 themeMode: ThemeMode.system,
-                scheme: ContrastedColorScheme.fromScheme(ColorSchemes.yellow)),
+                scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
           ));
 }

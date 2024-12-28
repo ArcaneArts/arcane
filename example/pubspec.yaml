@@ -30,6 +30,8 @@ flutter:
     - packages/arcane/resources/shaders/invert.frag
     - packages/arcane/resources/shaders/warp.frag
     - packages/arcane/resources/shaders/black_hole.frag
+    - packages/arcane/resources/shaders/lux.frag
+    - packages/arcane/resources/shaders/cascade.frag
   uses-material-design: true
   fonts:
     - family: RadixIcons 
