@@ -120,18 +120,20 @@ float n2( in vec2 p )
 void main()
 {
     vec2 coord = FlutterFragCoord().xy;
-    vec2 uv    = coord / uSize;
+    vec2 uv = coord / uSize;
     vec2 warpScale  = vec2(0.6) * (uSize / 100.0) * uFreq;
     vec2 warpAmount = vec2(0.005) * (uSize / 100.0) * uAmp;
     float nx = n3(vec3(uv * warpScale, uZ));
     float ny = n3(vec3((uv + vec2(13.37, 42.42)) * warpScale, uZ));
     uv += warpAmount * vec2(nx, ny);
-
+    float padding = (uAmp * 0.025)+1;
+    uv *= padding;
+    uv -= (padding - 1.0) / 2.0;
+    
     if(uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
         fragColor = vec4(0.0, 0.0, 0.0, 0.0);
         return;
     }
-    
-    // Sample the texture
+
     fragColor = texture(uTexture, uv);
 }

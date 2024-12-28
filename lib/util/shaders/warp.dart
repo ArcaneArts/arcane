@@ -56,7 +56,7 @@ class WarpyFilter extends StatefulWidget {
 class _WarpyFilterState extends State<WarpyFilter>
     with SingleTickerProviderStateMixin {
   late Ticker ticker;
-  late double zz;
+  double zz = 1;
 
   @override
   void initState() {
@@ -103,17 +103,19 @@ class WarpFilter extends StatelessWidget with BoxSignal {
                 shader.setFloatUniforms((uniforms) {
                   uniforms
                     ..setSize(size)
-                    ..setFloat(amplitude)
                     ..setFloat(frequency)
+                    ..setFloat(amplitude)
                     ..setFloat(z);
                 });
 
                 shader.setImageSampler(0, image);
                 canvas.drawRect(
                   Rect.fromLTWH(0, 0, size.width, size.height),
-                  Paint()..shader = shader,
+                  Paint()
+                    ..shader = shader
+                    ..isAntiAlias = true,
                 );
-              }, child: this.child.pad(64)),
+              }, child: this.child),
           assetKey: ArcaneShader.assetKey(_name)),
-      loading: child.pad(64));
+      loading: child);
 }
