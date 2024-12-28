@@ -1,3 +1,7 @@
+## 3.10.9
+* ADD `logAnnounce` methods
+* Routing Fixes
+
 ## 3.10.8
 * Remove InjectScreenFooter from children of FillScreen & SliverScreens
 * Make InjectScreenFooter a nullable pylon so it can be removed

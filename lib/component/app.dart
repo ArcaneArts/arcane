@@ -3,72 +3,43 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/io_web_noop.dart' show usePathUrlStrategy
     if (dart.library.html) 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 
+bool _usedPathStrategy = false;
+bool get isUsingUrlPathStrategy => _usedPathStrategy;
+
 void runApp(Widget app,
     {bool usePathStrategy = true, bool setupMetaSEO = true}) async {
+setupArcaneDebug();
   if (kIsWeb) {
     if (usePathStrategy) { 
       try {
         usePathUrlStrategy();
+        _usedPathStrategy = true;
+        actioned("Path Strategy Applied for web URLs");
       } catch (e) {}
     }
     if (setupMetaSEO) {
       try {
         MetaSEO().config();
+        actioned("SEO Engine Configured for Browser");
       } catch (e) {}
     }
   }
-  setupArcaneDebug();
   
   m.runApp(app);
 }
 
-class Arcane {
-  static ArcaneAppState? _app;
-  static ArcaneAppState get app => _app!;
-  static ArcaneTheme get globalTheme => _app!.currentTheme;
-  static ArcaneTheme themeOf(BuildContext context) =>
-      context.pylonOr<ArcaneTheme>() ?? globalTheme;
-
-  static void pop<T extends Object?>(BuildContext context, [T? result]) =>
-      Navigator.pop(context, result);
-
-  static Future<T?> push<T extends Object?>(
-          BuildContext context, Widget child) => 
-      Pylon.push<T?>(context, child,
-          type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
-  
-  static Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
-          BuildContext context, Widget child) => 
-      Pylon.pushReplacement<T?, TO?>(context, child,
-          type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
-  
-  static Future<T?> pushAndRemoveUntil<T extends Object?>(
-          BuildContext context, Widget child, RoutePredicate predicate) => 
-      Pylon.pushAndRemoveUntil<T?>(context, child, predicate: predicate,
-          type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
-
-  static void closeDrawer(BuildContext context) =>
-      DrawerOverlay.maybeFind(context)?.overlay.closeLast();
-  
-  static void closeMenus(BuildContext context) => Data.maybeOf<MenuGroupData>(context)?.closeAll();
-}
 
 class ArcaneApp extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final AdaptiveScaling? scaling;
   final Widget? home;
   final Map<String, WidgetBuilder>? routes;
-  final String initialRoute;
+  final String initialRoute; 
   final RouteFactory? onGenerateRoute;
   final InitialRouteListFactory? onGenerateInitialRoutes;
   final RouteFactory? onUnknownRoute;
@@ -185,16 +156,19 @@ class ArcaneAppState extends State<ArcaneApp> {
   late ArcaneTheme _theme;
   late Map<String, WidgetBuilder> dynamicRoutes;
   bool usesArcaneRouting = false;
+  late String u404Route;
 
   @override
   void initState() {
     dynamicRoutes = {};
     routeFactory = widget.onGenerateRoute;
-    Arcane._app = this;
+    Arcane.$app = this;
     super.initState();
     _theme = widget.theme ?? const ArcaneTheme();
     buildDynamicRoutes();
+    actionedAnnounce("${(widget.title.trim().isEmpty ? null : widget.title) ?? "Arcane App"} Initialized");
   }
+   
 
   void buildDynamicRoutes() {
     if (usesRouter ||
@@ -202,13 +176,24 @@ class ArcaneAppState extends State<ArcaneApp> {
       return;
     }
 
-    info("=== Building Dynamic Route Map ===");
+    info("Building Dynamic Route Map");
 
     dynamicRoutes = {...(widget.routes ?? {})};
-
+    bool f404Set = false;
     for (ArcaneRoute route in widget.arcaneRoutes) {
       dynamicRoutes[route.path] = (context) => route;
       verbose("${route.path} -> ${route.runtimeType}");
+      
+      if(route.is404Route){
+        u404Route = route.path;
+        f404Set = true;
+        verbose("  404 Route Set to $u404Route");
+      } 
+    }
+    
+    if(!f404Set){
+      u404Route = widget.initialRoute;
+      verbose("  404 Route Set to $u404Route"); 
     }
 
     if (!dynamicRoutes.containsKey(widget.initialRoute) &&
@@ -219,14 +204,20 @@ class ArcaneAppState extends State<ArcaneApp> {
 
     routeFactory = (RouteSettings settings) {
       if (settings.name?.isNotEmpty ?? false) {
+        navigation("Routing to ${settings.name}");
         String route = Uri.parse(settings.name!).path;
 
         if (dynamicRoutes.containsKey(route)) {
+          navigation("  Route Found: ${dynamicRoutes[route]!.runtimeType} -> $route");
           return MaterialPageRoute(
               builder: dynamicRoutes[route]!, settings: settings);
         }
-      }
-
+        
+        warn("  Route Not Found: $route -> $u404Route");
+        return MaterialPageRoute(
+            builder: dynamicRoutes[u404Route]!, settings: settings);
+      } 
+      
       return null;
     };
 
@@ -236,11 +227,13 @@ class ArcaneAppState extends State<ArcaneApp> {
   void setTheme(ArcaneTheme theme) {
     setState(() {
       _theme = theme;
+      actionedAnnounce("Theme Changed");
     });
   }
 
   void updateApp() {
     setState(() {});
+    actionedAnnounce("App wide setState()");
   }
 
   bool get usesRouter =>
@@ -302,9 +295,12 @@ ArcaneTheme get currentTheme => _theme;
       onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
       onUnknownRoute: usesArcaneRouting
       ? widget.onUnknownRoute ??
-      (rs) => MaterialPageRoute(
-      builder: dynamicRoutes[widget.initialRoute]!,
-      settings: RouteSettings(name: widget.initialRoute))
+      (rs) {
+        warn("Unknown Route: ${rs.name} -> $u404Route");
+return MaterialPageRoute(
+builder: dynamicRoutes[u404Route]!,
+settings: RouteSettings(name: u404Route));
+}
           : widget.onUnknownRoute,
       onNavigationNotification: widget.onNavigationNotification,
       navigatorObservers: [
@@ -357,24 +353,32 @@ class ArcaneRoutingNavigationObserver extends NavigatorObserver {
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _applyRouteIfExists(route);
     super.didPush(route, previousRoute);
+    print("");
+    navigation("Pushed: @(#FF634027)${previousRoute?.settings.name}@0 -> @(#FF27633a)&l${route.settings.name}".chatColor);
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _applyRouteIfExists(previousRoute);
     super.didPop(route, previousRoute);
+print("");
+    navigation("Popped: @(#FF634027)&m${route.settings.name}".chatColor);
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _applyRouteIfExists(previousRoute);
     super.didRemove(route, previousRoute);
+print("");
+    navigation("Removed: @(#FF27633a)${route.settings.name}@0 <- @(#FF634027)${previousRoute?.settings.name}".chatColor);
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     _applyRouteIfExists(newRoute);
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+print("");
+    navigation("Replaced: @(#FF634027)${oldRoute?.settings.name} [-> @(#FF27633a)&l${newRoute?.settings.name}");
   }
 }
 

@@ -13,6 +13,8 @@ mixin ArcaneRoute on Widget {
 
   void onApplyRoute() {}
 
+  bool get is404Route => false;
+
   ArcanePageMeta? get pageMeta => null;
 }
 

@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.10.7"
+    version: "3.10.8"
   archive:
     dependency: transitive
     description:
@@ -599,6 +599,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.3"
+  pigment:
+    dependency: transitive
+    description:
+      name: pigment
+      sha256: b8c56059e21ecb9379a304c78a4f20e399d41e54384a7f64de21103b4b5c38dd
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   platform:
     dependency: transitive
     description:
@@ -820,6 +828,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.0+1"
+  tinycolor2:
+    dependency: transitive
+    description:
+      name: tinycolor2
+      sha256: "81850c32ac8d4dcff37299bf3e52bcad4f4db6bc73d4b06727c9922de3766390"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   toxic:
     dependency: transitive
     description:

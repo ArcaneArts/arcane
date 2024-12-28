@@ -1,9 +1,4 @@
-import 'dart:math';
-
 import 'package:arcane/arcane.dart';
-import 'package:chat_color/chat_color.dart';
-import 'package:fast_log/fast_log.dart';
-import 'package:flutter/foundation.dart';
 import 'package:jiffy/jiffy.dart';
 
 extension XDateTimeRangeArcane on DateTimeRange {
@@ -52,49 +47,6 @@ extension XSliverGridTransformer on GridView {
 
 extension XStringArcane on String {
   Text get text => Text(this);
-}
-
-void setupArcaneDebug() {
-  if (kDebugMode) {
-    String blame() {
-      return StackTraceInfo(trace: StackTrace.current).className ?? "?";
-    }
-
-    int overshot = 0;
-    int lengthBuffer = 10;
-
-    lLogOverride = (level, message) {
-      message = message.replaceAll("@", "★");
-      String bl =
-          "&r${" " * max(1, min(lengthBuffer - message.length, 20))}\t\t@(#FF0c0024)&(#FF6940b8)&o${blame()}";
-      String s = switch (level) {
-        LogCategory.info => "@(#FFade5ff) &r &(#FFd6e7ff)$message$bl",
-        LogCategory.error =>
-          "@(#FFff3d3d) &r @(#FF2e0009)&(#FFff214e)&l$message$bl",
-        LogCategory.verbose => "@(#FFb8afbd) &r &(#FF897c99)$message$bl",
-        LogCategory.success =>
-          "@(#FF54ff54) &r ${message.spin(0xFFafff96, 0xFF96ffce, unicorn: true)}$bl",
-        LogCategory.actioned => "@(#FF9854ff) &r &(#FFd278ff)$message$bl",
-        LogCategory.navigation => "@(#FFff8b42) &r &(#FFffebc7)$message$bl",
-        LogCategory.network => "@(#FF0099ff) &r &(#FF1ca4ff)$message$bl",
-        LogCategory.warning => "@(#FFfffb00) &r &(#FFffed85)&l$message$bl",
-      }
-          .chatColor
-          .replaceAll("★", "@");
-
-      if (message.length > lengthBuffer) {
-        lengthBuffer = message.length;
-      } else {
-        overshot++;
-      }
-
-      if (overshot > 50) {
-        lengthBuffer--;
-      }
-
-      print(s);
-    };
-  }
 }
 
 class StackTraceInfo {

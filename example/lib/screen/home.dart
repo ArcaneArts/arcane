@@ -1,46 +1,6 @@
 import 'dart:math';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/collection/collection.dart';
-import 'package:fast_log/fast_log.dart';
-
-class MySliver extends StatefulWidget {
-  const MySliver({super.key});
-
-  @override
-  State<MySliver> createState() => _MySliverState();
-}
-
-class _MySliverState extends State<MySliver> {
-  @override
-  void didChangeDependencies() {
-    if (isSliverInspectionActive) {
-      warn("DID CHANGE DEPS");
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    if (isSliverInspectionActive) {
-      warn("INIT STATE");
-    }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (isSliverInspectionActive) {
-      warn("DISPOSE");
-    }
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView();
-  }
-}
 
 class HomeScreen extends StatelessWidget with ArcaneRoute {
   const HomeScreen({super.key});
@@ -49,6 +9,11 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
   Widget build(BuildContext context) => ArcaneScreen(
         header: Bar(
           titleText: "Test",
+          trailing: [
+            IconButton(
+                icon: Icon(Icons.airplane),
+                onPressed: () => Arcane.push(context, AScreen()))
+          ],
         ),
         child: Collection(
           children: [
@@ -76,6 +41,29 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
 
   @override
   String get path => "/";
+}
+
+class AScreen extends StatelessWidget with ArcaneRoute {
+  const AScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => ArcaneScreen(child: Text("Hello"));
+
+  @override
+  String get path => "/ascreen";
+}
+
+class A404Screen extends StatelessWidget with ArcaneRoute {
+  const A404Screen({super.key});
+
+  @override
+  Widget build(BuildContext context) => ArcaneScreen(child: Text("404 thing"));
+
+  @override
+  String get path => "/404";
+
+  @override
+  bool get is404Route => true;
 }
 
 /// Define a message model and implement AbstractChatMessage
