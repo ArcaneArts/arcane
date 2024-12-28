@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/shaders/invert.dart';
 import 'package:arcane/util/shaders/warp.dart';
+import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -35,6 +36,16 @@ Future<void> loadArcaneShaders(List<ArcaneShader> shaders) async {
   if (failures.isNotEmpty) {
     warningAnnounce(
         "Arcane failed to compile ${failures.length} ${failures.length.plural("Shader")}\n${failures.join("\n")}\n\nCheck tome.arcane.art setup page for more information.");
+
+    info("""
+Did you forget to add the shaders to the pubspec.yaml?
+
+@(#FFcfc7b6)&(#FF24180d)flutter: 
+  shaders: 
+${failures.map((i) => "    - &(#FF106b00)packages/arcane/resources/shaders/${i}.frag").join("&(#FF24180d)\n")}
+&r
+    """
+        .chatColor);
   }
   actioned(
       "Compiled ${shaders.length - failures.length} shaders in ${p.getMilliseconds()}ms");

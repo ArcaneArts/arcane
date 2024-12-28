@@ -148,10 +148,10 @@ packages:
     dependency: transitive
     description:
       name: country_flags
-      sha256: dad797491167a5b8dee465b969cb756795d842fdfc3fc1ff93f22e9c1884b73d
+      sha256: "66726c7070d60c2f90c4a1d58980e9188fa04335d6287e98aef835461019c3c2"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.0"
   cross_file:
     dependency: transitive
     description:

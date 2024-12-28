@@ -1,6 +1,7 @@
 ## 3.10.9
 * ADD `logAnnounce` methods
 * Routing Fixes
+* A bunch of shaders arrived and we dont know what they want from us.
 
 ## 3.10.8
 * Remove InjectScreenFooter from children of FillScreen & SliverScreens
