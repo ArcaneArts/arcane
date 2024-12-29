@@ -58,6 +58,7 @@ echo "Changing urls to arcane"
 find docs -type f -name "*.dart" -exec sed -i '' 's|- asset: "packages/shadcn_flutter/|- asset: "packages/arcane/resources/|g' {} +
 find docs -type f -name "*.dart" -exec sed -i '' 's|'https://github.com/sunarya-thito/shadcn_flutter'|'https://github.com/ArcaneArts/arcane'|g' {} +
 find docs -type f -name "*.dart" -exec sed -i '' 's|'https://pub.dev/packages/shadcn_flutter'|'https://pub.dev/packages/arcane'|g' {} +
+cp docs/pubspec.yaml docs/pubspec.original.yaml
 ./script_sync_docs_live.sh
 
 

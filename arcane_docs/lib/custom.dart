@@ -23,6 +23,17 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Center Body", "center_body"),
     ShadcnDocsPage("Mutable Text", "mutable_text"),
     ShadcnDocsPage("Shortcuts", "shortcuts"),
+  ]),
+  ShadcnDocsSection("Shaders", [
+    ShadcnDocsPage("Glyph", "shade_glyph"),
+    ShadcnDocsPage("Lux", "shade_lux"),
+    ShadcnDocsPage("Cascade", "shade_cascade"),
+    ShadcnDocsPage("Black Hole", "shade_black_hole"),
+    ShadcnDocsPage("Frost", "shade_frost"),
+    ShadcnDocsPage("Invert", "shade_invert"),
+    ShadcnDocsPage("Pixelate", "shade_pixelate"),
+    ShadcnDocsPage("Warp", "shade_warp"),
+    ShadcnDocsPage("RGB", "shade_rgb"),
   ])
 ];
 
@@ -33,6 +44,95 @@ void initializeDocsWithArcane() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [
+  GoRoute(
+      path: "shade_rgb",
+      name: "shade_rgb",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_rgb',
+            description: 'RGB Shader Filter',
+            displayName: 'RGB Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_warp",
+      name: "shade_warp",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_warp',
+            description: 'Warp Shader Filter',
+            displayName: 'Warp Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_pixelate",
+      name: "shade_pixelate",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_pixelate',
+            description: 'Pixelate Shader Filter',
+            displayName: 'Pixelate Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_invert",
+      name: "shade_invert",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_invert',
+            description: 'Invert Shader Filter',
+            displayName: 'Invert Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_frost",
+      name: "shade_frost",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_frost',
+            description: 'Frost Shader Spinner',
+            displayName: 'Frost Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_glyph",
+      name: "shade_glyph",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_glyph',
+            description: 'Magical Glyph "Spinner"',
+            displayName: 'Glyph Shader',
+            children: [
+              exampleShaderGlyphEffect,
+              exampleShaderGlyph1,
+              exampleShaderGlyph2,
+              exampleShaderGlyph3,
+              exampleShaderGlyph4,
+              exampleShaderGlyph5,
+              exampleShaderGlyph6
+            ],
+          )),
+  GoRoute(
+      path: "shade_lux",
+      name: "shade_lux",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_lux',
+            description: 'Magical Lux "Spinner"',
+            displayName: 'Lux Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_cascade",
+      name: "shade_cascade",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_cascade',
+            description: 'Magical Cascade "Spinner"',
+            displayName: 'Cascade Shader',
+            children: [],
+          )),
+  GoRoute(
+      path: "shade_black_hole",
+      name: "shade_black_hole",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'shade_black_hole',
+            description: 'Black Hole "Spinner"',
+            displayName: 'Black Hole Shader',
+            children: [],
+          )),
   GoRoute(
       path: "shortcuts",
       name: "shortcuts",
@@ -2100,6 +2200,137 @@ NavigationScreen(
         child: ExampleNavigationScreen(),
       ),
     );
+
+Widget get exampleShaderGlyphEffect => ArcaneUsageExample(
+    title: "Glyph Effect",
+    code: """
+GlyphEffect(
+    // The size of the glyph
+    size: 200,
+    
+    // Show the border of the widget in blue & the overdraw border in red
+    debugBorder: false,
+    
+    // The intensity of the lights
+    intensity: 0.5,
+    
+    // The bloom spread calculation (expensive)
+    bloom: 5,
+    
+    // The overdraw multiplier. This allows your shader to draw
+    // outside of the bounds of the widget to create a glow effect
+    // overdraw of 2 means 2x the size of the widget
+    overdraw: 2,
+    
+    // The morph speed of the glyph
+    speed: 6,
+    
+    // The threshold of the light peaks. 0.1+ creates dark polygons in front of the light
+    // Below 0.05 creates bright lights / soft glows
+    threshold: 0.01,
+    
+    // The speed at which the glyph rotates
+    rotationSpeed: 1,
+    
+    // The color bias between color1 and color2
+    colorBias: 0.5,
+    
+    // The uComplex is how many iterations deep the fractal goes.
+    // The max is 128 but its extreme and wont run very well. 
+    // See below Arcane 1-6 for uComplex examples
+    uComplex: 2,
+    
+    // The zoom of the glyph. By increasing overdraw for the glow, you will also increase
+    // the screen-size of the glyph. Tweak this value so the actual glyph is inside the widget
+    // after the overdraw is changed
+    zoom: 1.8,
+    
+    // The color power of the glyph. This is useful for tuning bloom-spread
+    power: 1.3,
+)
+""",
+    child: GlyphEffect(
+      size: 200,
+      debugBorder: false,
+      intensity: 0.6,
+      bloom: 6,
+      overdraw: 2,
+      speed: 1,
+      color2: Colors.red,
+      color1: Colors.blue,
+      threshold: 0.005,
+      rotationSpeed: 1,
+      colorBias: 1,
+      uComplex: 8,
+      zoom: 2,
+      power: 1.6,
+    ));
+
+Widget get exampleShaderGlyph1 => ArcaneUsageExample(
+    title: "Arcane 1",
+    code: """
+GlyphEffect.arcane1(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane1(
+      size: 200,
+    ));
+
+Widget get exampleShaderGlyph2 => ArcaneUsageExample(
+    title: "Arcane 2",
+    code: """
+GlyphEffect.arcane2(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane2(
+      size: 200,
+    ));
+
+Widget get exampleShaderGlyph3 => ArcaneUsageExample(
+    title: "Arcane 3",
+    code: """
+GlyphEffect.arcane3(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane3(
+      size: 200,
+    ));
+
+Widget get exampleShaderGlyph4 => ArcaneUsageExample(
+    title: "Arcane 4",
+    code: """
+GlyphEffect.arcane4(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane4(
+      size: 200,
+    ));
+
+Widget get exampleShaderGlyph5 => ArcaneUsageExample(
+    title: "Arcane 5",
+    code: """
+GlyphEffect.arcane5(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane5(
+      size: 200,
+    ));
+
+Widget get exampleShaderGlyph6 => ArcaneUsageExample(
+    title: "Arcane 6",
+    code: """
+GlyphEffect.arcane6(
+  size: 200,
+)
+    """,
+    child: GlyphEffect.arcane6(
+      size: 200,
+    ));
 
 Widget get exampleScreenSliverSections => ArcaneUsageExample(
       padding: 0,
