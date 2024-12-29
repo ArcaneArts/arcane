@@ -28,11 +28,6 @@ void main() {
     
     vec3 color = vec3(c/l) * uColor;
     float al = uTime * 2;
-    
     al = pow(1.0 - length(fragCoord.xy - uSize/2.0) / (uSize.y/2.0), uPower);
-
-    
-    // 1.0 in center, 0.o at edges in a circular gradient
-    
     fragColor=vec4(color*al, al);
 }

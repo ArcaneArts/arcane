@@ -60,7 +60,7 @@ List<GoRoute> customRoutes = [
             name: 'shade_warp',
             description: 'Warp Shader Filter',
             displayName: 'Warp Shader',
-            children: [],
+            children: [exampleWarp, exampleWarpAnimated],
           )),
   GoRoute(
       path: "shade_pixelate",
@@ -69,7 +69,10 @@ List<GoRoute> customRoutes = [
             name: 'shade_pixelate',
             description: 'Pixelate Shader Filter',
             displayName: 'Pixelate Shader',
-            children: [],
+            children: [
+              examplePixelate,
+              examplePixelateBlur,
+            ],
           )),
   GoRoute(
       path: "shade_invert",
@@ -87,7 +90,7 @@ List<GoRoute> customRoutes = [
             name: 'shade_frost',
             description: 'Frost Shader Spinner',
             displayName: 'Frost Shader',
-            children: [],
+            children: [exampleShaderFrostFilter],
           )),
   GoRoute(
       path: "shade_glyph",
@@ -113,7 +116,13 @@ List<GoRoute> customRoutes = [
             name: 'shade_lux',
             description: 'Magical Lux "Spinner"',
             displayName: 'Lux Shader',
-            children: [],
+            children: [
+              exampleShaderLuxEffect,
+              exampleShaderLuxBump,
+              exampleShaderLuxPing,
+              exampleShaderLuxReactor,
+              exampleShaderLuxStar,
+            ],
           )),
   GoRoute(
       path: "shade_cascade",
@@ -122,7 +131,13 @@ List<GoRoute> customRoutes = [
             name: 'shade_cascade',
             description: 'Magical Cascade "Spinner"',
             displayName: 'Cascade Shader',
-            children: [],
+            children: [
+              exampleShaderCascadeEffect,
+              exampleShaderCascadeFlower,
+              exampleShaderCascadeOrb,
+              exampleShaderCascadePrism,
+              exampleShaderCascadeEffectBig
+            ],
           )),
   GoRoute(
       path: "shade_black_hole",
@@ -131,7 +146,7 @@ List<GoRoute> customRoutes = [
             name: 'shade_black_hole',
             description: 'Black Hole "Spinner"',
             displayName: 'Black Hole Shader',
-            children: [],
+            children: [exampleShaderBlackHoleEffect],
           )),
   GoRoute(
       path: "shortcuts",
@@ -2201,6 +2216,385 @@ NavigationScreen(
       ),
     );
 
+Widget get exampleShaderBlackHoleEffect => ArcaneUsageExample(
+    title: "Black Hole Effect",
+    code: """
+BlackHoleEffect(
+  // The size of the effect size x size
+  size: 200,
+  
+  // The animation speed
+  speed: 1,
+  
+  // The power of alpha on bloom edges
+  power: 3.4,
+  
+  // The scale of the effect
+  scale: 1,
+  
+  // The animation direction. Higher values spin slower
+  direction: const Offset(1, 1.1),
+  
+  // The color of the effect
+  color: Color(0xFFfcf8c2),
+  
+  // The focal point (plug in mouse perhaps)
+  focal: Offset.zero
+)
+""",
+    child: BlackHoleEffect(
+        // The size of the effect size x size
+        size: 200,
+
+        // The animation speed
+        speed: 1,
+
+        // The power of alpha on bloom edges
+        power: 3.4,
+
+        // The scale of the effect
+        scale: 1,
+
+        // The animation direction. Higher values spin slower
+        direction: const Offset(1, 1.1),
+
+        // The color of the effect
+        color: Color(0xFFfcf8c2),
+
+        // The focal point (plug in mouse perhaps)
+        focal: Offset.zero));
+
+Widget get exampleShaderFrostFilter => ArcaneUsageExample(
+    title: "Frost Filter",
+    code: """
+Text("Cold", style: TextStyle(color: Colors.blue.shade200))
+  .x9Large()
+  .shadeFrost(value)
+""",
+    child: InteractiveFrostEffect());
+
+Widget get exampleShaderCascadeEffectBig => ArcaneUsageExample(
+    title: "Cascade Large Effect",
+    code: """
+CascadeEffect(
+  // The size of the effect size x size
+  size: 400,
+  
+  // The thickness of the fractal
+  thickness: 2,
+  
+  // The repeat count of the fractal
+  repeats: 4,
+  
+  // The effect scale & color scale
+  scale: 2,
+  
+  // The color spread
+  shimmer: 1,
+  
+  // The color effect
+  color: Colors.red,
+  
+  // The circular alpha mask power
+  power: 2,
+  
+  // The effect speed
+  speed: 1,
+)
+""",
+    child: CascadeEffect(
+      // The size of the effect size x size
+      size: 400,
+
+      // The thickness of the fractal
+      thickness: 2,
+
+      // The repeat count of the fractal
+      repeats: 4,
+
+      // The effect scale & color scale
+      scale: 2,
+
+      // The color spread
+      shimmer: 1,
+
+      // The color effect
+      color: Colors.red,
+
+      // The circular alpha mask power
+      power: 2,
+
+      // The effect speed
+      speed: 1,
+    ));
+
+Widget get exampleShaderCascadeEffect => ArcaneUsageExample(
+    title: "Cascade Effect",
+    code: """
+CascadeEffect(
+  // The size of the effect size x size
+  size: 200,
+  
+  // The thickness of the fractal
+  thickness: 1,
+  
+  // The repeat count of the fractal
+  repeats: 1,
+  
+  // The effect scale & color scale
+  scale: 1,
+  
+  // The color spread
+  shimmer: 1,
+  
+  // The color effect
+  color: Colors.green,
+  
+  // The circular alpha mask power
+  power: 2,
+  
+  // The effect speed
+  speed: 1,
+)
+""",
+    child: CascadeEffect(
+      // The size of the effect size x size
+      size: 200,
+
+      // The thickness of the fractal
+      thickness: 1,
+
+      // The repeat count of the fractal
+      repeats: 1,
+
+      // The effect scale & color scale
+      scale: 1,
+
+      // The color spread
+      shimmer: 1,
+
+      // The color effect
+      color: Colors.green,
+
+      // The circular alpha mask power
+      power: 2,
+
+      // The effect speed
+      speed: 1,
+    ));
+
+Widget get exampleShaderCascadeGem => ArcaneUsageExample(
+    title: "Cascade Gem",
+    code: """
+CascadeEffect.gem(
+  size: 200,
+)
+""",
+    child: CascadeEffect.gem(
+      size: 200,
+    ));
+
+Widget get exampleShaderCascadeFlower => ArcaneUsageExample(
+    title: "Cascade Flower",
+    code: """
+CascadeEffect.flower(
+  size: 200,
+)
+""",
+    child: CascadeEffect.flower(
+      size: 200,
+    ));
+
+Widget get exampleShaderCascadePrism => ArcaneUsageExample(
+    title: "Cascade Prism",
+    code: """
+CascadeEffect.prism(
+  size: 200,
+)
+""",
+    child: CascadeEffect.prism(
+      size: 200,
+    ));
+
+Widget get exampleShaderCascadeOrb => ArcaneUsageExample(
+    title: "Cascade Orb",
+    code: """
+CascadeEffect.orb(
+  size: 200,
+)
+""",
+    child: CascadeEffect.orb(
+      size: 200,
+    ));
+
+Widget get exampleShaderLuxEffect => ArcaneUsageExample(
+    title: "Lux Effect",
+    code: """
+LuxEffect(
+  // The size of the effect size x size
+  size: 200,
+
+  // The animation speed
+  speed: 1,
+
+  // The thickness of the fractal. Higher values
+  // result in wildly more complexity
+  thickness: 1,
+
+  // The repeats of the fractal. Higher values require
+  // more compute & result in more complexity
+  repeats: 9,
+
+  // The scale of the fractal lines, higher values
+  // result in thicker lines / shapes
+  scale: 1,
+
+  // The color shimmer. Higher values cause more radiant
+  // chromatic aberration. 0 is mono-color
+  shimmer: 1,
+
+  // The color of the effect
+  color: Colors.white,
+
+  // The power value determines how much it fades
+  // towards the edges. <1 is will make a glowy disc
+  power: 1.5,
+)
+""",
+    child: LuxEffect(
+      // The size of the effect size x size
+      size: 200,
+
+      // The animation speed
+      speed: 1,
+
+      // The thickness of the fractal. Higher values
+      // result in wildly more complexity
+      thickness: 1,
+
+      // The repeats of the fractal. Higher values require
+      // more compute & result in more complexity
+      repeats: 9,
+
+      // The scale of the fractal lines, higher values
+      // result in thicker lines / shapes
+      scale: 1,
+
+      // The color shimmer. Higher values cause more radiant
+      // chromatic aberration. 0 is mono-color
+      shimmer: 1,
+
+      // The color of the effect
+      color: Colors.white,
+
+      // The power value determines how much it fades
+      // towards the edges. <1 is will make a glowy disc
+      power: 1.5,
+    ));
+
+Widget get exampleShaderLuxStar => ArcaneUsageExample(
+    title: "Lux Star",
+    code: """
+LuxEffect.star(
+  size: 200,
+)
+""",
+    child: LuxEffect.star(
+      size: 200,
+    ));
+
+Widget get exampleShaderLuxBump => ArcaneUsageExample(
+    title: "Lux Bump",
+    code: """
+LuxEffect.bump(
+  size: 200,
+)
+""",
+    child: LuxEffect.bump(
+      size: 200,
+    ));
+
+Widget get exampleShaderLuxPing => ArcaneUsageExample(
+    title: "Lux Ping",
+    code: """
+LuxEffect.ping(
+  size: 200,
+)
+""",
+    child: LuxEffect.ping(
+      size: 200,
+    ));
+
+Widget get exampleShaderLuxReactor => ArcaneUsageExample(
+    title: "Lux Reactor",
+    code: """
+LuxEffect.reactor(
+  size: 200,
+)
+""",
+    child: LuxEffect.reactor(
+      size: 200,
+    ));
+
+Widget get exampleWarpAnimated => ArcaneUsageExample(
+    title: "Animated Warp",
+    code: """
+Container(
+  color: Colors.red.shade950,
+  child: Text("Warp", style: TextStyle(color: Colors.red.shade200))
+      .x9Large()
+      .pad(16),
+).shadeWarpAnimation(
+  amplitude: amp, 
+  frequency: freq, 
+  z: 1, 
+  zSpeed: zSpeed
+)
+    """,
+    child: InteractiveWarpEffectAnimated());
+
+Widget get examplePixelate => ArcaneUsageExample(
+    title: "Pixelate Filter",
+    code: """
+Text("Pixels", style: TextStyle(color: Colors.yellow.shade200))
+  .x9Large()
+  .shadePixelate(value)
+    """,
+    child: InteractivePixelateEffect());
+
+Widget get examplePixelateBlur => ArcaneUsageExample(
+    title: "Pixelate Blur Filter",
+    code: """
+Container(
+  color: Colors.red.shade950,
+  child: Text("Pixel Blur",
+          style: TextStyle(color: Colors.green.shade200))
+      .x9Large()
+      .pad(16),
+).shadePixelateBlur(
+  samples: samples.round(),
+  radius: radius,
+  pixelSize: pixelSize,
+)
+    """,
+    child: InteractivePixelateBlurEffect());
+
+Widget get exampleWarp => ArcaneUsageExample(
+    title: "Warp Filter",
+    code: """
+Container(
+  color: Colors.red.shade950,
+  child: Text("Warp", style: TextStyle(color: Colors.red.shade200))
+      .x9Large()
+      .pad(16),
+).shadeWarp(
+  amplitude: amp, 
+  frequency: freq, 
+  z: z,
+)
+    """,
+    child: InteractiveWarpEffect());
+
 Widget get exampleShaderGlyphEffect => ArcaneUsageExample(
     title: "Glyph Effect",
     code: """
@@ -3351,5 +3745,232 @@ class _ExampleMutableTextState2State extends State<ExampleMutableTextState2> {
         border: true,
         buttonType: EditButtonType.ghost,
         style: TextStyle(color: Colors.red),
+      );
+}
+
+class InteractiveFrostEffect extends StatefulWidget {
+  const InteractiveFrostEffect({super.key});
+
+  @override
+  State<InteractiveFrostEffect> createState() => _InteractiveFrostEffectState();
+}
+
+class _InteractiveFrostEffectState extends State<InteractiveFrostEffect> {
+  double value = 1.5;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Cold", style: TextStyle(color: Colors.blue.shade200))
+              .x9Large()
+              .shadeFrost(value),
+          Text("Value = $value").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(value),
+            min: 0.1,
+            max: 3,
+            onChanged: (v) => setState(() => value = v.value),
+          )
+        ],
+      );
+}
+
+class InteractivePixelateEffect extends StatefulWidget {
+  const InteractivePixelateEffect({super.key});
+
+  @override
+  State<InteractivePixelateEffect> createState() =>
+      _InteractivePixelateEffectState();
+}
+
+class _InteractivePixelateEffectState extends State<InteractivePixelateEffect> {
+  double value = 1.5;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Pixels", style: TextStyle(color: Colors.yellow.shade200))
+              .x9Large()
+              .shadePixelate(value),
+          Text("Value = $value").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(value),
+            min: 1,
+            max: 32,
+            onChanged: (v) => setState(() => value = v.value),
+          )
+        ],
+      );
+}
+
+class InteractivePixelateBlurEffect extends StatefulWidget {
+  const InteractivePixelateBlurEffect({super.key});
+
+  @override
+  State<InteractivePixelateBlurEffect> createState() =>
+      _InteractivePixelateBlurEffectState();
+}
+
+class _InteractivePixelateBlurEffectState
+    extends State<InteractivePixelateBlurEffect> {
+  double samples = 4;
+  double radius = 2;
+  double pixelSize = 8;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: Colors.red.shade950,
+            child: Text("Pixel Blur",
+                    style: TextStyle(color: Colors.green.shade200))
+                .x9Large()
+                .pad(16),
+          ).shadePixelateBlur(
+            samples: samples.round(),
+            radius: radius,
+            pixelSize: pixelSize,
+          ),
+          Gap(8),
+          Text("Samples = ${samples.round()}").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(samples.roundToDouble()),
+            min: 1,
+            max: 32,
+            decreaseStep: 1,
+            increaseStep: 1,
+            onChanged: (v) => setState(() => samples = v.value.roundToDouble()),
+          ),
+          Gap(8),
+          Text("Radius = $radius").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(radius),
+            min: 0.1,
+            max: 32,
+            onChanged: (v) => setState(() => radius = v.value),
+          ),
+          Gap(8),
+          Text("Pixel Size = ${pixelSize.round()}").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(pixelSize.roundToDouble()),
+            min: 1,
+            increaseStep: 1,
+            decreaseStep: 1,
+            max: 32,
+            onChanged: (v) =>
+                setState(() => pixelSize = v.value.roundToDouble()),
+          )
+        ],
+      );
+}
+
+class InteractiveWarpEffect extends StatefulWidget {
+  const InteractiveWarpEffect({super.key});
+
+  @override
+  State<InteractiveWarpEffect> createState() => _InteractiveWarpEffectState();
+}
+
+class _InteractiveWarpEffectState extends State<InteractiveWarpEffect> {
+  double z = 1;
+  double amp = 1;
+  double freq = 1;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: Colors.red.shade950,
+            child: Text("Warp", style: TextStyle(color: Colors.red.shade200))
+                .x9Large()
+                .pad(16),
+          ).shadeWarp(amplitude: amp, frequency: freq, z: z),
+          Gap(8),
+          Text("Amp = $amp").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(amp),
+            min: 0.01,
+            max: 10,
+            onChanged: (v) => setState(() => amp = v.value),
+          ),
+          Gap(8),
+          Text("Freq = $freq").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(freq),
+            min: 0.01,
+            max: 10,
+            onChanged: (v) => setState(() => freq = v.value),
+          ),
+          Gap(8),
+          Text("Z = $z").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(z),
+            min: 1,
+            max: 4,
+            onChanged: (v) => setState(() => z = v.value),
+          )
+        ],
+      );
+}
+
+class InteractiveWarpEffectAnimated extends StatefulWidget {
+  const InteractiveWarpEffectAnimated({super.key});
+
+  @override
+  State<InteractiveWarpEffectAnimated> createState() =>
+      _InteractiveWarpEffectAnimatedState();
+}
+
+class _InteractiveWarpEffectAnimatedState
+    extends State<InteractiveWarpEffectAnimated> {
+  double zSpeed = 1;
+  double amp = 1;
+  double freq = 1;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: Colors.red.shade950,
+            child: Text("Warp", style: TextStyle(color: Colors.red.shade200))
+                .x9Large()
+                .pad(16),
+          ).shadeWarpAnimation(
+              amplitude: amp, frequency: freq, z: 1, zSpeed: zSpeed),
+          Gap(8),
+          Text("Amp = $amp").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(amp),
+            min: 0.01,
+            max: 10,
+            onChanged: (v) => setState(() => amp = v.value),
+          ),
+          Gap(8),
+          Text("Freq = $freq").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(freq),
+            min: 0.01,
+            max: 10,
+            onChanged: (v) => setState(() => freq = v.value),
+          ),
+          Gap(8),
+          Text("zSpeed = $zSpeed").xSmall(),
+          sh.Slider(
+            value: sh.SliderValue.single(zSpeed),
+            min: 1,
+            max: 4,
+            onChanged: (v) => setState(() => zSpeed = v.value),
+          )
+        ],
       );
 }

@@ -15,13 +15,24 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                 onPressed: () => Arcane.push(context, AScreen()))
           ],
         ),
-        child: Center(
-            child: Container(
-          decoration: BoxDecoration(),
-          child: Text("Derp")
-              .x9Large()
-              .shadeWarpAnimation(amplitude: 10, frequency: 10, zSpeed: 10),
-        )),
+        child: Stack(
+          children: [
+            Center(
+                child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.red),
+              ),
+              child: GlyphEffect(
+                size: 100,
+                uComplex: 60,
+                speed: 1,
+              ),
+            )),
+            CircularProgressIndicator(
+              size: 500,
+            )
+          ],
+        ),
       );
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:arcane/arcane.dart';
+import 'package:arcane/arcane.dart' hide Image;
 import 'package:arcane/util/shaders/invert.dart';
 import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
@@ -9,34 +9,44 @@ import 'package:flutter/scheduler.dart';
 
 Map<String, ArcaneShader> arcaneShaderRegistry = {};
 Map<String, Future<FragmentProgram>> arcaneShaderPrograms = {};
-double targetShaderFrameTime = 16;
+double targetShaderFrameTime = 8;
 double mRenderUsage = 0;
-double mMinShaderFPS = 24;
+double mMinShaderFPS = 15;
 double mMaxShaderFPS = 60;
-double mMinShaderRS = 0.25;
+double mMinShaderRS = 0.5;
 double mMaxShaderRS = 1;
+double cShaderFPS = mMaxShaderFPS;
+double cShaderRS = mMaxShaderRS;
+late PrecisionStopwatch _wallClock;
 
 Future<void> loadArcaneShaders(List<ArcaneShader> shaders) async {
   WidgetsFlutterBinding.ensureInitialized();
-  List<double> avgFT = [];
-  int _ftIndex = 0;
+  _wallClock = PrecisionStopwatch.start();
 
-  while (avgFT.length < 10) {
-    avgFT.add(1);
+  void _processTimings(List<FrameTiming> timings) {
+    for (final frame in timings) {
+      Duration totalFrameTime = frame.rasterDuration;
+      double frameTime = totalFrameTime.inMicroseconds / 1000;
+      double frameUsage = frameTime / targetShaderFrameTime;
+      mRenderUsage = frameUsage;
+      double tfps = cShaderFPS;
+
+      if (mRenderUsage > 0.9) {
+        double intensity = mRenderUsage - 0.9;
+        tfps -= 1.2 * intensity;
+        cShaderRS -= 0.001 * intensity;
+      } else {
+        double intensity = 0.9 - mRenderUsage;
+        tfps += 0.1 * intensity;
+        cShaderRS += 0.0003 * intensity;
+      }
+
+      cShaderRS = cShaderRS.clamp(mMinShaderRS, mMaxShaderRS);
+      cShaderFPS = tfps.clamp(mMinShaderFPS, mMaxShaderFPS);
+    }
   }
 
-  SchedulerBinding.instance.addTimingsCallback((List<FrameTiming> timings) {
-    for (final frame in timings) {
-      Duration totalFrameTime = frame.totalSpan;
-      double usedMs = totalFrameTime.inMicroseconds / 1000.0;
-
-      avgFT[_ftIndex] = usedMs;
-      _ftIndex = (_ftIndex + 1) % 10;
-      usedMs = avgFT.reduce((a, b) => a + b) / avgFT.length;
-      mRenderUsage = (usedMs / targetShaderFrameTime);
-    }
-  });
-
+  SchedulerBinding.instance.addTimingsCallback(_processTimings);
   List<String> failures = [];
   List<Future> shaderFutures = [];
   PrecisionStopwatch p = PrecisionStopwatch.start();
@@ -134,31 +144,52 @@ class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface> {
   late FragmentShader shader;
   double fpsLimit = mMaxShaderFPS;
   late PrecisionStopwatch pWallClock;
+  double res = 1;
+  double ires = 1;
+  Image? _frameBuffer;
+
+  void _draw() {
+    fpsLimit = cShaderFPS.roundToDouble();
+    res = cShaderRS > 0.9 ? 1 : cShaderRS;
+
+    shader = widget.shaderBuilder(widget.program,
+        Duration(milliseconds: pWallClock.getMilliseconds().round()));
+
+    if (res < 1) {
+      PictureRecorder p = PictureRecorder();
+      Canvas c = Canvas(p);
+      ires = res;
+      c.scale(res / (1 / res));
+      c.drawRect(
+        Rect.fromLTWH(0, 0, widget.size.width, widget.size.height),
+        Paint()
+          ..shader = shader
+          ..filterQuality = FilterQuality.high,
+      );
+      setState(() {
+        _frameBuffer = p.endRecording().toImageSync(
+            (widget.size.width * res).ceil() + 1,
+            (widget.size.height * res).ceil() + 1);
+      });
+    } else {
+      setState(() {
+        _frameBuffer = null;
+        ires = res;
+      });
+    }
+  }
 
   void _startTimer() {
     double currentLimit = fpsLimit;
     int lim = 1000 ~/ currentLimit;
     _timer = Timer.periodic(Duration(milliseconds: lim), (t) {
-      setState(() {
-        shader = widget.shaderBuilder(widget.program,
-            Duration(milliseconds: pWallClock.getMilliseconds().round()));
-      });
+      _draw();
 
       if (currentLimit != fpsLimit) {
         currentLimit = fpsLimit;
         t.cancel();
         _startTimer();
       }
-
-      double tfps = fpsLimit;
-
-      if (mRenderUsage > 0.9) {
-        tfps -= 0.77;
-      } else {
-        tfps += 0.1;
-      }
-
-      fpsLimit = tfps.clamp(mMinShaderFPS, mMaxShaderFPS);
     });
   }
 
@@ -178,27 +209,39 @@ class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface> {
 
   @override
   Widget build(BuildContext context) => CustomPaint(
+        key: ValueKey(ires),
         size: widget.size,
         isComplex: true,
         willChange: true,
-        painter: ShadedSurfacePainter(shader),
+        painter: ShadedSurfacePainter(shader, _frameBuffer, ires),
       );
 }
 
 class ShadedSurfacePainter extends CustomPainter {
   final FragmentShader shader;
-  final double renderResolution; // 1 = full, 0.5 = half
+  final Image? frameBuffer;
+  final double renderResolution;
 
-  ShadedSurfacePainter(this.shader, {this.renderResolution = 1});
+  ShadedSurfacePainter(this.shader, this.frameBuffer, this.renderResolution);
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()
-        ..shader = shader
-        ..filterQuality = FilterQuality.high,
-    );
+    if (frameBuffer != null && renderResolution < 1) {
+      canvas.drawImageRect(
+          frameBuffer!,
+          Rect.fromLTWH(0, 0, frameBuffer!.width.toDouble(),
+              frameBuffer!.height.toDouble()),
+          Rect.fromLTWH(0, 0, size.width / renderResolution,
+              size.height / renderResolution),
+          Paint());
+    } else {
+      canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        Paint()
+          ..shader = shader
+          ..filterQuality = FilterQuality.high,
+      );
+    }
   }
 
   @override

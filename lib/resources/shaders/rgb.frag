@@ -36,7 +36,6 @@ vec3 rgb2hsv(vec3 c) {
     return vec3(h, s, v);
 }
 
-// Convert HSV back to RGB
 vec3 hsv2rgb(vec3 c) {
     float h = c.x * 6.0;
     float s = c.y;

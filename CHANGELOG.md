@@ -1,3 +1,6 @@
+## 3.10.11
+* Performance Improvements
+
 ## 3.10.10
 * More Shaders
 
