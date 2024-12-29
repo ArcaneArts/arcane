@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/shaders.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 const String _name = "warp";
@@ -55,23 +55,47 @@ class WarpyFilter extends StatefulWidget {
 
 class _WarpyFilterState extends State<WarpyFilter>
     with SingleTickerProviderStateMixin {
-  late Ticker ticker;
+  late Timer _timer;
+  double fpsLimit = mMaxShaderFPS;
+  late PrecisionStopwatch pWallClock;
   double zz = 1;
+
+  void _startTimer() {
+    double currentLimit = fpsLimit;
+    int lim = 1000 ~/ currentLimit;
+    _timer = Timer.periodic(Duration(milliseconds: lim), (t) {
+      setState(() {
+        zz = (pWallClock.getMilliseconds() / 1000) * widget.zSpeed;
+      });
+
+      if (currentLimit != fpsLimit) {
+        currentLimit = fpsLimit;
+        t.cancel();
+        _startTimer();
+      }
+
+      double tfps = fpsLimit;
+
+      if (mRenderUsage > 0.9) {
+        tfps -= 0.77;
+      } else {
+        tfps += 0.1;
+      }
+
+      fpsLimit = tfps.clamp(mMinShaderFPS, mMaxShaderFPS);
+    });
+  }
 
   @override
   void initState() {
-    ticker = createTicker((elapsed) {
-      setState(() {
-        zz = (elapsed.inMilliseconds / 1000) * widget.zSpeed;
-      });
-    });
-    ticker.start();
+    pWallClock = PrecisionStopwatch.start();
+    _startTimer();
     super.initState();
   }
 
   @override
   void dispose() {
-    ticker.dispose();
+    _timer.cancel();
     super.dispose();
   }
 

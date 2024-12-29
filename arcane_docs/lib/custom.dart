@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/component/dialog/command.dart';
+import 'package:arcane/util/shaders.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -10,8 +11,12 @@ import 'package:shadcn_flutter/shadcn_flutter.dart' as sh hide TextExtension;
 
 late BuildContext _context;
 
-List<ShadcnDocsSection> customSections = [
-  ShadcnDocsSection("Arcane", [
+List<ShadcnDocsSection> customSections = [initialize()];
+
+ShadcnDocsSection initialize() {
+  setupArcaneDebug();
+  ArcaneShader.loadAll();
+  return ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
     ShadcnDocsPage("Routing", "routing"),
     ShadcnDocsPage("Chat", "chat"),
@@ -22,8 +27,8 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Center Body", "center_body"),
     ShadcnDocsPage("Mutable Text", "mutable_text"),
     ShadcnDocsPage("Shortcuts", "shortcuts"),
-  ])
-];
+  ]);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 List<GoRoute> customRoutes = [

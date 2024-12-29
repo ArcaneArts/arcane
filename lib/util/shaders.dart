@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
@@ -8,8 +9,34 @@ import 'package:flutter/scheduler.dart';
 
 Map<String, ArcaneShader> arcaneShaderRegistry = {};
 Map<String, Future<FragmentProgram>> arcaneShaderPrograms = {};
+double targetShaderFrameTime = 16;
+double mRenderUsage = 0;
+double mMinShaderFPS = 24;
+double mMaxShaderFPS = 60;
+double mMinShaderRS = 0.25;
+double mMaxShaderRS = 1;
 
 Future<void> loadArcaneShaders(List<ArcaneShader> shaders) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  List<double> avgFT = [];
+  int _ftIndex = 0;
+
+  while (avgFT.length < 10) {
+    avgFT.add(1);
+  }
+
+  SchedulerBinding.instance.addTimingsCallback((List<FrameTiming> timings) {
+    for (final frame in timings) {
+      Duration totalFrameTime = frame.totalSpan;
+      double usedMs = totalFrameTime.inMicroseconds / 1000.0;
+
+      avgFT[_ftIndex] = usedMs;
+      _ftIndex = (_ftIndex + 1) % 10;
+      usedMs = avgFT.reduce((a, b) => a + b) / avgFT.length;
+      mRenderUsage = (usedMs / targetShaderFrameTime);
+    }
+  });
+
   List<String> failures = [];
   List<Future> shaderFutures = [];
   PrecisionStopwatch p = PrecisionStopwatch.start();
@@ -87,7 +114,6 @@ class ArcaneShader {
 }
 
 class AnimatedShadedSurface extends StatefulWidget {
-  final double fpsLimit;
   final FragmentProgram program;
   final Size size;
   final FragmentShader Function(FragmentProgram program, Duration elapsed)
@@ -96,7 +122,6 @@ class AnimatedShadedSurface extends StatefulWidget {
   const AnimatedShadedSurface(
       {super.key,
       required this.program,
-      this.fpsLimit = 24,
       required this.size,
       required this.shaderBuilder});
 
@@ -104,31 +129,50 @@ class AnimatedShadedSurface extends StatefulWidget {
   State<AnimatedShadedSurface> createState() => _AnimatedShadedSurfaceState();
 }
 
-class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface>
-    with SingleTickerProviderStateMixin {
-  late Ticker _ticker;
+class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface> {
+  late Timer _timer;
   late FragmentShader shader;
-  double lastTime = 0;
+  double fpsLimit = mMaxShaderFPS;
+  late PrecisionStopwatch pWallClock;
+
+  void _startTimer() {
+    double currentLimit = fpsLimit;
+    int lim = 1000 ~/ currentLimit;
+    _timer = Timer.periodic(Duration(milliseconds: lim), (t) {
+      setState(() {
+        shader = widget.shaderBuilder(widget.program,
+            Duration(milliseconds: pWallClock.getMilliseconds().round()));
+      });
+
+      if (currentLimit != fpsLimit) {
+        currentLimit = fpsLimit;
+        t.cancel();
+        _startTimer();
+      }
+
+      double tfps = fpsLimit;
+
+      if (mRenderUsage > 0.9) {
+        tfps -= 0.77;
+      } else {
+        tfps += 0.1;
+      }
+
+      fpsLimit = tfps.clamp(mMinShaderFPS, mMaxShaderFPS);
+    });
+  }
 
   @override
   void initState() {
+    pWallClock = PrecisionStopwatch.start();
     shader = widget.shaderBuilder(widget.program, Duration(milliseconds: 1));
-    PrecisionStopwatch p = PrecisionStopwatch.start();
-    lastTime = p.getMilliseconds();
+    _startTimer();
     super.initState();
-    _ticker = createTicker((elapsed) {
-      if (p.getMilliseconds() - lastTime < 1000 / widget.fpsLimit) return;
-      lastTime = p.getMilliseconds();
-      setState(() {
-        shader = widget.shaderBuilder(widget.program, elapsed);
-      });
-    });
-    _ticker.start();
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -143,14 +187,17 @@ class _AnimatedShadedSurfaceState extends State<AnimatedShadedSurface>
 
 class ShadedSurfacePainter extends CustomPainter {
   final FragmentShader shader;
+  final double renderResolution; // 1 = full, 0.5 = half
 
-  ShadedSurfacePainter(this.shader);
+  ShadedSurfacePainter(this.shader, {this.renderResolution = 1});
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..shader = shader,
+      Paint()
+        ..shader = shader
+        ..filterQuality = FilterQuality.high,
     );
   }
 

@@ -18,9 +18,9 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
         child: Center(
             child: Container(
           decoration: BoxDecoration(),
-          child: BlackHoleEffect(
-            size: 800,
-          ),
+          child: Text("Derp")
+              .x9Large()
+              .shadeWarpAnimation(amplitude: 10, frequency: 10, zSpeed: 10),
         )),
       );
 
