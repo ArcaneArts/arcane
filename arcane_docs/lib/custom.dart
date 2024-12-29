@@ -11,12 +11,8 @@ import 'package:shadcn_flutter/shadcn_flutter.dart' as sh hide TextExtension;
 
 late BuildContext _context;
 
-List<ShadcnDocsSection> customSections = [initialize()];
-
-ShadcnDocsSection initialize() {
-  setupArcaneDebug();
-  ArcaneShader.loadAll();
-  return ShadcnDocsSection("Arcane", [
+List<ShadcnDocsSection> customSections = [
+  ShadcnDocsSection("Arcane", [
     ShadcnDocsPage("Screens", "screens"),
     ShadcnDocsPage("Routing", "routing"),
     ShadcnDocsPage("Chat", "chat"),
@@ -27,7 +23,12 @@ ShadcnDocsSection initialize() {
     ShadcnDocsPage("Center Body", "center_body"),
     ShadcnDocsPage("Mutable Text", "mutable_text"),
     ShadcnDocsPage("Shortcuts", "shortcuts"),
-  ]);
+  ])
+];
+
+void initializeDocsWithArcane() {
+  setupArcaneDebug();
+  ArcaneShader.loadAll();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
