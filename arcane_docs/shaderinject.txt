@@ -1,3 +1,4 @@
+flutter:
   shaders:
     - packages/arcane/resources/shaders/frost.frag
     - packages/arcane/resources/shaders/pixelate.frag
