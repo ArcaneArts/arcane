@@ -16,6 +16,7 @@ uniform sampler2D uTexture;
 uniform float uFreq;
 uniform float uAmp;
 uniform float uZ;
+uniform float uOctaves;
 
 out vec4 fragColor;
 
@@ -121,12 +122,13 @@ void main()
 {
     vec2 coord = FlutterFragCoord().xy;
     vec2 uv = coord / uSize;
-    vec2 warpScale  = vec2(0.6) * (uSize / 100.0) * uFreq;
-    vec2 warpAmount = vec2(0.005) * (uSize / 100.0) * uAmp;
+    vec2 warpScale  = vec2(0.6) * (uSize.xy / 100.0) * uFreq;
+    vec2 warpAmount = clamp(vec2(uAmp), vec2(0), uSize) / uSize;
     float nx = n3(vec3(uv * warpScale, uZ));
     float ny = n3(vec3((uv + vec2(13.37, 42.42)) * warpScale, uZ));
     uv += warpAmount * vec2(nx, ny);
-    float padding = (uAmp * 0.025)+1;
+    
+    vec2 padding = warpAmount + 1;
     uv *= padding;
     uv -= (padding - 1.0) / 2.0;
     

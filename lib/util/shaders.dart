@@ -119,7 +119,8 @@ class ArcaneShader {
         WarpShader(),
         BlackHoleShader(),
         LuxShader(),
-        CascadeShader()
+        CascadeShader(),
+        EdgeShader()
       ]);
 }
 

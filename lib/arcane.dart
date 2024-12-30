@@ -2,6 +2,7 @@ library arcane;
 
 export 'package:arcane/util/shaders/black_hole.dart';
 export 'package:arcane/util/shaders/cascade.dart';
+export 'package:arcane/util/shaders/edge.dart';
 export 'package:arcane/util/shaders/frost.dart';
 export 'package:arcane/util/shaders/glyph.dart';
 export 'package:arcane/util/shaders/loader.dart';

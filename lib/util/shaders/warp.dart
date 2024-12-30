@@ -17,19 +17,27 @@ extension XWidgetWarp on Widget {
     double amplitude = 1,
     double frequency = 1,
     double z = 1,
+    int octaves = 2,
   }) =>
-      WarpFilter(amplitude: amplitude, frequency: frequency, z: z, child: this);
+      WarpFilter(
+          amplitude: amplitude,
+          frequency: frequency,
+          z: z,
+          octaves: octaves,
+          child: this);
 
   Widget shadeWarpAnimation({
     double amplitude = 1,
     double frequency = 1,
     double z = 1,
     double zSpeed = 1,
+    int octaves = 2,
   }) =>
       WarpyFilter(
           amplitude: amplitude,
           frequency: frequency,
           z: z,
+          octaves: octaves,
           zSpeed: zSpeed,
           child: this);
 }
@@ -40,12 +48,14 @@ class WarpyFilter extends StatefulWidget {
   final double frequency;
   final double z;
   final double zSpeed;
+  final int octaves;
 
   const WarpyFilter(
       {super.key,
       required this.child,
       this.amplitude = 1,
       this.frequency = 1,
+      this.octaves = 2,
       this.zSpeed = 1,
       this.z = 1});
 
@@ -104,6 +114,7 @@ class _WarpyFilterState extends State<WarpyFilter>
       amplitude: widget.amplitude,
       frequency: widget.frequency,
       z: (widget.z + zz),
+      octaves: widget.octaves,
       child: widget.child);
 }
 
@@ -112,10 +123,12 @@ class WarpFilter extends StatelessWidget with BoxSignal {
   final double amplitude;
   final double frequency;
   final double z;
+  final int octaves;
 
   const WarpFilter(
       {super.key,
       required this.child,
+      this.octaves = 2,
       this.amplitude = 1,
       this.frequency = 1,
       this.z = 1});
@@ -129,7 +142,8 @@ class WarpFilter extends StatelessWidget with BoxSignal {
                     ..setSize(size)
                     ..setFloat(frequency)
                     ..setFloat(amplitude)
-                    ..setFloat(z);
+                    ..setFloat(z)
+                    ..setFloat(octaves.toDouble());
                 });
 
                 shader.setImageSampler(0, image);

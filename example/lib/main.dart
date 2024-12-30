@@ -36,7 +36,7 @@ class ExampleArcaneApp extends StatelessWidget {
             ): didShortcut
           },
           child: ArcaneApp(
-            showPerformanceOverlay: true,
+            showPerformanceOverlay: false,
             arcaneRoutes: [HomeScreen(), AScreen(), A404Screen()],
             onUnknownRoute: (r) {
               actioned("UNKNOWN ROUTE HIT");
