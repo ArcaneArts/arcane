@@ -1,3 +1,7 @@
+## 3.10.12
+* OverflowMarquee no longer just burns render / build time when offscreen or when not animating
+* Sync Upstream
+
 ## 3.10.11
 * Performance Improvements
 

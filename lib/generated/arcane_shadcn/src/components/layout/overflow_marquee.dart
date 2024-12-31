@@ -1,6 +1,9 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:toxic_flutter/toxic_flutter.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class OverflowMarquee extends StatefulWidget {
   final Widget child;
@@ -27,7 +30,67 @@ class OverflowMarquee extends StatefulWidget {
   State<OverflowMarquee> createState() => _OverflowMarqueeState();
 }
 
-class _OverflowMarqueeState extends State<OverflowMarquee>
+class _OverflowMarqueeState extends State<OverflowMarquee> {
+  late BehaviorSubject<(bool, bool)> _shouldTick;
+  late Key vKey;
+  @override
+  void initState() {
+    vKey = UniqueKey();
+    _shouldTick = BehaviorSubject.seeded((false, false));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => VisibilityDetector(
+      key: vKey,
+      child: _shouldTick.distinct().buildNullable((should) => TickerMode(
+          enabled: (should?.$1 ?? false) && (should?.$2 ?? false),
+          child: _OverflowMarqueeTicker(
+              onShouldTick: (v) => _shouldTick.add((v, _shouldTick.value.$2)),
+              direction: widget.direction,
+              duration: widget.duration,
+              step: widget.step,
+              delayDuration: widget.delayDuration,
+              fadePortion: widget.fadePortion,
+              curve: widget.curve,
+              child: widget.child))),
+      onVisibilityChanged: (vc) =>
+          _shouldTick.add((_shouldTick.value.$1, vc.visibleFraction > 0)));
+}
+
+class _OverflowMarqueeTicker extends StatefulWidget {
+  final Widget child;
+  final Axis direction;
+  final Duration duration;
+  final double step;
+  final Duration delayDuration;
+  final double fadePortion;
+  final Curve curve;
+  final ValueChanged<bool> onShouldTick;
+
+  const _OverflowMarqueeTicker({
+    super.key,
+    required this.child,
+    this.direction = Axis.horizontal,
+    this.duration = const Duration(seconds: 1),
+    this.delayDuration = const Duration(milliseconds: 500),
+    this.step = 100, // note: the speed of the marquee depends on this value
+    // speed = (sizeDiff / step) * duration
+    this.fadePortion = 25,
+    required this.onShouldTick,
+    this.curve = Curves.linear,
+  });
+
+  @override
+  State<_OverflowMarqueeTicker> createState() => _OverflowMarqueeTickerState();
+}
+
+class _OverflowMarqueeTickerState extends State<_OverflowMarqueeTicker>
     with SingleTickerProviderStateMixin {
   late Ticker _ticker;
   Duration elapsed = Duration.zero;
@@ -56,6 +119,7 @@ class _OverflowMarqueeState extends State<OverflowMarquee>
     final textDirection = Directionality.of(context);
     return ClipRect(
       child: _OverflowMarqueeLayout(
+        onShouldTick: widget.onShouldTick,
         direction: widget.direction,
         fadePortion: widget.fadePortion,
         duration: widget.duration,
@@ -79,6 +143,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Duration elapsed;
   final double step;
   final TextDirection textDirection;
+  final ValueChanged<bool> onShouldTick;
 
   const _OverflowMarqueeLayout({
     required this.direction,
@@ -89,6 +154,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
     required this.elapsed,
     required this.step,
     required this.textDirection,
+    required this.onShouldTick,
     required Widget child,
   }) : super(child: child);
 
@@ -96,6 +162,7 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   RenderObject createRenderObject(BuildContext context) {
     return _RenderOverflowMarqueeLayout(
       null,
+      onShouldTick: onShouldTick,
       direction: direction,
       fadePortion: fadePortion,
       duration: duration,
@@ -164,6 +231,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
   Duration elapsed;
   double step;
   TextDirection textDirection;
+  ValueChanged<bool> onShouldTick;
 
   _RenderOverflowMarqueeLayout(
     super.child, {
@@ -175,6 +243,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
     required this.elapsed,
     required this.step,
     required this.textDirection,
+    required this.onShouldTick,
   });
 
   @override
@@ -386,6 +455,7 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
       child.layout(constraints, parentUsesSize: true);
       size = this.constraints.constrain(child.size);
       final sizeDiff = child.size.width - size.width;
+
       if (sizeDiff > 0) {
         if (!ticker.isActive) {
           ticker.start();
@@ -395,6 +465,8 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
           ticker.stop();
         }
       }
+
+      onShouldTick(sizeDiff > 0);
       var progress = offsetProgress;
       final offset = direction == Axis.horizontal
           ? Offset(-sizeDiff * progress, 0)
