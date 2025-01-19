@@ -15,18 +15,22 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
                 onPressed: () => Arcane.push(context, AScreen()))
           ],
         ),
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: 1110,
-            child: Column(
-              children: [
-                Spacer(),
-                SizedBox(
-                    width: 100,
-                    child: OverflowMarquee(child: Text("This is text" * 4)))
-              ],
-            ),
-          ),
+        child: Collection(
+          children: [
+            Text("A"),
+            Text("B"),
+            Text("C"),
+            Section(
+              child: Collection(
+                children: [
+                  Text("A"),
+                  Text("B"),
+                  Text("C"),
+                ],
+              ),
+              titleText: "Title",
+            )
+          ],
         ),
       );
 

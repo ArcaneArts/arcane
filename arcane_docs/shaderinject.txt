@@ -11,3 +11,4 @@ flutter:
     - packages/arcane/resources/shaders/black_hole.frag
     - packages/arcane/resources/shaders/lux.frag
     - packages/arcane/resources/shaders/cascade.frag
+    - packages/arcane/resources/shaders/edge.frag

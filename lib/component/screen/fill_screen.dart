@@ -25,88 +25,91 @@ class FillScreen extends AbstractStatelessScreen {
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
     PylonBuilder? isidebar = context.pylonOr<ArcaneSidebarInjector>()?.builder;
     PylonBuilder? sidebar = this.sidebar ?? isidebar;
-    return Scaffold(
-        overrideBackgroundColor: overrideBackgroundColor,
-        primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
-        child: MaybeStack(
-          fit: StackFit.expand,
-          children: [
-            if (background != null)
-              PylonRemove<InjectScreenFooter>(
-                  builder: (context) => PylonRemove<ArcaneSidebarInjector>(
-                      builder: (context) => background!)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                if (header != null)
-                  SafeBar(
-                      top: true,
-                      builder: (context) => GlassStopper(
-                          builder: (context) => PylonRemove<InjectScreenFooter>(
-                              builder: (context) =>
-                                  PylonRemove<ArcaneSidebarInjector>(
-                                      builder: (context) => header!)),
-                          stopping: false)),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
+    return Row(
+      children: [
+        if (sidebar != null) sidebar(context),
+        Expanded(
+            child: Scaffold(
+                overrideBackgroundColor: overrideBackgroundColor,
+                primary:
+                    context.pylonOr<NavigationType>() != NavigationType.drawer,
+                child: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    Expanded(
-                      child: Stack(
-                        fit: StackFit.passthrough,
-                        children: [
-                          Positioned.fill(
-                              child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              if (sidebar != null) sidebar(context),
-                              Expanded(
-                                child: PylonRemove<InjectScreenFooter>(
-                                    builder: (context) =>
-                                        PylonRemove<ArcaneSidebarInjector>(
-                                            builder: (context) => Gutter(
-                                                enabled: gutter ??
-                                                    ArcaneTheme.of(context)
-                                                        .gutter
-                                                        .enabled,
-                                                child: footer != null
-                                                    ? child
-                                                    : child.bottomEdgeBlur(
-                                                        autoMode: true)))),
-                              ),
-                            ],
-                          )),
-                          if (fab != null)
-                            FabSocket(
-                                child: PylonRemove<InjectScreenFooter>(
-                                    builder: (context) =>
-                                        PylonRemove<ArcaneSidebarInjector>(
-                                            builder: (context) => fab!))),
-                          if (foreground != null)
-                            PylonRemove<InjectScreenFooter>(
-                                builder: (context) =>
-                                    PylonRemove<ArcaneSidebarInjector>(
-                                        builder: (context) => foreground!)),
-                        ],
-                      ),
-                    ),
-                    if (footer != null)
-                      SafeBar(
-                          bottom: true,
-                          builder: (context) => GlassStopper(
-                              builder: (context) =>
-                                  PylonRemove<InjectScreenFooter>(
+                    if (background != null)
+                      PylonRemove<InjectScreenFooter>(
+                          builder: (context) =>
+                              PylonRemove<ArcaneSidebarInjector>(
+                                  builder: (context) => background!)),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        if (header != null)
+                          SafeBar(
+                              top: true,
+                              builder: (context) => GlassStopper(
+                                  builder: (context) => PylonRemove<
+                                          InjectScreenFooter>(
                                       builder: (context) =>
                                           PylonRemove<ArcaneSidebarInjector>(
-                                              builder: (context) => footer)),
-                              stopping: false)),
+                                              builder: (context) => header!)),
+                                  stopping: false)),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Stack(
+                                fit: StackFit.passthrough,
+                                children: [
+                                  Positioned.fill(
+                                      child: PylonRemove<InjectScreenFooter>(
+                                          builder: (context) => PylonRemove<
+                                                  ArcaneSidebarInjector>(
+                                              builder: (context) => Gutter(
+                                                  enabled: gutter ??
+                                                      ArcaneTheme.of(context)
+                                                          .gutter
+                                                          .enabled,
+                                                  child: footer != null
+                                                      ? child
+                                                      : child.bottomEdgeBlur(
+                                                          autoMode: true))))),
+                                  if (fab != null)
+                                    FabSocket(
+                                        child: PylonRemove<InjectScreenFooter>(
+                                            builder: (context) => PylonRemove<
+                                                    ArcaneSidebarInjector>(
+                                                builder: (context) => fab!))),
+                                  if (foreground != null)
+                                    PylonRemove<InjectScreenFooter>(
+                                        builder: (context) =>
+                                            PylonRemove<ArcaneSidebarInjector>(
+                                                builder: (context) =>
+                                                    foreground!)),
+                                ],
+                              ),
+                            ),
+                            if (footer != null)
+                              SafeBar(
+                                  bottom: true,
+                                  builder: (context) => GlassStopper(
+                                      builder: (context) =>
+                                          PylonRemove<InjectScreenFooter>(
+                                              builder: (context) => PylonRemove<
+                                                      ArcaneSidebarInjector>(
+                                                  builder: (context) =>
+                                                      footer)),
+                                      stopping: false)),
+                          ],
+                        ))
+                      ],
+                    )
                   ],
-                ))
-              ],
-            )
-          ],
-        ));
+                )))
+      ],
+    );
   }
 }

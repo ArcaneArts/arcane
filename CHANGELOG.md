@@ -1,3 +1,8 @@
+## 3.10.13
+* Improved the `ArcaneSidebar` spacing & how it fits into fill screens
+* Added `ArcaneScreen` to docs
+* Documented use on `Section` & `Collection`
+
 ## 3.10.12
 * OverflowMarquee no longer just burns render / build time when offscreen or when not animating
 * Sync Upstream

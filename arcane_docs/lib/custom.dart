@@ -195,6 +195,8 @@ List<GoRoute> customRoutes = [
             children: [
               exampleScreenFill,
               exampleScreenSliver,
+              exampleScreenArcane,
+              exampleScreenSections,
               exampleScreenSliverSections,
               exampleScreenNavigation,
               exampleScreenSidebar,
@@ -2942,6 +2944,142 @@ FillScreen(
       ),
     );
 
+Widget get exampleScreenArcane => ArcaneUsageExample(
+      padding: 0,
+      title: 'Arcane Screens',
+      code: """
+ArcaneScreen(
+  header: Bar(
+    titleText: "Header",
+    trailing: [
+      IconButton(
+        icon: Icon(Icons.activity),
+        onPressed: () {},
+      )]),
+  // Supports both slivers and render boxes
+  child: Center(
+    child: Text("Arcane Screen")
+  )
+)
+""",
+      child: SizedBox(
+        height: 500,
+        child: ArcaneScreen(
+            header: Bar(titleText: "Header", trailing: [
+              IconButton(
+                icon: Icon(Icons.activity),
+                onPressed: () {},
+              )
+            ]),
+            child: Center(child: Text("Arcane Screen"))),
+      ),
+    );
+
+Widget get exampleScreenSections => ArcaneUsageExample(
+      padding: 0,
+      title: 'Collections & Sections',
+      code: """
+ArcaneScreen(
+  header: Bar(titleText: "Header", trailing: [
+    IconButton(
+      icon: Icon(Icons.activity),
+      onPressed: () {},
+    )
+  ]),
+  child: Collection(
+    children: [
+      // Collections support slivers & widgets
+      Tile(title: Text("A")),
+      Tile(title: Text("B")),
+      Tile(title: Text("C")),
+      
+      // Sections are bar sections which support slivers or widgets
+      Section(
+          child: Tile(title: Text("D")), subtitleText: "Section A"),
+          
+      // Custom slivers
+      SListView.builder(
+          builder: (context, i) => Tile(title: Text("\$i")),
+          childCount: 6),
+      Tile(title: Text("E")),
+      Section(
+          subtitleText: "Section B",
+          // Sections can contain collections
+          child: Collection(
+            children: [
+              Tile(title: Text("F")),
+              Tile(title: Text("G")),
+              Tile(title: Text("H")),
+              Section(
+                  subtitleText: "Section B.2",
+                  child: Collection(
+                    children: [
+                      Tile(title: Text("I")),
+                      Tile(title: Text("J")),
+                      Tile(title: Text("K")),
+                    ],
+                  )),
+              SListView.builder(
+                  builder: (context, i) => Tile(title: Text("\$i")),
+                  childCount: 6),
+            ],
+          )),
+      SListView.builder(
+          builder: (context, i) => Tile(title: Text("\$i")),
+          childCount: 6),
+    ],
+  )
+)
+""",
+      child: SizedBox(
+        height: 500,
+        child: ArcaneScreen(
+            header: Bar(titleText: "Header", trailing: [
+              IconButton(
+                icon: Icon(Icons.activity),
+                onPressed: () {},
+              )
+            ]),
+            child: Collection(
+              children: [
+                Tile(title: Text("A")),
+                Tile(title: Text("B")),
+                Tile(title: Text("C")),
+                Section(
+                    subtitleText: "Section A", child: Tile(title: Text("D"))),
+                SListView.builder(
+                    builder: (context, i) => Tile(title: Text("$i")),
+                    childCount: 6),
+                Tile(title: Text("E")),
+                Section(
+                    subtitleText: "Section B",
+                    child: Collection(
+                      children: [
+                        Tile(title: Text("F")),
+                        Tile(title: Text("G")),
+                        Tile(title: Text("H")),
+                        Section(
+                            subtitleText: "Section B.2",
+                            child: Collection(
+                              children: [
+                                Tile(title: Text("I")),
+                                Tile(title: Text("J")),
+                                Tile(title: Text("K")),
+                              ],
+                            )),
+                        SListView.builder(
+                            builder: (context, i) => Tile(title: Text("$i")),
+                            childCount: 6),
+                      ],
+                    )),
+                SListView.builder(
+                    builder: (context, i) => Tile(title: Text("$i")),
+                    childCount: 6),
+              ],
+            )),
+      ),
+    );
+
 class ExampleNavigationScreen extends StatefulWidget {
   const ExampleNavigationScreen({super.key});
 
@@ -3113,62 +3251,78 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.title != null) Text(widget.title!).h2(),
-        if (widget.title != null) const Gap(12),
-        TabList(
-          index: index,
-          children: [
-            TabButton(
-              onPressed: () {
-                setState(() {
-                  index = 0;
-                });
-              },
-              child: const Text('Preview').semiBold().textSmall(),
-            ),
-            TabButton(
-              onPressed: () {
-                setState(() {
-                  index = 1;
-                });
-              },
-              child: const Text('Code').semiBold().textSmall(),
-            ),
-          ],
-        ),
-        const Gap(12),
-        RepaintBoundary(
-          child: Offstage(
-            offstage: index != 0,
-            child: OutlinedContainer(
-              key: _key,
-              child: ClipRect(
-                child: Container(
-                  padding: EdgeInsets.all(widget.padding),
-                  constraints: const BoxConstraints(minHeight: 350),
-                  child: Center(
-                    child: widget.child,
+    return Pylon<ArcaneTheme?>(
+      value: ArcaneTheme(
+        radius: sh.Theme.of(context).radius,
+        themeMode: sh.Theme.of(context).brightness == Brightness.light
+            ? ThemeMode.light
+            : ThemeMode.dark,
+        surfaceBlur: sh.Theme.of(context).surfaceBlur ?? 18,
+        scaling: sh.Theme.of(context).scaling,
+        surfaceOpacity: sh.Theme.of(context).surfaceOpacity ?? 0.66,
+        scheme: ContrastedColorScheme(
+            light:
+                ColorScheme.fromMap(sh.Theme.of(context).colorScheme.toMap()),
+            dark:
+                ColorScheme.fromMap(sh.Theme.of(context).colorScheme.toMap())),
+      ),
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.title != null) Text(widget.title!).h2(),
+          if (widget.title != null) const Gap(12),
+          TabList(
+            index: index,
+            children: [
+              TabButton(
+                onPressed: () {
+                  setState(() {
+                    index = 0;
+                  });
+                },
+                child: const Text('Preview').semiBold().textSmall(),
+              ),
+              TabButton(
+                onPressed: () {
+                  setState(() {
+                    index = 1;
+                  });
+                },
+                child: const Text('Code').semiBold().textSmall(),
+              ),
+            ],
+          ),
+          const Gap(12),
+          RepaintBoundary(
+            child: Offstage(
+              offstage: index != 0,
+              child: OutlinedContainer(
+                key: _key,
+                child: ClipRect(
+                  child: Container(
+                    padding: EdgeInsets.all(widget.padding),
+                    constraints: const BoxConstraints(minHeight: 350),
+                    child: Center(
+                      child: widget.child,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        RepaintBoundary(
-          child: Offstage(
-            offstage: index != 1,
-            child: ArcaneCodeSnippetBuilder(
-              code: widget.code,
-              mode: 'dart',
-              summarize: widget.summarize,
+          RepaintBoundary(
+            child: Offstage(
+              offstage: index != 1,
+              child: ArcaneCodeSnippetBuilder(
+                code: widget.code,
+                mode: 'dart',
+                summarize: widget.summarize,
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

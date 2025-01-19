@@ -120,11 +120,7 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
                               ?.controller,
                           slivers: [
                             SliverStickyHeader.builder(
-                                builder: (context, _) => SizedBox(
-                                    height: context
-                                            .pylonOr<ArbitraryHeaderSpace>()
-                                            ?.height ??
-                                        0),
+                                builder: (context, _) => SizedBox(height: 0),
                                 sliver: MultiSliver(
                                   children: [
                                     buildSliverContent(context),
