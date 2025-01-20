@@ -1,3 +1,6 @@
+## 3.11.0
+* Removed Routing
+
 ## 3.10.13
 * Improved the `ArcaneSidebar` spacing & how it fits into fill screens
 * Added `ArcaneScreen` to docs

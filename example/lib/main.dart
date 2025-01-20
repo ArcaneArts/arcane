@@ -37,7 +37,6 @@ class ExampleArcaneApp extends StatelessWidget {
           },
           child: ArcaneApp(
             showPerformanceOverlay: false,
-            arcaneRoutes: [HomeScreen(), AScreen(), A404Screen()],
             onUnknownRoute: (r) {
               actioned("UNKNOWN ROUTE HIT");
               MaterialPageRoute(builder: (context) => HomeScreen());

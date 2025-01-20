@@ -13,24 +13,19 @@ class Arcane {
   static Future<T?> push<T extends Object?>(
           BuildContext context, Widget child) =>
       Pylon.push<T?>(context, child,
-          type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
+          type: PylonRouteType.material, settings: RouteSettings(name: null));
 
   static Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           BuildContext context, Widget child) =>
       Pylon.pushReplacement<T?, TO?>(context, child,
-          type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
+          type: PylonRouteType.material, settings: RouteSettings(name: null));
 
   static Future<T?> pushAndRemoveUntil<T extends Object?>(
           BuildContext context, Widget child, RoutePredicate predicate) =>
       Pylon.pushAndRemoveUntil<T?>(context, child,
           predicate: predicate,
           type: PylonRouteType.material,
-          settings:
-              RouteSettings(name: child is ArcaneRoute ? child.path : null));
+          settings: RouteSettings(name: null));
 
   static void closeDrawer(BuildContext context) =>
       DrawerOverlay.maybeFind(context)?.overlay.closeLast();

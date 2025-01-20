@@ -47,7 +47,6 @@ export 'component/logo.dart';
 export 'component/mutable_text.dart';
 export 'component/popup_menu.dart';
 export 'component/radio_cards.dart';
-export 'component/routing/router.dart';
 export 'component/screen/abstract_screen.dart';
 export 'component/screen/chat_screen.dart';
 export 'component/screen/fill_screen.dart';

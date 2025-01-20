@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 
-class HomeScreen extends StatelessWidget with ArcaneRoute {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
@@ -33,32 +33,13 @@ class HomeScreen extends StatelessWidget with ArcaneRoute {
           ],
         ),
       );
-
-  @override
-  String get path => "/";
 }
 
-class AScreen extends StatelessWidget with ArcaneRoute {
+class AScreen extends StatelessWidget {
   const AScreen({super.key});
 
   @override
   Widget build(BuildContext context) => ArcaneScreen(child: Text("Hello"));
-
-  @override
-  String get path => "/ascreen";
-}
-
-class A404Screen extends StatelessWidget with ArcaneRoute {
-  const A404Screen({super.key});
-
-  @override
-  Widget build(BuildContext context) => ArcaneScreen(child: Text("404 thing"));
-
-  @override
-  String get path => "/404";
-
-  @override
-  bool get is404Route => true;
 }
 
 /// Define a message model and implement AbstractChatMessage
