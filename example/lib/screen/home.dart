@@ -2,117 +2,107 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 
-class HomeScreen extends StatelessWidget {
+List<String> list = List.generate(5, (index) => "Item $index");
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) => ArcaneScreen(
+        fab: Fab(
+            child: const Icon(Icons.plus),
+            onPressed: () {
+              setState(() {
+                list.add(
+                    "Item ${list.length} ${DateTime.now().toIso8601String()}");
+              });
+            }),
         header: Bar(
           titleText: "Test",
-          trailing: [
-            IconButton(
-                icon: Icon(Icons.airplane),
-                onPressed: () => Arcane.push(context, AScreen()))
-          ],
+          trailing: [],
         ),
         child: Collection(
           children: [
-            Text("A"),
-            Text("B"),
-            Text("C"),
             Section(
-              child: Collection(
-                children: [
-                  Text("A"),
-                  Text("B"),
-                  Text("C"),
-                ],
-              ),
-              titleText: "Title",
-            )
+                headerText: "The List",
+                child: ArcaneList(
+                    items: list,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        key: ValueKey(list[index]),
+                        decoration: BoxDecoration(
+                            color: HSLColor.fromAHSL(
+                                    0.1,
+                                    Random(list[index].hashCode).nextDouble() *
+                                        360,
+                                    1,
+                                    0.6)
+                                .toColor(),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: ListTile(
+                          onPressed: () {
+                            setState(() {
+                              list.removeAt(index);
+                            });
+                          },
+                          title: Text(list[index]),
+                        ),
+                      );
+                    },
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        String v = list.removeAt(oldIndex);
+                        list.insert(newIndex, v);
+                      });
+                    },
+                    isSameItem: (a, b) => a == b)),
+            Section(
+                headerText: "The Grid",
+                child: ArcaneGrid(
+                    sliverGridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            childAspectRatio: 2,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                            maxCrossAxisExtent: 200),
+                    items: list,
+                    itemBuilder: (BuildContext context, int index) {
+                      return BasicCard(
+                        borderColor: HSLColor.fromAHSL(
+                                0.333,
+                                Random(list[index].hashCode).nextDouble() * 360,
+                                1,
+                                0.6)
+                            .toColor(),
+                        filled: true,
+                        fillColor: HSLColor.fromAHSL(
+                                0.05,
+                                Random(list[index].hashCode).nextDouble() * 360,
+                                1,
+                                0.6)
+                            .toColor(),
+                        onPressed: () {
+                          setState(() {
+                            list.removeAt(index);
+                          });
+                        },
+                        title: Text(list[index]),
+                        key: ValueKey(list[index]),
+                      );
+                    },
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        String v = list.removeAt(oldIndex);
+                        list.insert(newIndex, v);
+                      });
+                    },
+                    isSameItem: (a, b) => a == b))
           ],
         ),
       );
-}
-
-class AScreen extends StatelessWidget {
-  const AScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => ArcaneScreen(child: Text("Hello"));
-}
-
-/// Define a message model and implement AbstractChatMessage
-class MyMessage implements AbstractChatMessage {
-  final String id;
-  final String message;
-  @override
-  final DateTime timestamp;
-  @override
-  final String senderId;
-
-  MyMessage({
-    required this.id,
-    required this.message,
-    required this.timestamp,
-    required this.senderId,
-  });
-
-  /// Build the content for the message
-  @override
-  Widget get messageWidget => Text(message);
-}
-
-/// Define a user model and implement AbstractChatUser
-class MyUser extends AbstractChatUser {
-  @override
-  final String id;
-  @override
-  final String name;
-
-  MyUser({
-    required this.id,
-    required this.name,
-  });
-
-  /// Build the avatar for the user
-  @override
-  Widget get avatar => const Icon(Icons.user);
-}
-
-// You need a Provider that extends ChatProvider to handle messages
-class MyChatProvider extends ChatProvider {
-  final List<MyUser> users;
-  final BehaviorSubject<List<MyMessage>> messages;
-
-  MyChatProvider({
-    required this.users,
-    required this.messages,
-  });
-
-  @override
-  Future<MyUser> getUser(String id) async =>
-      users.firstWhere((element) => element.id == id);
-
-  @override
-  Stream<List<MyMessage>> streamLastMessages() => messages;
-
-  @override
-  Future<void> sendMessage(String message) async {
-    messages.add([
-      ...messages.value,
-      MyMessage(
-        id: Random.secure().nextDouble().toString(),
-        senderId: "0",
-        message: message,
-        timestamp: DateTime.timestamp(),
-      ),
-      MyMessage(
-        id: Random.secure().nextDouble().toString(),
-        senderId: "1",
-        message: "Thingy $message",
-        timestamp: DateTime.timestamp(),
-      ),
-    ]);
-  }
 }

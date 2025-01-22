@@ -19,6 +19,8 @@ export 'component/bottom_navigation_bar.dart';
 export 'component/card_carousel.dart';
 export 'component/center_body.dart';
 export 'component/checkbox.dart';
+export 'component/collection/arcane_list.dart';
+export 'component/collection/arcane_grid.dart';
 export 'component/collection/collection.dart';
 export 'component/collection/section.dart';
 export 'component/conjured.dart';

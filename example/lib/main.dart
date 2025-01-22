@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:arcane/arcane.dart';
 import 'package:example/model/note.dart';
 import 'package:example/screen/home.dart';
-import 'package:fast_log/fast_log.dart';
 import 'package:flutter/services.dart';
 
 bool v = false;
@@ -36,11 +35,8 @@ class ExampleArcaneApp extends StatelessWidget {
             ): didShortcut
           },
           child: ArcaneApp(
+            home: HomeScreen(),
             showPerformanceOverlay: false,
-            onUnknownRoute: (r) {
-              actioned("UNKNOWN ROUTE HIT");
-              MaterialPageRoute(builder: (context) => HomeScreen());
-            },
             theme: ArcaneTheme(
                 themeMode: ThemeMode.system,
                 scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
