@@ -1,3 +1,9 @@
+## 3.11.2
+* Fix toARGB32() for logging for now
+
+## 3.11.1
+* Reorderable Lists
+
 ## 3.11.0
 * Removed Routing
 

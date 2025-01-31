@@ -172,10 +172,10 @@ void criticalAnnouncement(String msg,
 
   if (boxSpin != null) {
     colors = [
-      _argb2rgb(ui.Color(boxSpin).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(-22).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(22).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(44).toARGB32())
+      _argb2rgb(ui.Color(boxSpin).value),
+      _argb2rgb(ui.Color(boxSpin).spin(-22).value),
+      _argb2rgb(ui.Color(boxSpin).spin(22).value),
+      _argb2rgb(ui.Color(boxSpin).spin(44).value)
     ];
   }
   announcement(
@@ -197,10 +197,10 @@ void noticeAnnouncement(String msg,
 
   if (boxSpin != null) {
     colors = [
-      _argb2rgb(ui.Color(boxSpin).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(-11).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(11).toARGB32()),
-      _argb2rgb(ui.Color(boxSpin).spin(33).toARGB32())
+      _argb2rgb(ui.Color(boxSpin).value),
+      _argb2rgb(ui.Color(boxSpin).spin(-11).value),
+      _argb2rgb(ui.Color(boxSpin).spin(11).value),
+      _argb2rgb(ui.Color(boxSpin).spin(33).value)
     ];
   }
   announcement(
