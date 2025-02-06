@@ -1,3 +1,9 @@
+## 3.12.0
+* BREAKING: Removed `ArcaneCheckbox` & `ArcaneCheckboxState` in favor of `Checkbox` & `CheckboxState`
+* Added `maxLength` to `MutableText`
+* Added `Expander` widget
+* Added `children` property to `ListTile` which allows it to become an expansion tile
+
 ## 3.11.2
 * Fix toARGB32() for logging for now
 

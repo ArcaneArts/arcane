@@ -108,19 +108,19 @@ class CheckboxTile extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
   }) =>
-      ArcaneCheckbox(
+      Checkbox(
         leading: leading,
         tristate: tristate,
         trailing: trailing,
         state: value == false
-            ? ArcaneCheckboxState.unchecked
+            ? CheckboxState.unchecked
             : value == null
-                ? ArcaneCheckboxState.indeterminate
-                : ArcaneCheckboxState.checked,
+                ? CheckboxState.indeterminate
+                : CheckboxState.checked,
         onChanged: (v) => onChanged != null
-            ? onChanged!(v == ArcaneCheckboxState.checked
+            ? onChanged!(v == CheckboxState.checked
                 ? true
-                : v == ArcaneCheckboxState.indeterminate
+                : v == CheckboxState.indeterminate
                     ? null
                     : false)
             : null,
@@ -157,6 +157,16 @@ class Tile extends StatelessWidget {
   final EdgeInsets trailingPadding;
   final bool sliver;
   final double knownIconSize;
+  final List<Widget> children;
+
+  final bool initiallyExpanded;
+  final ExpanderController? expansionController;
+  final Duration expandDuration;
+  final Curve expandCurve;
+  final AlignmentGeometry expandAlignment;
+  final Duration expandReverseDuration;
+  final CrossAxisAlignment expanderCrossAxisAlignment;
+  final double expanderGapPadding;
 
   const Tile({
     super.key,
@@ -171,6 +181,15 @@ class Tile extends StatelessWidget {
     this.leadingPadding = const EdgeInsets.only(right: 10, top: 4),
     this.trailingPadding = const EdgeInsets.only(left: 10, top: 4),
     this.sliver = false,
+    this.children = const [],
+    this.initiallyExpanded = false,
+    this.expansionController,
+    this.expandDuration = const Duration(milliseconds: 250),
+    this.expandCurve = Curves.easeOutCirc,
+    this.expandAlignment = Alignment.topCenter,
+    this.expandReverseDuration = const Duration(milliseconds: 250),
+    this.expanderCrossAxisAlignment = CrossAxisAlignment.start,
+    this.expanderGapPadding = 8,
   });
 
   Widget get styledSubtitle =>
@@ -180,43 +199,26 @@ class Tile extends StatelessWidget {
 
   Widget buildTile(BuildContext context) => Padding(
       padding: contentPadding,
-      child: true
-          ? Row(
-              children: [
-                Expanded(
-                    child: Basic(
-                  leadingAlignment: Alignment.center,
-                  trailingAlignment: Alignment.center,
-                  leading: leading,
-                  trailing: trailing,
-                  title: title,
-                  subtitle: subtitle,
-                ))
-              ],
-            )
-          : Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (leading != null)
-                  Padding(
-                    padding: leadingPadding,
-                    child: leading!,
-                  ),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (title != null) styledTitle,
-                    if (subtitle != null) styledSubtitle,
-                  ],
-                )),
-                if (trailing != null)
-                  Padding(
-                    padding: leadingPadding,
-                    child: trailing!,
-                  )
-              ],
-            ));
+      child: Row(
+        children: [
+          Expanded(
+              child: Basic(
+            leadingAlignment: Alignment.center,
+            trailingAlignment: Alignment.center,
+            leading: leading,
+            trailing: trailing ??
+                (children.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(context.pylon<ExpanderState>().expanded
+                            ? Icons.chevron_up_ionic
+                            : Icons.chevron_down_ionic),
+                        onPressed: () {})
+                    : null),
+            title: title,
+            subtitle: subtitle,
+          ))
+        ],
+      ));
 
   Widget buildSliver(BuildContext context) => GlassSection(
       header: Padding(
@@ -282,12 +284,49 @@ class Tile extends StatelessWidget {
       ));
 
   @override
-  Widget build(BuildContext context) => sliver
-      ? buildSliver(context)
-      : onPressed != null
-          ? GhostButton(
-              onPressed: onPressed,
-              density: ButtonDensity.compact,
-              child: buildTile(context))
-          : buildTile(context);
+  Widget build(BuildContext context) {
+    assert((sliver && children.isEmpty) || !sliver,
+        'Sliver tiles cannot have children');
+
+    Widget _build(BuildContext context) => onPressed != null
+        ? GhostButton(
+            onPressed: onPressed,
+            density: ButtonDensity.compact,
+            child: buildTile(context))
+        : buildTile(context);
+
+    if (children.isNotEmpty) {
+      return Expander(
+        initiallyExpanded: initiallyExpanded,
+        controller: expansionController,
+        duration: expandDuration,
+        reverseDuration: expandReverseDuration,
+        curve: expandCurve,
+        alignment: expandAlignment,
+        gapPadding: expanderGapPadding,
+        crossAxisAlignment: expanderCrossAxisAlignment,
+        header: Builder(
+            builder: (context) => IgnorePointer(
+                  ignoring: true,
+                  child: _build(context),
+                )),
+        overrideSeparator: Divider().animate().fadeIn(
+              duration: expandDuration * 4,
+              curve: expandCurve,
+            ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...children.mapIndexed((i, index) => i.animate().fadeIn(
+                duration: expandDuration * 4,
+                curve: expandCurve,
+                delay: Duration(milliseconds: 40 * index)))
+          ],
+        ),
+      );
+    }
+
+    return sliver ? buildSliver(context) : _build(context);
+  }
 }

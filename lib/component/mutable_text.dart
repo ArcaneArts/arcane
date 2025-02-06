@@ -26,6 +26,7 @@ class MutableText extends StatefulWidget {
   final EditButtonType buttonType;
   final bool autoCorrect;
   final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
 
   const MutableText(this.value,
       {super.key,
@@ -46,6 +47,7 @@ class MutableText extends StatefulWidget {
       this.textHeightBehavior,
       this.textScaler,
       this.textWidthBasis,
+      this.maxLength,
       this.placeholder,
       this.buttonType = EditButtonType.pencil,
       this.border = false});
@@ -89,6 +91,10 @@ class _MutableTextState extends State<MutableText> {
                         })),
               },
               child: TextField(
+                maxLengthEnforcement: widget.maxLength == null
+                    ? null
+                    : MaxLengthEnforcement.enforced,
+                maxLength: widget.maxLength,
                 inputFormatters: widget.inputFormatters,
                 autocorrect: widget.autoCorrect,
                 textInputAction: TextInputAction.done,
