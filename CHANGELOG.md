@@ -1,3 +1,6 @@
+## 3.12.1
+* Sheets return their popped value
+
 ## 3.12.0
 * BREAKING: Removed `ArcaneCheckbox` & `ArcaneCheckboxState` in favor of `Checkbox` & `CheckboxState`
 * Added `maxLength` to `MutableText`

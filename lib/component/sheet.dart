@@ -1,7 +1,5 @@
 import 'package:arcane/arcane.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:padded/padded.dart';
-import 'package:pylon/pylon.dart';
 import 'package:smooth_sheets/smooth_sheets.dart' as ss;
 
 class InsideSheetSignal {
@@ -15,9 +13,9 @@ extension XBuildContextSheetSignal on BuildContext {
 mixin ArcaneSheetLauncher on Widget {
   bool get isDismissible;
 
-  void open(BuildContext context) {
+  Future<T?> open<T>(BuildContext context) {
     PylonBuilder builder = Pylon.mirror(context, (context) => this);
-    showCupertinoModalBottomSheet(
+    return showCupertinoModalBottomSheet(
       duration: const Duration(milliseconds: 500),
       isDismissible: isDismissible,
       bounce: true,
