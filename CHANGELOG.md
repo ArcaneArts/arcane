@@ -1,3 +1,12 @@
+## 3.12.2
+* Sync Upstream Fixes
+  * Fix sortable gesture issue with immediate drop after drag pick up
+  * Updated popover example 1 & 4
+  * #178 Fix missing child in FormErrorBuilder
+  * Fix toast state
+  * Fix progress assertion
+* Added `emnptyLeadingSpace` property to `MenuButton` & `MenuLabel` to allow changing the leading space when no icon is specified. Defaults to 16 to remain unchanged if undefined.
+
 ## 3.12.1
 * Sheets return their popped value
 
