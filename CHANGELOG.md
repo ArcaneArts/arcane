@@ -6,6 +6,7 @@
   * Fix toast state
   * Fix progress assertion
 * Added `emnptyLeadingSpace` property to `MenuButton` & `MenuLabel` to allow changing the leading space when no icon is specified. Defaults to 16 to remain unchanged if undefined.
+* Renamed `NavigationItem`, `NavigationContent` and `NavigationContentList` to `NavigationMenuItem`, `NavigationMenuContent` and `NavigationMenuContentList`
 
 ## 3.12.1
 * Sheets return their popped value
