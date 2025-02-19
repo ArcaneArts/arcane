@@ -47,10 +47,8 @@ class GlassStopper extends StatelessWidget {
       context.pylonOr<_GlassStop>()?.stopping ?? true;
 
   @override
-  Widget build(BuildContext context) =>
-      Pylon<_GlassStop>(
-          local: true,
-          value: _GlassStop(stopping), builder: builder);
+  Widget build(BuildContext context) => Pylon<_GlassStop>(
+      local: true, value: _GlassStop(stopping), builder: builder);
 }
 
 class Glass extends StatelessWidget {
@@ -83,10 +81,7 @@ class Glass extends StatelessWidget {
             color: disabledColor ?? Theme.of(context).colorScheme.background,
             child: child,
           )
-        : BlurSurface(
-            borderRadius: borderRadius,
-            blur: blur ?? Theme.of(context).surfaceBlur ?? 16,
-            child: child);
+        : SurfaceBlur(surfaceBlur: Theme.of(context).surfaceBlur, child: child);
 
     if (under != null) {
       b = Stack(
@@ -135,34 +130,4 @@ class GlassAntiFlicker extends StatelessWidget {
               Colors.transparent,
             ])),
       );
-}
-
-class BlurSurface extends StatelessWidget {
-  final double blur;
-  final Widget child;
-  final Widget? under;
-  final BorderRadius? borderRadius;
-
-  const BlurSurface(
-      {super.key,
-      required this.blur,
-      required this.child,
-      this.under,
-      this.borderRadius});
-
-  @override
-  Widget build(BuildContext context) =>
-      Stack(fit: StackFit.passthrough, children: [
-        if (context.pylonOr<AntiFlickerDirection>() != null)
-          Positioned.fill(
-              child: GlassAntiFlicker(
-            direction: context.pylon<AntiFlickerDirection>(),
-          )),
-        if (under != null) under!,
-        Positioned.fill(
-            child: ArcaneBlur(intensity: blur, child: const SizedBox())),
-        Container(
-          child: child,
-        ),
-      ]);
 }

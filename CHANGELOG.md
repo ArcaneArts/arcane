@@ -1,3 +1,8 @@
+## 3.13.1
+* Unify blurring under arcane blur
+* Added `ArcaneBlurMode.frost` as an option (falls back to backdrop blur if not on impeller)
+* Added `title`, `subtitle`, `actions`, to `ArcaneScreen` to macro simple Bars
+
 ## 3.13.0
 * Sync Upstream
   * Tabs, TabList, and TabPane are now based on the new TabContainer

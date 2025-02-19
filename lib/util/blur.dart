@@ -4,8 +4,6 @@ import 'dart:ui' as ui;
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/shaders/arcane_blur.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_shaders/flutter_shaders.dart';
 
 enum ArcaneBlurMode {
   /// Blurs the child widget using a [RenderObject]. which is faster than a [BackdropFilter].
@@ -13,6 +11,8 @@ enum ArcaneBlurMode {
 
   /// Uses a [BackdropFilter] to blur the child widget.
   backdropFilter,
+
+  frost,
 }
 
 enum EdgeDirection {
@@ -38,250 +38,57 @@ class EdgeTheme {
   });
 }
 
-class ArcaneEdge extends StatelessWidget {
-  final List<EdgeDirection> directions;
-  final double? blurIntensity;
-  final double? blurAddedIntensity;
-  final int? blurCount;
-  final double? size;
-  final Widget child;
-  final bool autoMode;
-
-  const ArcaneEdge(
-      {super.key,
-      this.directions = const [],
-      this.blurIntensity,
-      this.blurAddedIntensity,
-      this.blurCount,
-      this.size,
-      this.autoMode = false,
-      required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    EdgeTheme e = ArcaneTheme.of(context).edge;
-    if (autoMode && !e.autoEdge) return child;
-
-    return directions.isEmpty
-        ? child
-        : Stack(
-            fit: StackFit.passthrough,
-            children: [
-              child,
-              ...directions.expand((i) => blurStackEdge(
-                  count: blurCount ?? e.blurCount,
-                  edge: size ?? e.size,
-                  intensity: blurIntensity ?? e.blurIntensity,
-                  addedIntensity: blurAddedIntensity ?? e.blurAddedIntensity,
-                  direction: i)),
-            ],
-          );
-    ;
-  }
-}
-
-extension XAEW on Widget {
-  Widget edgeBlur(
-          {List<EdgeDirection> directions = const [],
-          double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      directions.isEmpty
-          ? this
-          : ArcaneEdge(
-              autoMode: autoMode,
-              directions: directions,
-              blurIntensity: blurIntensity,
-              blurAddedIntensity: blurAddedIntensity,
-              blurCount: blurCount,
-              size: size,
-              child: this,
-            );
-
-  Widget leftEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.left],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget rightEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.right],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget topEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.top],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget bottomEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.bottom],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget horizontalEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.left, EdgeDirection.right],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget verticalEdgeBlur(
-          {double? blurIntensity,
-          double? blurAddedIntensity,
-          int? blurCount,
-          double? size,
-          bool autoMode = false}) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [EdgeDirection.top, EdgeDirection.bottom],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-
-  Widget allEdgeBlur({
-    bool autoMode = false,
-    double? blurIntensity,
-    double? blurAddedIntensity,
-    int? blurCount,
-    double? size,
-  }) =>
-      edgeBlur(
-        autoMode: autoMode,
-        directions: [
-          EdgeDirection.left,
-          EdgeDirection.right,
-          EdgeDirection.top,
-          EdgeDirection.bottom
-        ],
-        blurIntensity: blurIntensity,
-        blurAddedIntensity: blurAddedIntensity,
-        blurCount: blurCount,
-        size: size,
-      );
-}
-
-Iterable<Widget> blurStackEdge(
-    {required int count,
-    required double edge,
-    required EdgeDirection direction,
-    double intensity = 0.333,
-    double addedIntensity = 0.333}) sync* {
-  double l = edge / count;
-
-  for (int i = 0; i < count; i++) {
-    yield Positioned(
-      left: direction == EdgeDirection.right ? null : 0,
-      right: direction == EdgeDirection.left ? null : 0,
-      top: direction == EdgeDirection.bottom ? null : 0,
-      bottom: direction == EdgeDirection.top ? null : 0,
-      height:
-          direction == EdgeDirection.top || direction == EdgeDirection.bottom
-              ? (l * i) + l
-              : null,
-      width: direction == EdgeDirection.left || direction == EdgeDirection.right
-          ? (l * i) + l
-          : null,
-      child: ClipRect(
-        child: BlurSurface(
-            blur: intensity + (addedIntensity * (count - i)),
-            child: Container()),
-      ),
-    );
-  }
-}
-
 class ArcaneBlur extends StatelessWidget {
   final double intensity;
   final TileMode tileMode;
-  final ArcaneBlurMode mode;
+  final ArcaneBlurMode? mode;
   final Widget child;
 
   const ArcaneBlur({
     super.key,
     this.intensity = 0,
     this.tileMode = TileMode.clamp,
-    this.mode = ArcaneBlurMode.backdropFilter,
+    this.mode,
     required this.child,
   });
 
-  @override
-  Widget build(BuildContext context) => switch (this) {
-        ArcaneBlur(intensity: double i) when i <= 0 => child,
-        // ArcaneBlur(mode: ArcaneBlurMode.arcane) => ArcaneShaderBlur(
-        //     intensity: intensity,
-        //     child: child,
-        //   ),
-        ArcaneBlur(mode: ArcaneBlurMode.renderObject) => _RenderObjectBlur(
-            blurriness: intensity,
-            tileMode: tileMode,
-            child: child,
-          ),
-        ArcaneBlur(mode: ArcaneBlurMode.backdropFilter) => _BackdropFilterBlur(
-            blurriness: intensity,
-            tileMode: tileMode,
-            child: child,
-          ),
-      };
-}
+  ArcaneBlurMode getBlurMode(BuildContext context) {
+    if (mode != null) return mode!;
+    return ArcaneTheme.of(context).blurMode;
+  }
 
-Future<ui.Image> noiseImage = rootBundle
-    .load("packages/arcane/assets/noise.png")
-    .then((b) => b.buffer.asUint8List())
-    .then((l) => ui
-        .instantiateImageCodec(l)
-        .then((c) => c.getNextFrame().then((f) => f.image)));
+  @override
+  Widget build(BuildContext context) {
+    if (intensity <= 0) return child;
+
+    ArcaneBlurMode mode = getBlurMode(context);
+
+    if (mode == ArcaneBlurMode.frost) {
+      return ArcaneShaderBlur(
+        intensity: intensity,
+        child: child,
+      );
+    }
+
+    if (mode == ArcaneBlurMode.renderObject) {
+      return _RenderObjectBlur(
+        blurriness: intensity,
+        tileMode: tileMode,
+        child: child,
+      );
+    }
+
+    if (mode == ArcaneBlurMode.backdropFilter) {
+      return _BackdropFilterBlur(
+        blurriness: intensity,
+        tileMode: tileMode,
+        child: child,
+      );
+    }
+
+    return child;
+  }
+}
 
 class ArcaneShaderBlur extends StatefulWidget {
   final double intensity;
@@ -294,13 +101,13 @@ class ArcaneShaderBlur extends StatefulWidget {
 }
 
 class _ArcaneShaderBlurState extends State<ArcaneShaderBlur> {
-  late Future<FragmentShader?> shader;
+  late Future<ui.FragmentProgram?> shader;
 
   @override
   void initState() {
     shader = !ui.ImageFilter.isShaderFilterSupported
         ? Future.value(null)
-        : const ArcaneBlurShader().program.then((p) => p.fragmentShader());
+        : const ArcaneBlurShader().program;
     super.initState();
   }
 
@@ -310,15 +117,22 @@ class _ArcaneShaderBlurState extends State<ArcaneShaderBlur> {
       blurriness: widget.intensity,
       child: widget.child,
     );
-    return noiseImage.build(
-        (image) => shader.build(
-            (shader) => shader == null
-                ? blank
-                : BackdropFilter(
-                    filter: ui.ImageFilter.shader(shader),
-                    child: widget.child,
-                  ),
-            loading: blank),
+    return shader.build(
+        (shader) => shader == null
+            ? blank
+            : BackdropFilter(
+                filter: ui.ImageFilter.compose(
+                    inner: ui.ImageFilter.blur(
+                        sigmaX: widget.intensity,
+                        sigmaY: widget.intensity,
+                        tileMode: TileMode.decal),
+                    outer: ui.ImageFilter.compose(
+                        inner: ui.ImageFilter.shader(shader.fragmentShader()
+                          ..setFloat(2, widget.intensity * 0.06)),
+                        outer:
+                            ui.ImageFilter.dilate(radiusX: 2, radiusY: 0.001))),
+                child: widget.child,
+              ),
         loading: blank);
   }
 }

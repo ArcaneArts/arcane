@@ -12,6 +12,7 @@ class ArcaneTheme {
   final double scaling;
   final double contrast;
   final double spin;
+  final ArcaneBlurMode blurMode;
   final double defaultHeaderHeight;
   final ChatTheme chat;
   final ToastTheme toast;
@@ -29,6 +30,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.blurMode = ArcaneBlurMode.backdropFilter,
     this.edge = const EdgeTheme(),
     this.defaultHeaderHeight = 0,
     this.toast = const ToastTheme(),
@@ -45,8 +47,8 @@ class ArcaneTheme {
     this.spin = 0.0,
     this.scaling = 1.0,
     this.radius = 0.4,
-    this.surfaceOpacity = 0.66,
-    this.surfaceBlur = 18,
+    this.surfaceOpacity = 0.6,
+    this.surfaceBlur = 24,
     this.themeMode = ThemeMode.system,
   });
 
@@ -119,10 +121,8 @@ m.ThemeData _defaultMaterialThemeBuilder(
               theme.shadThemeBuilder(theme, brightness).colorScheme.background),
       pageTransitionsTheme: m.PageTransitionsTheme(builders: {
         ...Map.fromEntries(
-          m.TargetPlatform.values.map((e) => MapEntry(
-              e,
-              const m.ZoomPageTransitionsBuilder(
-                  allowSnapshotting: true, allowEnterRouteSnapshotting: true))),
+          m.TargetPlatform.values.map(
+              (e) => MapEntry(e, const m.FadeForwardsPageTransitionsBuilder())),
         ),
         // TargetPlatform.iOS: const m.CupertinoPageTransitionsBuilder(),
       }));

@@ -110,10 +110,6 @@ class Bar extends StatelessWidget {
     return Stack(
       children: [
         Glass(
-            tint: Theme.of(context)
-                .colorScheme
-                .background
-                .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
             ignoreContextSignals: ignoreContextSignals,
             disabled: !useGlass,
             blur: Theme.of(context).surfaceBlur ?? 16,

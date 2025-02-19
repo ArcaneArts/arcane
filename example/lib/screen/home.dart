@@ -29,15 +29,28 @@ class _HomeScreenState extends State<HomeScreen> {
             Section(
                 headerText: "Section 1",
                 child: SGridView.builder(
-                  builder: (context, i) => Card(
-                    child: Text("Item $i"),
-                    onPressed: () => DialogConfirm(
-                      title: "Confirm",
-                      onConfirm: () {},
-                    ).open(context),
-                    fillColor: [Colors.blue, Colors.red, Colors.green][i % 3],
-                    filled: true,
-                  ),
+                  builder: (context, i) => ContextMenu(
+                      child: Card(
+                        child: Text("Item $i"),
+                        onPressed: () => DialogConfirm(
+                          title: "Confirm",
+                          onConfirm: () {},
+                        ).open(context),
+                        fillColor: [
+                          Colors.blue,
+                          Colors.red,
+                          Colors.green
+                        ][i % 3],
+                        filled: true,
+                      ),
+                      items: [
+                        MenuButton(child: Text("A")),
+                        MenuButton(child: Text("b")),
+                        MenuButton(child: Text("c")),
+                        MenuButton(child: Text("d")),
+                        MenuButton(child: Text("e")),
+                        MenuButton(child: Text("f")),
+                      ]),
                   childCount: 10,
                 ))
           ],

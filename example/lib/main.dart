@@ -38,6 +38,7 @@ class ExampleArcaneApp extends StatelessWidget {
             home: HomeScreen(),
             showPerformanceOverlay: false,
             theme: ArcaneTheme(
+                blurMode: ArcaneBlurMode.frost,
                 themeMode: ThemeMode.system,
                 scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
           ));

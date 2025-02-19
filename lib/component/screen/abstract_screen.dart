@@ -6,6 +6,9 @@ class ArcaneScreen extends AbstractStatelessScreen {
   final ScrollController? scrollController;
   final ScrollPhysics? physics;
   final ScrollController? sidebarController;
+  final String? title;
+  final String? subtitle;
+  final List<Widget>? actions;
 
   const ArcaneScreen({
     super.overrideBackgroundColor,
@@ -23,6 +26,9 @@ class ArcaneScreen extends AbstractStatelessScreen {
     this.scrollController,
     this.sidebarController,
     this.physics,
+    this.title,
+    this.subtitle,
+    this.actions,
     required this.child,
   });
 
@@ -33,7 +39,12 @@ class ArcaneScreen extends AbstractStatelessScreen {
           overrideBackgroundColor: overrideBackgroundColor,
           fab: fab,
           footer: footer,
-          header: header,
+          header: header ??
+              Bar(
+                titleText: title,
+                subtitleText: subtitle,
+                trailing: actions ?? [],
+              ),
           gutter: gutter,
           loadingProgress: loadingProgress,
           loadingProgressIndeterminate: loadingProgressIndeterminate,
@@ -49,7 +60,12 @@ class ArcaneScreen extends AbstractStatelessScreen {
           overrideBackgroundColor: overrideBackgroundColor,
           fab: fab,
           footer: footer,
-          header: header,
+          header: header ??
+              Bar(
+                titleText: title,
+                subtitleText: subtitle,
+                trailing: actions ?? [],
+              ),
           gutter: gutter,
           loadingProgress: loadingProgress,
           loadingProgressIndeterminate: loadingProgressIndeterminate,

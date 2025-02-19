@@ -245,11 +245,7 @@ class _SliverScreenState extends State<SliverScreen> {
                       builder: (context) => PylonRemove<ArcaneSidebarInjector>(
                             builder: (context) => Stack(
                               fit: StackFit.expand,
-                              children: [
-                                footer != null
-                                    ? cont
-                                    : cont.bottomEdgeBlur(autoMode: true),
-                              ],
+                              children: [cont],
                             ),
                           )),
                 )

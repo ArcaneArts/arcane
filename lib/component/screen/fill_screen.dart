@@ -66,21 +66,18 @@ class FillScreen extends AbstractStatelessScreen {
                                 children: [
                                   Positioned.fill(
                                       child: PylonRemove<InjectScreenFooter>(
-                                          builder: (context) =>
-                                              PylonRemove<ArcaneSidebarInjector>(
-                                                  builder: (context) => Gutter(
-                                                      enabled: gutter ??
-                                                          ArcaneTheme.of(context)
-                                                              .gutter
-                                                              .enabled,
-                                                      child: footer != null
-                                                          ? BackdropGroup(
-                                                              child: child)
-                                                          : BackdropGroup(
-                                                                  child: child)
-                                                              .bottomEdgeBlur(
-                                                                  autoMode:
-                                                                      true))))),
+                                          builder: (context) => PylonRemove<
+                                                  ArcaneSidebarInjector>(
+                                              builder: (context) => Gutter(
+                                                  enabled: gutter ??
+                                                      ArcaneTheme.of(context)
+                                                          .gutter
+                                                          .enabled,
+                                                  child: footer != null
+                                                      ? BackdropGroup(
+                                                          child: child)
+                                                      : BackdropGroup(
+                                                          child: child))))),
                                   if (fab != null)
                                     FabSocket(
                                         child: PylonRemove<InjectScreenFooter>(
