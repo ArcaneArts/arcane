@@ -280,7 +280,7 @@ class _BackdropFilterBlur extends StatelessWidget {
       required this.child});
 
   @override
-  Widget build(BuildContext context) => BackdropFilter(
+  Widget build(BuildContext context) => BackdropFilter.grouped(
         filter: ui.ImageFilter.blur(
             sigmaX: blurriness, sigmaY: blurriness, tileMode: tileMode),
         child: child,
