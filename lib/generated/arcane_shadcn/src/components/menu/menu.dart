@@ -185,11 +185,13 @@ class MenuButton extends StatefulWidget implements MenuItem {
   final bool enabled;
   final FocusNode? focusNode;
   final bool autoClose;
+  final double emptyLeadingSpace;
   @override
   final PopoverController? popoverController;
   const MenuButton({
     super.key,
     required this.child,
+    this.emptyLeadingSpace = 16,
     this.subMenu,
     this.onPressed,
     this.onContextPressed,
@@ -212,9 +214,11 @@ class MenuLabel extends StatelessWidget implements MenuItem {
   final Widget child;
   final Widget? trailing;
   final Widget? leading;
+  final double emptyLeadingSpace;
 
   const MenuLabel({
     super.key,
+    this.emptyLeadingSpace = 16,
     required this.child,
     this.trailing,
     this.leading,
@@ -239,7 +243,7 @@ class MenuLabel extends StatelessWidget implements MenuItem {
       child: Basic(
         contentSpacing: 8 * scaling,
         leading: leading == null && menuGroupData.hasLeading
-            ? SizedBox(width: 16 * scaling)
+            ? SizedBox(width: emptyLeadingSpace * scaling)
             : leading == null
                 ? null
                 : SizedBox(
@@ -448,7 +452,7 @@ class _MenuButtonState extends State<MenuButton> {
                   leading: widget.leading == null &&
                           menuGroupData.hasLeading &&
                           menuBarData == null
-                      ? SizedBox(width: 16 * scaling)
+                      ? SizedBox(width: widget.emptyLeadingSpace * scaling)
                       : widget.leading == null
                           ? null
                           : SizedBox(

@@ -322,10 +322,6 @@ mixin WindowHandle on State<WindowWidget> {
   set minimizable(bool value);
   set enableSnapping(bool value);
   WindowController get controller;
-
-  _WindowWidgetState get _state {
-    return this as _WindowWidgetState;
-  }
 }
 
 class _WindowWidgetState extends State<WindowWidget> with WindowHandle {
@@ -1085,7 +1081,7 @@ class _WindowLayerGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final _createPaneSnapStrategy = handle._createPaneSnapStrategy;
+    final createPaneSnapStrategy = handle._createPaneSnapStrategy;
     return GroupWidget(
       children: [
         for (int i = windows.length - 1; i >= 0; i--)
@@ -1177,7 +1173,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1187,7 +1183,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1210,7 +1206,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1220,7 +1216,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1244,7 +1240,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1254,7 +1250,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1265,7 +1261,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 bottomRight: true,
                                                 topLeft: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1290,7 +1286,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1301,7 +1297,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomLeft: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1312,7 +1308,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topLeft: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1323,7 +1319,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1347,7 +1343,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1357,7 +1353,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1367,7 +1363,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 allLeft: true,
                                                 allRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1390,7 +1386,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                           final size = constraints.biggest;
                                           return GroupWidget(
                                             children: [
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1400,7 +1396,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 topRight: true,
                                                 bottomRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(
@@ -1410,7 +1406,7 @@ class _WindowLayerGroup extends StatelessWidget {
                                                 allLeft: true,
                                                 allRight: true,
                                               ),
-                                              _createPaneSnapStrategy(
+                                              createPaneSnapStrategy(
                                                 size,
                                                 theme,
                                                 const WindowSnapStrategy(

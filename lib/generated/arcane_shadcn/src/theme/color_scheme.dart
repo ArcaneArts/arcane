@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 Color _fromAHSL(double a, double h, double s, double l) {
@@ -276,12 +277,6 @@ class ColorShades implements ColorSwatch {
   double get g => _primary.g;
   double get r => _primary.r;
 
-  int toARGB32() =>
-      ((alpha & 0xFF) << 24) |
-      ((red & 0xFF) << 16) |
-      ((green & 0xFF) << 8) |
-      (blue & 0xFF);
-
   Color withValues(
       {double? alpha,
       double? red,
@@ -300,7 +295,11 @@ class ColorShades implements ColorSwatch {
     }
     return ColorShades._direct(colors);
   }
-///////////////////////////////////////////////////////////
+
+  @override
+  int toARGB32() {
+    return _primary.toARGB32();
+  }
 }
 
 String hexFromColor(Color color) {

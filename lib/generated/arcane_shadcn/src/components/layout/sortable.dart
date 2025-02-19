@@ -26,6 +26,7 @@ class Sortable<T> extends StatefulWidget {
   final Widget? candidateFallback;
   final bool enabled;
   final HitTestBehavior behavior;
+  final VoidCallback? onDropFailed;
   const Sortable({
     super.key,
     this.enabled = true,
@@ -46,6 +47,7 @@ class Sortable<T> extends StatefulWidget {
     this.onDragEnd,
     this.onDragCancel,
     this.behavior = HitTestBehavior.deferToChild,
+    this.onDropFailed,
     required this.child,
   });
 
@@ -67,6 +69,7 @@ class _SortableDraggingSession<T> {
   final Offset maxOffset;
   final bool lock;
   final _SortableState<T> target;
+
   _SortableDraggingSession({
     required this.target,
     required this.layer,
@@ -90,7 +93,7 @@ enum _SortableDropLocation {
   bottom,
 }
 
-_SortableDropLocation? getPosition(Offset position, Size size,
+_SortableDropLocation? _getPosition(Offset position, Size size,
     {bool acceptTop = false,
     bool acceptLeft = false,
     bool acceptRight = false,
@@ -143,10 +146,17 @@ class SortableDropFallback<T> extends StatefulWidget {
 class _SortableDropFallbackState<T> extends State<SortableDropFallback<T>> {
   @override
   Widget build(BuildContext context) {
-    return MetaData(
-      behavior: HitTestBehavior.translucent,
-      metaData: this,
-      child: widget.child,
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Positioned.fill(
+          child: MetaData(
+            behavior: HitTestBehavior.translucent,
+            metaData: this,
+          ),
+        ),
+        widget.child,
+      ],
     );
   }
 }
@@ -186,6 +196,7 @@ class _DroppingTarget<T> {
 }
 
 class _DropTransform {
+  final _SortableLayerState layer;
   final Matrix4 from;
   final Matrix4 to;
   final Widget child;
@@ -196,6 +207,7 @@ class _DropTransform {
   final ValueNotifier<double> progress = ValueNotifier(0);
 
   _DropTransform({
+    required this.layer,
     required this.from,
     required this.to,
     required this.child,
@@ -366,7 +378,7 @@ class _SortableState<T> extends State<Sortable<T>>
         _SortableDropFallbackState<T>? fallback =
             _findFallbackState(_session!.layer, globalPosition);
         _currentFallback.value = fallback;
-        if (_currentTarget.value != null) {
+        if (_currentTarget.value != null && fallback == null) {
           _currentTarget.value!.dispose(_session!);
           _currentTarget.value = null;
         }
@@ -378,7 +390,7 @@ class _SortableState<T> extends State<Sortable<T>>
         }
         var targetRenderBox = target.$1.context.findRenderObject() as RenderBox;
         var size = targetRenderBox.size;
-        _SortableDropLocation? location = getPosition(
+        _SortableDropLocation? location = _getPosition(
           target.$2,
           size,
           acceptTop: widget.onAcceptTop != null,
@@ -449,7 +461,7 @@ class _SortableState<T> extends State<Sortable<T>>
         }
         _session!.layer.removeDraggingSession(_session!);
         _currentTarget.value = null;
-      } else {
+      } else if (_hasDraggedOff.value) {
         var target = _currentFallback.value;
         if (target != null) {
           var sortData = _session!.data;
@@ -462,6 +474,12 @@ class _SortableState<T> extends State<Sortable<T>>
         if (target == null) {
           _session!.layer._claimDrop(this, _session!.data, true);
         }
+      } else {
+        // basically the same as drag cancel, because the drag has not been
+        // dragged off of itself
+        _session!.layer.removeDraggingSession(_session!);
+        widget.onDropFailed?.call();
+        _session!.layer._claimDrop(this, _session!.data, true);
       }
       _claimUnchanged = true;
       _session = null;
@@ -843,6 +861,16 @@ class SortableLayer extends StatefulWidget {
 
   @override
   State<SortableLayer> createState() => _SortableLayerState();
+
+  static void ensureAndDismissDrop(BuildContext context, Object data) {
+    final layer = Data.of<_SortableLayerState>(context);
+    layer.ensureAndDismissDrop(data);
+  }
+
+  static void dismissDrop(BuildContext context) {
+    final layer = Data.of<_SortableLayerState>(context);
+    layer.dismissDrop();
+  }
 }
 
 class _PendingDropTransform {
@@ -864,7 +892,6 @@ class _SortableLayerState extends State<SortableLayer>
   final MutableNotifier<List<_DropTransform>> _activeDrops =
       MutableNotifier([]);
 
-  // _PendingDropTransform? _pendingDrop;
   final ValueNotifier<_PendingDropTransform?> _pendingDrop =
       ValueNotifier(null);
 
@@ -874,6 +901,16 @@ class _SortableLayerState extends State<SortableLayer>
   void initState() {
     super.initState();
     _ticker = createTicker(_tick);
+  }
+
+  void ensureAndDismissDrop(Object data) {
+    if (_pendingDrop.value != null && data == _pendingDrop.value!.data) {
+      _pendingDrop.value = null;
+    }
+  }
+
+  void dismissDrop() {
+    _pendingDrop.value = null;
   }
 
   bool _canClaimDrop(_SortableState item, Object? data) {
@@ -887,6 +924,7 @@ class _SortableLayerState extends State<SortableLayer>
       RenderBox layerRenderBox = context.findRenderObject() as RenderBox;
       RenderBox itemRenderBox = item.context.findRenderObject() as RenderBox;
       var dropTransform = _DropTransform(
+        layer: this,
         from: _pendingDrop.value!.from,
         to: itemRenderBox.getTransformTo(layerRenderBox),
         child: _pendingDrop.value!.child,
@@ -913,7 +951,7 @@ class _SortableLayerState extends State<SortableLayer>
               (widget.dropDuration ?? kDefaultDuration).inMilliseconds)
           .clamp(0, 1);
       progress = (widget.dropCurve ?? Curves.easeInOut).transform(progress);
-      if (progress >= 1) {
+      if (progress >= 1 || !drop.state.mounted) {
         drop.state._hasClaimedDrop.value = false;
         toRemove.add(drop);
       } else {
@@ -977,97 +1015,101 @@ class _SortableLayerState extends State<SortableLayer>
 
   @override
   Widget build(BuildContext context) {
-    return Data.inherit(
-      data: this,
-      child: Stack(
-        fit: StackFit.passthrough,
-        clipBehavior:
-            widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
-        children: [
-          widget.child,
-          ListenableBuilder(
-            listenable: _sessions,
-            builder: (context, child) {
-              return Positioned.fill(
-                child: MouseRegion(
-                  opaque: false,
-                  hitTestBehavior: HitTestBehavior.translucent,
-                  cursor: _sessions.value.isNotEmpty
-                      ? SystemMouseCursors.grabbing
-                      : MouseCursor.defer,
+    return MetaData(
+      metaData: this,
+      behavior: HitTestBehavior.translucent,
+      child: Data.inherit(
+        data: this,
+        child: Stack(
+          fit: StackFit.passthrough,
+          clipBehavior:
+              widget.clipBehavior ?? (widget.lock ? Clip.hardEdge : Clip.none),
+          children: [
+            widget.child,
+            ListenableBuilder(
+              listenable: _sessions,
+              builder: (context, child) {
+                return Positioned.fill(
+                  child: MouseRegion(
+                    opaque: false,
+                    hitTestBehavior: HitTestBehavior.translucent,
+                    cursor: _sessions.value.isNotEmpty
+                        ? SystemMouseCursors.grabbing
+                        : MouseCursor.defer,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        for (final session in _sessions.value)
+                          ListenableBuilder(
+                            listenable: session.offset,
+                            builder: (context, child) {
+                              return Positioned(
+                                left: session.offset.value.dx,
+                                top: session.offset.value.dy,
+                                child: IgnorePointer(
+                                  child: Transform(
+                                    transform: session.transform,
+                                    child: SizedBox.fromSize(
+                                      key: session.key,
+                                      size: session.size,
+                                      child: session.ghost,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListenableBuilder(
+              listenable: _activeDrops,
+              builder: (context, child) {
+                return Positioned.fill(
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      for (final session in _sessions.value)
+                      for (final drop in _activeDrops.value)
                         ListenableBuilder(
-                          listenable: session.offset,
+                          listenable: drop.progress,
                           builder: (context, child) {
-                            return Positioned(
-                              left: session.offset.value.dx,
-                              top: session.offset.value.dy,
-                              child: IgnorePointer(
-                                child: Transform(
-                                  transform: session.transform,
-                                  child: SizedBox.fromSize(
-                                    key: session.key,
-                                    size: session.size,
-                                    child: session.ghost,
-                                  ),
+                            return IgnorePointer(
+                              child: Transform(
+                                transform: _tweenMatrix(
+                                  drop.from,
+                                  drop.to,
+                                  drop.progress.value,
                                 ),
+                                child: drop.child,
                               ),
                             );
                           },
                         ),
+                      child!,
                     ],
                   ),
-                ),
-              );
-            },
-          ),
-          ListenableBuilder(
-            listenable: _activeDrops,
-            builder: (context, child) {
-              return Positioned.fill(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    for (final drop in _activeDrops.value)
-                      ListenableBuilder(
-                        listenable: drop.progress,
-                        builder: (context, child) {
-                          return IgnorePointer(
-                            child: Transform(
-                              transform: _tweenMatrix(
-                                drop.from,
-                                drop.to,
-                                drop.progress.value,
-                              ),
-                              child: drop.child,
-                            ),
-                          );
-                        },
-                      ),
-                    child!,
-                  ],
-                ),
-              );
-            },
-            child: ListenableBuilder(
-              listenable: _pendingDrop,
-              builder: (context, child) {
-                if (_pendingDrop.value != null) {
-                  return IgnorePointer(
-                    child: Transform(
-                      transform: _pendingDrop.value!.from,
-                      child: _pendingDrop.value!.child,
-                    ),
-                  );
-                }
-                return const SizedBox();
+                );
               },
+              child: ListenableBuilder(
+                listenable: _pendingDrop,
+                builder: (context, child) {
+                  if (_pendingDrop.value != null) {
+                    return IgnorePointer(
+                      child: Transform(
+                        transform: _pendingDrop.value!.from,
+                        child: _pendingDrop.value!.child,
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1129,8 +1171,9 @@ class _ScrollableSortableLayerState extends State<ScrollableSortableLayer>
       } else if (pos > size - widget.scrollThreshold) {
         scrollDelta = delta / 10000;
       }
-      var newPosition = widget.controller.offset + scrollDelta;
-      widget.controller.jumpTo(newPosition);
+      for (var pos in widget.controller.positions) {
+        pos.pointerScroll(scrollDelta);
+      }
       _attached?._handleDrag(Offset.zero);
     }
     _lastElapsed = elapsed;
