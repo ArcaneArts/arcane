@@ -21,44 +21,25 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             }),
         header: Bar(
-          titleText: "Test",
+          titleText: "Thing",
           trailing: [],
         ),
         child: Collection(
           children: [
-            Card(
-              child: ListTile(
-                title: Text("Title"),
-                subtitle: Text("Subtitle"),
-                leading: Icon(Icons.activity),
-                children: [
-                  ListTile(
-                    title: Text("Title"),
-                    subtitle: Text("Subtitle"),
-                    leading: Icon(Icons.activity),
-                    trailing: Icon(Icons.airplane),
+            Section(
+                headerText: "Section 1",
+                child: SGridView.builder(
+                  builder: (context, i) => Card(
+                    child: Text("Item $i"),
+                    onPressed: () => DialogConfirm(
+                      title: "Confirm",
+                      onConfirm: () {},
+                    ).open(context),
+                    fillColor: [Colors.blue, Colors.red, Colors.green][i % 3],
+                    filled: true,
                   ),
-                  ListTile(
-                    title: Text("Title"),
-                    subtitle: Text("Subtitle"),
-                    leading: Icon(Icons.activity),
-                    trailing: Icon(Icons.airplane),
-                  ),
-                  ListTile(
-                    title: Text("Title"),
-                    subtitle: Text("Subtitle"),
-                    leading: Icon(Icons.activity),
-                    trailing: Icon(Icons.airplane),
-                  ),
-                  ListTile(
-                    title: Text("Title"),
-                    subtitle: Text("Subtitle"),
-                    leading: Icon(Icons.activity),
-                    trailing: Icon(Icons.airplane),
-                  )
-                ],
-              ),
-            )
+                  childCount: 10,
+                ))
           ],
         ),
       );

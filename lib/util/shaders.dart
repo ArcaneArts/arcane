@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart' hide Image;
+import 'package:arcane/util/shaders/arcane_blur.dart';
 import 'package:arcane/util/shaders/invert.dart';
 import 'package:chat_color/chat_color.dart';
 import 'package:fast_log/fast_log.dart';
@@ -120,7 +121,8 @@ class ArcaneShader {
         BlackHoleShader(),
         LuxShader(),
         CascadeShader(),
-        EdgeShader()
+        EdgeShader(),
+        ArcaneBlurShader(),
       ]);
 }
 

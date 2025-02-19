@@ -27,6 +27,8 @@ class MutableText extends StatefulWidget {
   final bool autoCorrect;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
+  final double buttonGapWidth;
+  final Widget? overrideButtonContent;
 
   const MutableText(this.value,
       {super.key,
@@ -49,6 +51,8 @@ class MutableText extends StatefulWidget {
       this.textWidthBasis,
       this.maxLength,
       this.placeholder,
+      this.overrideButtonContent,
+      this.buttonGapWidth = 4,
       this.buttonType = EditButtonType.pencil,
       this.border = false});
 
@@ -132,11 +136,13 @@ class _MutableTextState extends State<MutableText> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     buildText(context),
+                    Gap(widget.buttonGapWidth),
                     IconButton(
-                        icon: Icon(
-                          Icons.pencil_fill,
-                          size: 14,
-                        ),
+                        icon: widget.overrideButtonContent ??
+                            Icon(
+                              Icons.pencil_fill,
+                              size: 14,
+                            ),
                         onPressed: () => setState(() {
                               _controller =
                                   TextEditingController(text: widget.value);

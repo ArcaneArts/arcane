@@ -1,3 +1,24 @@
+## 3.13.0
+* Sync Upstream
+  * Tabs, TabList, and TabPane are now based on the new TabContainer
+  * Fixed InputOTP onSubmit issue
+  * Added onDropFailed on Sortable
+  * Bump flutter dependency version to 3.29.0
+  * Added TabPane component
+  * Added Expanded option on NavigationBar, NavigationRail, and Sidebar
+  * Fixed missing child in FormErrorBuilder
+  * Fixed Toast component state
+  * Fixed Progress component assertion
+  * Refactored NavigationMenu children component
+  * Refactored Navigation children components
+  * Internal form rework
+  * Fixed carousel controller disposal
+  * Added SortableDragHandle
+  * Improved Sortable animation
+* Added `overrideButtonContent` to `MutableText` to override the appearance of the edit button icon widget
+* Added `buttonGapWidth` to `MutableText` to set the gap between the text and the button defaults to 4
+* Added `sidebarHeader` to `NavigationScreen` to allow for a header in the sidebar
+
 ## 3.12.2
 * Sync Upstream Fixes
   * Fix sortable gesture issue with immediate drop after drag pick up

@@ -175,8 +175,7 @@ class ArcaneAppState extends State<ArcaneApp> {
   }
 
   @override
-  Widget build(BuildContext context) => BackdropGroup(
-          child: Pylon<ArcaneTheme?>(
+  Widget build(BuildContext context) => Pylon<ArcaneTheme?>(
         value: _theme,
         builder: (context) => usesRouter
             ? ShadcnApp.router(
@@ -246,7 +245,7 @@ class ArcaneAppState extends State<ArcaneApp> {
                 scaling: widget.scaling,
                 disableBrowserContextMenu: widget.disableBrowserContextMenu,
               ),
-      ));
+      );
 }
 
 class ArcaneScrollBehavior extends m.MaterialScrollBehavior {

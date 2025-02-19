@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/shaders/arcane_blur.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_shaders/flutter_shaders.dart';
 
 enum ArcaneBlurMode {
   /// Blurs the child widget using a [RenderObject]. which is faster than a [BackdropFilter].
@@ -256,6 +259,10 @@ class ArcaneBlur extends StatelessWidget {
   @override
   Widget build(BuildContext context) => switch (this) {
         ArcaneBlur(intensity: double i) when i <= 0 => child,
+        // ArcaneBlur(mode: ArcaneBlurMode.arcane) => ArcaneShaderBlur(
+        //     intensity: intensity,
+        //     child: child,
+        //   ),
         ArcaneBlur(mode: ArcaneBlurMode.renderObject) => _RenderObjectBlur(
             blurriness: intensity,
             tileMode: tileMode,
@@ -269,6 +276,55 @@ class ArcaneBlur extends StatelessWidget {
       };
 }
 
+Future<ui.Image> noiseImage = rootBundle
+    .load("packages/arcane/assets/noise.png")
+    .then((b) => b.buffer.asUint8List())
+    .then((l) => ui
+        .instantiateImageCodec(l)
+        .then((c) => c.getNextFrame().then((f) => f.image)));
+
+class ArcaneShaderBlur extends StatefulWidget {
+  final double intensity;
+  final Widget child;
+
+  const ArcaneShaderBlur({super.key, this.intensity = 1, required this.child});
+
+  @override
+  State<ArcaneShaderBlur> createState() => _ArcaneShaderBlurState();
+}
+
+class _ArcaneShaderBlurState extends State<ArcaneShaderBlur> {
+  late Future<FragmentShader?> shader;
+
+  @override
+  void initState() {
+    shader = !ui.ImageFilter.isShaderFilterSupported
+        ? Future.value(null)
+        : const ArcaneBlurShader().program.then((p) => p.fragmentShader());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget blank = _BackdropFilterBlur(
+      blurriness: widget.intensity,
+      child: widget.child,
+    );
+    return noiseImage.build(
+        (image) => shader.build(
+            (shader) => shader == null
+                ? blank
+                : BackdropFilter(
+                    filter: ui.ImageFilter.shader(shader),
+                    child: widget.child,
+                  ),
+            loading: blank),
+        loading: blank);
+  }
+}
+
+BackdropKey globalBlurKey = BackdropKey();
+
 class _BackdropFilterBlur extends StatelessWidget {
   final double blurriness;
   final TileMode tileMode;
@@ -280,11 +336,23 @@ class _BackdropFilterBlur extends StatelessWidget {
       required this.child});
 
   @override
-  Widget build(BuildContext context) => BackdropFilter.grouped(
+  Widget build(BuildContext context) {
+    BackdropKey? key = BackdropGroup.of(context)?.backdropKey;
+
+    if (key != null) {
+      return BackdropFilter.grouped(
         filter: ui.ImageFilter.blur(
             sigmaX: blurriness, sigmaY: blurriness, tileMode: tileMode),
         child: child,
       );
+    }
+
+    return BackdropFilter(
+      filter: ui.ImageFilter.blur(
+          sigmaX: blurriness, sigmaY: blurriness, tileMode: tileMode),
+      child: child,
+    );
+  }
 }
 
 class _RenderObjectBlur extends SingleChildRenderObjectWidget {
