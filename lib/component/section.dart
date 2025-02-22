@@ -80,10 +80,12 @@ class ExpansionBarSection extends StatelessWidget {
             sliver: SliverAnimatedPaintExtent(
                 duration: Duration(milliseconds: 333),
                 curve: Curves.easeOutCirc,
-                child: context.streamPylon<ExpansionBarState>().buildNullable(
-                    (state) => (state?.expanded ?? true)
-                        ? sliver
-                        : const SliverToBoxAdapter())),
+                child: context
+                    .streamPylon<ExpansionBarState>()
+                    .buildNullable((state) => SliverVisibility(
+                          visible: (state?.expanded ?? true),
+                          sliver: sliver,
+                        ))),
           );
         },
       );

@@ -1703,6 +1703,13 @@ MutablePylon<int>(
                     message: "This is a Sliver Filled"),
               ))),
     ].toList(),
+    sidebarHeader: (context) => const ArcaneSidebarHeader(
+      titleText: "Header",
+      subtitleText: "Subtitle",
+      trailing: [ 
+        Icon(Icons.search_ionic),
+      ],
+    ),
     sidebarFooter: (context) => ArcaneSidebarFooter(
       content: const Text("Footer"),
     ),
@@ -1764,6 +1771,13 @@ MutablePylon<int>(
                             message: "This is a Sliver Filled"),
                       ))),
             ].toList(),
+            sidebarHeader: (context) => const ArcaneSidebarHeader(
+              titleText: "Header",
+              subtitleText: "Subtitle",
+              trailing: [
+                Icon(Icons.search_ionic),
+              ],
+            ),
             sidebarFooter: (context) => ArcaneSidebarFooter(
               content: const Text("Footer"),
             ),
@@ -2082,6 +2096,13 @@ MutablePylon<int>(
                     message: "This is a Sliver Filled"),
               ))),
     ].toList(),
+    sidebarHeader: (context) => const ArcaneSidebarHeader(
+      titleText: "Header",
+      subtitleText: "Subtitle",
+      trailing: [
+        Icon(Icons.search_ionic),
+      ],
+    ),
     sidebarFooter: (context) => ArcaneSidebarFooter(
       content: const Text("Footer"),
     ),
@@ -2143,6 +2164,13 @@ MutablePylon<int>(
                             message: "This is a Sliver Filled"),
                       ))),
             ].toList(),
+            sidebarHeader: (context) => const ArcaneSidebarHeader(
+              titleText: "Header",
+              subtitleText: "Subtitle",
+              trailing: [
+                Icon(Icons.search_ionic),
+              ],
+            ),
             sidebarFooter: (context) => ArcaneSidebarFooter(
               content: const Text("Footer"),
             ),

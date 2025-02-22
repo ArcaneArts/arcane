@@ -80,14 +80,15 @@ class NavigationTheme {
 class NavigationScreen extends AbstractStatelessScreen {
   final int index;
   final double? sidebarSpacing;
+  final double sidebarWidth;
   final NavigationType? type;
   final ValueChanged<int>? onIndexChanged;
   final double? railRightPadding;
   final List<NavItem> tabs;
   final double? railTopPadding;
   final bool? endSide;
-  final Widget? sidebarHeader;
   final PylonBuilder? sidebarFooter;
+  final PylonBuilder? sidebarHeader;
   final bool? drawerTransformsBackdrop;
   final Widget Function(BuildContext, NavigationScreen, int)?
       customNavigationBuilder;
@@ -97,6 +98,7 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.sidebarHeader,
       this.railRightPadding,
       this.index = 0,
+      this.sidebarWidth = 250,
       this.railTopPadding,
       this.sidebarSpacing,
       this.drawerTransformsBackdrop,
@@ -156,57 +158,64 @@ class NavigationScreen extends AbstractStatelessScreen {
           ArcaneTheme.of(context).navigationScreen.railTopPadding);
 
   Widget buildSidebar(BuildContext context, int index, {bool drawer = false}) =>
-      Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (sidebarHeader != null) sidebarHeader!,
-          ArcaneSidebar(
-              children: (context) => [
-                    ...tabs.mapIndexed((e, i) => switch (e) {
-                          NavTab e => ArcaneSidebarButton(
-                              icon: Icon(index == i
-                                  ? e.selectedIcon ?? e.icon
-                                  : e.icon),
-                              label: e.label ?? "Item ${index + 1}",
-                              selected: index == i,
-                              onTap: () {
-                                if (drawer) {
-                                  Arcane.closeDrawer(context);
-                                }
-
-                                if (index != i) {
-                                  onIndexChanged?.call(i);
-                                }
-                              },
-                            ),
-                          NavItem e => e.builder(context),
-                        })
-                  ].joinSeparator(SizedBox(
-                      height: sidebarSpacing ??
-                          ArcaneTheme.of(context)
-                              .navigationScreen
-                              .sidebarSpacing)),
-              footer: sidebarFooter == null
-                  ? null
-                  : drawer
-                      ? (context) => context
-                              .streamPylon<ArcaneSidebarState?>()
-                              .build((st) {
-                            if (st == ArcaneSidebarState.collapsed) {
+      ArcaneSidebar(
+          width: sidebarWidth,
+          children: (context) => [
+                ...tabs.mapIndexed((e, i) => switch (e) {
+                      NavTab e => ArcaneSidebarButton(
+                          icon: Icon(
+                              index == i ? e.selectedIcon ?? e.icon : e.icon),
+                          label: e.label ?? "Item ${index + 1}",
+                          selected: index == i,
+                          onTap: () {
+                            if (drawer) {
                               Arcane.closeDrawer(context);
                             }
 
-                            context.setPylon(ArcaneSidebarState.expanded);
-                            return Pylon<ArcaneDrawerSignal?>(
-                              local: true,
-                              value: ArcaneDrawerSignal(true),
-                              builder: sidebarFooter,
-                            );
-                          })
-                      : sidebarFooter)
-        ],
-      );
+                            if (index != i) {
+                              onIndexChanged?.call(i);
+                            }
+                          },
+                        ),
+                      NavItem e => e.builder(context),
+                    })
+              ].joinSeparator(SizedBox(
+                  height: sidebarSpacing ??
+                      ArcaneTheme.of(context).navigationScreen.sidebarSpacing)),
+          header: sidebarHeader == null
+              ? null
+              : drawer
+                  ? (context) =>
+                      context.streamPylon<ArcaneSidebarState?>().build((st) {
+                        if (st == ArcaneSidebarState.collapsed) {
+                          Arcane.closeDrawer(context);
+                        }
+
+                        context.setPylon(ArcaneSidebarState.expanded);
+                        return Pylon<ArcaneDrawerSignal?>(
+                          local: true,
+                          value: ArcaneDrawerSignal(true),
+                          builder: sidebarHeader,
+                        );
+                      })
+                  : sidebarHeader,
+          footer: sidebarFooter == null
+              ? null
+              : drawer
+                  ? (context) =>
+                      context.streamPylon<ArcaneSidebarState?>().build((st) {
+                        if (st == ArcaneSidebarState.collapsed) {
+                          Arcane.closeDrawer(context);
+                        }
+
+                        context.setPylon(ArcaneSidebarState.expanded);
+                        return Pylon<ArcaneDrawerSignal?>(
+                          local: true,
+                          value: ArcaneDrawerSignal(true),
+                          builder: sidebarFooter,
+                        );
+                      })
+                  : sidebarFooter);
 
   @override
   Widget build(BuildContext context) => DrawerOverlay(

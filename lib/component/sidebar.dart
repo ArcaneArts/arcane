@@ -30,12 +30,14 @@ class ArcaneSidebar extends StatefulWidget {
   final double width;
   final double collapsedWidth;
   final PylonBuilder? footer;
+  final PylonBuilder? header;
   final Curve expansionAnimationCurve;
   final Duration expansionAnimationDuration;
   final bool sidebarDivider;
 
   const ArcaneSidebar({
     super.key,
+    this.header,
     this.width = 250,
     this.expansionAnimationCurve = Curves.easeOutCirc,
     this.expansionAnimationDuration = const Duration(milliseconds: 333),
@@ -48,6 +50,7 @@ class ArcaneSidebar extends StatefulWidget {
 
   const ArcaneSidebar.sliver(
       {super.key,
+      this.header,
       this.sidebarDivider = true,
       this.width = 250,
       this.expansionAnimationCurve = Curves.easeOutCirc,
@@ -64,13 +67,16 @@ class ArcaneSidebar extends StatefulWidget {
 
 class _ArcaneSidebarState extends State<ArcaneSidebar> {
   GlobalKey footerKey = GlobalKey();
+  GlobalKey headerKey = GlobalKey();
   double footerSize = 0;
+  double headerSize = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updateFooterSize();
+      updateHeaderSize();
       setState(() {});
     });
   }
@@ -86,6 +92,17 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
     return false;
   }
 
+  bool updateHeaderSize() {
+    try {
+      double v = headerKey.currentContext?.size?.height ?? 0;
+      if (v != headerSize) {
+        headerSize = v;
+        return true;
+      }
+    } catch (ignored) {}
+    return false;
+  }
+
   Widget buildSliverContent(BuildContext context) => widget._isSliver
       ? widget.sliver(context)
       : SListView(
@@ -95,7 +112,7 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (updateFooterSize()) {
+      if (updateFooterSize() || updateHeaderSize()) {
         setState(() {});
       }
     });
@@ -120,7 +137,14 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
                               ?.controller,
                           slivers: [
                             SliverStickyHeader.builder(
-                                builder: (context, _) => SizedBox(height: 0),
+                                builder: (context, _) => widget.header != null
+                                    ? KeyedSubtree(
+                                        key: headerKey,
+                                        child: KeyedSubtree(
+                                          child: widget.header!(context),
+                                          key: ValueKey(sbs),
+                                        ))
+                                    : SizedBox(height: 0),
                                 sliver: MultiSliver(
                                   children: [
                                     buildSliverContent(context),
@@ -151,6 +175,96 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
                   ],
                 ),
               )),
+    );
+  }
+}
+
+class ArcaneSidebarHeader extends StatelessWidget {
+  final List<Widget> trailing;
+  final List<Widget> leading;
+  final Widget? child;
+  final Widget? title;
+  final Widget? barHeader;
+  final Widget? barFooter;
+  final String? titleText;
+  final String? headerText;
+  final String? subtitleText;
+  final Widget? header; // small widget placed on top of title
+  final Widget? subtitle; // small widget placed below title
+  final bool
+      trailingExpanded; // expand the trailing instead of the main content
+  final Alignment alignment;
+  final Color? backgroundColor;
+  final double? leadingGap;
+  final double? trailingGap;
+  final EdgeInsetsGeometry? padding;
+  final double? height;
+  final bool useGlass;
+  final BarBackButtonMode backButton;
+  final bool ignoreContextSignals;
+  final BarActions? actions;
+  final PylonBuilder? collapsedBuilder;
+
+  const ArcaneSidebarHeader(
+      {super.key,
+      this.ignoreContextSignals = true,
+      this.trailing = const [],
+      this.leading = const [],
+      this.titleText,
+      this.backButton = BarBackButtonMode.never,
+      this.headerText,
+      this.subtitleText,
+      this.title,
+      this.actions,
+      this.collapsedBuilder,
+      this.header,
+      this.subtitle,
+      this.child,
+      this.trailingExpanded = false,
+      this.alignment = Alignment.center,
+      this.padding,
+      this.backgroundColor,
+      this.leadingGap,
+      this.trailingGap,
+      this.height,
+      this.barHeader,
+      this.barFooter,
+      this.useGlass = true});
+
+  @override
+  Widget build(BuildContext context) {
+    bool e = context.isSidebarExpanded;
+
+    if (collapsedBuilder != null && !e) {
+      return collapsedBuilder!(context);
+    }
+
+    return Bar(
+      title:
+          !e ? null : (title ?? (titleText != null ? Text(titleText!) : null)),
+      subtitle: !e
+          ? null
+          : (subtitle ?? (subtitleText != null ? Text(subtitleText!) : null)),
+      header: !e ? null : header,
+      actions: !e ? null : actions,
+      backButton: backButton,
+      barHeader: !e ? null : barHeader,
+      barFooter: !e ? null : barFooter,
+      trailing: !e ? const [] : trailing,
+      leading: leading,
+      trailingExpanded: trailingExpanded,
+      alignment: alignment,
+      backgroundColor: backgroundColor,
+      leadingGap: leadingGap,
+      trailingGap: trailingGap,
+      padding: padding,
+      height: height,
+      useGlass: useGlass,
+      ignoreContextSignals: ignoreContextSignals,
+      titleText: !e ? null : titleText,
+      headerText: !e ? null : headerText,
+      subtitleText: !e ? null : subtitleText,
+      child: !e ? null : child,
     );
   }
 }

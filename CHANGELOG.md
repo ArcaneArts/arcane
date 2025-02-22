@@ -1,3 +1,10 @@
+## 3.13.2
+* Fixed an issue breaking `ArcaneSidebar` and `NavigationScreen` Drawers & Sidebars
+* Added an option to `NavigationScreen` for `sidebarWidth`, `sidebarHeader`
+* Added `ArcaneSidebarHeader` widget for easily creating sidebar headers in `NavigationScreen` and `ArcaneSidebar`
+* `ExpansionBarSection` now uses `SliverVisibility`
+* `ButtonBar` and `NavigationType.bottomNavigationBar` now support more compacted buttons before overflowing
+
 ## 3.13.1
 * Unify blurring under arcane blur
 * Added `ArcaneBlurMode.frost` as an option (falls back to backdrop blur if not on impeller)

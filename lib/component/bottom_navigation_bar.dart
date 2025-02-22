@@ -20,7 +20,6 @@ class IconTab extends StatelessWidget {
 
     return IconButton(
       onPressed: onPressed,
-      density: ButtonDensity((padding) => padding.copyWith()),
       icon: Icon(selected ? (selectedIcon ?? icon) : icon,
           color: selected ? Theme.of(context).colorScheme.primary : null),
     );
