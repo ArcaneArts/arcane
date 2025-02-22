@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 import 'package:flutter/rendering.dart';
+import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 class Scaffold extends StatefulWidget {
   final List<Widget> headers;

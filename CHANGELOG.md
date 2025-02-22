@@ -4,6 +4,7 @@
 * Added `ArcaneSidebarHeader` widget for easily creating sidebar headers in `NavigationScreen` and `ArcaneSidebar`
 * `ExpansionBarSection` now uses `SliverVisibility`
 * `ButtonBar` and `NavigationType.bottomNavigationBar` now support more compacted buttons before overflowing
+* Added `ColorSchemes.lightOled()` and `ColorSchemes.darkOled()` or just `ColorSchemes.oled`
 
 ## 3.13.1
 * Unify blurring under arcane blur

@@ -2491,7 +2491,7 @@ class DestructiveButton extends StatelessWidget {
   }
 }
 
-class TabButton extends StatelessWidget with TabChild {
+class TabButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final bool? enabled;
@@ -2522,12 +2522,10 @@ class TabButton extends StatelessWidget with TabChild {
   final GestureLongPressEndCallback? onLongPressEnd;
   final GestureLongPressUpCallback? onSecondaryLongPress;
   final GestureLongPressUpCallback? onTertiaryLongPress;
-  final bool indexed;
 
   const TabButton({
     super.key,
     required this.child,
-    this.indexed = true,
     this.onPressed,
     this.enabled,
     this.leading,

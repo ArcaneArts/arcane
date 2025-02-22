@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:arcane/arcane.dart';
+import '../../../shadcn_flutter.dart';
 
 class SurfaceBlur extends StatefulWidget {
   final Widget child;
@@ -28,19 +28,19 @@ class _SurfaceBlurState extends State<SurfaceBlur> {
         child: widget.child,
       );
     }
-    ThemeData theme = Theme.of(context);
     return Stack(
       fit: StackFit.passthrough,
       children: [
         Positioned.fill(
           child: ClipRRect(
             borderRadius: widget.borderRadius ?? BorderRadius.zero,
-            child: ArcaneBlur(
-              intensity: widget.surfaceBlur!,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: widget.surfaceBlur!,
+                sigmaY: widget.surfaceBlur!,
+              ),
               // had to add SizedBox, otherwise it won't blur
-              child: ColoredBox(
-                  color: theme.colorScheme.background
-                      .withOpacity(theme.surfaceOpacity ?? 0.5)),
+              child: const SizedBox(),
             ),
           ),
         ),
@@ -102,7 +102,7 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
     var backgroundColor =
         widget.backgroundColor ?? theme.colorScheme.background;
     if (widget.surfaceOpacity != null) {
-      backgroundColor = backgroundColor.scaleAlpha(0);
+      backgroundColor = backgroundColor.scaleAlpha(widget.surfaceOpacity!);
     }
     Widget childWidget = AnimatedContainer(
       duration: widget.duration ?? Duration.zero,

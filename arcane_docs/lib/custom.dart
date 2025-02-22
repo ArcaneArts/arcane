@@ -3304,20 +3304,10 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
             onChanged: (_) {},
             index: index,
             children: [
-              TabButton(
-                onPressed: () {
-                  setState(() {
-                    index = 0;
-                  });
-                },
+              TabItem(
                 child: const Text('Preview').semiBold().textSmall(),
               ),
-              TabButton(
-                onPressed: () {
-                  setState(() {
-                    index = 1;
-                  });
-                },
+              TabItem(
                 child: const Text('Code').semiBold().textSmall(),
               ),
             ],

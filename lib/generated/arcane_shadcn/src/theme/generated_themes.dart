@@ -882,15 +882,7 @@ class ColorSchemes {
     );
   }
 
-  static ColorScheme violet(ThemeMode mode) {
-    assert(() {
-      _assertNotThemeModeSystem(mode, 'Violet');
-      return true;
-    }());
-    return mode == ThemeMode.light ? lightViolet() : darkViolet();
-  }
-
-  static ColorScheme lightOLED() {
+  static ColorScheme lightOled() {
     return ColorScheme(
       brightness: Brightness.light,
       background: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
@@ -899,7 +891,7 @@ class ColorSchemes {
       cardForeground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
       popover: const HSLColor.fromAHSL(1, 0.0, 0.0, 1.0).toColor(),
       popoverForeground: const HSLColor.fromAHSL(1, 240.0, 0.1, 0.04).toColor(),
-      primary: const HSLColor.fromAHSL(1, 270.0, 0.80, 0.50).toColor(),
+      primary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.09).toColor(),
       primaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       secondary: const HSLColor.fromAHSL(1, 330.0, 0.80, 0.50).toColor(),
       secondaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
@@ -912,7 +904,7 @@ class ColorSchemes {
           const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       border: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.80).toColor(),
       input: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.80).toColor(),
-      ring: const HSLColor.fromAHSL(1, 270.0, 0.80, 0.50).toColor(),
+      ring: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
       chart1: const HSLColor.fromAHSL(1, 12.0, 0.76, 0.61).toColor(),
       chart2: const HSLColor.fromAHSL(1, 173.0, 0.58, 0.39).toColor(),
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
@@ -921,7 +913,7 @@ class ColorSchemes {
     );
   }
 
-  static ColorScheme darkOLED() {
+  static ColorScheme darkOled() {
     return ColorScheme(
       brightness: Brightness.dark,
       background: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
@@ -930,7 +922,7 @@ class ColorSchemes {
       cardForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       popover: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
       popoverForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
-      primary: const HSLColor.fromAHSL(1, 270.0, 0.80, 0.40).toColor(),
+      primary: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.0).toColor(),
       primaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       secondary: const HSLColor.fromAHSL(1, 330.0, 0.80, 0.40).toColor(),
       secondaryForeground: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
@@ -943,7 +935,7 @@ class ColorSchemes {
           const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       border: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
       input: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.15).toColor(),
-      ring: const HSLColor.fromAHSL(1, 270.0, 0.80, 0.40).toColor(),
+      ring: const HSLColor.fromAHSL(1, 0.0, 0.0, 0.98).toColor(),
       chart1: const HSLColor.fromAHSL(1, 220.0, 0.7, 0.5).toColor(),
       chart2: const HSLColor.fromAHSL(1, 173.0, 0.58, 0.39).toColor(),
       chart3: const HSLColor.fromAHSL(1, 197.0, 0.37, 0.24).toColor(),
@@ -954,9 +946,17 @@ class ColorSchemes {
 
   static ColorScheme oled(ThemeMode mode) {
     assert(() {
-      _assertNotThemeModeSystem(mode, 'OLED');
+      _assertNotThemeModeSystem(mode, 'Oled');
       return true;
     }());
-    return mode == ThemeMode.light ? lightOLED() : darkOLED();
+    return mode == ThemeMode.light ? lightOled() : darkOled();
+  }
+
+  static ColorScheme violet(ThemeMode mode) {
+    assert(() {
+      _assertNotThemeModeSystem(mode, 'Violet');
+      return true;
+    }());
+    return mode == ThemeMode.light ? lightViolet() : darkViolet();
   }
 }
