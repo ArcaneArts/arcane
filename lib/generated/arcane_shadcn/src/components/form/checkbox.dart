@@ -106,7 +106,7 @@ class _CheckboxState extends State<Checkbox>
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
                   ? theme.colorScheme.primary
-                  : theme.colorScheme.primary.withOpacity(0),
+                  : theme.colorScheme.primary.withValues(alpha: 0),
               borderRadius: BorderRadius.circular(theme.radiusSm),
               border: Border.all(
                 color: _focusing

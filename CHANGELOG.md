@@ -1,4 +1,5 @@
 ## 3.14.0
+* Added `ArcaneColorSchemes.oled`
 * Sync Upstream
   * fix: sunarya-thito#181 Input OTP do not honour onSubmitted
   * Merge pull request sunarya-thito#182 from tmjee/otp-input

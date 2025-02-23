@@ -80,3 +80,4 @@ export 'util/promotions.dart';
 export 'util/shortcuts.dart';
 export 'util/sliver.dart';
 export 'util/theme.dart';
+export 'util/arcane_color_schemes.dart';

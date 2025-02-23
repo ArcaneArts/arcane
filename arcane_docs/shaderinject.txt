@@ -12,3 +12,4 @@ flutter:
     - packages/arcane/resources/shaders/lux.frag
     - packages/arcane/resources/shaders/cascade.frag
     - packages/arcane/resources/shaders/edge.frag
+    - packages/arcane/resources/shaders/arcane_blur.frag

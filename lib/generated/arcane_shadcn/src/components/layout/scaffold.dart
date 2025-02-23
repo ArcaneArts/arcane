@@ -152,27 +152,119 @@ class ScaffoldState extends State<Scaffold> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final viewInsets = MediaQuery.viewInsetsOf(context);
-    Widget w = Container(
-      color: widget.overrideBackgroundColor ?? theme.colorScheme.background,
-      child: _ScaffoldFlex(
-        floatingHeader: widget.floatingHeader,
-        floatingFooter: widget.floatingFooter,
-        children: [
-          buildHeader(context),
-          Container(
-            padding: viewInsets,
-            child: ToastLayer(child: widget.child),
-          ),
-          buildFooter(context, viewInsets),
-        ],
+    return DrawerOverlay(
+      child: Container(
+        color: widget.backgroundColor ?? theme.colorScheme.background,
+        child: _ScaffoldFlex(
+          floatingHeader: widget.floatingHeader,
+          floatingFooter: widget.floatingFooter,
+          children: [
+            buildHeader(context),
+            LayoutBuilder(builder: (context, constraints) {
+              Widget child = Container(
+                padding: viewInsets,
+                child: ToastLayer(child: widget.child),
+              );
+              if (constraints is ScaffoldBoxConstraints &&
+                  (widget.floatingHeader || widget.floatingFooter)) {
+                final currentMediaQuery = MediaQuery.of(context);
+                EdgeInsets padding = currentMediaQuery.padding;
+                if (widget.floatingHeader) {
+                  padding += EdgeInsets.only(top: constraints.headerHeight);
+                }
+                if (widget.floatingFooter) {
+                  padding += EdgeInsets.only(bottom: constraints.footerHeight);
+                }
+                child = MediaQuery(
+                  data: currentMediaQuery.copyWith(
+                    padding: padding,
+                  ),
+                  child: child,
+                );
+              }
+              return child;
+            }),
+            buildFooter(context, viewInsets),
+          ],
+        ),
       ),
     );
+  }
+}
 
-    return widget.primary
-        ? DrawerOverlay(
-            child: w,
-          )
-        : w;
+class ScaffoldBoxConstraints extends BoxConstraints {
+  final double headerHeight;
+  final double footerHeight;
+
+  const ScaffoldBoxConstraints({
+    required this.headerHeight,
+    required this.footerHeight,
+    super.minWidth,
+    super.maxWidth,
+    super.minHeight,
+    super.maxHeight,
+  });
+
+  factory ScaffoldBoxConstraints.fromBoxConstraints({
+    required BoxConstraints constraints,
+    required double headerHeight,
+    required double footerHeight,
+  }) {
+    return ScaffoldBoxConstraints(
+      headerHeight: headerHeight,
+      footerHeight: footerHeight,
+      minWidth: constraints.minWidth,
+      maxWidth: constraints.maxWidth,
+      minHeight: constraints.minHeight,
+      maxHeight: constraints.maxHeight,
+    );
+  }
+
+  ScaffoldBoxConstraints copyWith({
+    double? headerHeight,
+    double? footerHeight,
+    double? minWidth,
+    double? maxWidth,
+    double? minHeight,
+    double? maxHeight,
+  }) {
+    return ScaffoldBoxConstraints(
+      headerHeight: headerHeight ?? this.headerHeight,
+      footerHeight: footerHeight ?? this.footerHeight,
+      minWidth: minWidth ?? this.minWidth,
+      maxWidth: maxWidth ?? this.maxWidth,
+      minHeight: minHeight ?? this.minHeight,
+      maxHeight: maxHeight ?? this.maxHeight,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ScaffoldBoxConstraints) return false;
+    return other.headerHeight == headerHeight &&
+        other.footerHeight == footerHeight &&
+        other.minWidth == minWidth &&
+        other.maxWidth == maxWidth &&
+        other.minHeight == minHeight &&
+        other.maxHeight == maxHeight;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      headerHeight,
+      footerHeight,
+      minWidth,
+      maxWidth,
+      minHeight,
+      maxHeight,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ScaffoldBoxConstraints(headerHeight: $headerHeight, footerHeight: $footerHeight, minWidth: $minWidth, maxWidth: $maxWidth, minHeight: $minHeight, maxHeight: $maxHeight)';
   }
 }
 
@@ -467,7 +559,11 @@ class _ScaffoldRenderFlex extends RenderBox
         contentOffset = Offset(0, headerSize);
         break;
     }
-    content.layout(contentConstraints, parentUsesSize: true);
+    content.layout(ScaffoldBoxConstraints.fromBoxConstraints(
+      constraints: contentConstraints,
+      headerHeight: headerSize,
+      footerHeight: footerSize,
+    ));
     size = constraints.biggest;
     (content.parentData as BoxParentData).offset = contentOffset;
     (footer.parentData as BoxParentData).offset = Offset(
