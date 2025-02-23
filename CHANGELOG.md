@@ -1,3 +1,20 @@
+## 3.14.0
+* Sync Upstream
+  * fix: sunarya-thito#181 Input OTP do not honour onSubmitted
+  * Merge pull request sunarya-thito#182 from tmjee/otp-input
+  * Check if mounted before updating children
+  * Merge pull request sunarya-thito#184 from cranst0n/patch-1
+  * Change withOpacity to withValues as per flutter breaking change guide
+  * Fix component state mark
+  * Remove non-alphanumeric filter on Avatar getInitials
+  * Added IgnoreForm component
+  * Fix icons dialog
+  * Added WidgetStateProvider and updated StatedWidget implementation
+  * TextField no longer wraps material TextField
+  * Fix select scroll hover color
+  * Reduced surface barrier size
+  * Merge branch 'arcane' into master 
+
 ## 3.13.2
 * Fixed an issue breaking `ArcaneSidebar` and `NavigationScreen` Drawers & Sidebars
 * Added an option to `NavigationScreen` for `sidebarWidth`, `sidebarHeader`
