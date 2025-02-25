@@ -5,12 +5,16 @@ class Tabs extends StatelessWidget {
   final ValueChanged<int> onChanged;
   final List<TabChild> children;
   final EdgeInsetsGeometry? padding;
+  final Color? backgroundColor;
+  final Color? selectedColor;
 
   const Tabs({
     super.key,
     required this.index,
     required this.onChanged,
     required this.children,
+    this.backgroundColor,
+    this.selectedColor,
     this.padding,
   });
 
@@ -38,7 +42,9 @@ class Tabs extends StatelessWidget {
                   ) *
                   scaling,
           decoration: BoxDecoration(
-            color: i == index ? theme.colorScheme.background : null,
+            color: i == index
+                ? selectedColor ?? theme.colorScheme.background
+                : null,
             borderRadius: BorderRadius.circular(
               theme.radiusMd,
             ),
@@ -61,7 +67,7 @@ class Tabs extends StatelessWidget {
       builder: (context, children) {
         return Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.muted,
+            color: backgroundColor ?? theme.colorScheme.muted,
             borderRadius: BorderRadius.circular(theme.radiusLg),
           ),
           padding: const EdgeInsets.all(4) * scaling,
