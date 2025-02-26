@@ -27,6 +27,7 @@ class Bar extends StatelessWidget {
   final bool useGlass;
   final BarBackButtonMode backButton;
   final bool ignoreContextSignals;
+  final bool ignoreBarSignals;
   final BarActions? actions;
 
   const Bar(
@@ -51,6 +52,7 @@ class Bar extends StatelessWidget {
       this.trailingGap,
       this.height,
       this.barHeader,
+        this.ignoreBarSignals = false,
       this.barFooter,
       this.useGlass = true});
 
@@ -99,13 +101,13 @@ class Bar extends StatelessWidget {
         useGlass: useGlass ?? this.useGlass,
         backButton: backButton ?? this.backButton,
         ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
-        child: child ?? this.child,
         barFooter: barFooter ?? this.barFooter,
+        child: child ?? this.child,
       );
 
   @override
   Widget build(BuildContext context) {
-    Widget? barHeader = this.barHeader ??
+    Widget? barHeader = ignoreBarSignals ? null: this.barHeader ??
         context.pylonOr<InjectBarHeader>()?.header.call(context);
     return Stack(
       children: [
@@ -118,7 +120,7 @@ class Bar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (barHeader != null) barHeader!,
+                if (barHeader != null) barHeader,
                 SafeBar.withSafety(
                     context,
                     AppBar(

@@ -218,8 +218,8 @@ class NavigationScreen extends AbstractStatelessScreen {
                   : sidebarFooter);
 
   @override
-  Widget build(BuildContext context) => DrawerOverlay(
-          child: Pylon<NavigationType?>(
+  Widget build(BuildContext context) => WindowBar(child: DrawerOverlay(
+      child: Pylon<NavigationType?>(
         value: type ?? ArcaneTheme.of(context).navigationScreen.type,
         local: false,
         builder: (context) => MutablePylon<ArcaneSidebarState>(
@@ -228,79 +228,79 @@ class NavigationScreen extends AbstractStatelessScreen {
             index: index,
             children: tabs
                 .mapIndexed((tab, index) => switch (
-                        type ?? ArcaneTheme.of(context).navigationScreen.type) {
-                      NavigationType.custom =>
-                        customNavigationBuilder!(context, this, index),
-                      NavigationType.drawer => InjectBarEnds(
-                          trailing: endSide ??
-                              ArcaneTheme.of(context).navigationScreen.endSide,
-                          start: !(endSide ??
-                              ArcaneTheme.of(context).navigationScreen.endSide),
-                          children: (context) => [
-                            IconButton(
-                                icon: Icon(Icons.menu_ionic),
-                                onPressed: () {
-                                  openDrawer(
-                                      expands: false,
-                                      showDragHandle: false,
-                                      transformBackdrop:
-                                          drawerTransformsBackdrop ??
-                                              ArcaneTheme.of(context)
-                                                  .navigationScreen
-                                                  .drawerTransformsBackdrop,
-                                      context: context,
-                                      builder: (context) =>
-                                          MutablePylon<ArcaneSidebarState>(
-                                              value:
-                                                  ArcaneSidebarState.expanded,
-                                              builder: (context) =>
-                                                  buildSidebar(context, index,
-                                                      drawer: true)),
-                                      position: (endSide ??
-                                              ArcaneTheme.of(context)
-                                                  .navigationScreen
-                                                  .endSide)
-                                          ? OverlayPosition.right
-                                          : OverlayPosition.left);
-                                })
-                          ],
-                          builder: (context) => tabs[index].builder(context),
-                        ),
-                      NavigationType.bottomNavigationBar => InjectScreenFooter(
-                          footer: (context) =>
-                              buildBottomNavigationBar(context, index),
-                          builder: (context) => tabs[index].builder(context)),
-                      NavigationType.sidebar => Scaffold(
-                          child: Pylon<ArcaneSidebarInjector?>(
-                            local: true,
-                            value: ArcaneSidebarInjector((context) =>
-                                buildSidebar(context, index, drawer: false)),
-                            builder: tabs[index].builder,
-                          ),
-                        ),
-                      NavigationType.navigationRail => Scaffold(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              buildNavigationRail(context, index),
-                              Gap(railRightPadding ??
-                                  ArcaneTheme.of(context)
-                                      .navigationScreen
-                                      .railRightPadding),
-                              Expanded(
-                                child: BlockBackButton(
+            type ?? ArcaneTheme.of(context).navigationScreen.type) {
+              NavigationType.custom =>
+                  customNavigationBuilder!(context, this, index),
+              NavigationType.drawer => InjectBarEnds(
+                trailing: endSide ??
+                    ArcaneTheme.of(context).navigationScreen.endSide,
+                start: !(endSide ??
+                    ArcaneTheme.of(context).navigationScreen.endSide),
+                children: (context) => [
+                  IconButton(
+                      icon: Icon(Icons.menu_ionic),
+                      onPressed: () {
+                        openDrawer(
+                            expands: false,
+                            showDragHandle: false,
+                            transformBackdrop:
+                            drawerTransformsBackdrop ??
+                                ArcaneTheme.of(context)
+                                    .navigationScreen
+                                    .drawerTransformsBackdrop,
+                            context: context,
+                            builder: (context) =>
+                                MutablePylon<ArcaneSidebarState>(
+                                    value:
+                                    ArcaneSidebarState.expanded,
                                     builder: (context) =>
-                                        tabs[index].builder(context)),
-                              ),
-                            ],
-                          ),
-                        ),
-                    })
+                                        buildSidebar(context, index,
+                                            drawer: true)),
+                            position: (endSide ??
+                                ArcaneTheme.of(context)
+                                    .navigationScreen
+                                    .endSide)
+                                ? OverlayPosition.right
+                                : OverlayPosition.left);
+                      })
+                ],
+                builder: (context) => tabs[index].builder(context),
+              ),
+              NavigationType.bottomNavigationBar => InjectScreenFooter(
+                  footer: (context) =>
+                      buildBottomNavigationBar(context, index),
+                  builder: (context) => tabs[index].builder(context)),
+              NavigationType.sidebar => Scaffold(
+                child: Pylon<ArcaneSidebarInjector?>(
+                  local: true,
+                  value: ArcaneSidebarInjector((context) =>
+                      buildSidebar(context, index, drawer: false)),
+                  builder: tabs[index].builder,
+                ),
+              ),
+              NavigationType.navigationRail => Scaffold(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    buildNavigationRail(context, index),
+                    Gap(railRightPadding ??
+                        ArcaneTheme.of(context)
+                            .navigationScreen
+                            .railRightPadding),
+                    Expanded(
+                      child: BlockBackButton(
+                          builder: (context) =>
+                              tabs[index].builder(context)),
+                    ),
+                  ],
+                ),
+              ),
+            })
                 .toList(),
           ),
         ),
-      ));
+      )));
 }
 
 class ArcaneSidebarInjector {

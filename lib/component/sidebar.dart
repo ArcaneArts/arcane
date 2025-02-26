@@ -248,6 +248,7 @@ class ArcaneSidebarHeader extends StatelessWidget {
       header: !e ? null : header,
       actions: !e ? null : actions,
       backButton: backButton,
+      ignoreBarSignals: true,
       barHeader: !e ? null : barHeader,
       barFooter: !e ? null : barFooter,
       trailing: !e ? const [] : trailing,
