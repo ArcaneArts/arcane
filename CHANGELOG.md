@@ -1,3 +1,37 @@
+# 4.0.0
+
+### Upstream Additions
+* Added `TimelineAnimatable` drive and withTotalDuration and transformWithController
+* Added `FutureOrBuilder`
+* Added `ToggleController` and `ControlledToggle`
+* Added `DecorationExtension`
+* Added a `CheckboxController` for the new `ControlledCheckbox`
+* Added a `ChipInputController` for the new `ControlledChipInput`
+* Added a `ColorInputController` for the new `ControlledColorInput`
+* Added a `DatePickerController` for the new `ControlledDatePicker`
+* Added a `RadioGroupController` for the new `ControlledRadioGroup`
+* Added a `SliderController` for the new `ControlledSlider`
+* Added a `SwitchController` for the new `ControlledSwitch`
+* Added a `StarRatingController` for the new `ControlledStarRating`
+* Added a `TimePickerController` for the new `ControlledTimePicker`
+* Updated `ShadcnLocalizations`
+* Added a `TextEditingController` for arcane native instead of using material
+* Added a `RestorableTextEditingController`
+* Added a `TextInput`
+* Added a `DateInput`
+* Added `enabled` to `ObjectFormField`
+* Added `FormEntryInterceptor`
+* Added `InputPart` `EditablePart` `FormattedInputData` and `FormattedValue`
+* Added `TextInputFormatters`
+* Added `searchPlaceholderWidget` to `PhoneInput` to allow `searchPlaceholder` to continue being a string
+* Added Controllers to control controllers... `ComponentController` `ControlledComponentData` `ControlledComponentBuilder`
+
+### Upstream Changes
+* Nuked the `Select` widget to abstract it and make it more complicated, though there are no new features
+* Nuked & Rewrote `AutoComplete`
+* Changed `Calendar` to be stateful
+* `OverlayCompleter`, `PopoverAnchor` & `DrawerWrapper` now wraps its builder in... another builder
+
 ## 3.14.0
 * Added `ArcaneColorSchemes.oled`
 * Sync Upstream

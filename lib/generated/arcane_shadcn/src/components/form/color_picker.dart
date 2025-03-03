@@ -7,6 +7,85 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+class ColorInputController extends ValueNotifier<ColorDerivative>
+    with ComponentController<ColorDerivative> {
+  ColorInputController(super.value);
+}
+
+class ControlledColorInput extends StatelessWidget
+    with ControlledComponent<ColorDerivative> {
+  @override
+  final ColorDerivative initialValue;
+
+  @override
+  final ValueChanged<ColorDerivative>? onChanged;
+
+  @override
+  final bool enabled;
+
+  @override
+  final ColorInputController? controller;
+
+  final bool showAlpha;
+  final AlignmentGeometry? popoverAlignment;
+  final AlignmentGeometry? popoverAnchorAlignment;
+  final EdgeInsetsGeometry? popoverPadding;
+  final Widget? placeholder;
+  final PromptMode mode;
+  final ColorPickerMode pickerMode;
+  final Widget? dialogTitle;
+  final bool allowPickFromScreen;
+  final bool showLabel;
+  final ColorHistoryStorage? storage;
+
+  const ControlledColorInput({
+    super.key,
+    this.initialValue =
+        const ColorDerivative.fromHSV(HSVColor.fromAHSV(0, 0, 0, 0)),
+    this.onChanged,
+    this.controller,
+    this.enabled = true,
+    this.showAlpha = true,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.placeholder,
+    this.mode = PromptMode.dialog,
+    this.pickerMode = ColorPickerMode.rgb,
+    this.dialogTitle,
+    this.allowPickFromScreen = true,
+    this.showLabel = true,
+    this.storage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder<ColorDerivative>(
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      controller: controller,
+      builder: (context, data) {
+        return ColorInput(
+          color: data.value,
+          onChanged: data.onChanged,
+          showAlpha: showAlpha,
+          popoverAlignment: popoverAlignment,
+          popoverAnchorAlignment: popoverAnchorAlignment,
+          popoverPadding: popoverPadding,
+          placeholder: placeholder,
+          mode: mode,
+          pickerMode: pickerMode,
+          dialogTitle: dialogTitle,
+          allowPickFromScreen: allowPickFromScreen,
+          showLabel: showLabel,
+          storage: storage,
+        );
+      },
+    );
+  }
+}
+
 String colorToHex(Color color, [bool showAlpha = true]) {
   if (showAlpha) {
     return '#${color.value.toRadixString(16)}';
@@ -1086,8 +1165,8 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                             color: HSVColor.fromAHSV(
                               color.opacity,
                               color.hsvHue,
-                              1,
-                              1,
+                              color.hsvSat,
+                              color.hsvVal,
                             ),
                             radius: Radius.circular(theme.radiusLg),
                             onColorChanged: (value) {
@@ -1385,8 +1464,8 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                       color: HSVColor.fromAHSV(
                         color.opacity,
                         color.hsvHue,
-                        1,
-                        1,
+                        color.hsvSat,
+                        color.hsvVal,
                       ),
                       radius: Radius.circular(theme.radiusLg),
                       onColorChanged: (value) {
@@ -1438,8 +1517,8 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                         color: HSVColor.fromAHSV(
                           color.opacity,
                           color.hsvHue,
-                          1,
-                          1,
+                          color.hsvSat,
+                          color.hsvVal,
                         ),
                         onColorChanged: (value) {
                           widget.onColorChanged
@@ -1482,7 +1561,7 @@ class ColorInput extends StatelessWidget {
   final bool allowPickFromScreen;
   final bool showLabel;
   final ColorHistoryStorage? storage;
-
+  final bool? enabled;
   const ColorInput({
     super.key,
     required this.color,
@@ -1498,6 +1577,7 @@ class ColorInput extends StatelessWidget {
     this.allowPickFromScreen = true,
     this.showLabel = false,
     this.storage,
+    this.enabled,
   });
 
   @override
@@ -1505,6 +1585,7 @@ class ColorInput extends StatelessWidget {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
     return ObjectFormField(
+      enabled: enabled,
       dialogTitle: dialogTitle,
       popoverAlignment: popoverAlignment,
       popoverAnchorAlignment: popoverAnchorAlignment,
@@ -1956,13 +2037,8 @@ abstract base class ColorDerivative {
     return _HSVColor(HSVColor.fromColor(color));
   }
 
-  static ColorDerivative fromHSV(HSVColor color) {
-    return _HSVColor(color);
-  }
-
-  static ColorDerivative fromHSL(HSLColor color) {
-    return _HSLColor(color);
-  }
+  const factory ColorDerivative.fromHSV(HSVColor color) = _HSVColor;
+  const factory ColorDerivative.fromHSL(HSLColor color) = _HSLColor;
 
   const ColorDerivative();
   Color toColor();

@@ -2,17 +2,71 @@ import 'dart:math';
 
 import '../../../shadcn_flutter.dart';
 
+class ToggleController extends ValueNotifier<bool>
+    with ComponentController<bool> {
+  ToggleController([super.value = false]);
+
+  void toggle() {
+    value = !value;
+  }
+}
+
+class ControlledToggle extends StatelessWidget with ControlledComponent<bool> {
+  @override
+  final bool? initialValue;
+  @override
+  final ValueChanged<bool>? onChanged;
+  @override
+  final bool enabled;
+  @override
+  final ToggleController? controller;
+
+  final Widget child;
+  final ButtonStyle style;
+
+  const ControlledToggle({
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onChanged,
+    this.enabled = true,
+    required this.child,
+    this.style = const ButtonStyle.ghost(),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ControlledComponentBuilder(
+      controller: controller,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      enabled: enabled,
+      builder: (context, data) {
+        return Toggle(
+          value: data.value,
+          onChanged: data.onChanged,
+          enabled: data.enabled,
+          style: style,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
 class Toggle extends StatefulWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
   final Widget child;
   final ButtonStyle style;
+  final bool? enabled;
 
   const Toggle({
     super.key,
     required this.value,
     this.onChanged,
     required this.child,
+    this.enabled,
     this.style = const ButtonStyle.ghost(),
   });
 
@@ -21,13 +75,14 @@ class Toggle extends StatefulWidget {
 }
 
 // toggle button is just ghost button
-class ToggleState extends State<Toggle> {
+class ToggleState extends State<Toggle> with FormValueSupplier<bool, Toggle> {
   final WidgetStatesController statesController = WidgetStatesController();
 
   @override
   void initState() {
     super.initState();
     statesController.update(WidgetState.selected, widget.value);
+    formValue = widget.value;
   }
 
   @override
@@ -35,6 +90,14 @@ class ToggleState extends State<Toggle> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       statesController.update(WidgetState.selected, widget.value);
+      formValue = widget.value;
+    }
+  }
+
+  @override
+  void didReplaceFormValue(bool value) {
+    if (widget.onChanged != null) {
+      widget.onChanged!(value);
     }
   }
 
@@ -42,6 +105,7 @@ class ToggleState extends State<Toggle> {
   Widget build(BuildContext context) {
     return Button(
         statesController: statesController,
+        enabled: widget.enabled,
         style: widget.value
             ? ButtonStyle.secondary(
                 density: widget.style.density,
@@ -63,11 +127,11 @@ class ToggleState extends State<Toggle> {
                       : null,
                 );
               }),
-        onPressed: () {
-          if (widget.onChanged != null) {
-            widget.onChanged!(!widget.value);
-          }
-        },
+        onPressed: widget.onChanged != null
+            ? () {
+                widget.onChanged!(!widget.value);
+              }
+            : null,
         child: widget.child);
   }
 }
@@ -1045,6 +1109,70 @@ extension ShapeDecorationExtension on ShapeDecoration {
       shape: shape ?? this.shape,
       gradient: gradient ?? this.gradient,
       shadows: shadows ?? this.shadows,
+    );
+  }
+}
+
+extension DecorationExtension on Decoration {
+  BoxDecoration copyWithIfBoxDecoration({
+    Color? color,
+    DecorationImage? image,
+    BoxBorder? border,
+    BorderRadiusGeometry? borderRadius,
+    List<BoxShadow>? boxShadow,
+    Gradient? gradient,
+    BoxShape? shape,
+    BlendMode? backgroundBlendMode,
+  }) {
+    if (this is BoxDecoration) {
+      var boxDecoration = this as BoxDecoration;
+      return BoxDecoration(
+        color: color ?? boxDecoration.color,
+        image: image ?? boxDecoration.image,
+        border: border ?? boxDecoration.border,
+        borderRadius: borderRadius ?? boxDecoration.borderRadius,
+        boxShadow: boxShadow ?? boxDecoration.boxShadow,
+        gradient: gradient ?? boxDecoration.gradient,
+        shape: shape ?? boxDecoration.shape,
+        backgroundBlendMode:
+            backgroundBlendMode ?? boxDecoration.backgroundBlendMode,
+      );
+    }
+    return BoxDecoration(
+      color: color,
+      image: image,
+      border: border,
+      borderRadius: borderRadius,
+      boxShadow: boxShadow,
+      gradient: gradient,
+      shape: shape ?? BoxShape.rectangle,
+      backgroundBlendMode: backgroundBlendMode,
+    );
+  }
+
+  ShapeDecoration copyWithIfShapeDecoration({
+    ShapeBorder? shape,
+    Color? color,
+    Gradient? gradient,
+    List<BoxShadow>? shadows,
+    DecorationImage? image,
+  }) {
+    if (this is ShapeDecoration) {
+      var shapeDecoration = this as ShapeDecoration;
+      return ShapeDecoration(
+        color: color ?? shapeDecoration.color,
+        image: image ?? shapeDecoration.image,
+        shape: shape ?? shapeDecoration.shape,
+        gradient: gradient ?? shapeDecoration.gradient,
+        shadows: shadows ?? shapeDecoration.shadows,
+      );
+    }
+    return ShapeDecoration(
+      color: color,
+      image: image,
+      shape: shape ?? const RoundedRectangleBorder(),
+      gradient: gradient,
+      shadows: shadows,
     );
   }
 }
@@ -3145,6 +3273,36 @@ class ButtonStyleOverrideData {
     this.iconTheme,
     this.margin,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is ButtonStyleOverrideData &&
+        other.decoration == decoration &&
+        other.mouseCursor == mouseCursor &&
+        other.padding == padding &&
+        other.textStyle == textStyle &&
+        other.iconTheme == iconTheme &&
+        other.margin == margin;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      decoration,
+      mouseCursor,
+      padding,
+      textStyle,
+      iconTheme,
+      margin,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ButtonStyleOverrideData(decoration: $decoration, mouseCursor: $mouseCursor, padding: $padding, textStyle: $textStyle, iconTheme: $iconTheme, margin: $margin)';
+  }
 }
 
 class ButtonGroup extends StatelessWidget {
