@@ -9,6 +9,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
   final String? title;
   final String? subtitle;
   final List<Widget>? actions;
+  final BarBackButtonMode backButtonMode;
 
   const ArcaneScreen({
     super.overrideBackgroundColor,
@@ -29,6 +30,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
     this.title,
     this.subtitle,
     this.actions,
+    this.backButtonMode = BarBackButtonMode.always,
     required this.child,
   });
 
@@ -41,6 +43,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
           footer: footer,
           header: header ??
               Bar(
+                backButton: backButtonMode,
                 titleText: title,
                 subtitleText: subtitle,
                 trailing: actions ?? [],
@@ -62,6 +65,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
           footer: footer,
           header: header ??
               Bar(
+                backButton: backButtonMode,
                 titleText: title,
                 subtitleText: subtitle,
                 trailing: actions ?? [],
