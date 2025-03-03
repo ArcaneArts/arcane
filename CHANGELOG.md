@@ -1,3 +1,6 @@
+# 4.0.1
+* Fix `ArcaneScreen` header showing with empty if not defined (thanks @NextdoorPsycho)
+
 # 4.0.0
 
 * Added `DeleteIconButton` to make it easier to have confirming delete buttons
