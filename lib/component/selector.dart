@@ -17,14 +17,16 @@ class Selector<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Select<T>(
-          itemBuilder: (context, item) => Text(labelBuilder(item)),
-          value: value,
-          onChanged: onChanged,
-          surfaceOpacity: (Theme.of(context).surfaceOpacity ?? 0.5) * 0.7,
-          popupWidthConstraint: PopoverConstraint.anchorFixedSize,
-          canUnselect: canUnselect,
-          children: [
-            ...values.map(
-                (e) => SelectItemButton(value: e, child: Text(labelBuilder(e))))
-          ]);
+      itemBuilder: (context, item) => Text(labelBuilder(item)),
+      value: value,
+      onChanged: onChanged,
+      popupWidthConstraint: PopoverConstraint.anchorFixedSize,
+      canUnselect: canUnselect,
+      popup: (context) => SurfaceCard(
+              child: Column(
+            children: [
+              ...values.map((e) =>
+                  SelectItemButton(value: e, child: Text(labelBuilder(e))))
+            ],
+          )));
 }
