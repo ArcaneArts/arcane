@@ -1,5 +1,8 @@
 # 4.0.0
 
+* Added `DeleteIconButton` to make it easier to have confirming delete buttons
+* Added `DeleteMenuButton` to make it easier to have confirming delete menu buttons
+
 ### Upstream Additions
 * Added `TimelineAnimatable` drive and withTotalDuration and transformWithController
 * Added `FutureOrBuilder`
