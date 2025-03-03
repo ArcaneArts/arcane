@@ -42,12 +42,14 @@ class ArcaneScreen extends AbstractStatelessScreen {
           fab: fab,
           footer: footer,
           header: header ??
-              Bar(
-                backButton: backButtonMode,
-                titleText: title,
-                subtitleText: subtitle,
-                trailing: actions ?? [],
-              ),
+              ((title != null || subtitle != null || actions != null)
+                  ? Bar(
+                      backButton: backButtonMode,
+                      titleText: title,
+                      subtitleText: subtitle,
+                      trailing: actions ?? [],
+                    )
+                  : null),
           gutter: gutter,
           loadingProgress: loadingProgress,
           loadingProgressIndeterminate: loadingProgressIndeterminate,
@@ -61,15 +63,17 @@ class ArcaneScreen extends AbstractStatelessScreen {
         )
       : FillScreen(
           overrideBackgroundColor: overrideBackgroundColor,
-          fab: fab,
+          // fab: fab,
           footer: footer,
           header: header ??
-              Bar(
-                backButton: backButtonMode,
-                titleText: title,
-                subtitleText: subtitle,
-                trailing: actions ?? [],
-              ),
+              ((title != null || subtitle != null || actions != null)
+                  ? Bar(
+                      backButton: backButtonMode,
+                      titleText: title,
+                      subtitleText: subtitle,
+                      trailing: actions ?? [],
+                    )
+                  : null),
           gutter: gutter,
           loadingProgress: loadingProgress,
           loadingProgressIndeterminate: loadingProgressIndeterminate,
