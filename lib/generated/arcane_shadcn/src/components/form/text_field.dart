@@ -2,6 +2,7 @@
 // due to changes that need to be made but cannot be done normally
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart'
     show
         CupertinoSpellCheckSuggestionsToolbar,
@@ -11,6 +12,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' as widgets;
+import 'package:pylon/pylon.dart';
 
 import '../../../shadcn_flutter.dart';
 
@@ -1062,7 +1064,7 @@ class _TextFieldState extends State<TextField>
     final ThemeData theme = Theme.of(context);
     assert(debugCheckHasDirectionality(context));
     final TextEditingController controller = _effectiveController;
-
+    DashedBorderSignal? signal = context.pylonOr<DashedBorderSignal>();
     TextSelectionControls? textSelectionControls = widget.selectionControls;
     VoidCallback? handleDidGainAccessibilityFocus;
     VoidCallback? handleDidLoseAccessibilityFocus;
@@ -1131,6 +1133,7 @@ class _TextFieldState extends State<TextField>
           color: widget.filled ? theme.colorScheme.muted : null,
           border: widget.border
               ? Border.all(
+                  style: signal != null ? BorderStyle.none : BorderStyle.solid,
                   color: _effectiveFocusNode.hasFocus && widget.enabled
                       ? theme.colorScheme.ring
                       : theme.colorScheme.border,
@@ -1223,6 +1226,46 @@ class _TextFieldState extends State<TextField>
       ),
     );
 
+    Widget internalContainer = Container(
+      decoration: effectiveDecoration,
+      child: _selectionGestureDetectorBuilder.buildGestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: Align(
+          alignment: Alignment(-1.0, _textAlignVertical.y),
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+          child: Padding(
+            padding: widget.padding ??
+                EdgeInsets.symmetric(
+                  horizontal: 12 * scaling,
+                  vertical: 8 * scaling,
+                ),
+            child:
+                _addTextDependentAttachments(editable, defaultTextStyle, theme),
+          ),
+        ),
+      ),
+    );
+
+    if (signal != null && !widget.filled) {
+      internalContainer = DottedBorder(
+          color: _effectiveFocusNode.hasFocus && widget.enabled
+              ? theme.colorScheme.ring
+              : theme.colorScheme.border,
+          strokeWidth: 2,
+          dashPattern: signal.borderStyle,
+          radius:
+              (optionallyResolveBorderRadius(context, widget.borderRadius) ??
+                      BorderRadius.circular(theme.radiusMd))
+                  .topLeft,
+          borderType: BorderType.RRect,
+          stackFit: StackFit.passthrough,
+          padding: EdgeInsets.zero,
+          strokeCap: StrokeCap.round,
+          borderPadding: EdgeInsets.all(0.5),
+          child: internalContainer);
+    }
+
     return IconTheme.merge(
       data: theme.iconTheme.small.copyWith(
         color: theme.colorScheme.mutedForeground,
@@ -1282,27 +1325,7 @@ class _TextFieldState extends State<TextField>
               child: TextFieldTapRegion(
                 child: IgnorePointer(
                   ignoring: !enabled,
-                  child: Container(
-                    decoration: effectiveDecoration,
-                    child:
-                        _selectionGestureDetectorBuilder.buildGestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: Align(
-                        alignment: Alignment(-1.0, _textAlignVertical.y),
-                        widthFactor: 1.0,
-                        heightFactor: 1.0,
-                        child: Padding(
-                          padding: widget.padding ??
-                              EdgeInsets.symmetric(
-                                horizontal: 12 * scaling,
-                                vertical: 8 * scaling,
-                              ),
-                          child: _addTextDependentAttachments(
-                              editable, defaultTextStyle, theme),
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: internalContainer,
                 ),
               ),
             ),

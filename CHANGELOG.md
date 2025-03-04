@@ -1,6 +1,7 @@
 # 4.0.3
 * Fix `TextField` placeholder causing a vertical misalignment of the cursor when the placeholder is multiline.
 * Exposed `TextField` `stackAlignment` property, changed default from `center` to `topCenter`.
+* Added `DashBorderMode` and `SolidBorderMode` to alter cards & text fields borders to a dashed line
 
 # 4.0.2
 * Fix `MutableText` not wrapping correctly in button mode.
