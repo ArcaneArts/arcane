@@ -6,6 +6,8 @@ enum EditButtonType { ghost, pencil }
 class MutableText extends StatefulWidget {
   final String value;
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onEditingComplete;
+  final VoidCallback? onEditingStarted;
   final TextStyle? style;
   final int? maxLines;
   final int? minLines;
@@ -28,9 +30,12 @@ class MutableText extends StatefulWidget {
   final int? maxLength;
   final double buttonGapWidth;
   final Widget? overrideButtonContent;
+  final MainAxisSize mainAxisSize;
+  final String Function(String)? labelBuilder;
 
   const MutableText(this.value,
       {super.key,
+      this.mainAxisSize = MainAxisSize.min,
       this.onChanged,
       this.autoCorrect = true,
       this.minLines,
@@ -52,7 +57,10 @@ class MutableText extends StatefulWidget {
       this.placeholder,
       this.overrideButtonContent,
       this.buttonGapWidth = 4,
+      this.onEditingComplete,
+      this.onEditingStarted,
       this.buttonType = EditButtonType.pencil,
+      this.labelBuilder,
       this.border = false});
 
   @override
@@ -64,7 +72,7 @@ class _MutableTextState extends State<MutableText> {
   TextEditingController? _controller;
 
   Widget buildText(BuildContext context) => Text(
-        widget.value,
+        widget.labelBuilder?.call(widget.value) ?? widget.value,
         style: widget.style,
         maxLines: widget.maxLines,
         locale: widget.locale,
@@ -91,6 +99,7 @@ class _MutableTextState extends State<MutableText> {
                 _EscapeIntent: CallbackAction<_EscapeIntent>(
                     onInvoke: (e) => setState(() {
                           _editing = false;
+                          widget.onEditingComplete?.call();
                         })),
               },
               child: TextField(
@@ -119,6 +128,7 @@ class _MutableTextState extends State<MutableText> {
                 onEditingComplete: () {
                   setState(() {
                     _editing = false;
+                    widget.onEditingComplete?.call();
                   });
                 },
               ).iw))
@@ -130,11 +140,15 @@ class _MutableTextState extends State<MutableText> {
                   onPressed: () => setState(() {
                         _controller = TextEditingController(text: widget.value);
                         _editing = true;
+                        widget.onEditingStarted?.call();
                       })),
               EditButtonType.pencil => Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: widget.mainAxisSize,
                   children: [
-                    buildText(context),
+                    switch (widget.mainAxisSize) {
+                      MainAxisSize.min => Flexible(child: buildText(context)),
+                      MainAxisSize.max => Expanded(child: buildText(context)),
+                    },
                     Gap(widget.buttonGapWidth),
                     IconButton(
                         icon: widget.overrideButtonContent ??
@@ -146,6 +160,7 @@ class _MutableTextState extends State<MutableText> {
                               _controller =
                                   TextEditingController(text: widget.value);
                               _editing = true;
+                              widget.onEditingStarted?.call();
                             }))
                   ],
                 )

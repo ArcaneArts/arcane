@@ -1,3 +1,9 @@
+# 4.0.2
+* Fix `MutableText` not wrapping correctly in button mode.
+* Added `mainAxisSize` property to `MutableText` when in button mode.
+* Added `onEditingComplete`, `onEditingStarted` and `labelBilder` to `MutableText`
+* Made `DeleteIconButton` an actual widget instead of a function
+
 # 4.0.1
 * Fix `ArcaneScreen` header showing with empty if not defined (thanks @NextdoorPsycho)
 

@@ -32,7 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     sliver: SListView.builder(
                       childCount: 1000,
                       builder: (context, i) => BasicCard(
-                        title: Text("Tile $i"),
+                        title: MutableText(
+                          "This is title $i sd jfjsdf jsdfjajdgjasdfgjajdfgjsdfjg jdfgj dfgjdf jgjsdf jgsdjfgjd fgj jdgj dejfgjdf jg",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          onChanged: (_) {},
+                        ),
                       ).padBottom(8),
                     ))),
             NavTab(
