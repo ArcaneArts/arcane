@@ -253,6 +253,24 @@ extension XSliverWidget on Widget {
         FlutterLogo() ||
         Bar() ||
         AppBar() ||
+        ListTile() ||
+        Card() ||
+        BasicCard() ||
+        TextField() ||
+        TextArea() ||
+        Button() ||
+        OutlineButton() ||
+        OutlineButtonMenu() ||
+        PrimaryButton() ||
+        PrimaryButtonMenu() ||
+        SecondaryButton() ||
+        SecondaryButtonMenu() ||
+        GhostButton() ||
+        GhostButtonMenu() ||
+        TextButton() ||
+        TextButtonMenu() ||
+        IconButtonMenu() ||
+        IconButton() ||
         AnimatedContainer() =>
           false,
         BarSection() ||
