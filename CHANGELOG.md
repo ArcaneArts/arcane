@@ -1,3 +1,6 @@
+# 4.0.4
+* Improved sliver / box detection
+
 # 4.0.3
 * Fix `TextField` placeholder causing a vertical misalignment of the cursor when the placeholder is multiline.
 * Exposed `TextField` `stackAlignment` property, changed default from `center` to `topCenter`.
