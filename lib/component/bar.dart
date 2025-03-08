@@ -28,6 +28,7 @@ class Bar extends StatelessWidget {
   final BarBackButtonMode backButton;
   final bool ignoreContextSignals;
   final BarActions? actions;
+  final VoidCallback? onTitleClick; // Clickable title
 
   const Bar(
       {super.key,
@@ -52,6 +53,7 @@ class Bar extends StatelessWidget {
       this.height,
       this.barHeader,
       this.barFooter,
+      this.onTitleClick,
       this.useGlass = true});
 
   Bar copyWith({
@@ -77,6 +79,7 @@ class Bar extends StatelessWidget {
     bool? useGlass,
     BarBackButtonMode? backButton,
     bool? ignoreContextSignals,
+    VoidCallback? onTitleClick,
   }) =>
       Bar(
         barHeader: barHeader ?? this.barHeader,
@@ -99,14 +102,30 @@ class Bar extends StatelessWidget {
         useGlass: useGlass ?? this.useGlass,
         backButton: backButton ?? this.backButton,
         ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
-        child: child ?? this.child,
         barFooter: barFooter ?? this.barFooter,
+        onTitleClick: onTitleClick ?? this.onTitleClick,
+        child: child ?? this.child,
       );
 
   @override
   Widget build(BuildContext context) {
     Widget? barHeader = this.barHeader ??
         context.pylonOr<InjectBarHeader>()?.header.call(context);
+
+    // Determine the effective title
+    Widget? effectiveTitle = titleText?.text ?? title;
+
+    // If there's a click handler and a title, wrap it in a GestureDetector and Align
+    if (onTitleClick != null && effectiveTitle != null) {
+      effectiveTitle = Align(
+        alignment: Alignment.centerLeft, // Keeps it left-aligned like before
+        child: GestureDetector(
+          onTap: onTitleClick,
+          child: effectiveTitle,
+        ),
+      );
+    }
+
     return Stack(
       children: [
         Glass(
@@ -118,7 +137,7 @@ class Bar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (barHeader != null) barHeader!,
+                if (barHeader != null) barHeader,
                 SafeBar.withSafety(
                     context,
                     AppBar(
@@ -139,7 +158,7 @@ class Bar extends StatelessWidget {
                       surfaceOpacity: 0,
                       trailing: InjectBarTrailing.mutate(context,
                           [...trailing, if (actions != null) actions!]),
-                      title: titleText?.text ?? title,
+                      title: effectiveTitle,
                       header: headerText?.text ?? header,
                       subtitle: subtitleText?.text ?? subtitle,
                       trailingExpanded: trailingExpanded,
