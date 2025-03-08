@@ -112,12 +112,17 @@ class Bar extends StatelessWidget {
     Widget? barHeader = this.barHeader ??
         context.pylonOr<InjectBarHeader>()?.header.call(context);
 
+    // Determine the effective title
     Widget? effectiveTitle = titleText?.text ?? title;
 
+    // If there's a click handler and a title, wrap it in a GestureDetector and Align
     if (onTitleClick != null && effectiveTitle != null) {
-      effectiveTitle = GhostButton(
-        onPressed: onTitleClick!,
-        child: effectiveTitle,
+      effectiveTitle = Align(
+        alignment: Alignment.centerLeft, // Keeps it left-aligned like before
+        child: GestureDetector(
+          onTap: onTitleClick,
+          child: effectiveTitle,
+        ),
       );
     }
 

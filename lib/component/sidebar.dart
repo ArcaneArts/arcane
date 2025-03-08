@@ -9,12 +9,14 @@ enum ArcaneSidebarState {
 extension XArcaneSidebarStatePylon on BuildContext {
   bool get isSidebarExpanded =>
       pylonOr<ArcaneSidebarState>() == ArcaneSidebarState.expanded;
+
   bool get isSidebarExpandedOrAbsent =>
       (pylonOr<ArcaneSidebarState>() ?? ArcaneSidebarState.expanded) ==
       ArcaneSidebarState.expanded;
 }
 
 List<Widget> _defWList(BuildContext context) => [];
+
 Widget _defSliver(BuildContext context) => SliverToBoxAdapter();
 
 class ArbitraryHeaderSpace {
@@ -204,6 +206,7 @@ class ArcaneSidebarHeader extends StatelessWidget {
   final bool ignoreContextSignals;
   final BarActions? actions;
   final PylonBuilder? collapsedBuilder;
+  final VoidCallback? onTitleClick;
 
   const ArcaneSidebarHeader(
       {super.key,
@@ -229,6 +232,7 @@ class ArcaneSidebarHeader extends StatelessWidget {
       this.height,
       this.barHeader,
       this.barFooter,
+      this.onTitleClick,
       this.useGlass = true});
 
   @override
@@ -263,6 +267,7 @@ class ArcaneSidebarHeader extends StatelessWidget {
       ignoreContextSignals: ignoreContextSignals,
       titleText: !e ? null : titleText,
       headerText: !e ? null : headerText,
+      onTitleClick: !e ? null : onTitleClick,
       subtitleText: !e ? null : subtitleText,
       child: !e ? null : child,
     );
