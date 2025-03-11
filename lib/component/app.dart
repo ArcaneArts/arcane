@@ -6,6 +6,17 @@ import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 
+/// Initializes and runs an Arcane app.
+///
+/// This function sets up required Arcane components before launching the app:
+/// - Sets up debug utilities
+/// - Loads all shaders
+/// - Configures SEO for web applications
+///
+/// For more details, see the [ArcaneApp documentation](../doc/component/app.md#setup).
+///
+/// @param app The widget to run as the root of the widget tree
+/// @param setupMetaSEO Whether to configure SEO metadata for web applications
 void runApp(Widget app, {bool setupMetaSEO = true}) async {
   setupArcaneDebug();
   ArcaneShader.loadAll();
@@ -21,42 +32,122 @@ void runApp(Widget app, {bool setupMetaSEO = true}) async {
   m.runApp(app);
 }
 
+/// A root widget for Arcane applications providing theming and navigation capabilities.
+///
+/// ArcaneApp serves as a wrapper around ShadcnApp with additional Arcane-specific
+/// functionality. It provides theming, navigation, and other app-level configurations.
+///
+/// For complete documentation, see [ArcaneApp documentation](../doc/component/app.md).
+///
+/// There are two ways to use ArcaneApp:
+///
+/// 1. Standard navigation (using [ArcaneApp])
+/// 2. Router-based navigation (using [ArcaneApp.router])
 class ArcaneApp extends StatefulWidget {
+  /// Key for the application's navigator
   final GlobalKey<NavigatorState>? navigatorKey;
+  
+  /// Controls the adaptation of UI elements based on screen size
   final AdaptiveScaling? scaling;
+  
+  /// The widget to be displayed at the root route "/"
   final Widget? home;
+  
+  /// Mapping of route names to widget builders
   final Map<String, WidgetBuilder>? routes;
+  
+  /// The initial route when the app is first loaded
   final String initialRoute;
+  
+  /// Factory for generating routes dynamically
   final RouteFactory? onGenerateRoute;
+  
+  /// Factory for generating initial routes
   final InitialRouteListFactory? onGenerateInitialRoutes;
+  
+  /// Factory for handling unknown routes
   final RouteFactory? onUnknownRoute;
+  
+  /// Callback for navigation notifications
   final NotificationListenerCallback<NavigationNotification>?
       onNavigationNotification;
+  
+  /// List of observers for the navigator
   final List<NavigatorObserver>? navigatorObservers;
+  
+  /// Provider of route information for the Router API
   final RouteInformationProvider? routeInformationProvider;
+  
+  /// Parser for route information for the Router API
   final RouteInformationParser<Object>? routeInformationParser;
+  
+  /// Delegate for routing decisions in the Router API
   final RouterDelegate<Object>? routerDelegate;
+  
+  /// Dispatcher for back button events
   final BackButtonDispatcher? backButtonDispatcher;
+  
+  /// Router configuration
   final RouterConfig<Object>? routerConfig;
+  
+  /// Builder for wrapping the entire app with additional widgets
   final TransitionBuilder? builder;
+  
+  /// Title of the application
   final String title;
+  
+  /// Generator for the app title
   final GenerateAppTitle? onGenerateTitle;
+  
+  /// Primary color for the app
   final Color? color;
+  
+  /// The app's locale
   final Locale? locale;
+  
+  /// Delegates for localizing the app
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
+  
+  /// Callback for resolving a list of locales
   final LocaleListResolutionCallback? localeListResolutionCallback;
+  
+  /// Callback for resolving a locale
   final LocaleResolutionCallback? localeResolutionCallback;
+  
+  /// The locales supported by the app
   final Iterable<Locale> supportedLocales;
+  
+  /// Whether to show performance overlay
   final bool showPerformanceOverlay;
+  
+  /// Whether to show semantics debugger
   final bool showSemanticsDebugger;
+  
+  /// Whether to show the debug banner
   final bool debugShowCheckedModeBanner;
+  
+  /// Keyboard shortcuts for the app
   final Map<ShortcutActivator, Intent>? shortcuts;
+  
+  /// Actions that can be invoked by intents
   final Map<Type, Action<Intent>>? actions;
+  
+  /// Restoration scope ID for state restoration
   final String? restorationScopeId;
+  
+  /// Whether to show the Material grid
   final bool debugShowMaterialGrid;
+  
+  /// Whether to disable the browser's context menu (on web)
   final bool disableBrowserContextMenu;
+  
+  /// The theme configuration for the app
   final ArcaneTheme? theme;
 
+  /// Creates an ArcaneApp with standard navigation.
+  ///
+  /// This constructor uses Flutter's standard navigation system with routes and a navigator.
+  /// For more information, see [Standard Navigation](../doc/component/app.md#standard-navigation).
   const ArcaneApp({
     super.key,
     this.theme,
@@ -94,6 +185,10 @@ class ArcaneApp extends StatefulWidget {
         backButtonDispatcher = null,
         routerConfig = null;
 
+  /// Creates an ArcaneApp with the Router API for navigation.
+  ///
+  /// This constructor uses Flutter's Router API for more advanced routing capabilities.
+  /// For more information, see [Router-based Navigation](../doc/component/app.md#router-based-navigation).
   const ArcaneApp.router({
     super.key,
     this.theme,
@@ -135,6 +230,10 @@ class ArcaneApp extends StatefulWidget {
   State<ArcaneApp> createState() => ArcaneAppState();
 }
 
+/// The state for the ArcaneApp widget.
+///
+/// Manages the app's theme and provides methods for updating the theme and refreshing the app.
+/// For details, see [App State Management](../doc/component/app.md#app-state-management).
 class ArcaneAppState extends State<ArcaneApp> {
   RouteFactory? routeFactory;
   late ArcaneTheme _theme;
@@ -149,6 +248,12 @@ class ArcaneAppState extends State<ArcaneApp> {
         "${(widget.title.trim().isEmpty ? null : widget.title) ?? "Arcane App"} Initialized");
   }
 
+  /// Updates the app's theme.
+  ///
+  /// This method changes the theme of the entire application and triggers a rebuild.
+  /// For more information, see [Changing Themes](../doc/component/app.md#changing-themes).
+  ///
+  /// @param theme The new theme to apply to the app
   void setTheme(ArcaneTheme theme) {
     setState(() {
       _theme = theme;
@@ -156,14 +261,21 @@ class ArcaneAppState extends State<ArcaneApp> {
     });
   }
 
+  /// Forces a rebuild of the entire application.
+  ///
+  /// This method calls setState() without any changes, which triggers a rebuild
+  /// of the entire widget tree. Use this method when you need to refresh the app
+  /// but aren't changing any specific state.
   void updateApp() {
     setState(() {});
     actionedAnnounce("App wide setState()");
   }
 
+  /// Whether the app uses the Router API for navigation.
   bool get usesRouter =>
       widget.routerDelegate != null || widget.routerConfig != null;
 
+  /// The current theme of the application.
   ArcaneTheme get currentTheme => _theme;
 
   @override
@@ -248,9 +360,17 @@ class ArcaneAppState extends State<ArcaneApp> {
       );
 }
 
+/// Custom scroll behavior for Arcane applications.
+///
+/// Provides a consistent scrolling experience across different platforms and input devices.
+/// For more information, see [Scrolling Behavior](../doc/component/app.md#scrolling-behavior).
 class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
+  /// Whether to allow mouse dragging for scrolling.
   final bool allowMouseDragging;
 
+  /// Creates a new ArcaneScrollBehavior instance.
+  ///
+  /// @param allowMouseDragging Whether to allow dragging with a mouse to scroll content
   const ArcaneScrollBehavior({this.allowMouseDragging = true});
 
   @override
