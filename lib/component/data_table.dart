@@ -14,20 +14,38 @@ import 'package:flutter/material.dart' as m
 
 bool dataTableShowLogs = true;
 
-/// Relative size of a column determines the share of total table width allocated
-/// to each individual column. When determining column widths ratios between S, M and L
-/// columns are kept (i.e. Large columns are set to 1.2x width of Medium ones)
-/// - see [DataTable.smRatio], [DataTable.lmRatio] and same properties on [PaginatedDataTable2].
-/// Default S/M ratio is 0.67,L/M ratio is 1.2
+/// Relative size of a column in a [DataTable].
+///
+/// These sizes determine the share of total table width allocated to each individual column.
+/// When determining column widths, ratios between S, M, and L columns are maintained.
+///
+/// - [S]: Small column (approximately 0.67x the width of a medium column)
+/// - [M]: Medium column (the default size)
+/// - [L]: Large column (approximately 1.2x the width of a medium column)
+///
+/// See also:
+///  * [doc/component/data_table.md] for more detailed documentation
+///  * [DataTable.smRatio] and [DataTable.lmRatio] which control the exact ratios
 enum ColumnSize { S, M, L }
 
-/// Extension of stock [DataColumn], adds the capability to set relative column
-/// size via [size] property
+/// An enhanced version of Flutter's standard [DataColumn] with additional sizing options.
+///
+/// This class extends Flutter's DataColumn with the ability to set relative column size
+/// via the [size] property or specify a fixed width in pixels. This allows for more
+/// precise control over column dimensions in a [DataTable].
+///
+/// See also:
+///  * [doc/component/data_table.md] for more detailed documentation
+///  * [DataTable], which uses these columns
+///  * [ColumnSize], which defines the relative sizing options
 @immutable
 class DataColumn extends m.DataColumn {
   /// Creates the configuration for a column of a [DataTable].
   ///
   /// The [label] argument must not be null.
+  ///
+  /// The [size] parameter specifies the relative width of the column.
+  /// The [fixedWidth] parameter allows setting an absolute width for the column.
   const DataColumn(
       {required super.label,
       super.tooltip,
@@ -36,19 +54,29 @@ class DataColumn extends m.DataColumn {
       this.size = ColumnSize.M,
       this.fixedWidth});
 
+  /// The relative size of this column.
+  ///
   /// Column sizes are determined based on available width by distributing it
-  /// to individual columns accounting for their relative sizes (see [ColumnSize])
+  /// to individual columns accounting for their relative sizes.
   final ColumnSize size;
 
-  /// Defines absolute width of the column in pixel (as opposed to relative size used by default).
-  /// Warning, if the width happens to be larger than available total width other
-  /// columns can be clipped
+  /// The absolute width of this column in pixels.
+  ///
+  /// If specified, this overrides the relative [size] setting.
+  /// Warning: if the width happens to be larger than available total width,
+  /// other columns can be clipped.
   final double? fixedWidth;
 }
 
-/// Extension of standard [DataRow], adds row level tap events. Also there're
-/// onSecondaryTap and onSecondaryTapDown which are not available in DataCells and
-/// which can be useful in Desktop settings when a reaction to the right click is required.
+/// An enhanced version of Flutter's standard [DataRow] with additional functionality.
+///
+/// This class extends Flutter's DataRow with row-level tap events and customization
+/// options. It adds support for right-click (secondary tap) events, double-tap events,
+/// specific row heights, and custom decorations.
+///
+/// See also:
+///  * [doc/component/data_table.md] for more detailed documentation
+///  * [DataTable], which uses these rows
 @immutable
 class DataRow extends m.DataRow {
   //DataRow2.fromDataRow(DataRow row) : this.cells = row.cells;
@@ -56,6 +84,9 @@ class DataRow extends m.DataRow {
   /// Creates the configuration for a row of a [DataTable].
   ///
   /// The [cells] argument must not be null.
+  ///
+  /// Additional parameters support customization and interactive features
+  /// beyond the standard Flutter DataRow.
   const DataRow(
       {super.key,
       super.selected = false,
@@ -70,6 +101,9 @@ class DataRow extends m.DataRow {
       this.onSecondaryTap,
       this.onSecondaryTapDown});
 
+  /// Creates a DataRow for a DataTable with a specific index.
+  ///
+  /// The [cells] and [index] arguments must not be null.
   DataRow.byIndex(
       {super.index,
       super.selected = false,
@@ -85,7 +119,9 @@ class DataRow extends m.DataRow {
       this.onSecondaryTapDown})
       : super.byIndex();
 
-  /// Clone row, if non null values are provided - override the corresponding fields
+  /// Creates a copy of this row with the given fields replaced with new values.
+  ///
+  /// Parameters that are null will keep their original values.
   DataRow clone({
     LocalKey? key,
     bool? selected,
@@ -116,36 +152,59 @@ class DataRow extends m.DataRow {
     );
   }
 
-  /// Decoration to nbe applied to the given row. When applied, it [DataTable.dividerThickness]
-  /// won't take effect
+  /// Custom decoration to be applied to this row.
+  ///
+  /// When specified, [DataTable.dividerThickness] won't take effect for this row.
   final Decoration? decoration;
 
-  /// Specific row height, which will be used only if provided.
-  /// If not provided, dataRowHeight will be applied.
+  /// Specific height for this row in pixels.
+  ///
+  /// When provided, this overrides the default [DataTable.dataRowHeight].
   final double? specificRowHeight;
 
-  /// Row tap handler, won't be called if tapped cell has any tap event handlers
+  /// Callback function when the row is tapped.
+  ///
+  /// This won't be called if a tapped cell has its own tap event handler.
   final GestureTapCallback? onTap;
 
-  /// Row right click handler, won't be called if tapped cell has any tap event handlers
+  /// Callback function when the row is right-clicked.
+  ///
+  /// This won't be called if a tapped cell has its own tap event handler.
+  /// Useful for desktop environments where right-click context menus are common.
   final GestureTapCallback? onSecondaryTap;
 
-  /// Row right mouse down handler, won't be called if tapped cell has any tap event handlers
+  /// Callback function when the right mouse button is pressed down on this row.
+  ///
+  /// This won't be called if a tapped cell has its own tap event handler.
   final GestureTapDownCallback? onSecondaryTapDown;
 
-  /// Row double tap handler, won't be called if tapped cell has any tap event handlers
+  /// Callback function when the row is double-tapped.
+  ///
+  /// This won't be called if a tapped cell has its own tap event handler.
   final GestureTapCallback? onDoubleTap;
 
 // /// Row long press handler, won't be called if tapped cell has any tap event handlers
 // final GestureLongPressCallback? onLongPress;
 }
 
-/// In-place replacement of standard [DataTable] widget, mimics it API.
-/// Has the header row always fixed and core of the table (with data rows)
-/// scrollable and stretching to max width/height of it's container.
-/// By using [DataColumn] instead of [DataColumn] it is possible to control
-/// relative column sizes (setting them to S, M and L). [DataRow] provides
-/// row-level tap event handlers.
+/// An enhanced version of Flutter's standard DataTable with additional features.
+///
+/// [DataTable] provides an improved data table implementation with fixed headers,
+/// fixed columns, column sizing, and improved performance for large datasets.
+/// It extends Flutter's standard DataTable with several advanced features:
+///
+/// - Fixed headers that remain visible when scrolling vertically
+/// - Fixed left columns that remain visible when scrolling horizontally
+/// - Customizable column widths with S, M, L sizing options
+/// - Fixed width columns
+/// - Row-level tap events
+/// - Specific row heights
+/// - Enhanced styling options
+///
+/// See also:
+///  * [doc/component/data_table.md] for more detailed documentation
+///  * [DataColumn], which configures column properties
+///  * [DataRow], which configures row properties
 class DataTable extends m.DataTable {
   DataTable({
     super.key,

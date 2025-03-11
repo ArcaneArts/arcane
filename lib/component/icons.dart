@@ -3,11 +3,41 @@ import 'package:flutter/material.dart' as m show Icons;
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:ionicons/ionicons.dart';
 
+/// Type alias for Material icons, providing compatibility with existing code.
 typedef MaterialIcons = m.Icons;
+
+/// Internal type alias for Phosphor icon data.
 typedef _P = PhosphorIconsData;
+
+/// Internal type alias for Ionic icon data.
 typedef _O = IoniconsData;
+
+/// Internal type alias for the generic IconData type.
 typedef _I = IconData;
 
+/// A comprehensive collection of icons from multiple icon libraries, unified under a single API.
+///
+/// The [Icons] class combines icons from Phosphor Icons, Ionicons, and Material Icons,
+/// making it easy to access thousands of icons without needing to remember which library
+/// they come from. It maintains consistent naming conventions and offers various icon
+/// styles and weights.
+///
+/// Icon styles from Phosphor are indicated by suffixes:
+/// - No suffix: Regular weight
+/// - `_thin`: Thinner stroke weight
+/// - `_light`: Light stroke weight
+/// - `_bold`: Bold stroke weight
+/// - `_fill`: Filled version of the icon
+///
+/// Example usage:
+/// ```dart
+/// Icon(Icons.heart) // Regular weight
+/// Icon(Icons.heart_thin) // Thin weight
+/// Icon(Icons.heart_fill) // Filled version
+/// ```
+///
+/// See also:
+///  * [doc/component/icons.md] for more detailed documentation
 class Icons {
   static const _I activity_thin = _P(0xea02);
   static const _I address_book_thin = _P(0xea03);
