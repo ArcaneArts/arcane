@@ -4,7 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 
 /// Controls the behavior of the back button in a [Bar] widget.
 ///
-/// See more details in the [documentation](../../../doc/bar.md#barbackbuttonmode).
+/// See more details in the [documentation](../../../doc/components/bar.md#barbackbuttonmode).
 enum BarBackButtonMode { 
   /// Never show the back button
   never, 
@@ -20,125 +20,125 @@ enum BarBackButtonMode {
 /// footer components, and includes built-in features like back button handling and glass effects.
 ///
 /// For complete documentation, examples, and usage guidelines, see the
-/// [Bar Component Documentation](../../../doc/bar.md).
+/// [Bar Component Documentation](../../../doc/components/bar.md).
 class Bar extends StatelessWidget {
   /// Widgets displayed at the end (right) of the bar.
   /// 
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final List<Widget> trailing;
   
   /// Widgets displayed at the start (left) of the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final List<Widget> leading;
   
   /// The main content of the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? child;
   
   /// Custom widget to use as the title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? title;
   
   /// Content displayed above the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? barHeader;
   
   /// Content displayed below the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? barFooter;
   
   /// Text to display as the title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? titleText;
   
   /// Text to display above the title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? headerText;
   
   /// Text to display below the title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? subtitleText;
   
   /// Small widget placed on top of title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? header;
   
   /// Small widget placed below title.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? subtitle;
   
   /// Whether to expand the trailing section instead of the main content.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final bool trailingExpanded;
   
   /// Alignment of the title content.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Alignment alignment;
   
   /// Background color of the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Color? backgroundColor;
   
   /// Space between leading widgets.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? leadingGap;
   
   /// Space between trailing widgets.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? trailingGap;
   
   /// Padding around bar content.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final EdgeInsetsGeometry? padding;
   
   /// Height of the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? height;
   
   /// Whether to apply a glass effect to the bar.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) and [Glass Effect](../../../doc/bar.md#features) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) and [Glass Effect](../../../doc/components/bar.md#features) in the documentation.
   final bool useGlass;
   
   /// Controls when to show the back button.
   ///
-  /// See [BarBackButtonMode](../../../doc/bar.md#barbackbuttonmode) in the documentation.
+  /// See [BarBackButtonMode](../../../doc/components/bar.md#barbackbuttonmode) in the documentation.
   final BarBackButtonMode backButton;
   
   /// Whether to ignore context signals from parent widgets.
   ///
-  /// See [Parameters](../../../doc/bar.md#parameters) in the documentation.
+  /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final bool ignoreContextSignals;
   
   /// Collection of action buttons to display in the trailing area.
   ///
-  /// See [BarActions](../../../doc/bar.md#baractions) in the documentation.
+  /// See [BarActions](../../../doc/components/bar.md#baractions) in the documentation.
   final BarActions? actions;
 
   /// Creates a customizable app bar.
   ///
   /// For complete usage examples, see:
-  /// - [Basic Bar with Title](../../../doc/bar.md#basic-bar-with-title)
-  /// - [Bar with Back Button and Actions](../../../doc/bar.md#bar-with-back-button-and-actions)
-  /// - [Custom Bar with Leading and Trailing Widgets](../../../doc/bar.md#custom-bar-with-leading-and-trailing-widgets)
-  /// - [Bar with Header and Footer](../../../doc/bar.md#bar-with-header-and-footer)
+  /// - [Basic Bar with Title](../../../doc/components/bar.md#basic-bar-with-title)
+  /// - [Bar with Back Button and Actions](../../../doc/components/bar.md#bar-with-back-button-and-actions)
+  /// - [Custom Bar with Leading and Trailing Widgets](../../../doc/components/bar.md#custom-bar-with-leading-and-trailing-widgets)
+  /// - [Bar with Header and Footer](../../../doc/components/bar.md#bar-with-header-and-footer)
   const Bar(
       {super.key,
       this.ignoreContextSignals = false,
@@ -167,7 +167,7 @@ class Bar extends StatelessWidget {
   /// Creates a copy of this Bar with the given fields replaced by new values.
   ///
   /// This method is useful for making small modifications to an existing Bar.
-  /// See [Notes](../../../doc/bar.md#notes) in the documentation.
+  /// See [Notes](../../../doc/components/bar.md#notes) in the documentation.
   Bar copyWith({
     Key? key,
     List<Widget>? trailing,
@@ -287,7 +287,7 @@ extension XAST on Widget {
 
 /// Helps manage safe areas (notches, cutouts) around the bar.
 ///
-/// For complete documentation and examples, see [SafeBar](../../../doc/bar.md#safebar).
+/// For complete documentation and examples, see [SafeBar](../../../doc/components/bar.md#safebar).
 class SafeBar extends StatelessWidget {
   /// Whether to apply safe area at the top.
   final bool top;
@@ -324,7 +324,7 @@ class SafeBar extends StatelessWidget {
 
   /// Creates a SafeBar widget to manage safe areas around the Bar.
   ///
-  /// See [SafeBar](../../../doc/bar.md#safebar) in the documentation.
+  /// See [SafeBar](../../../doc/components/bar.md#safebar) in the documentation.
   const SafeBar(
       {super.key,
       this.top = false,
@@ -343,7 +343,7 @@ class SafeBar extends StatelessWidget {
 
 /// Allows you to temporarily disable the back button.
 ///
-/// For complete documentation and examples, see [BlockBackButton](../../../doc/bar.md#blockbackbutton).
+/// For complete documentation and examples, see [BlockBackButton](../../../doc/components/bar.md#blockbackbutton).
 class BlockBackButton extends StatelessWidget {
   /// Whether to block the back button.
   final bool block;
@@ -357,7 +357,7 @@ class BlockBackButton extends StatelessWidget {
 
   /// Creates a BlockBackButton widget to control back button behavior.
   ///
-  /// See [BlockBackButton](../../../doc/bar.md#blockbackbutton) in the documentation.
+  /// See [BlockBackButton](../../../doc/components/bar.md#blockbackbutton) in the documentation.
   const BlockBackButton({super.key, this.block = true, required this.builder});
 
   @override
@@ -375,7 +375,7 @@ const double _iconButtonWidth = 24;
 /// BarActions automatically collapses overflow actions into a dropdown menu when
 /// there are more actions than the specified maximum.
 ///
-/// For complete documentation and examples, see [BarActions](../../../doc/bar.md#baractions).
+/// For complete documentation and examples, see [BarActions](../../../doc/components/bar.md#baractions).
 class BarActions extends StatelessWidget {
   /// The list of action buttons to display.
   final List<BarAction> actions;
@@ -385,7 +385,7 @@ class BarActions extends StatelessWidget {
 
   /// Creates a collection of action buttons for a Bar.
   ///
-  /// See [BarActions](../../../doc/bar.md#baractions) in the documentation.
+  /// See [BarActions](../../../doc/components/bar.md#baractions) in the documentation.
   const BarActions({super.key, this.actions = const [], this.maxIcons = 2});
 
   @override
@@ -441,7 +441,7 @@ class BarActions extends StatelessWidget {
 
 /// Represents a single action button in the bar.
 ///
-/// For complete documentation, see [BarAction](../../../doc/bar.md#baraction).
+/// For complete documentation, see [BarAction](../../../doc/components/bar.md#baraction).
 class BarAction {
   /// Icon to display for the action.
   final IconData icon;
@@ -457,7 +457,7 @@ class BarAction {
 
   /// Creates a single action button for use in a BarActions widget.
   ///
-  /// See [BarAction](../../../doc/bar.md#baraction) in the documentation.
+  /// See [BarAction](../../../doc/components/bar.md#baraction) in the documentation.
   const BarAction(
       {required this.icon,
       required this.label,
@@ -467,7 +467,7 @@ class BarAction {
 
 /// Injects widgets into either the leading or trailing areas of a Bar.
 ///
-/// This is part of the Bar's injection system. See [Injection](../../../doc/bar.md#injection).
+/// This is part of the Bar's injection system. See [Injection](../../../doc/components/bar.md#injection).
 class InjectBarEnds extends StatelessWidget {
   /// Whether to inject into the trailing (true) or leading (false) area.
   final bool trailing;
@@ -483,7 +483,7 @@ class InjectBarEnds extends StatelessWidget {
 
   /// Creates an InjectBarEnds widget to inject widgets into a Bar.
   ///
-  /// See [Injection](../../../doc/bar.md#injection) in the documentation.
+  /// See [Injection](../../../doc/components/bar.md#injection) in the documentation.
   const InjectBarEnds(
       {super.key,
       this.trailing = true,
@@ -499,7 +499,7 @@ class InjectBarEnds extends StatelessWidget {
 
 /// Injects widgets into the trailing area of a Bar.
 ///
-/// This is part of the Bar's injection system. See [Injection](../../../doc/bar.md#injection).
+/// This is part of the Bar's injection system. See [Injection](../../../doc/components/bar.md#injection).
 class InjectBarTrailing extends StatelessWidget {
   /// Function that returns widgets to inject into the trailing area.
   final List<Widget> Function(BuildContext)? children;
@@ -526,7 +526,7 @@ class InjectBarTrailing extends StatelessWidget {
 
   /// Creates an InjectBarTrailing widget to inject widgets into a Bar's trailing area.
   ///
-  /// See [Injection](../../../doc/bar.md#injection) in the documentation.
+  /// See [Injection](../../../doc/components/bar.md#injection) in the documentation.
   const InjectBarTrailing(
       {super.key, this.children, this.start = false, required this.builder});
 
@@ -537,7 +537,7 @@ class InjectBarTrailing extends StatelessWidget {
 
 /// Injects widgets into the leading area of a Bar.
 ///
-/// This is part of the Bar's injection system. See [Injection](../../../doc/bar.md#injection).
+/// This is part of the Bar's injection system. See [Injection](../../../doc/components/bar.md#injection).
 class InjectBarLeading extends StatelessWidget {
   /// Function that returns widgets to inject into the leading area.
   final List<Widget> Function(BuildContext)? children;
@@ -564,7 +564,7 @@ class InjectBarLeading extends StatelessWidget {
 
   /// Creates an InjectBarLeading widget to inject widgets into a Bar's leading area.
   ///
-  /// See [Injection](../../../doc/bar.md#injection) in the documentation.
+  /// See [Injection](../../../doc/components/bar.md#injection) in the documentation.
   const InjectBarLeading(
       {super.key, this.children, this.start = true, required this.builder});
 
@@ -575,13 +575,13 @@ class InjectBarLeading extends StatelessWidget {
 
 /// Injects a header widget into a Bar.
 ///
-/// This is part of the Bar's injection system. See [Injection](../../../doc/bar.md#injection).
+/// This is part of the Bar's injection system. See [Injection](../../../doc/components/bar.md#injection).
 class InjectBarHeader {
   /// The builder function for the header content.
   final PylonBuilder header;
 
   /// Creates an InjectBarHeader to inject a header into a Bar.
   ///
-  /// See [Injection](../../../doc/bar.md#injection) in the documentation.
+  /// See [Injection](../../../doc/components/bar.md#injection) in the documentation.
   const InjectBarHeader({required this.header});
 }
