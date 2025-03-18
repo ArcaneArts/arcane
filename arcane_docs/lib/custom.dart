@@ -596,7 +596,7 @@ FillScreen(
       onChanged: (v) => setState(() => query = v),
       leading: Icon(Icons.search_outline_ionic),
       autofocus: false,
-      placeholder: "Search!",
+      placeholder: Text("Search!")
       minWidth: 0,
     )
   ]),
@@ -1500,7 +1500,7 @@ PrimaryButton(
     cancelText: "Cancel Text",
     onConfirm: (t) => print(t),
     description: "Description Text goes here",
-    hint: "Hint Text",
+    placeholder: Text("Hint Text"),
   ).open(_context),
   child: Text("Text Dialog"),
 )
@@ -1513,7 +1513,7 @@ PrimaryButton(
         cancelText: "Cancel Text",
         onConfirm: (t) => print(t),
         description: "Description Text goes here",
-        hint: "Hint Text",
+        placeholder: Text("Hint Text"),
       ).open(_context),
       child: Text("Text Dialog"),
     ));
@@ -3634,7 +3634,7 @@ class _SearchBoxState extends State<SearchBoxExample> {
           onChanged: (v) => setState(() => query = v),
           leading: Icon(Icons.search_outline_ionic),
           autofocus: false,
-          placeholder: "Search!",
+          placeholder: Text("Search!"),
           minWidth: 0,
         )
       ]),

@@ -33,8 +33,7 @@ class ControlledChipInput<T> extends StatelessWidget
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
   final TextInputAction? textInputAction;
-  final String? placeholder;
-  final Widget? placeholderWidget;
+  final Widget? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
   final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
   final Widget? inputTrailingWidget;
@@ -62,7 +61,6 @@ class ControlledChipInput<T> extends StatelessWidget
     this.useChips = true,
     this.textInputAction,
     this.placeholder,
-    this.placeholderWidget,
     this.suggestionLeadingBuilder,
     this.suggestionTrailingBuilder,
     this.inputTrailingWidget,
@@ -70,7 +68,7 @@ class ControlledChipInput<T> extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return ControlledComponentBuilder(
+    return ControlledComponentAdapter(
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
@@ -93,7 +91,6 @@ class ControlledChipInput<T> extends StatelessWidget
           suggestionBuilder: suggestionBuilder,
           textInputAction: textInputAction,
           placeholder: placeholder,
-          placeholderWidget: placeholderWidget,
           suggestionLeadingBuilder: suggestionLeadingBuilder,
           suggestionTrailingBuilder: suggestionTrailingBuilder,
           inputTrailingWidget: inputTrailingWidget,
@@ -120,8 +117,7 @@ class ChipInput<T> extends StatefulWidget {
   final ChipWidgetBuilder<T>? suggestionBuilder;
   final bool useChips;
   final TextInputAction? textInputAction;
-  final String? placeholder;
-  final Widget? placeholderWidget;
+  final Widget? placeholder;
   final Widget Function(BuildContext, T)? suggestionLeadingBuilder;
   final Widget Function(BuildContext, T)? suggestionTrailingBuilder;
   final Widget? inputTrailingWidget;
@@ -146,7 +142,6 @@ class ChipInput<T> extends StatefulWidget {
     this.suggestionBuilder,
     this.textInputAction,
     this.placeholder,
-    this.placeholderWidget,
     this.suggestionLeadingBuilder,
     this.suggestionTrailingBuilder,
     this.inputTrailingWidget,
@@ -227,7 +222,7 @@ class ChipInputState<T> extends State<ChipInput<T>>
           chips.removeAt(index);
           widget.onChanged?.call(chips);
         },
-        child: const Icon(Icons.close),
+        child: const Icon(LucideIcons.x),
       ),
       child: widget.chipBuilder(context, widget.chips[index]),
     );
@@ -481,7 +476,6 @@ class ChipInputState<T> extends State<ChipInput<T>>
             enabled: widget.enabled,
             maxLines: 1,
             placeholder: widget.placeholder,
-            placeholderWidget: widget.placeholderWidget,
             onSubmitted: _handleSubmitted,
             controller: _controller,
             undoController: widget.undoHistoryController,

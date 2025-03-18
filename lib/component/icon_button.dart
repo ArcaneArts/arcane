@@ -12,96 +12,96 @@ import 'package:arcane/arcane.dart';
 class IconButton extends StatelessWidget {
   /// The icon to display in the button.
   final Widget icon;
-  
+
   /// Function to call when the button is pressed.
   final VoidCallback? onPressed;
-  
+
   /// Whether the button is enabled.
   final bool? enabled;
-  
+
   /// Widget to display before the icon.
   final Widget? leading;
-  
+
   /// Widget to display after the icon.
   final Widget? trailing;
-  
+
   /// Alignment of the button content.
   final AlignmentGeometry? alignment;
-  
+
   /// Size of the button (small, normal, large).
   final ButtonSize size;
-  
+
   /// Density/padding of the button.
   final ButtonDensity density;
-  
+
   /// Shape of the button (rectangle, rounded, circle).
   final ButtonShape shape;
-  
+
   /// Focus node for controlling button focus.
   final FocusNode? focusNode;
-  
+
   /// Whether to disable transition animations.
   final bool disableTransition;
-  
+
   /// Function called when hover state changes.
   final ValueChanged<bool>? onHover;
-  
+
   /// Function called when focus state changes.
   final ValueChanged<bool>? onFocus;
-  
+
   /// Whether the trailing widget should expand.
   final bool trailingExpanded;
-  
+
   /// Whether to enable tap feedback.
   final bool? enableFeedback;
-  
+
   /// Called when a pointer that might cause a tap has contacted the screen.
   final GestureTapDownCallback? onTapDown;
-  
+
   /// Called when a pointer that triggered a tap has stopped contacting the screen.
   final GestureTapUpCallback? onTapUp;
-  
+
   /// Called when a tap has been canceled.
   final GestureTapCancelCallback? onTapCancel;
-  
+
   /// Called when a secondary pointer that might cause a tap has contacted the screen.
   final GestureTapDownCallback? onSecondaryTapDown;
-  
+
   /// Called when a secondary pointer that triggered a tap has stopped contacting the screen.
   final GestureTapUpCallback? onSecondaryTapUp;
-  
+
   /// Called when a secondary tap has been canceled.
   final GestureTapCancelCallback? onSecondaryTapCancel;
-  
+
   /// Called when a tertiary pointer that might cause a tap has contacted the screen.
   final GestureTapDownCallback? onTertiaryTapDown;
-  
+
   /// Called when a tertiary pointer that triggered a tap has stopped contacting the screen.
   final GestureTapUpCallback? onTertiaryTapUp;
-  
+
   /// Called when a tertiary tap has been canceled.
   final GestureTapCancelCallback? onTertiaryTapCancel;
-  
+
   /// Called when a long press gesture has started.
   final GestureLongPressStartCallback? onLongPressStart;
-  
+
   /// Called when a long press gesture is ended.
   final GestureLongPressUpCallback? onLongPressUp;
-  
+
   /// Called when a long press drag moves.
   final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
-  
+
   /// Called when a long press gesture is completed.
   final GestureLongPressEndCallback? onLongPressEnd;
-  
+
   /// Called when a secondary long press gesture is ended.
   final GestureLongPressUpCallback? onSecondaryLongPress;
-  
+
   /// Called when a tertiary long press gesture is ended.
   final GestureLongPressUpCallback? onTertiaryLongPress;
-  
+
   /// The style variant of the button.
-  final ButtonVariance variance;
+  final AbstractButtonStyle variance;
 
   /// Creates an [IconButton] with customizable properties.
   ///

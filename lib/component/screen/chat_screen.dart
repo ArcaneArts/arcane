@@ -87,7 +87,7 @@ class ChatScreen extends StatefulWidget {
   final ChatProvider provider;
   final String sender;
   final int? streamBuffer;
-  final String placeholder;
+  final Widget placeholder;
   final Widget? header;
   final Widget? fab;
   final CrossAxisAlignment avatarAlignment;
@@ -105,7 +105,7 @@ class ChatScreen extends StatefulWidget {
       this.gutter = true,
       this.header,
       this.avatarAlignment = CrossAxisAlignment.start,
-      this.placeholder = "Send a message",
+      this.placeholder = const Text("Send a message"),
       this.streamBuffer,
       this.style,
       this.onMessageMenu,

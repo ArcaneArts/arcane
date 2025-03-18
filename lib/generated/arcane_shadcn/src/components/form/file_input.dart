@@ -3,7 +3,7 @@ import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 Widget _buildFileIcon(String extension) {
   switch (extension) {
     case 'pdf':
-      return const Icon(BootstrapIcons.filePdf);
+      return const Icon(BootstrapIcons.filetypePdf);
     case 'doc':
     case 'docx':
       return const Icon(BootstrapIcons.fileWord);

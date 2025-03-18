@@ -102,9 +102,9 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
     ).gap(16 * scaling);
     return ModalContainer(
       borderRadius: themeData.borderRadiusXxl,
-      barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
-      surfaceClip: ModalContainer.shouldClipSurface(
-          widget.surfaceOpacity ?? themeData.surfaceOpacity),
+      // barrierColor: widget.barrierColor ?? Colors.black.withOpacity(0.8),
+      // surfaceClip: ModalContainer.shouldClipSurface(
+      //     widget.surfaceOpacity ?? themeData.surfaceOpacity),
       child: OutlinedContainer(
         backgroundColor: themeData.colorScheme.popover,
         borderRadius: themeData.borderRadiusXxl,

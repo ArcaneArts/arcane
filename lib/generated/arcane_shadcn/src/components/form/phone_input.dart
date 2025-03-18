@@ -42,8 +42,7 @@ class PhoneInput extends StatefulWidget {
   final bool filterCountryCode;
   final bool onlyNumber;
   final List<Country>? countries;
-  final String? searchPlaceholder;
-  final Widget? searchPlaceholderWidget;
+  final Widget? searchPlaceholder;
 
   const PhoneInput({
     super.key,
@@ -57,7 +56,6 @@ class PhoneInput extends StatefulWidget {
     this.onlyNumber = true,
     this.countries,
     this.searchPlaceholder,
-    this.searchPlaceholderWidget,
   });
 
   @override
@@ -133,7 +131,7 @@ class _PhoneInputState extends State<PhoneInput>
                 bottom: theme.scaling * 8,
                 right: theme.scaling * 4),
             placeholder: widget.searchPlaceholder ??
-                localization.searchPlaceholderCountry,
+                Text(localization.searchPlaceholderCountry),
             // searchFilter: (item, query) {
             //   query = query.toLowerCase();
             //   var searchScore = item.name.toLowerCase().contains(query) ||

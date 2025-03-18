@@ -22,7 +22,7 @@ class MutableText extends StatefulWidget {
   final TextHeightBehavior? textHeightBehavior;
   final TextScaler? textScaler;
   final TextWidthBasis? textWidthBasis;
-  final String? placeholder;
+  final Widget? placeholder;
   final bool border;
   final EditButtonType buttonType;
   final bool autoCorrect;
@@ -169,7 +169,7 @@ class _MutableTextState extends State<MutableText> {
 
 extension XText on Text {
   Widget mutable(ValueChanged<String> onChanged,
-          {String? placeholder,
+          {Widget? placeholder,
           int? minLines,
           bool border = false,
           bool autoCorrect = true,

@@ -84,7 +84,7 @@ class _SearchButtonState extends State<SearchButton> {
 
 class SearchBox extends StatefulWidget {
   final double? minWidth;
-  final String placeholder;
+  final Widget placeholder;
   final Widget? leading;
   final Widget? trailing;
   final ValueChanged<String>? onChanged;
@@ -105,7 +105,7 @@ class SearchBox extends StatefulWidget {
       this.focusNode,
       this.controller,
       this.autofocus = false,
-      this.placeholder = "Search",
+      this.placeholder = const Text("Search"),
       this.leading,
       this.trailing});
 

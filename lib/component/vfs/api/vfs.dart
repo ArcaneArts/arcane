@@ -310,7 +310,7 @@ abstract class VFS {
 
   void mkdirDialog(BuildContext context) => DialogText(
         title: "New Folder",
-        hint: "Folder Name",
+        placeholder: Text("Folder Name"),
         maxLength: 255,
         onConfirm: (name) {
           name = VPaths.sanitize(name.trim());

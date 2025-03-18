@@ -15,6 +15,10 @@ class TooltipContainer extends StatelessWidget {
     required this.child,
   });
 
+  Widget call(BuildContext context) {
+    return this;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -57,7 +61,7 @@ class TooltipContainer extends StatelessWidget {
 
 class Tooltip extends StatefulWidget {
   final Widget child;
-  final Widget tooltip;
+  final WidgetBuilder tooltip;
   final AlignmentGeometry alignment;
   final AlignmentGeometry anchorAlignment;
   final Duration waitDuration;
@@ -93,7 +97,7 @@ class _TooltipState extends State<Tooltip> {
             context: context,
             modal: false,
             builder: (context) {
-              return widget.tooltip;
+              return widget.tooltip(context);
             },
             alignment: widget.alignment,
             anchorAlignment: widget.anchorAlignment,
@@ -200,13 +204,14 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   }) {
     return overlayManager.showTooltip(
       context: context,
@@ -233,6 +238,7 @@ class OverlayManagerAsTooltipOverlayHandler extends OverlayHandler {
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
+      layerLink: layerLink,
     );
   }
 }
@@ -260,13 +266,14 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   }) {
     builder = Pylon.mirror(context, builder);
     TextDirection textDirection = Directionality.of(context);
@@ -309,7 +316,7 @@ class FixedTooltipOverlayHandler extends OverlayHandler {
                       },
                       builder: (innerContext, animation) {
                         final theme = Theme.of(innerContext);
-                        var popoverAnchor = PopoverAnchor(
+                        var popoverAnchor = PopoverOverlayWidget(
                           animation: animation,
                           onTapOutside: () {
                             if (isClosed.value) return;

@@ -1,7 +1,7 @@
 import 'package:arcane/arcane.dart';
 
 class ArcaneFormString<T> extends ArcaneFormField {
-  final String? placeholder;
+  final Widget? placeholder;
   final String Function(T t) reader;
   final T Function(T t, String s) writer;
   final bool textArea;

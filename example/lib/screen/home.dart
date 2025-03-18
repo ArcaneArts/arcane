@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           expands: true,
                           style: TextStyle(fontSize: 16),
                           textAlignVertical: TextAlignVertical.top,
-                          placeholderWidget: Text(
+                          placeholder: Text(
                             "Instructions for the chat model. I.e. Keep your responses short and sweet, Always reference where you got your information from.",
                             style: TextStyle(fontSize: 16),
                           ),

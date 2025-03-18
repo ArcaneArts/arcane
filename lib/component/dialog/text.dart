@@ -7,7 +7,7 @@ class DialogText extends StatefulWidget with ArcaneDialogLauncher {
   final Widget descriptionWidget;
   final String confirmText;
   final String cancelText;
-  final String? hint;
+  final Widget? placeholder;
   final bool obscureText;
   final String? initialValue;
   final void Function(String result) onConfirm;
@@ -23,7 +23,7 @@ class DialogText extends StatefulWidget with ArcaneDialogLauncher {
       this.description,
       this.keyboardType,
       this.obscureText = false,
-      this.hint,
+      this.placeholder,
       this.initialValue,
       this.descriptionWidget = const SizedBox.shrink(),
       this.confirmText = "Done",
@@ -75,7 +75,7 @@ class _DialogTextState extends State<DialogText> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 focusNode: focusNode,
                 controller: controller,
-                placeholder: widget.hint,
+                placeholder: widget.placeholder,
                 onSubmitted: (value) {
                   Navigator.of(context).pop(true);
                   widget.onConfirm(value);

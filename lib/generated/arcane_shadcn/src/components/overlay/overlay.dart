@@ -53,13 +53,14 @@ abstract class OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   });
 }
 
@@ -102,13 +103,14 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   });
 
   OverlayCompleter<T?> showTooltip<T>({
@@ -130,13 +132,14 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   });
 
   OverlayCompleter<T?> showMenu<T>({
@@ -158,13 +161,14 @@ abstract class OverlayManager implements OverlayHandler {
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   });
 }
 
@@ -216,13 +220,14 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   }) {
     return widget.popoverHandler.show(
       context: context,
@@ -250,6 +255,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
+      layerLink: layerLink,
     );
   }
 
@@ -273,13 +279,14 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   }) {
     builder = Pylon.mirror(context, builder);
     return widget.tooltipHandler.show(
@@ -308,6 +315,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
+      layerLink: layerLink,
     );
   }
 
@@ -331,13 +339,14 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     EdgeInsetsGeometry? margin,
     bool follow = true,
     bool consumeOutsideTaps = true,
-    ValueChanged<PopoverAnchorState>? onTickFollow,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
     bool allowInvertHorizontal = true,
     bool allowInvertVertical = true,
     bool dismissBackdropFocus = true,
     Duration? showDuration,
     Duration? dismissDuration,
     OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
   }) {
     builder = Pylon.mirror(context, builder);
     return widget.menuHandler.show(
@@ -366,6 +375,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
       showDuration: showDuration,
       dismissDuration: dismissDuration,
       overlayBarrier: overlayBarrier,
+      layerLink: layerLink,
     );
   }
 }

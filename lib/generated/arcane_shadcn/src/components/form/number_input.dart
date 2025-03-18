@@ -22,7 +22,7 @@ class NumberInput extends StatefulWidget {
   final TextStyle? style;
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onEditingComplete;
-  final String? placeholder;
+  final Widget? placeholder;
   final bool pointerSignals;
 
   const NumberInput({

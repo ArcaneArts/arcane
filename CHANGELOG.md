@@ -1,3 +1,7 @@
+# 5.0.0
+* Sync Upstream
+* BREAKING: Reverted placeholder now uses Widget instead of String. (and no we dont like it this way)
+
 # 4.0.4
 * Improved sliver / box detection
 

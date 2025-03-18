@@ -5,13 +5,15 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 /// Controls the behavior of the back button in a [Bar] widget.
 ///
 /// See more details in the [documentation](../../../doc/components/bar.md#barbackbuttonmode).
-enum BarBackButtonMode { 
+enum BarBackButtonMode {
   /// Never show the back button
-  never, 
+  never,
+
   /// Always show the back button if navigation can pop
-  always, 
+  always,
+
   /// Show the back button only when the bar is pinned
-  whenPinned 
+  whenPinned
 }
 
 /// A customizable app bar component that provides a flexible interface for creating headers.
@@ -23,110 +25,110 @@ enum BarBackButtonMode {
 /// [Bar Component Documentation](../../../doc/components/bar.md).
 class Bar extends StatelessWidget {
   /// Widgets displayed at the end (right) of the bar.
-  /// 
+  ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final List<Widget> trailing;
-  
+
   /// Widgets displayed at the start (left) of the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final List<Widget> leading;
-  
+
   /// The main content of the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? child;
-  
+
   /// Custom widget to use as the title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? title;
-  
+
   /// Content displayed above the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? barHeader;
-  
+
   /// Content displayed below the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? barFooter;
-  
+
   /// Text to display as the title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? titleText;
-  
+
   /// Text to display above the title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? headerText;
-  
+
   /// Text to display below the title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final String? subtitleText;
-  
+
   /// Small widget placed on top of title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? header;
-  
+
   /// Small widget placed below title.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Widget? subtitle;
-  
+
   /// Whether to expand the trailing section instead of the main content.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final bool trailingExpanded;
-  
+
   /// Alignment of the title content.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Alignment alignment;
-  
+
   /// Background color of the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final Color? backgroundColor;
-  
+
   /// Space between leading widgets.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? leadingGap;
-  
+
   /// Space between trailing widgets.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? trailingGap;
-  
+
   /// Padding around bar content.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final EdgeInsetsGeometry? padding;
-  
+
   /// Height of the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final double? height;
-  
+
   /// Whether to apply a glass effect to the bar.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) and [Glass Effect](../../../doc/components/bar.md#features) in the documentation.
   final bool useGlass;
-  
+
   /// Controls when to show the back button.
   ///
   /// See [BarBackButtonMode](../../../doc/components/bar.md#barbackbuttonmode) in the documentation.
   final BarBackButtonMode backButton;
-  
+
   /// Whether to ignore context signals from parent widgets.
   ///
   /// See [Parameters](../../../doc/components/bar.md#parameters) in the documentation.
   final bool ignoreContextSignals;
-  
+
   /// Collection of action buttons to display in the trailing area.
   ///
   /// See [BarActions](../../../doc/components/bar.md#baractions) in the documentation.
@@ -291,16 +293,16 @@ extension XAST on Widget {
 class SafeBar extends StatelessWidget {
   /// Whether to apply safe area at the top.
   final bool top;
-  
+
   /// Whether to apply safe area at the bottom.
   final bool bottom;
-  
+
   /// Whether to apply safe area on the left.
   final bool left;
-  
+
   /// Whether to apply safe area on the right.
   final bool right;
-  
+
   /// The builder function for the content.
   final PylonBuilder builder;
 
@@ -347,7 +349,7 @@ class SafeBar extends StatelessWidget {
 class BlockBackButton extends StatelessWidget {
   /// Whether to block the back button.
   final bool block;
-  
+
   /// The builder function for the content.
   final PylonBuilder builder;
 
@@ -379,7 +381,7 @@ const double _iconButtonWidth = 24;
 class BarActions extends StatelessWidget {
   /// The list of action buttons to display.
   final List<BarAction> actions;
-  
+
   /// Maximum number of icons to show before collapsing excess into a dropdown menu.
   final int maxIcons;
 
@@ -395,7 +397,7 @@ class BarActions extends StatelessWidget {
     List<Widget> mandatory = actions
         .where((i) => !i.collapsable)
         .map((i) => Tooltip(
-            tooltip: Text(i.label),
+            tooltip: (context) => Text(i.label),
             child: IconButton(
               icon: Icon(i.icon),
               onPressed: i.onPressed,
@@ -421,7 +423,7 @@ class BarActions extends StatelessWidget {
 
     spread.addAll(mandatory);
     spread.addAll(col.map((i) => Tooltip(
-        tooltip: Text(i.label),
+        tooltip: (context) => Text(i.label),
         child: IconButton(
           icon: Icon(i.icon),
           onPressed: i.onPressed,
@@ -445,13 +447,13 @@ class BarActions extends StatelessWidget {
 class BarAction {
   /// Icon to display for the action.
   final IconData icon;
-  
+
   /// Text label for the action (shown in tooltip or menu).
   final String label;
-  
+
   /// Function to call when the action is triggered.
   final VoidCallback onPressed;
-  
+
   /// Whether this action can be moved to the overflow menu.
   final bool collapsable;
 
@@ -471,13 +473,13 @@ class BarAction {
 class InjectBarEnds extends StatelessWidget {
   /// Whether to inject into the trailing (true) or leading (false) area.
   final bool trailing;
-  
+
   /// The builder function for the content.
   final PylonBuilder builder;
-  
+
   /// Whether to add injected widgets at the start (true) or end (false) of the area.
   final bool start;
-  
+
   /// Function that returns widgets to inject.
   final List<Widget> Function(BuildContext)? children;
 
@@ -503,10 +505,10 @@ class InjectBarEnds extends StatelessWidget {
 class InjectBarTrailing extends StatelessWidget {
   /// Function that returns widgets to inject into the trailing area.
   final List<Widget> Function(BuildContext)? children;
-  
+
   /// Whether to add injected widgets at the start (true) or end (false) of the trailing area.
   final bool start;
-  
+
   /// The builder function for the content.
   final PylonBuilder builder;
 
@@ -541,10 +543,10 @@ class InjectBarTrailing extends StatelessWidget {
 class InjectBarLeading extends StatelessWidget {
   /// Function that returns widgets to inject into the leading area.
   final List<Widget> Function(BuildContext)? children;
-  
+
   /// Whether to add injected widgets at the start (true) or end (false) of the leading area.
   final bool start;
-  
+
   /// The builder function for the content.
   final PylonBuilder builder;
 

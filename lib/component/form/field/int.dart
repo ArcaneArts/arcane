@@ -3,7 +3,7 @@ import 'package:arcane/arcane.dart';
 class ArcaneFormInteger<T> extends ArcaneFormField {
   final int? maxValue;
   final int? minValue;
-  final String? placeholder;
+  final Widget? placeholder;
   final bool showButtons;
   final int Function(T t) reader;
   final T Function(T t, int s) writer;

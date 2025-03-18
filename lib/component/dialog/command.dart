@@ -4,7 +4,7 @@ import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
 
 class DialogCommand extends StatefulWidget with ArcaneDialogLauncher {
-  final String? hint;
+  final Widget? placeholder;
   final bool obscureText;
   final String? initialValue;
   final void Function(String result) onConfirm;
@@ -19,7 +19,7 @@ class DialogCommand extends StatefulWidget with ArcaneDialogLauncher {
       this.options = const {},
       this.keyboardType,
       this.obscureText = false,
-      this.hint,
+      this.placeholder,
       this.initialValue,
       this.maxLength,
       this.leading,
@@ -82,7 +82,7 @@ class _DialogCommandState extends State<DialogCommand> {
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   focusNode: focusNode,
                   controller: controller,
-                  placeholder: widget.hint,
+                  placeholder: widget.placeholder,
                   // sameSizeHintStyle: true, TODO: fix
                   onChanged: (value) => setState(() {}),
                   onSubmitted: (value) {

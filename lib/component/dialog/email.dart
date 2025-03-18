@@ -7,7 +7,7 @@ class DialogEmail extends StatefulWidget with ArcaneDialogLauncher {
   final Widget descriptionWidget;
   final String confirmText;
   final String cancelText;
-  final String? hint;
+  final Widget? placeholder;
   final String? initialValue;
   final void Function(String email) onConfirm;
   final List<Widget>? actions;
@@ -22,7 +22,7 @@ class DialogEmail extends StatefulWidget with ArcaneDialogLauncher {
     this.descriptionWidget = const SizedBox.shrink(),
     this.confirmText = "Submit",
     this.cancelText = "Cancel",
-    this.hint,
+    this.placeholder,
     this.initialValue,
     required this.onConfirm,
     this.actions,
@@ -79,7 +79,7 @@ class _DialogEmailState extends State<DialogEmail> {
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 focusNode: focusNode,
                 controller: controller,
-                placeholder: widget.hint,
+                placeholder: widget.placeholder,
                 onSubmitted: (value) {
                   Navigator.of(context).pop(true);
                   widget.onConfirm(value);
