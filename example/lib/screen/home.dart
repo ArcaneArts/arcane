@@ -10,22 +10,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedValue;
 
+  Consumer? c;
+
   @override
   Widget build(BuildContext context) => FillScreen(
           child: Center(
-        child: PrimaryButton(
-          child: const Text("Press Me"),
-          onPressed: () =>
-              DialogConfirm(title: "Config?", onConfirm: () {}).open(context),
+        child: Row(
+          children: [
+            Icon(Icons.airplane),
+            Icon(RadixIcons.alignBottom),
+            Icon(BootstrapIcons.airplane),
+            Icon(LucideIcons.flipHorizontal2)
+          ],
         ),
       ));
-}
-
-class SomeCustomDialog extends StatelessWidget with ArcaneDialogLauncher {
-  const SomeCustomDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) => const ArcaneDialog(
-        content: Text("Shit goes here"),
-      );
 }

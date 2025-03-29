@@ -97,53 +97,20 @@ void main() {
                   const Text('Add the fonts to your pubspec.yaml file.').p(),
                   const CodeSnippet(
                     code: '''
-  fonts:
-    - family: BootstrapIcons
-      fonts:
-        - asset: "packages/arcane/resources/icons/BootstrapIcons.otf"
-    - family: RadixIcons
-      fonts:
-        - asset: "packages/arcane/resources/icons/RadixIcons.otf"
-    - family: "GeistSans"
-      fonts:
-        - asset: "packages/arcane/resources/fonts/Geist-Black.otf"
-          weight: 800
-        - asset: "packages/arcane/resources/fonts/Geist-Bold.otf"
-          weight: 700
-        - asset: "packages/arcane/resources/fonts/Geist-Light.otf"
-          weight: 300
-        - asset: "packages/arcane/resources/fonts/Geist-Medium.otf"
-          weight: 500
-        - asset: "packages/arcane/resources/fonts/Geist-SemiBold.otf"
-          weight: 600
-        - asset: "packages/arcane/resources/fonts/Geist-Thin.otf"
-          weight: 100
-        - asset: "packages/arcane/resources/fonts/Geist-UltraBlack.otf"
-          weight: 900
-        - asset: "packages/arcane/resources/fonts/Geist-UltraLight.otf"
-          weight: 200
-        - asset: "packages/arcane/resources/fonts/Geist-Regular.otf"
-          weight: 400
-    - family: "GeistMono"
-      fonts:
-        - asset: "packages/arcane/resources/fonts/GeistMono-Black.otf"
-          weight: 800
-        - asset: "packages/arcane/resources/fonts/GeistMono-Bold.otf"
-          weight: 700
-        - asset: "packages/arcane/resources/fonts/GeistMono-Light.otf"
-          weight: 300
-        - asset: "packages/arcane/resources/fonts/GeistMono-Medium.otf"
-          weight: 500
-        - asset: "packages/arcane/resources/fonts/GeistMono-Regular.otf"
-          weight: 400
-        - asset: "packages/arcane/resources/fonts/GeistMono-SemiBold.otf"
-          weight: 600
-        - asset: "packages/arcane/resources/fonts/GeistMono-Thin.otf"
-          weight: 100
-        - asset: "packages/arcane/resources/fonts/GeistMono-UltraBlack.otf"
-          weight: 900
-        - asset: "packages/arcane/resources/fonts/GeistMono-UltraLight.otf"
-          weight: 200''',
+  shaders:
+    - packages/arcane/resources/shaders/frost.frag
+    - packages/arcane/resources/shaders/pixelate.frag
+    - packages/arcane/resources/shaders/pixelate_blur.frag
+    - packages/arcane/resources/shaders/rgb.frag
+    - packages/arcane/resources/shaders/loader.frag
+    - packages/arcane/resources/shaders/glyph.frag
+    - packages/arcane/resources/shaders/invert.frag
+    - packages/arcane/resources/shaders/warp.frag
+    - packages/arcane/resources/shaders/black_hole.frag
+    - packages/arcane/resources/shaders/lux.frag
+    - packages/arcane/resources/shaders/cascade.frag
+    - packages/arcane/resources/shaders/edge.frag
+    - packages/arcane/resources/shaders/arcane_blur.frag''',
                     mode: 'yaml',
                   ).sized(height: 300).p(),
                 ],
