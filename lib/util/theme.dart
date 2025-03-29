@@ -8,6 +8,7 @@ class ArcaneTheme {
   final double radius;
   final ArcaneShimmerTheme shimmer;
   final ContrastedColorScheme? scheme;
+  final ScrollPhysics physics;
   final double surfaceOpacity;
   final double surfaceBlur;
   final double scaling;
@@ -31,6 +32,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
     this.blurMode = ArcaneBlurMode.backdropFilter,
     this.edge = const EdgeTheme(),
@@ -146,7 +148,8 @@ ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
       radius: theme.radius,
       scaling: theme.scaling,
       surfaceOpacity: theme.surfaceOpacity,
-      surfaceBlur: theme.surfaceBlur,
+      surfaceBlur:
+          theme.blurMode == ArcaneBlurMode.disabled ? 0 : theme.surfaceBlur,
     );
 
 class ArcaneShimmerTheme {

@@ -46,101 +46,101 @@ void runApp(Widget app, {bool setupMetaSEO = true}) async {
 class ArcaneApp extends StatefulWidget {
   /// Key for the application's navigator
   final GlobalKey<NavigatorState>? navigatorKey;
-  
+
   /// Controls the adaptation of UI elements based on screen size
   final AdaptiveScaling? scaling;
-  
+
   /// The widget to be displayed at the root route "/"
   final Widget? home;
-  
+
   /// Mapping of route names to widget builders
   final Map<String, WidgetBuilder>? routes;
-  
+
   /// The initial route when the app is first loaded
   final String initialRoute;
-  
+
   /// Factory for generating routes dynamically
   final RouteFactory? onGenerateRoute;
-  
+
   /// Factory for generating initial routes
   final InitialRouteListFactory? onGenerateInitialRoutes;
-  
+
   /// Factory for handling unknown routes
   final RouteFactory? onUnknownRoute;
-  
+
   /// Callback for navigation notifications
   final NotificationListenerCallback<NavigationNotification>?
       onNavigationNotification;
-  
+
   /// List of observers for the navigator
   final List<NavigatorObserver>? navigatorObservers;
-  
+
   /// Provider of route information for the Router API
   final RouteInformationProvider? routeInformationProvider;
-  
+
   /// Parser for route information for the Router API
   final RouteInformationParser<Object>? routeInformationParser;
-  
+
   /// Delegate for routing decisions in the Router API
   final RouterDelegate<Object>? routerDelegate;
-  
+
   /// Dispatcher for back button events
   final BackButtonDispatcher? backButtonDispatcher;
-  
+
   /// Router configuration
   final RouterConfig<Object>? routerConfig;
-  
+
   /// Builder for wrapping the entire app with additional widgets
   final TransitionBuilder? builder;
-  
+
   /// Title of the application
   final String title;
-  
+
   /// Generator for the app title
   final GenerateAppTitle? onGenerateTitle;
-  
+
   /// Primary color for the app
   final Color? color;
-  
+
   /// The app's locale
   final Locale? locale;
-  
+
   /// Delegates for localizing the app
   final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
-  
+
   /// Callback for resolving a list of locales
   final LocaleListResolutionCallback? localeListResolutionCallback;
-  
+
   /// Callback for resolving a locale
   final LocaleResolutionCallback? localeResolutionCallback;
-  
+
   /// The locales supported by the app
   final Iterable<Locale> supportedLocales;
-  
+
   /// Whether to show performance overlay
   final bool showPerformanceOverlay;
-  
+
   /// Whether to show semantics debugger
   final bool showSemanticsDebugger;
-  
+
   /// Whether to show the debug banner
   final bool debugShowCheckedModeBanner;
-  
+
   /// Keyboard shortcuts for the app
   final Map<ShortcutActivator, Intent>? shortcuts;
-  
+
   /// Actions that can be invoked by intents
   final Map<Type, Action<Intent>>? actions;
-  
+
   /// Restoration scope ID for state restoration
   final String? restorationScopeId;
-  
+
   /// Whether to show the Material grid
   final bool debugShowMaterialGrid;
-  
+
   /// Whether to disable the browser's context menu (on web)
   final bool disableBrowserContextMenu;
-  
+
   /// The theme configuration for the app
   final ArcaneTheme? theme;
 
@@ -365,17 +365,20 @@ class ArcaneAppState extends State<ArcaneApp> {
 /// Provides a consistent scrolling experience across different platforms and input devices.
 /// For more information, see [Scrolling Behavior](../doc/component/app.md#scrolling-behavior).
 class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
+  final ScrollPhysics physics;
+
   /// Whether to allow mouse dragging for scrolling.
   final bool allowMouseDragging;
 
   /// Creates a new ArcaneScrollBehavior instance.
   ///
   /// @param allowMouseDragging Whether to allow dragging with a mouse to scroll content
-  const ArcaneScrollBehavior({this.allowMouseDragging = true});
+  const ArcaneScrollBehavior(
+      {this.allowMouseDragging = true,
+      this.physics = const BouncingScrollPhysics()});
 
   @override
-  ScrollPhysics getScrollPhysics(BuildContext context) =>
-      const BouncingScrollPhysics();
+  ScrollPhysics getScrollPhysics(BuildContext context) => physics;
 
   @override
   Set<PointerDeviceKind> get dragDevices => {

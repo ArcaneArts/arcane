@@ -35,6 +35,8 @@ class ExampleArcaneApp extends StatelessWidget {
             home: HomeScreen(),
             showPerformanceOverlay: false,
             theme: ArcaneTheme(
+                scrollBehavior: const ArcaneScrollBehavior(
+                    physics: ClampingScrollPhysics()),
                 themeMode: ThemeMode.system,
                 scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
           ));

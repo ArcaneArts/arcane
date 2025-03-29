@@ -1,6 +1,10 @@
 # 5.0.0
 * Sync Upstream
 * FEAT: You no longer need to define arcane fonts in your pubspec to get icons & fonts. They just "work" now.
+* FEAT: You can now change the scroll physics & behavior in `ArcaneTheme(scrollBehavior: ArcaneScrollBehavior(physics: ClampPhysics()))` for example
+* FEAT: Added `.shimmer(loading: true)` as a widget extension. Also added ArcaneTheme for shimmer defaults
+* FEAT: Added `ArcaneBlurMode.disabled` to the ArcaneTheme blur modes. 
+* FEAT: All `Glass` widgets now use the `ArcaneBlur` instead of the shad `SurfaceBlur`
 * BREAKING: Reverted placeholder now uses Widget instead of String. (and no we dont like it this way)
 * FIX: Fixed a bug where the placeholder was not being displayed correctly in some cases om multiselect
 * FIX: Dialog double border issues 
