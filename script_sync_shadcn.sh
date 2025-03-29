@@ -27,6 +27,16 @@ cp -a arcane_shadcn/lib/. lib/generated/arcane_shadcn
 echo "Fixing imports for 'arcane_shadcn'."
 find lib/generated/arcane_shadcn -type f -name "*.dart" -exec sed -i '' 's|import '\''package:shadcn_flutter/|import '\''package:arcane/generated/arcane_shadcn/|g' {} +
 
+echo "Fixing 'fontPackage' in radix_icons.dart."
+find lib/generated/arcane_shadcn/src/icons -type f -name "radix_icons.dart" -exec sed -i '' "s|fontPackage: 'shadcn_flutter'|fontPackage: 'arcane'|g" {} +
+
+echo "Fixing 'fontPackage' in bootstrap_icons.dart."
+find lib/generated/arcane_shadcn/src/icons -type f -name "bootstrap_icons.dart" -exec sed -i '' "s|fontPackage: 'shadcn_flutter'|fontPackage: 'arcane'|g" {} +
+
+echo "Fixing 'fontPackage' in lucide_icons.dart."
+find lib/generated/arcane_shadcn/src/icons -type f -name "lucide_icons.dart" -exec sed -i '' "s|fontPackage: 'shadcn_flutter'|fontPackage: 'arcane'|g" {} +
+
+
 # Tear out docs into arcane
 echo "Tearing out 'arcane_shadcn/docs' into 'docs'."
 rm -rf docs && mkdir -p docs
