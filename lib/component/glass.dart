@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:flutter/foundation.dart';
 
 /// Defines the directions for the anti-flicker gradient used with [GlassAntiFlicker].
 ///
@@ -11,13 +12,13 @@ import 'package:arcane/arcane.dart';
 enum AntiFlickerDirection {
   /// Gradient fades from top to bottom
   top,
-  
+
   /// Gradient fades from bottom to top
   bottom,
-  
+
   /// Gradient fades from left to right
   left,
-  
+
   /// Gradient fades from right to left
   right,
 }
@@ -70,7 +71,7 @@ class _GlassStop {
 class GlassStopper extends StatelessWidget {
   /// Builder function for the content.
   final Widget Function(BuildContext context) builder;
-  
+
   /// Whether to stop glass effects in descendant widgets.
   final bool stopping;
 
@@ -107,6 +108,8 @@ class GlassStopper extends StatelessWidget {
       local: true, value: _GlassStop(stopping), builder: builder);
 }
 
+bool kShowStoppedGlass = kDebugMode && false;
+
 /// A component that applies a blur effect to its child widget with a semi-transparent background.
 ///
 /// [Glass] creates a frosted glass appearance by applying a blur effect and a
@@ -120,25 +123,22 @@ class GlassStopper extends StatelessWidget {
 class Glass extends StatelessWidget {
   /// The widget to which the glass effect is applied.
   final Widget child;
-  
-  /// Blur amount (if null, uses theme's surfaceBlur).
-  final double? blur;
-  
+
   /// Border radius for clipping the glass effect.
   final BorderRadius borderRadius;
-  
+
   /// Whether to disable the glass effect.
   final bool disabled;
-  
+
   /// Widget to display underneath the glass effect.
   final Widget? under;
-  
+
   /// Color tint to apply to the glass effect.
   final Color? tint;
-  
+
   /// Background color to use when glass effect is disabled.
   final Color? disabledColor;
-  
+
   /// Whether to ignore glass stopping signals from parent context.
   final bool ignoreContextSignals;
 
@@ -165,7 +165,6 @@ class Glass extends StatelessWidget {
       this.under,
       this.tint,
       this.disabled = false,
-      this.blur,
       this.borderRadius = const BorderRadius.all(Radius.circular(0)),
       required this.child});
 
@@ -175,7 +174,9 @@ class Glass extends StatelessWidget {
         (GlassStopper.isStopping(context) && !ignoreContextSignals);
     Widget b = disabled
         ? Container(
-            color: disabledColor ?? Theme.of(context).colorScheme.background,
+            color: kShowStoppedGlass
+                ? Colors.red
+                : disabledColor ?? Theme.of(context).colorScheme.background,
             child: child,
           )
         : SurfaceBlur(surfaceBlur: Theme.of(context).surfaceBlur, child: child);
@@ -191,13 +192,19 @@ class Glass extends StatelessWidget {
     }
 
     b = Container(
-      color: tint ?? Theme.of(context).colorScheme.background.withOpacity(0.15),
+      color: tint ??
+          Theme.of(context)
+              .colorScheme
+              .background
+              .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
       child: b,
     );
 
     return disabled
         ? Container(
-            color: disabledColor ?? Theme.of(context).colorScheme.background,
+            color: kShowStoppedGlass
+                ? Colors.red
+                : disabledColor ?? Theme.of(context).colorScheme.background,
             child: child,
           )
         : ClipRRect(

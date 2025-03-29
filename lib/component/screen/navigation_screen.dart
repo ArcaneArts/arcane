@@ -90,6 +90,7 @@ class NavigationScreen extends AbstractStatelessScreen {
   final PylonBuilder? sidebarFooter;
   final PylonBuilder? sidebarHeader;
   final bool? drawerTransformsBackdrop;
+  final double sidebarPrefixPadding;
   final Widget Function(BuildContext, NavigationScreen, int)?
       customNavigationBuilder;
 
@@ -98,6 +99,7 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.sidebarHeader,
       this.railRightPadding,
       this.index = 0,
+      this.sidebarPrefixPadding = 8,
       this.sidebarWidth = 250,
       this.railTopPadding,
       this.sidebarSpacing,
@@ -161,6 +163,8 @@ class NavigationScreen extends AbstractStatelessScreen {
       ArcaneSidebar(
           width: sidebarWidth,
           children: (context) => [
+                if (sidebarPrefixPadding > 0)
+                  SizedBox(height: sidebarPrefixPadding),
                 ...tabs.mapIndexed((e, i) => switch (e) {
                       NavTab e => ArcaneSidebarButton(
                           icon: Icon(

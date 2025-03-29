@@ -228,7 +228,6 @@ class Bar extends StatelessWidget {
         Glass(
             ignoreContextSignals: ignoreContextSignals,
             disabled: !useGlass,
-            blur: Theme.of(context).surfaceBlur ?? 16,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
