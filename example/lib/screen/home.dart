@@ -8,40 +8,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Iterable<String>? selectedValues;
+  String? selectedValue;
 
   @override
   Widget build(BuildContext context) => FillScreen(
           child: Center(
-        child: MultiSelect<String>(
-          itemBuilder: (context, item) {
-            return MultiSelectChip(value: item, child: Text(item));
-          },
-          popup: const SelectPopup(
-              items: SelectItemList(children: [
-            SelectItemButton(
-              value: 'Apple',
-              child: Text('Apple'),
-            ),
-            SelectItemButton(
-              value: 'Banana',
-              child: Text('Banana'),
-            ),
-            SelectItemButton(
-              value: 'Cherry',
-              child: Text('Cherry'),
-            ),
-          ])),
-          onChanged: (value) {
-            setState(() {
-              selectedValues = value;
-            });
-          },
-          constraints: const BoxConstraints(
-            minWidth: 200,
-          ),
-          value: selectedValues,
-          placeholder: const Text('Select a fruit'),
+        child: PrimaryButton(
+          child: const Text("Press Me"),
+          onPressed: () =>
+              DialogConfirm(title: "Config?", onConfirm: () {}).open(context),
         ),
       ));
+}
+
+class SomeCustomDialog extends StatelessWidget with ArcaneDialogLauncher {
+  const SomeCustomDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) => const ArcaneDialog(
+        content: Text("Shit goes here"),
+      );
 }

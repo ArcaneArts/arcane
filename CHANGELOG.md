@@ -1,6 +1,8 @@
 # 5.0.0
 * Sync Upstream
 * BREAKING: Reverted placeholder now uses Widget instead of String. (and no we dont like it this way)
+* FIX: Fixed a bug where the placeholder was not being displayed correctly in some cases om multiselect
+* FIX: Dialog double border issues 
 
 # 4.0.4
 * Improved sliver / box detection
