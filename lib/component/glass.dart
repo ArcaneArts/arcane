@@ -179,7 +179,8 @@ class Glass extends StatelessWidget {
                 : disabledColor ?? Theme.of(context).colorScheme.background,
             child: child,
           )
-        : SurfaceBlur(surfaceBlur: Theme.of(context).surfaceBlur, child: child);
+        : ArcaneBlur(
+            child: child, intensity: Theme.of(context).surfaceBlur ?? 16);
 
     if (under != null) {
       b = Stack(

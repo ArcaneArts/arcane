@@ -11,8 +11,8 @@ enum ArcaneBlurMode {
 
   /// Uses a [BackdropFilter] to blur the child widget.
   backdropFilter,
-
   frost,
+  disabled,
 }
 
 enum EdgeDirection {
@@ -62,6 +62,10 @@ class ArcaneBlur extends StatelessWidget {
     if (intensity <= 0) return child;
 
     ArcaneBlurMode mode = getBlurMode(context);
+
+    if (mode == ArcaneBlurMode.disabled) {
+      return child;
+    }
 
     if (mode == ArcaneBlurMode.frost) {
       return ArcaneShaderBlur(

@@ -20,9 +20,10 @@ extension XDateTimeStartEnds on DateTime {
 extension XWidgetArcane on Widget {
   Widget shimmer({bool loading = true}) => Skeletonizer(
         effect: ShimmerEffect(
-            duration: Duration(milliseconds: 1500),
-            baseColor: Arcane.globalTheme.shadThemeData.colorScheme.secondary,
-            highlightColor:
+            duration: Arcane.globalTheme.shimmer.duration,
+            baseColor: Arcane.globalTheme.shimmer.baseColor ??
+                Arcane.globalTheme.shadThemeData.colorScheme.secondary,
+            highlightColor: Arcane.globalTheme.shimmer.highlightColor ??
                 Arcane.globalTheme.shadThemeData.colorScheme.primary),
         enabled: loading,
         child: this,

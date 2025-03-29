@@ -6,6 +6,7 @@ import 'package:flutter/material.dart' as m;
 
 class ArcaneTheme {
   final double radius;
+  final ArcaneShimmerTheme shimmer;
   final ContrastedColorScheme? scheme;
   final double surfaceOpacity;
   final double surfaceBlur;
@@ -30,6 +31,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.shimmer = const ArcaneShimmerTheme(),
     this.blurMode = ArcaneBlurMode.backdropFilter,
     this.edge = const EdgeTheme(),
     this.defaultHeaderHeight = 0,
@@ -146,6 +148,18 @@ ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
       surfaceOpacity: theme.surfaceOpacity,
       surfaceBlur: theme.surfaceBlur,
     );
+
+class ArcaneShimmerTheme {
+  final Duration duration;
+  final Color? baseColor;
+  final Color? highlightColor;
+
+  const ArcaneShimmerTheme({
+    this.duration = const Duration(milliseconds: 1500),
+    this.baseColor,
+    this.highlightColor,
+  });
+}
 
 class ContrastedColorScheme {
   final ColorScheme light;

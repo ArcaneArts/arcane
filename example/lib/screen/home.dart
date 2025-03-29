@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context, i) => BasicCard(
                         title: Text("Tile $i s djfjsdf jsdjfjsdjf sjdf jfsdj"),
                       ).padBottom(8),
-                    ))),
+                    )).shimmer(loading: false)),
             NavTab(
                 label: "Fill Screen",
                 icon: Icons.activity,
