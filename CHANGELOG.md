@@ -1,5 +1,6 @@
 # 5.0.0
 * Sync Upstream
+* FEAT: You no longer need to define arcane fonts in your pubspec to get icons & fonts. They just "work" now.
 * BREAKING: Reverted placeholder now uses Widget instead of String. (and no we dont like it this way)
 * FIX: Fixed a bug where the placeholder was not being displayed correctly in some cases om multiselect
 * FIX: Dialog double border issues 
