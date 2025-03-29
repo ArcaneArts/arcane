@@ -18,6 +18,16 @@ extension XDateTimeStartEnds on DateTime {
 }
 
 extension XWidgetArcane on Widget {
+  Widget shimmer({bool loading = true}) => Skeletonizer(
+        effect: ShimmerEffect(
+            duration: Duration(milliseconds: 1500),
+            baseColor: Arcane.globalTheme.shadThemeData.colorScheme.secondary,
+            highlightColor:
+                Arcane.globalTheme.shadThemeData.colorScheme.primary),
+        enabled: loading,
+        child: this,
+      );
+
   Widget withTooltip(String tooltip) =>
       Tooltip(tooltip: TooltipContainer(child: Text(tooltip)), child: this);
 

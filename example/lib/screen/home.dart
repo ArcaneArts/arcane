@@ -14,7 +14,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    kShowStoppedGlass = true;
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     sliver: SListView.builder(
                       childCount: 1000,
                       builder: (context, i) => BasicCard(
-                        title: Text("Tile $i"),
+                        title: Text("Tile $i s djfjsdf jsdjfjsdjf sjdf jfsdj"),
                       ).padBottom(8),
                     ))),
             NavTab(
@@ -69,13 +68,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           message: "This is a Sliver Filled"),
                     ))),
           ].toList(),
-          sidebarHeader: (context) => const ArcaneSidebarHeader(
-            titleText: "Header",
-            subtitleText: "Subtitle",
-            trailing: [
-              Icon(Icons.search_ionic),
-            ],
-          ),
+          sidebarHeader: (context) => !context.isSidebarExpanded
+              ? SizedBox.shrink()
+              : const ArcaneSidebarHeader(
+                  titleText: "Header",
+                  subtitleText: "Subtitle",
+                  trailing: [
+                    Icon(Icons.search_ionic),
+                  ],
+                ),
           sidebarFooter: (context) => ArcaneSidebarFooter(
             content: const Text("Footer"),
           ),
