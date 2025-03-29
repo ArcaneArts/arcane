@@ -9,7 +9,7 @@ class ReorderableAnimatedListImpl<E extends Object>
   const ReorderableAnimatedListImpl({
     Key? key,
     required List<E> items,
-    required ItemBuilder? itemBuilder,
+    required ReorderableItemBuilder? itemBuilder,
     List<AnimationEffect>? enterTransition,
     List<AnimationEffect>? exitTransition,
     Duration? insertDuration,
@@ -55,7 +55,7 @@ class ReorderableAnimatedListImpl<E extends Object>
     Key? key,
     required List<E> items,
     required SliverGridDelegate sliverGridDelegate,
-    required ItemBuilder itemBuilder,
+    required ReorderableItemBuilder itemBuilder,
     List<AnimationEffect>? enterTransition,
     List<AnimationEffect>? exitTransition,
     ReorderCallback? onReorder,

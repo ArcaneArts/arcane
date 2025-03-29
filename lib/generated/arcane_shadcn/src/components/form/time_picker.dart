@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
@@ -167,6 +166,7 @@ class _TimePickerDialogState extends State<TimePickerDialog> {
           Positioned.fill(
             child: TextField(
               textAlign: TextAlign.center,
+              textAlignVertical: TextAlignVertical.center,
               controller: controller,
               style: theme.typography.x4Large,
               inputFormatters: [
@@ -617,13 +617,6 @@ class TimeRange {
     return TimeRange(
       start: start ?? this.start,
       end: end ?? this.end,
-    );
-  }
-
-  TimeRange merge(TimeRange other) {
-    return TimeRange(
-      start: other.start ?? start,
-      end: other.end ?? end,
     );
   }
 

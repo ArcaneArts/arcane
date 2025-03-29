@@ -1,5 +1,4 @@
 import 'dart:ui' as ui;
-import 'dart:ui';
 
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 

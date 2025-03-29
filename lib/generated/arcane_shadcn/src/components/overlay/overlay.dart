@@ -28,7 +28,7 @@ abstract class OverlayCompleter<T> {
   void dispose();
   bool get isCompleted;
   bool get isAnimationCompleted;
-  Future<T> get future;
+  Future<T?> get future;
   Future<void> get animationFuture;
 }
 

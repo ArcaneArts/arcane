@@ -10,49 +10,57 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  BehaviorSubject<List<Person>> persons = BehaviorSubject<List<Person>>.seeded([
+    Person(id: "1", name: "Daniel Mills", email: "dan@arcane.art", phone: "no"),
+    Person(id: "2", name: "John Doe", email: "john@arcane.art", phone: "no"),
+    Person(id: "3", name: "Jane Doe", email: "jane@arcane.art", phone: "no"),
+    Person(
+        id: "4", name: "Kevin Smith", email: "kevin@arcane.art", phone: "no"),
+  ]);
+
   @override
-  Widget build(BuildContext context) => MutablePylon<int>(
-        rebuildChildren: true,
-        local: true,
-        value: 0,
-        builder: (context) => ArcaneScreen(
-            header: Bar(
-              title: Text("Hmmmm"),
-            ),
-            child: DashBorderMode(
-                borderstyle: [5, 5],
-                builder: (context) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Gap(8),
-                        Card(
-                          onPressed: () {},
-                          child: Text("Immacard"),
-                        ),
-                        Gap(8),
-                        BasicCard(
-                          title: Text("Basic Card"),
-                        ),
-                        Gap(8),
-                        OutlineButton(child: Text("OUTLINE BUTTON")),
-                        Gap(8),
-                        Expanded(
-                            child: TextField(
-                          minLines: null,
-                          maxLines: null,
-                          expands: true,
-                          style: TextStyle(fontSize: 16),
-                          textAlignVertical: TextAlignVertical.top,
-                          placeholder: Text(
-                            "Instructions for the chat model. I.e. Keep your responses short and sweet, Always reference where you got your information from.",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        )),
-                        Gap(8),
-                        Card(child: Text("Immacard")),
-                        Gap(8),
-                      ],
-                    ).padLeft(8).padRight(8))),
-      );
+  Widget build(BuildContext context) => CollectionScreen<Person>(
+      onLoadMore: (a, b, c, d) async {
+        await Future.delayed(Duration(seconds: 1));
+        persons.add([
+          ...persons.value,
+          ...List.generate(
+              20,
+              (_) => Person(
+                  id: Uuid().v4(),
+                  name: "Random ${Uuid().v4()}",
+                  email: "Scroll loaded",
+                  phone: "no"))
+        ]);
+
+        return true;
+      },
+      data: persons,
+      itemBuilder: (p) => ListTile(
+            title: Text(p.name),
+            subtitle: Text(p.email),
+            leading: const Icon(Icons.user),
+          ),
+      typeName: "Person",
+      typeNamePlural: "People");
+}
+
+class Person {
+  final String id;
+  final String name;
+  final String email;
+  final String phone;
+
+  Person(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.phone});
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'email': email,
+        'phone': phone,
+      };
 }

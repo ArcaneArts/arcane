@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'reorderable_animated_builder.dart';
 
-typedef ItemBuilder<W extends Widget, E> = Widget Function(
+typedef ReorderableItemBuilder<W extends Widget, E> = Widget Function(
     BuildContext context, int index);
 
 typedef AnimatedWidgetBuilder<W extends Widget, E> = Widget Function(
@@ -18,7 +18,7 @@ const Duration kDefaultDragStartDelay = Duration(milliseconds: 500);
 
 abstract class ReorderableAnimatedListBase<W extends Widget, E extends Object>
     extends StatefulWidget {
-  final ItemBuilder<W, E>? itemBuilder;
+  final ReorderableItemBuilder<W, E>? itemBuilder;
   final List<E> items;
   final ReorderCallback? onReorder;
   final void Function(int)? onReorderStart;
@@ -92,7 +92,7 @@ abstract class ReorderableAnimatedListBaseState<
 
   @nonVirtual
   @protected
-  ItemBuilder<W, E> get itemBuilder {
+  ReorderableItemBuilder<W, E> get itemBuilder {
     return widget.itemBuilder!;
   }
 

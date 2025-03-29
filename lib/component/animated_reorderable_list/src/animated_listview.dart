@@ -24,11 +24,11 @@ class AnimatedListView<E extends Object> extends StatefulWidget {
   ///
   /// List items are only built when they're scrolled into view.
   ///
-  /// The [ItemBuilder] index parameter indicates the item's
+  /// The [ReorderableItemBuilder] index parameter indicates the item's
   /// position in the list. The value of the index parameter will be between
   /// zero and one less than [items]. All items in the list must have a
   /// unique [Key].
-  final ItemBuilder itemBuilder;
+  final ReorderableItemBuilder itemBuilder;
 
   /// A list of [AnimationEffect](s) used for the appearing animation when an item is added to the list.
   ///

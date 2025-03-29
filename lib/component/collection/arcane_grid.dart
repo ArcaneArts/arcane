@@ -35,7 +35,7 @@ class ArcaneGrid<E extends Object> extends StatefulWidget {
   /// position in the list. The value of the index parameter will be between
   /// zero and one less than [items]. All items in the list must have a
   /// unique [Key].
-  final ItemBuilder<Widget, E> itemBuilder;
+  final ReorderableItemBuilder<Widget, E> itemBuilder;
 
   /// Controls the layout of tiles in a grid.
   /// Given the current constraints on the grid,

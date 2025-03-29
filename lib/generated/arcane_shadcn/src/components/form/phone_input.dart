@@ -118,7 +118,6 @@ class _PhoneInputState extends State<PhoneInput>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final localization = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -130,8 +129,7 @@ class _PhoneInputState extends State<PhoneInput>
                 left: theme.scaling * 8,
                 bottom: theme.scaling * 8,
                 right: theme.scaling * 4),
-            placeholder: widget.searchPlaceholder ??
-                Text(localization.searchPlaceholderCountry),
+            placeholder: widget.searchPlaceholder,
             // searchFilter: (item, query) {
             //   query = query.toLowerCase();
             //   var searchScore = item.name.toLowerCase().contains(query) ||

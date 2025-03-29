@@ -113,6 +113,7 @@ class AbsoluteResizablePaneController extends ChangeNotifier
   double _size;
   bool _collapsed = false;
 
+  @override
   _ResizablePaneState? _paneState;
 
   AbsoluteResizablePaneController(this._size, {bool collapsed = false})
@@ -244,7 +245,7 @@ class ResizablePane extends StatefulWidget {
         initialSize = null;
 
   const ResizablePane.controlled({
-    Key? key,
+    super.key,
     required ResizablePaneController this.controller,
     this.minSize,
     this.maxSize,

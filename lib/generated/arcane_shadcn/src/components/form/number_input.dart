@@ -110,7 +110,7 @@ class _NumberInputState extends State<NumberInput>
   }
 
   Widget buildButton(BuildContext context, ThemeData theme) {
-    return Container(
+    return SizedBox(
       width: 24 * theme.scaling,
       height: 32 * theme.scaling,
       child: GestureDetector(

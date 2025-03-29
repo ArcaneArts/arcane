@@ -15,6 +15,7 @@ export 'package:arcane/util/shaders/warp.dart';
 export 'component/app.dart';
 export 'component/bar.dart';
 export 'component/basic_card.dart';
+export 'component/blueprint/collection_screen.dart';
 export 'component/bottom_navigation_bar.dart';
 export 'component/card_carousel.dart';
 export 'component/center_body.dart';

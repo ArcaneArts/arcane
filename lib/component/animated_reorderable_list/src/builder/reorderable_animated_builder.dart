@@ -23,7 +23,7 @@ class ReorderableAnimatedBuilder<E> extends StatefulWidget {
   final void Function(int index)? onReorderEnd;
 
   final ReorderItemProxyDecorator? proxyDecorator;
-  final ItemBuilder itemBuilder;
+  final ReorderableItemBuilder itemBuilder;
   final int initialCount;
   final Axis scrollDirection;
   final SliverGridDelegate? delegateBuilder;

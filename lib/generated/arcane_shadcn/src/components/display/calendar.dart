@@ -173,6 +173,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                 ),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
+                  Gap(theme.scaling * 16),
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
                   Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -271,6 +274,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> {
                     });
                   },
                 ),
+                if (_viewType == CalendarViewType.date &&
+                    viewMode == CalendarSelectionMode.range)
+                  Gap(theme.scaling * 16),
                 if (_viewType == CalendarViewType.date &&
                     viewMode == CalendarSelectionMode.range)
                   buildView(
@@ -848,8 +854,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    ShadcnLocalizations localizations =
-        Localizations.of(context, ShadcnLocalizations);
     return CalendarGrid(
       data: _gridData,
       itemBuilder: (item) {

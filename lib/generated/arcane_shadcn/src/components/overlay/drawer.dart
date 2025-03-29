@@ -361,8 +361,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                         alignment: AlignmentDirectional.centerEnd,
                         child: child);
                   },
-                  child: child,
                   animation: _extraOffset,
+                  child: child,
                 ),
               ),
               if (widget.showDragHandle) ...[
@@ -423,8 +423,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                         alignment: AlignmentDirectional.centerStart,
                         child: child);
                   },
-                  child: child,
                   animation: _extraOffset,
+                  child: child,
                 ),
               ),
               AnimatedBuilder(
@@ -487,8 +487,8 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                         alignment: Alignment.bottomCenter,
                         child: child);
                   },
-                  child: child,
                   animation: _extraOffset,
+                  child: child,
                 ),
               ),
               if (widget.showDragHandle) ...[

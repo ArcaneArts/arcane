@@ -1,15 +1,6 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:ui';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart'
-    show
-        Brightness,
-        Clipboard,
-        LogicalKeyboardKey,
-        MaxLengthEnforcement,
-        TextInputFormatter;
+import 'package:flutter/services.dart' show Clipboard, LogicalKeyboardKey;
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 enum InputFeaturePosition {
@@ -23,6 +14,7 @@ class InputHintFeature extends InputFeature {
   final InputFeaturePosition position;
   final bool enableShortcuts;
   const InputHintFeature({
+    super.visibility,
     required this.popupBuilder,
     this.position = InputFeaturePosition.trailing,
     this.icon,
@@ -111,6 +103,7 @@ class InputPasswordToggleFeature extends InputFeature {
   final Widget? icon;
   final Widget? iconShow;
   const InputPasswordToggleFeature({
+    super.visibility,
     this.icon,
     this.iconShow,
     this.mode = PasswordPeekMode.toggle,
@@ -193,6 +186,7 @@ class InputClearFeature extends InputFeature {
   final InputFeaturePosition position;
   final Widget? icon;
   const InputClearFeature({
+    super.visibility,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -203,7 +197,7 @@ class InputClearFeature extends InputFeature {
 
 class _InputClearFeatureState extends InputFeatureState<InputClearFeature> {
   void _clear() {
-    invokeActionOnFocusedWidget(const TextFieldClearIntent());
+    controller.text = '';
   }
 
   @override
@@ -233,6 +227,7 @@ class InputRevalidateFeature extends InputFeature {
   final InputFeaturePosition position;
   final Widget? icon;
   const InputRevalidateFeature({
+    super.visibility,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -321,6 +316,7 @@ class InputAutoCompleteFeature extends InputFeature {
   final AutoCompleteMode mode;
 
   const InputAutoCompleteFeature({
+    super.visibility,
     required this.querySuggestions,
     required this.child,
     this.popoverConstraints,
@@ -390,6 +386,7 @@ class InputSpinnerFeature extends InputFeature {
   final bool enableGesture;
   final double? invalidValue;
   const InputSpinnerFeature({
+    super.visibility,
     this.step = 1.0,
     this.enableGesture = true,
     this.invalidValue = 0.0,
@@ -489,6 +486,7 @@ class InputCopyFeature extends InputFeature {
   final InputFeaturePosition position;
   final Widget? icon;
   const InputCopyFeature({
+    super.visibility,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -499,7 +497,7 @@ class InputCopyFeature extends InputFeature {
 
 class _InputCopyFeatureState extends InputFeatureState<InputCopyFeature> {
   void _copy() {
-    invokeActionOnFocusedWidget(const TextFieldSelectAllAndCopyIntent());
+    Actions.invoke(context, const TextFieldSelectAllAndCopyIntent());
   }
 
   @override
@@ -527,7 +525,10 @@ class _InputCopyFeatureState extends InputFeatureState<InputCopyFeature> {
 
 class InputLeadingFeature extends InputFeature {
   final Widget prefix;
-  const InputLeadingFeature(this.prefix);
+  const InputLeadingFeature(
+    this.prefix, {
+    super.visibility,
+  });
 
   @override
   InputFeatureState createState() => _InputLeadingFeatureState();
@@ -542,7 +543,10 @@ class _InputLeadingFeatureState extends InputFeatureState<InputLeadingFeature> {
 
 class InputTrailingFeature extends InputFeature {
   final Widget suffix;
-  const InputTrailingFeature(this.suffix);
+  const InputTrailingFeature(
+    this.suffix, {
+    super.visibility,
+  });
 
   @override
   InputFeatureState createState() => _InputTrailingFeatureState();
@@ -560,6 +564,7 @@ class InputPasteFeature extends InputFeature {
   final InputFeaturePosition position;
   final Widget? icon;
   const InputPasteFeature({
+    super.visibility,
     this.position = InputFeaturePosition.trailing,
     this.icon,
   });
@@ -574,8 +579,8 @@ class _InputPasteFeatureState extends InputFeatureState<InputPasteFeature> {
     clipboardData.then((value) {
       if (value != null) {
         var text = value.text;
-        if (text != null && text.isNotEmpty) {
-          invokeActionOnFocusedWidget(TextFieldAppendTextIntent(text: text));
+        if (text != null && text.isNotEmpty && context.mounted) {
+          Actions.invoke(context, TextFieldAppendTextIntent(text: text));
         }
       }
     });

@@ -43,7 +43,7 @@ class ArcaneList<E extends Object> extends StatefulWidget with SliverSignal {
   /// zero and one less than [items]. All items in the list must have a
   /// unique [Key].
   /// {@endtemplate}
-  final ItemBuilder<Widget, E> itemBuilder;
+  final ReorderableItemBuilder<Widget, E> itemBuilder;
 
   /// {@template flutter.widgets.AnimatedReorderable.enterTransition}
   /// A list of [AnimationEffect](s) used for the appearing animation when an item is added to the list.
