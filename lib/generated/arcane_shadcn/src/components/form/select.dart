@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 import 'package:arcane/generated/arcane_shadcn/src/components/control/hover.dart';
+import 'package:flutter/foundation.dart';
 
 class SelectController<T> extends ValueNotifier<T?>
     with ComponentController<T?> {
@@ -806,7 +806,7 @@ class MultiSelect<T> extends StatelessWidget with SelectBase<Iterable<T>> {
       constraints: constraints,
       popupConstraints: popupConstraints,
       popupWidthConstraint: popupWidthConstraint,
-      value: value,
+      value: value != null && value!.isEmpty ? null : value,
       borderRadius: borderRadius,
       padding: padding,
       popoverAlignment: popoverAlignment,

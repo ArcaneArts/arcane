@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:arcane/arcane.dart';
-import 'package:example/model/note.dart';
 import 'package:example/screen/home.dart';
 import 'package:flutter/services.dart';
 
 bool v = false;
 String? vv;
 void main() {
-  setupNotes();
-
   runZonedGuarded(() {
     runApp(ExampleArcaneApp());
   }, (error, stackTrace) {
