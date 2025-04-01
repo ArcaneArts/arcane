@@ -1,3 +1,6 @@
+# 5.0.1
+* FEAT: Added `CycleButton`
+
 # 5.0.0
 * Sync Upstream
 * FEAT: You no longer need to define arcane fonts in your pubspec to get icons & fonts. They just "work" now.

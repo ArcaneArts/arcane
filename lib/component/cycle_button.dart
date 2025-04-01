@@ -27,7 +27,10 @@ import 'package:arcane/arcane.dart';
 /// ```
 class CycleButton<T> extends StatefulWidget {
   /// Map of values to their corresponding icons/widgets.
-  final Map<T, Widget> values;
+  final List<T> values;
+
+  /// Builder function to create the widget for each value.
+  final Widget Function(BuildContext, T) builder;
 
   /// The initial value to start with.
   final T initialValue;
@@ -69,6 +72,7 @@ class CycleButton<T> extends StatefulWidget {
   CycleButton({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.style = const ButtonStyle.ghost(),
@@ -81,13 +85,14 @@ class CycleButton<T> extends StatefulWidget {
     this.onFocus,
     this.enableFeedback,
   })  : assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   /// Creates a primary-styled [CycleButton].
   CycleButton.primary({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.size = ButtonSize.normal,
@@ -100,13 +105,14 @@ class CycleButton<T> extends StatefulWidget {
     this.enableFeedback,
   })  : style = const ButtonStyle.primary(),
         assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   /// Creates a secondary-styled [CycleButton].
   CycleButton.secondary({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.size = ButtonSize.normal,
@@ -119,13 +125,14 @@ class CycleButton<T> extends StatefulWidget {
     this.enableFeedback,
   })  : style = const ButtonStyle.secondary(),
         assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   /// Creates an outlined [CycleButton].
   CycleButton.outline({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.size = ButtonSize.normal,
@@ -138,13 +145,14 @@ class CycleButton<T> extends StatefulWidget {
     this.enableFeedback,
   })  : style = const ButtonStyle.outline(),
         assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   /// Creates a ghost-styled [CycleButton].
   CycleButton.ghost({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.size = ButtonSize.normal,
@@ -157,13 +165,14 @@ class CycleButton<T> extends StatefulWidget {
     this.enableFeedback,
   })  : style = const ButtonStyle.ghost(),
         assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   /// Creates a destructive [CycleButton].
   CycleButton.destructive({
     super.key,
     required this.values,
+    required this.builder,
     required this.initialValue,
     this.onChanged,
     this.size = ButtonSize.normal,
@@ -176,7 +185,7 @@ class CycleButton<T> extends StatefulWidget {
     this.enableFeedback,
   })  : style = const ButtonStyle.destructive(),
         assert(values.isNotEmpty, 'Values map must not be empty'),
-        assert(values.containsKey(initialValue),
+        assert(values.contains(initialValue),
             'Initial value must be a key in the values map');
 
   @override
@@ -185,32 +194,29 @@ class CycleButton<T> extends StatefulWidget {
 
 class _CycleButtonState<T> extends State<CycleButton<T>> {
   late T _currentValue;
-  late List<T> _orderedKeys;
 
   @override
   void initState() {
     super.initState();
     _currentValue = widget.initialValue;
-    _orderedKeys = widget.values.keys.toList();
   }
 
   @override
   void didUpdateWidget(CycleButton<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.values != widget.values) {
-      _orderedKeys = widget.values.keys.toList();
       // If the current value is no longer in the values, reset to initial value
-      if (!widget.values.containsKey(_currentValue)) {
+      if (!widget.values.contains(_currentValue)) {
         _currentValue = widget.initialValue;
       }
     }
   }
 
   void _cycleToNextValue() {
-    final currentIndex = _orderedKeys.indexOf(_currentValue);
-    final nextIndex = (currentIndex + 1) % _orderedKeys.length;
+    final currentIndex = widget.values.indexOf(_currentValue);
+    final nextIndex = (currentIndex + 1) % widget.values.length;
     setState(() {
-      _currentValue = _orderedKeys[nextIndex];
+      _currentValue = widget.values[nextIndex];
     });
     widget.onChanged?.call(_currentValue);
   }
@@ -218,7 +224,7 @@ class _CycleButtonState<T> extends State<CycleButton<T>> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: widget.values[_currentValue]!,
+      icon: widget.builder(context, _currentValue),
       variance: widget.style.variance,
       size: widget.size,
       density: widget.density,

@@ -1,6 +1,6 @@
 name: arcane
 description: "A modified variant of shadcn_flutter along with new features & improvements. This package follows the changes of shadcn_flutter while also maintaining additional features & fixes."
-version: 5.0.0
+version: 5.0.1
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
