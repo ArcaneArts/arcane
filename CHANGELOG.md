@@ -1,3 +1,6 @@
+# 5.0.2
+* Chat improvements and more options
+
 # 5.0.1
 * FEAT: Added `CycleButton`
 

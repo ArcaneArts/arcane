@@ -82,6 +82,8 @@ class ChatScreen extends StatefulWidget {
   ChatStyle _getChatStyle(BuildContext context) =>
       style ?? Arcane.themeOf(context).chat.style;
 
+  final bool refocusOnSend;
+  final bool chatBoxBorder;
   final bool gutter;
   final ChatStyle? style;
   final ChatProvider provider;
@@ -96,10 +98,16 @@ class ChatScreen extends StatefulWidget {
   final ValueChanged<AbstractChatMessage>? onMessageTap;
   final String Function(DateTime) messageTimeFormatter;
   final Duration? messageGroupDistance;
+  final FocusNode? chatBoxFocusNode;
+  final bool autofocus;
 
   const ChatScreen(
       {super.key,
       this.fab,
+      this.chatBoxBorder = true,
+      this.refocusOnSend = true,
+      this.autofocus = true,
+      this.chatBoxFocusNode,
       this.messageGroupDistance,
       this.maxMessageLength,
       this.gutter = true,
@@ -130,7 +138,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     scrollController = ScrollController();
-    chatBoxFocus = FocusNode();
+    chatBoxFocus = widget.chatBoxFocusNode ?? FocusNode();
     chatBoxController = TextEditingController();
     userCache = {};
     messageKeys = {};
@@ -303,8 +311,12 @@ class ChatScreenState extends State<ChatScreen> {
     if (v.trim().isEmpty) return;
     chatBoxController.clear();
     widget.provider.sendMessage(v);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => chatBoxFocus.requestFocus());
+
+    if (widget.refocusOnSend) {
+      chatBoxFocus.requestFocus();
+    } else {
+      chatBoxFocus.unfocus();
+    }
   }
 
   @override
@@ -319,8 +331,16 @@ class ChatScreenState extends State<ChatScreen> {
             fab: widget.fab,
             gutter: widget.gutter,
             scrollController: scrollController,
-            footer: const ChatBox(
-              key: ValueKey("ChatBox"),
+            footer: Column(
+              children: [
+                ChatBox(
+                  chatBoxBorder: widget.chatBoxBorder,
+                  autofocus: widget.autofocus,
+                  key: ValueKey("ChatBox"),
+                ),
+                InjectScreenFooter.getFooterWidget(context) ??
+                    const SizedBox.shrink()
+              ],
             ),
             sliver: messageBuffer
                 .map((messages) => groupMessages(
@@ -337,34 +357,40 @@ class ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatBox extends StatelessWidget {
-  const ChatBox({super.key});
+  final bool autofocus;
+  final bool chatBoxBorder;
+
+  const ChatBox({super.key, this.autofocus = true, this.chatBoxBorder = true});
 
   @override
   Widget build(BuildContext context) {
     ChatScreenState state = context.pylon<ChatScreenState>();
-    return SurfaceCard(
-        borderRadius: BorderRadius.only(
-          topLeft: Theme.of(context).radiusXlRadius,
-          topRight: Theme.of(context).radiusXlRadius,
-        ),
-        padding: const EdgeInsets.all(8),
-        child: TextField(
-          maxLength: state.widget.maxMessageLength,
-          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-          autofocus: true,
-          maxLines: 3,
-          minLines: 1,
-          textInputAction: TextInputAction.done,
-          border: false,
-          controller: state.chatBoxController,
-          focusNode: state.chatBoxFocus,
-          onSubmitted: state.send,
-          placeholder: state.widget.placeholder,
-          trailing: IconButton(
-            icon: const Icon(Icons.send_ionic),
-            onPressed: () => state.send(state.chatBoxController.text),
-          ),
-        ));
+    Widget w = TextField(
+      maxLength: state.widget.maxMessageLength,
+      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+      autofocus: autofocus,
+      maxLines: 3,
+      minLines: 1,
+      textInputAction: TextInputAction.done,
+      border: false,
+      controller: state.chatBoxController,
+      focusNode: state.chatBoxFocus,
+      onSubmitted: state.send,
+      placeholder: state.widget.placeholder,
+      trailing: IconButton(
+        icon: const Icon(Icons.send_ionic),
+        onPressed: () => state.send(state.chatBoxController.text),
+      ),
+    );
+    return chatBoxBorder
+        ? SurfaceCard(
+            borderRadius: BorderRadius.only(
+              topLeft: Theme.of(context).radiusXlRadius,
+              topRight: Theme.of(context).radiusXlRadius,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: w)
+        : w;
   }
 }
 
