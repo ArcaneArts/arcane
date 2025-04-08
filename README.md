@@ -11,3 +11,8 @@ This is a modified fork of shadcn_flutter and includes resources & merged code f
 
 Please read the [Installation](https://tome.arcane.art/#/installation) guide for more information.
 
+# Addon Packages
+- [arcane_fluf](https://pub.dev/packages/arcane_crud) for using flutterfire stack (which utilizes: )
+  - [arcane_auth](https://pub.dev/packages/arcane_auth) for firebase authentication
+  - [arcane_user](https://pub.dev/packages/arcane_user) for user data models in firestore
+  - [arcane_fire](https://pub.dev/packages/arcane_fire) for initializing firebase with arcane
