@@ -1,9 +1,34 @@
 import 'dart:async';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 import 'package:serviced/serviced.dart';
 
 class Arcane {
+  static int _lastHaptic = 0;
+
+  static Future<bool> haptic(HapticsType? type, {bool force = false}) {
+    if (type != null &&
+        kHapticsAvailable &&
+        Arcane.globalTheme.haptics.enabled &&
+        (DateTime.timestamp().millisecondsSinceEpoch - _lastHaptic < 100 ||
+            force)) {
+      _lastHaptic = DateTime.timestamp().millisecondsSinceEpoch;
+      return Haptics.vibrate(type).then((_) => true).catchError((e) => false);
+    }
+
+    return Future.value(false);
+  }
+
+  static Future<bool> hapticViewChange() =>
+      haptic(Arcane.globalTheme.haptics.viewChangeType);
+  static Future<bool> hapticAction() =>
+      haptic(Arcane.globalTheme.haptics.actionType);
+  static Future<bool> hapticSelect() =>
+      haptic(Arcane.globalTheme.haptics.selectType);
+  static Future<bool> hapticButton() =>
+      haptic(Arcane.globalTheme.haptics.buttonType);
+
   static Future<void> registerInitializer(
       String name, Future<void> Function() run) {
     Completer<void> c = Completer();
@@ -43,4 +68,41 @@ class Arcane {
 
   static void closeMenus(BuildContext context) =>
       Data.maybeOf<MenuGroupData>(context)?.closeAll();
+}
+
+class ArcaneShadEvents implements ShadcnEvents {
+  @override
+  void onButtonPressed(BuildContext context, AbstractButtonStyle style) {
+    Arcane.hapticButton();
+  }
+
+  @override
+  void onDialogOpened(BuildContext context) {
+    Arcane.hapticViewChange();
+  }
+
+  @override
+  void onMenuOpened(BuildContext context) {
+    Arcane.hapticViewChange();
+  }
+
+  @override
+  void onMenuSelection(BuildContext context) {
+    Arcane.hapticSelect();
+  }
+
+  @override
+  void onToastOpened(BuildContext context) {
+    Arcane.hapticViewChange();
+  }
+
+  @override
+  void onTooltipOpened(BuildContext context) {
+    Arcane.hapticSelect();
+  }
+
+  @override
+  void onTabChanged(BuildContext context) {
+    Arcane.hapticViewChange();
+  }
 }

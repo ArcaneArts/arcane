@@ -2,12 +2,15 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 import 'package:arcane/util/shaders.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:hive_flutter/adapters.dart';
 import 'package:serviced/serviced.dart';
+
+bool kHapticsAvailable = false;
 
 /// Initializes and runs an Arcane app.
 ///
@@ -23,6 +26,8 @@ import 'package:serviced/serviced.dart';
 void runApp(String appId, Widget app, {bool setupMetaSEO = true}) async {
   $appId = appId;
   setupArcaneDebug();
+  $registerInitTask(InitTask("Arcane Haptics",
+      () => Haptics.canVibrate().then((i) => kHapticsAvailable = i)));
   $registerInitTask(InitTask("Arcane Hive", () async {
     await Hive.initFlutter(appId);
     await Future.wait([
@@ -57,6 +62,7 @@ void runApp(String appId, Widget app, {bool setupMetaSEO = true}) async {
   MagicInitializer.getInitializers(app).forEach($registerInitTask);
   await $executeInitTasks();
   await services().waitForStartup();
+  $shadEvent = ArcaneShadEvents();
   m.runApp(app);
 }
 

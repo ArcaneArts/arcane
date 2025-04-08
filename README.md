@@ -16,3 +16,18 @@ Please read the [Installation](https://tome.arcane.art/#/installation) guide for
   - [arcane_auth](https://pub.dev/packages/arcane_auth) for firebase authentication
   - [arcane_user](https://pub.dev/packages/arcane_user) for user data models in firestore
   - [arcane_fire](https://pub.dev/packages/arcane_fire) for initializing firebase with arcane
+
+```dart
+void main() => runApp("mtg_tesseract", ArcaneWindow(
+  windowColor: Colors.transparent,
+  child: ArcaneFluf(
+          options: DefaultFirebaseOptions.currentPlatform,
+          onRegisterCrud: $registerCrud,
+          onRegisterUserService: () => services().register<UserService>(() => UserService()),
+    child: MyCustomInitializer(
+      ///////////
+      child: const TesseractApp()
+    )
+  )
+));
+```

@@ -111,6 +111,11 @@ class NavigationScreen extends AbstractStatelessScreen {
       this.endSide,
       this.type});
 
+  void _onChanged(int index) {
+    Arcane.hapticViewChange();
+    onIndexChanged?.call(index);
+  }
+
   Widget buildBottomNavigationBar(BuildContext context, int index) => ButtonBar(
       selectedIndex: index,
       buttons: tabs
@@ -119,9 +124,8 @@ class NavigationScreen extends AbstractStatelessScreen {
                 icon: tab.icon,
                 selectedIcon: tab.selectedIcon ?? tab.icon,
                 label: tab.label,
-                onPressed: index == barIndex
-                    ? null
-                    : () => onIndexChanged?.call(barIndex),
+                onPressed:
+                    index == barIndex ? null : () => _onChanged(barIndex),
               ))
           .toList());
 
@@ -150,7 +154,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                                 : null),
                         onPressed: index == railIndex
                             ? null
-                            : () => onIndexChanged?.call(railIndex),
+                            : () => _onChanged(railIndex),
                       ),
                     NavItem item => item.builder(context),
                   })
@@ -177,7 +181,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                             }
 
                             if (index != i) {
-                              onIndexChanged?.call(i);
+                              _onChanged(i);
                             }
                           },
                         ),

@@ -22,6 +22,7 @@ class ArcaneTheme {
   final EdgeTheme edge;
   final CardCarouselTheme cardCarousel;
   final NavigationTheme navigationScreen;
+  final ArcaneHaptics haptics;
   final m.MaterialScrollBehavior scrollBehavior;
   final ThemeMode themeMode;
   final m.ThemeData Function(ArcaneTheme theme, Brightness brightness)
@@ -36,6 +37,7 @@ class ArcaneTheme {
     this.shimmer = const ArcaneShimmerTheme(),
     this.blurMode = ArcaneBlurMode.backdropFilter,
     this.edge = const EdgeTheme(),
+    this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,
     this.toast = const ToastTheme(),
     this.cardCarousel = const CardCarouselTheme(),
@@ -112,6 +114,22 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
+}
+
+class ArcaneHaptics {
+  final bool enabled;
+  final HapticsType? viewChangeType;
+  final HapticsType? actionType;
+  final HapticsType? selectType;
+  final HapticsType? buttonType;
+
+  const ArcaneHaptics({
+    this.enabled = true,
+    this.viewChangeType = HapticsType.light,
+    this.actionType = HapticsType.heavy,
+    this.selectType = HapticsType.selection,
+    this.buttonType = HapticsType.selection,
+  });
 }
 
 m.ThemeData _defaultMaterialThemeBuilder(

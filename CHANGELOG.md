@@ -1,3 +1,7 @@
+# 5.3.2
+* Haptics support & linkages. Added `ArcaneHaptics` in the `ArcaneTheme.haptics` property
+* Added `Arcane.hapticXXX` methods
+
 # 5.3.1
 * App id accessed via $appId
 

@@ -1,4 +1,5 @@
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 class Tabs extends StatelessWidget {
   final int index;
@@ -18,6 +19,11 @@ class Tabs extends StatelessWidget {
     this.padding,
   });
 
+  void onChange(BuildContext context, int v) {
+    $shadEvent?.onTabChanged(context);
+    onChanged(v);
+  }
+
   Widget _childBuilder(
       BuildContext context, TabContainerData data, Widget child) {
     final theme = Theme.of(context);
@@ -26,7 +32,7 @@ class Tabs extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        onChanged(i);
+        onChange(context, i);
       },
       child: MouseRegion(
         hitTestBehavior: HitTestBehavior.translucent,
@@ -63,7 +69,7 @@ class Tabs extends StatelessWidget {
     final scaling = theme.scaling;
     return TabContainer(
       selected: index,
-      onSelect: onChanged,
+      onSelect: (v) => onChange(context, v),
       builder: (context, children) {
         return Container(
           decoration: BoxDecoration(

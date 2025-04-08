@@ -1,5 +1,6 @@
 import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 Future<void> closeOverlay<T>(BuildContext context, [T? value]) {
   return Data.maybeFind<OverlayHandlerStateMixin>(context)
@@ -288,6 +289,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     OverlayBarrier? overlayBarrier,
     LayerLink? layerLink,
   }) {
+    $shadEvent?.onTooltipOpened(context);
     builder = Pylon.mirror(context, builder);
     return widget.tooltipHandler.show(
       context: context,
@@ -348,6 +350,7 @@ class _OverlayManagerLayerState extends State<OverlayManagerLayer>
     OverlayBarrier? overlayBarrier,
     LayerLink? layerLink,
   }) {
+    $shadEvent?.onMenuOpened(context);
     builder = Pylon.mirror(context, builder);
     return widget.menuHandler.show(
       context: context,

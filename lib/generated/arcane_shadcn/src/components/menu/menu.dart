@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 class MenuShortcut extends StatelessWidget {
   final ShortcutActivator activator;
@@ -492,6 +493,7 @@ class _MenuButtonState extends State<MenuButton> {
                     }
                   },
                   onPressed: () {
+                    $shadEvent?.onMenuSelection(context);
                     widget.onPressed?.call();
                     widget.onContextPressed?.call(context);
                     if (widget.subMenu != null && widget.subMenu!.isNotEmpty) {
@@ -800,34 +802,34 @@ class MenuOverlayHandler extends OverlayHandler {
   const MenuOverlayHandler(this.manager);
 
   @override
-  OverlayCompleter<T?> show<T>(
-      {required BuildContext context,
-      required AlignmentGeometry alignment,
-      required WidgetBuilder builder,
-      Offset? position,
-      AlignmentGeometry? anchorAlignment,
-      PopoverConstraint widthConstraint = PopoverConstraint.flexible,
-      PopoverConstraint heightConstraint = PopoverConstraint.flexible,
-      Key? key,
-      bool rootOverlay = true,
-      bool modal = true,
-      bool barrierDismissable = true,
-      Clip clipBehavior = Clip.none,
-      Object? regionGroupId,
-      Offset? offset,
-      AlignmentGeometry? transitionAlignment,
-      EdgeInsetsGeometry? margin,
-      bool follow = true,
-      bool consumeOutsideTaps = true,
-      ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
-      bool allowInvertHorizontal = true,
-      bool allowInvertVertical = true,
-      bool dismissBackdropFocus = true,
-      Duration? showDuration,
-      Duration? dismissDuration,
-      OverlayBarrier? overlayBarrier,
-        LayerLink? layerLink,
-      }) {
+  OverlayCompleter<T?> show<T>({
+    required BuildContext context,
+    required AlignmentGeometry alignment,
+    required WidgetBuilder builder,
+    Offset? position,
+    AlignmentGeometry? anchorAlignment,
+    PopoverConstraint widthConstraint = PopoverConstraint.flexible,
+    PopoverConstraint heightConstraint = PopoverConstraint.flexible,
+    Key? key,
+    bool rootOverlay = true,
+    bool modal = true,
+    bool barrierDismissable = true,
+    Clip clipBehavior = Clip.none,
+    Object? regionGroupId,
+    Offset? offset,
+    AlignmentGeometry? transitionAlignment,
+    EdgeInsetsGeometry? margin,
+    bool follow = true,
+    bool consumeOutsideTaps = true,
+    ValueChanged<PopoverOverlayWidgetState>? onTickFollow,
+    bool allowInvertHorizontal = true,
+    bool allowInvertVertical = true,
+    bool dismissBackdropFocus = true,
+    Duration? showDuration,
+    Duration? dismissDuration,
+    OverlayBarrier? overlayBarrier,
+    LayerLink? layerLink,
+  }) {
     return manager.showMenu(
       context: context,
       alignment: alignment,

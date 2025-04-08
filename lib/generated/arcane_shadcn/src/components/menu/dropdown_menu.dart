@@ -1,4 +1,5 @@
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 OverlayCompleter<T?> showDropdown<T>({
   required BuildContext context,
@@ -24,6 +25,7 @@ OverlayCompleter<T?> showDropdown<T>({
   Duration? showDuration,
   Duration? dismissDuration,
 }) {
+  $shadEvent?.onMenuOpened(context);
   final theme = Theme.of(context);
   final scaling = theme.scaling;
   final GlobalKey key = GlobalKey();

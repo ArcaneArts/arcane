@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
+
 import '../../../shadcn_flutter.dart';
 
 class ToggleController extends ValueNotifier<bool>
@@ -760,7 +762,12 @@ class ButtonState<T extends Button> extends State<T> {
               return null;
             })
           : null,
-      onPressed: widget.onPressed,
+      onPressed: widget.onPressed == null
+          ? null
+          : () {
+              $shadEvent?.onButtonPressed(context, widget.style);
+              widget.onPressed?.call();
+            },
       onTapDown: widget.onTapDown,
       onTapUp: widget.onTapUp,
       onTapCancel: widget.onTapCancel,

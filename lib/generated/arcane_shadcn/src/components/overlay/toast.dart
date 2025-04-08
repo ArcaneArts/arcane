@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 typedef ToastBuilder = Widget Function(
     BuildContext context, ToastOverlay overlay);
@@ -17,6 +18,7 @@ ToastOverlay showToast({
   VoidCallback? onClosed,
   Duration showDuration = const Duration(seconds: 5),
 }) {
+  $shadEvent?.onToastOpened(context);
   _ToastLayerState? layer = Data.maybeFindMessenger(context);
   layer ??= Data.maybeOf(context);
   CapturedThemes? themes;
