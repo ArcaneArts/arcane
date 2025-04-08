@@ -1,5 +1,12 @@
 # 5.1.0
-* Init tasks & startup
+* Init tasks & startup added `Arcane.registerInitializer` which allows other packages to setup runners to work with arcane.
+* Improvements to `Autocomplete` mostly in keybinding intents
+* Made use of `expressions` package in `Formatter`
+* Input Feature improvements
+* Deprecated `NumberInput` in favor of `TextField` with `InputFeature.spinner()`
+* Add `showValuePredicate` to `ControlledSelect`
+* Add `List<TextInputFormatter> submitFormatters` to `TextField`
+* Add `resizeToAvoidBottomInset` to `Scaffold` defaults to true (change in functionality)
 
 # 5.0.2
 * Chat improvements and more options

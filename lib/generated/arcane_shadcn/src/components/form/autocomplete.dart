@@ -55,9 +55,7 @@ class _AutoCompleteItemState extends State<_AutoCompleteItem> {
       value: widget.selected,
       alignment: AlignmentDirectional.centerStart,
       onChanged: (value) {
-        if (value) {
-          widget.onSelected();
-        }
+        widget.onSelected();
       },
       child: Text(widget.suggestion),
     );
@@ -153,7 +151,7 @@ class _AutoCompleteState extends State<AutoComplete> {
 
   void _handleProceed() {
     final selectedIndex = _selectedIndex.value;
-    if (selectedIndex == -1) {
+    if (selectedIndex < 0 || selectedIndex >= _suggestions.value.length) {
       return;
     }
     _popoverController.close();
@@ -208,39 +206,46 @@ class _AutoCompleteState extends State<AutoComplete> {
         builder: (context, child) {
           return FocusableActionDetector(
             onFocusChange: _onFocusChanged,
-            shortcuts: {
-              LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                  const _MoveSelectionIntent(1),
-              LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                  const _MoveSelectionIntent(-1),
-              if (widget.suggestions.isNotEmpty && _selectedIndex.value != -1)
-                LogicalKeySet(LogicalKeyboardKey.tab):
-                    const _AcceptSelectionIntent(),
-            },
-            actions: {
-              _MoveSelectionIntent: CallbackAction<_MoveSelectionIntent>(
-                onInvoke: (intent) {
-                  final direction = intent.direction;
-                  final selectedIndex = _selectedIndex.value;
-                  final suggestions = _suggestions.value;
-                  if (suggestions.isEmpty) {
-                    return;
+            shortcuts: _popoverController.hasOpenPopover
+                ? {
+                    LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                        const NavigateSuggestionIntent(1),
+                    LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                        const NavigateSuggestionIntent(-1),
+                    if (widget.suggestions.isNotEmpty &&
+                        _selectedIndex.value != -1)
+                      LogicalKeySet(LogicalKeyboardKey.tab):
+                          const AcceptSuggestionIntent(),
                   }
-                  final newSelectedIndex =
-                      (selectedIndex + direction) % suggestions.length;
-                  _selectedIndex.value = newSelectedIndex < 0
-                      ? suggestions.length - 1
-                      : newSelectedIndex;
-                  return;
-                },
-              ),
-              _AcceptSelectionIntent: CallbackAction<_AcceptSelectionIntent>(
-                onInvoke: (intent) {
-                  _handleProceed();
-                  return;
-                },
-              ),
-            },
+                : null,
+            actions: _popoverController.hasOpenPopover
+                ? {
+                    NavigateSuggestionIntent:
+                        CallbackAction<NavigateSuggestionIntent>(
+                      onInvoke: (intent) {
+                        final direction = intent.direction;
+                        final selectedIndex = _selectedIndex.value;
+                        final suggestions = _suggestions.value;
+                        if (suggestions.isEmpty) {
+                          return;
+                        }
+                        final newSelectedIndex =
+                            (selectedIndex + direction) % suggestions.length;
+                        _selectedIndex.value = newSelectedIndex < 0
+                            ? suggestions.length - 1
+                            : newSelectedIndex;
+                        return;
+                      },
+                    ),
+                    AcceptSuggestionIntent:
+                        CallbackAction<AcceptSuggestionIntent>(
+                      onInvoke: (intent) {
+                        _handleProceed();
+                        return;
+                      },
+                    ),
+                  }
+                : null,
             child: widget.child,
           );
         });
@@ -253,12 +258,12 @@ enum AutoCompleteMode {
   replaceAll,
 }
 
-class _MoveSelectionIntent extends Intent {
+class NavigateSuggestionIntent extends Intent {
   final int direction;
 
-  const _MoveSelectionIntent(this.direction);
+  const NavigateSuggestionIntent(this.direction);
 }
 
-class _AcceptSelectionIntent extends Intent {
-  const _AcceptSelectionIntent();
+class AcceptSuggestionIntent extends Intent {
+  const AcceptSuggestionIntent();
 }

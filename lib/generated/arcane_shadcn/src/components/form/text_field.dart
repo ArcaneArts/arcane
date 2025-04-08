@@ -523,6 +523,7 @@ mixin TextInput on Widget {
   SpellCheckConfiguration? get spellCheckConfiguration;
   UndoHistoryController? get undoController;
   List<InputFeature> get features;
+  List<TextInputFormatter>? get submitFormatters;
 }
 
 class TextField extends StatefulWidget with TextInput {
@@ -601,6 +602,7 @@ class TextField extends StatefulWidget with TextInput {
     this.filled = false,
     this.statesController,
     this.features = const [],
+    this.submitFormatters = const [],
   })  : assert(obscuringCharacter.length == 1),
         smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -840,6 +842,9 @@ class TextField extends StatefulWidget with TextInput {
 
   @override
   final WidgetStatesController? statesController;
+
+  @override
+  final List<TextInputFormatter>? submitFormatters;
 
   static Widget _defaultContextMenuBuilder(
     BuildContext context,
@@ -1099,6 +1104,7 @@ class TextField extends StatefulWidget with TextInput {
     TextMagnifierConfiguration? magnifierConfiguration,
     SpellCheckConfiguration? spellCheckConfiguration,
     List<InputFeature>? features,
+    List<TextInputFormatter>? submitFormatters,
   }) {
     return TextField(
       key: key ?? this.key,
@@ -1179,6 +1185,7 @@ class TextField extends StatefulWidget with TextInput {
       spellCheckConfiguration:
           spellCheckConfiguration ?? this.spellCheckConfiguration,
       features: features ?? this.features,
+      submitFormatters: submitFormatters ?? this.submitFormatters,
     );
   }
 }
@@ -1392,6 +1399,22 @@ class TextFieldState extends State<TextField>
       // highlight.
     });
     _statesController.update(WidgetState.focused, _effectiveFocusNode.hasFocus);
+    if (!_effectiveFocusNode.hasFocus) {
+      _formatSubmit();
+    }
+  }
+
+  void _formatSubmit() {
+    if (widget.submitFormatters != null) {
+      TextEditingValue value = effectiveController.value;
+      for (var formatter in widget.submitFormatters!) {
+        value = formatter.formatEditUpdate(value, value);
+      }
+      if (value != effectiveController.value) {
+        effectiveController.value = value;
+        widget.onChanged?.call(value.text);
+      }
+    }
   }
 
   bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {
@@ -1468,7 +1491,8 @@ class TextFieldState extends State<TextField>
   bool get _hasDecoration {
     return widget.placeholder != null ||
         widget.leading != null ||
-        widget.trailing != null;
+        widget.trailing != null ||
+        widget.features.isNotEmpty;
   }
 
   // Provide default behavior if widget.textAlignVertical is not set.
@@ -1872,8 +1896,14 @@ class TextFieldState extends State<TextField>
           groupId: widget.groupId,
           onChanged: _onChanged,
           onSelectionChanged: _handleSelectionChanged,
-          onEditingComplete: widget.onEditingComplete,
-          onSubmitted: widget.onSubmitted,
+          onEditingComplete: () {
+            widget.onEditingComplete?.call();
+            _formatSubmit();
+          },
+          onSubmitted: (value) {
+            widget.onSubmitted?.call(value);
+            _formatSubmit();
+          },
           onTapOutside: widget.onTapOutside,
           inputFormatters: formatters,
           rendererIgnoresPointer: true,

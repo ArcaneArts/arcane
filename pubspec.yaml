@@ -62,6 +62,7 @@ dependencies:
   fire_crud: ">=2.3.10 <2.4.0"
   faker: ">=2.2.0 <3.0.0"
   serviced: ">=1.0.3 <2.0.0"
+  expressions: ">=0.2.5 <1.0.0"
 dev_dependencies:
   flutter_lints: ^5.0.0
   intl: ">=0.19.0 <0.20.0"
