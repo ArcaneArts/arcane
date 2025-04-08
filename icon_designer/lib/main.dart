@@ -3,10 +3,12 @@ import 'package:icon_designer/model/icon_proxy.dart';
 
 void main() async {
   await init();
-  runApp(const ArcaneApp(
-    title: "Icon Designer",
-    home: Home(),
-  ));
+  runApp(
+      "icon_designer",
+      const ArcaneApp(
+        title: "Icon Designer",
+        home: Home(),
+      ));
 }
 
 class Home extends StatelessWidget {

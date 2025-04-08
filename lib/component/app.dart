@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
@@ -5,6 +6,7 @@ import 'package:arcane/util/shaders.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:hive_flutter/adapters.dart';
 import 'package:serviced/serviced.dart';
 
 /// Initializes and runs an Arcane app.
@@ -18,8 +20,26 @@ import 'package:serviced/serviced.dart';
 ///
 /// @param app The widget to run as the root of the widget tree
 /// @param setupMetaSEO Whether to configure SEO metadata for web applications
-void runApp(Widget app, {bool setupMetaSEO = true}) async {
+void runApp(String appId, Widget app, {bool setupMetaSEO = true}) async {
+  $appId = appId;
   setupArcaneDebug();
+  $registerInitTask(InitTask("Arcane Hive", () async {
+    await Hive.initFlutter(appId);
+    await Future.wait([
+      Hive.openBox(
+        "$appId.hb",
+        encryptionCipher: HiveAesCipher(
+          Random("$appId.hb".hashCode ^ 0x33EF69DF3D9).nextInts(32),
+        ),
+      ).then((box) => hotBox = box),
+      Hive.openLazyBox(
+        "$appId.cb",
+        encryptionCipher: HiveAesCipher(
+          Random("$appId.cb".hashCode ^ 0x73DE39333A).nextInts(32),
+        ),
+      ).then((box) => coldBox = box),
+    ]);
+  }));
   $registerInitTask(
       InitTask("Arcane Shaders", () async => ArcaneShader.loadAll()));
 
@@ -39,6 +59,8 @@ void runApp(Widget app, {bool setupMetaSEO = true}) async {
   await services().waitForStartup();
   m.runApp(app);
 }
+
+String $appId = "undefined_arcane";
 
 mixin MagicInitializer {
   Widget get child;
@@ -418,3 +440,10 @@ class ArcaneScrollBehavior extends m.MaterialScrollBehavior {
         PointerDeviceKind.unknown,
       };
 }
+
+extension _XRand on Random {
+  List<int> nextInts(int count) => List.generate(count, (_) => nextInt(256));
+}
+
+late Box hotBox;
+late LazyBox coldBox;

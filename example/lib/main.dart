@@ -8,7 +8,7 @@ bool v = false;
 String? vv;
 void main() {
   runZonedGuarded(() {
-    runApp(ExampleArcaneApp());
+    runApp("example", ExampleArcaneApp());
   }, (error, stackTrace) {
     print("Error: $error");
     print("Stack: $stackTrace");

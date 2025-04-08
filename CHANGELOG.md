@@ -1,3 +1,9 @@
+# 5.3.1
+* App id accessed via $appId
+
+# 5.3.0
+* BREAKING required appId definition in `runApp`. This is to identify & anchor a hive location for arcane and any other subpackages that need it.
+
 # 5.2.1
 * Fix Magic Init
 
