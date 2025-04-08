@@ -125,10 +125,10 @@ class ArcaneHaptics {
 
   const ArcaneHaptics({
     this.enabled = true,
-    this.viewChangeType = HapticsType.light,
+    this.viewChangeType = HapticsType.medium,
     this.actionType = HapticsType.heavy,
-    this.selectType = HapticsType.selection,
-    this.buttonType = HapticsType.selection,
+    this.selectType = HapticsType.light,
+    this.buttonType = HapticsType.medium,
   });
 }
 

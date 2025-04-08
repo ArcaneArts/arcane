@@ -2,19 +2,29 @@ import 'dart:async';
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/events.dart';
+import 'package:fast_log/fast_log.dart';
 import 'package:serviced/serviced.dart';
 
 class Arcane {
   static int _lastHaptic = 0;
+  static bool _checkHaptics = false;
 
-  static Future<bool> haptic(HapticsType? type, {bool force = false}) {
+  static Future<bool> haptic(HapticsType? type, {bool force = false}) async {
+    if (!kHapticsAvailable && $app == null && !_checkHaptics) {
+      _checkHaptics = true;
+      kHapticsAvailable = await Haptics.canVibrate();
+      $shadEvent = ArcaneShadEvents();
+    }
+
     if (type != null &&
         kHapticsAvailable &&
         Arcane.globalTheme.haptics.enabled &&
-        (DateTime.timestamp().millisecondsSinceEpoch - _lastHaptic < 100 ||
+        (DateTime.timestamp().millisecondsSinceEpoch - _lastHaptic > 100 ||
             force)) {
       _lastHaptic = DateTime.timestamp().millisecondsSinceEpoch;
       return Haptics.vibrate(type).then((_) => true).catchError((e) => false);
+    } else {
+      //verbose("type=$type avail=$kHapticsAvailable enabled=${Arcane.globalTheme.haptics.enabled} force=$force overflow=${DateTime.timestamp().millisecondsSinceEpoch - _lastHaptic > 100}");
     }
 
     return Future.value(false);
@@ -39,7 +49,15 @@ class Arcane {
 
   static ArcaneAppState? $app;
   static ArcaneAppState get app => $app!;
-  static ArcaneTheme get globalTheme => $app!.currentTheme;
+  static ArcaneTheme get globalTheme {
+    try {
+      return $app!.currentTheme;
+    } catch (e) {
+      warn("Cant find global arcane theme! Is this docs?");
+      return ArcaneTheme();
+    }
+  }
+
   static ArcaneTheme themeOf(BuildContext context) =>
       context.pylonOr<ArcaneTheme>() ?? globalTheme;
 
