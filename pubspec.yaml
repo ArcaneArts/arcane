@@ -1,6 +1,6 @@
 name: arcane
 description: "A modified variant of shadcn_flutter along with new features & improvements. This package follows the changes of shadcn_flutter while also maintaining additional features & fixes."
-version: 5.0.2
+version: 5.1.0
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -60,6 +60,8 @@ dependencies:
   dotted_border: ">=2.1.0 <3.0.0"
   fire_crud_flutter: ">=1.2.15 <2.0.0"
   fire_crud: ">=2.3.10 <2.4.0"
+  faker: ">=2.2.0 <3.0.0"
+  serviced: ">=1.0.3 <2.0.0"
 dev_dependencies:
   flutter_lints: ^5.0.0
   intl: ">=0.19.0 <0.20.0"

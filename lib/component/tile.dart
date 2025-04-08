@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:faker/faker.dart';
 
 typedef ListTile = Tile;
 typedef SwitchListTile = SwitchTile;
@@ -191,6 +192,28 @@ class Tile extends StatelessWidget {
     this.expanderCrossAxisAlignment = CrossAxisAlignment.start,
     this.expanderGapPadding = 8,
   });
+
+  static Widget loading(
+          {bool title = true,
+          bool subtitle = true,
+          bool leading = true,
+          int? subtitleMaxLines = 2,
+          bool trailing = false}) =>
+      ListTile(
+        title: title
+            ? Text(faker.lorem
+                .words(faker.randomGenerator.integer(7, min: 3))
+                .join(" "))
+            : null,
+        subtitle: subtitle
+            ? Text(
+                faker.lorem
+                    .sentences(faker.randomGenerator.integer(3, min: 1))
+                    .join(" "),
+                maxLines: subtitleMaxLines,
+              )
+            : null,
+      ).shimmer();
 
   Widget get styledSubtitle =>
       subtitle is Text ? subtitle!.small().muted() : subtitle!;

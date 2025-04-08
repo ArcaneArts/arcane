@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "5.0.0"
+    version: "5.0.2"
   archive:
     dependency: transitive
     description:
@@ -711,6 +711,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  serviced:
+    dependency: transitive
+    description:
+      name: serviced
+      sha256: a551d515eed267187d7d7c7d222831a731abbf43ad58b9241a409de0b52a583c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   skeletonizer:
     dependency: transitive
     description:

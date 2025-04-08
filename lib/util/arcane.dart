@@ -1,6 +1,17 @@
+import 'dart:async';
+
 import 'package:arcane/arcane.dart';
+import 'package:serviced/serviced.dart';
 
 class Arcane {
+  static Future<void> registerInitializer(
+      String name, Future<void> Function() run) {
+    Completer<void> c = Completer();
+    $registerInitTask(
+        InitTask(name, () async => run().then((_) => c.complete())));
+    return c.future;
+  }
+
   static ArcaneAppState? $app;
   static ArcaneAppState get app => $app!;
   static ArcaneTheme get globalTheme => $app!.currentTheme;

@@ -5,6 +5,7 @@ import 'package:arcane/util/shaders.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:serviced/serviced.dart';
 
 /// Initializes and runs an Arcane app.
 ///
@@ -19,16 +20,22 @@ import 'package:flutter/material.dart' as m;
 /// @param setupMetaSEO Whether to configure SEO metadata for web applications
 void runApp(Widget app, {bool setupMetaSEO = true}) async {
   setupArcaneDebug();
-  ArcaneShader.loadAll();
+  $registerInitTask(
+      InitTask("Arcane Shaders", () async => ArcaneShader.loadAll()));
+
   if (kIsWeb) {
     if (setupMetaSEO) {
-      try {
-        MetaSEO().config();
-        actioned("SEO Engine Configured for Browser");
-      } catch (e) {}
+      $registerInitTask(InitTask("Meta SEO", () async {
+        try {
+          MetaSEO().config();
+          actioned("SEO Engine Configured for Browser");
+        } catch (e) {}
+      }));
     }
   }
 
+  await $executeInitTasks();
+  await services().waitForStartup();
   m.runApp(app);
 }
 

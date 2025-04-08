@@ -1,3 +1,6 @@
+# 5.1.0
+* Init tasks & startup
+
 # 5.0.2
 * Chat improvements and more options
 

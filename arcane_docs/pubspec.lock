@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "5.0.0"
+    version: "5.0.2"
   archive:
     dependency: transitive
     description:
@@ -740,7 +740,7 @@ packages:
       path: "../arcane_shadcn"
       relative: true
     source: path
-    version: "0.0.30"
+    version: "0.0.32"
   shared_preferences:
     dependency: transitive
     description:
