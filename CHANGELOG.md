@@ -1,3 +1,9 @@
+# 5.2.1
+* Fix Magic Init
+
+# 5.2.0
+* Magic Initializers
+
 # 5.1.0
 * Init tasks & startup added `Arcane.registerInitializer` which allows other packages to setup runners to work with arcane.
 * Improvements to `Autocomplete` mostly in keybinding intents

@@ -34,9 +34,30 @@ void runApp(Widget app, {bool setupMetaSEO = true}) async {
     }
   }
 
+  MagicInitializer.getInitializers(app).forEach($registerInitTask);
   await $executeInitTasks();
   await services().waitForStartup();
   m.runApp(app);
+}
+
+mixin MagicInitializer {
+  Widget get child;
+  InitTask get $initializer;
+
+  static Iterable<InitTask> getInitializers(Widget p) sync* {
+    if (p is MagicInitializer) {
+      yield (p as MagicInitializer).$initializer;
+      yield* getInitializers((p as MagicInitializer).child);
+      return;
+    }
+
+    try {
+      Widget widget = (p as dynamic).child;
+      yield* getInitializers(widget);
+    } catch (e) {
+      return;
+    }
+  }
 }
 
 /// A root widget for Arcane applications providing theming and navigation capabilities.
