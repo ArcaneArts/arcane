@@ -1,3 +1,6 @@
+# 5.3.4
+* Chat box fixes
+
 # 5.3.3
 * Haptics fixes
 

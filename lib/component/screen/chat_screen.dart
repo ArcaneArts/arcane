@@ -308,13 +308,16 @@ class ChatScreenState extends State<ChatScreen> {
               ));
 
   void send(String v) {
-    if (v.trim().isEmpty) return;
-    chatBoxController.clear();
-    widget.provider.sendMessage(v);
+    if (v.trim().isNotEmpty) {
+      chatBoxController.clear();
+      widget.provider.sendMessage(v);
 
-    if (widget.refocusOnSend) {
-      chatBoxFocus.requestFocus();
-    } else {
+      if (widget.refocusOnSend) {
+        chatBoxFocus.requestFocus();
+      }
+    }
+
+    if (!widget.refocusOnSend) {
       chatBoxFocus.unfocus();
     }
   }
@@ -326,33 +329,38 @@ class ChatScreenState extends State<ChatScreen> {
               value: widget._getChatStyle(context), local: true),
           Pylon<ChatScreenState>.data(value: this, local: true),
         ],
-        builder: (context) => SliverScreen(
-            header: widget.header,
-            fab: widget.fab,
-            gutter: widget.gutter,
-            scrollController: scrollController,
-            footer: Column(
-              children: [
-                ChatBox(
-                  chatBoxBorder: widget.chatBoxBorder,
-                  autofocus: widget.autofocus,
-                  key: ValueKey("ChatBox"),
-                ),
-                InjectScreenFooter.getFooterWidget(context) ??
-                    const SizedBox.shrink()
-              ],
-            ),
-            sliver: messageBuffer
-                .map((messages) => groupMessages(
-                    messages,
-                    widget.messageGroupDistance ??
-                        ArcaneTheme.of(context).chat.messageGroupDistance))
-                .buildNullable((messages) => SListView.builder(
-                      addAutomaticKeepAlives: true,
-                      childCount: messages?.length ?? 0,
-                      builder: (context, index) =>
-                          buildMessage(context, messages![index]),
-                    ))),
+        builder: (context) {
+          Widget? footer = InjectScreenFooter.getFooterWidget(context);
+          Widget box = ChatBox(
+            chatBoxBorder: widget.chatBoxBorder,
+            autofocus: widget.autofocus,
+            key: ValueKey("ChatBox"),
+          );
+
+          if (footer != null) {
+            box = Glass(ignoreContextSignals: true, child: box);
+          }
+
+          return SliverScreen(
+              header: widget.header,
+              fab: widget.fab,
+              gutter: widget.gutter,
+              scrollController: scrollController,
+              footer: Column(
+                children: [box, if (footer != null) footer],
+              ),
+              sliver: messageBuffer
+                  .map((messages) => groupMessages(
+                      messages,
+                      widget.messageGroupDistance ??
+                          ArcaneTheme.of(context).chat.messageGroupDistance))
+                  .buildNullable((messages) => SListView.builder(
+                        addAutomaticKeepAlives: true,
+                        childCount: messages?.length ?? 0,
+                        builder: (context, index) =>
+                            buildMessage(context, messages![index]),
+                      )));
+        },
       );
 }
 
