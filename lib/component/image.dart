@@ -16,19 +16,19 @@ import 'package:octo_image/octo_image.dart';
 class ImageStyle {
   /// How the image should be inscribed into the space.
   final BoxFit fit;
-  
+
   /// Width of the image.
   final double width;
-  
+
   /// Height of the image.
   final double height;
-  
+
   /// Color to blend with the image.
   final Color? color;
-  
+
   /// Blend mode for applying the color.
   final BlendMode? colorBlendMode;
-  
+
   /// Alignment of the image within its bounds.
   final AlignmentGeometry? alignment;
 
@@ -74,19 +74,19 @@ class ImageStyle {
 class ImageView extends StatefulWidget with BoxSignal {
   /// ThumbHash string for generating a thumbnail placeholder.
   final String? thumbHash;
-  
+
   /// BlurHash string for generating a blurred placeholder.
   final String? blurHash;
-  
+
   /// Future that resolves to the image URL to load.
   final Future<String> url;
-  
+
   /// Optional key for caching the image.
   final String? cacheKey;
-  
+
   /// Style configuration for the image.
   final ImageStyle style;
-  
+ 
   /// Duration for the fade animation when transitioning from placeholder to actual image.
   final Duration? fadeOutDuration;
 
@@ -110,7 +110,7 @@ class ImageView extends StatefulWidget with BoxSignal {
   const ImageView(
       {super.key,
       required this.url,
-      this.fadeOutDuration = const Duration(milliseconds: 950),
+      this.fadeOutDuration = const Duration(milliseconds: 250),
       this.style = const ImageStyle(),
       this.thumbHash,
       this.blurHash,
@@ -173,13 +173,13 @@ class _DummyImageProvider extends ImageProvider<CachedNetworkImageProvider> {
 class ImagePlaceholderView extends StatelessWidget {
   /// Whether to show an error state with warning icon.
   final bool isError;
-  
+
   /// BlurHash string for generating a blurred placeholder.
   final String? blurHash;
-  
+
   /// ThumbHash string for generating a thumbnail placeholder.
   final String? thumbHash;
-  
+
   /// Style configuration for the placeholder.
   final ImageStyle style;
 
@@ -207,6 +207,7 @@ class ImagePlaceholderView extends StatelessWidget {
         : thumbHash != null
             ? SizedBox.expand(
                 child: ImageWithStyle(
+                  gapless: true,
                   style: style,
                   image: ThumbHash.fromBase64(thumbHash!).toImage(),
                 ),
@@ -216,7 +217,7 @@ class ImagePlaceholderView extends StatelessWidget {
     if (isError) {
       ph = ph
           .animate()
-          .fade(duration: 500.ms, curve: Curves.easeIn, begin: 1, end: 0.5);
+          .fade(duration: 250.ms, curve: Curves.easeIn, begin: 1, end: 0.5);
     }
 
     return MaybeStack(
@@ -230,7 +231,7 @@ class ImagePlaceholderView extends StatelessWidget {
               size: 24,
             ),
           ).animate().fadeIn(
-                duration: 500.ms,
+                duration: 250.ms,
                 curve: Curves.easeIn,
               ),
       ],
@@ -250,9 +251,11 @@ class ImagePlaceholderView extends StatelessWidget {
 class ImageWithStyle extends StatelessWidget {
   /// The image provider to display.
   final ImageProvider image;
-  
+
   /// Style configuration for the image.
   final ImageStyle style;
+
+  final bool gapless;
 
   /// Creates an [ImageWithStyle] widget.
   ///
@@ -271,7 +274,10 @@ class ImageWithStyle extends StatelessWidget {
   /// )
   /// ```
   const ImageWithStyle(
-      {super.key, required this.image, this.style = const ImageStyle()});
+      {super.key,
+      required this.image,
+      this.style = const ImageStyle(),
+      this.gapless = false});
 
   @override
   Widget build(BuildContext context) => Image(
@@ -282,5 +288,6 @@ class ImageWithStyle extends StatelessWidget {
         color: style.color,
         colorBlendMode: style.colorBlendMode,
         image: image,
+        gaplessPlayback: gapless,
       );
 }
