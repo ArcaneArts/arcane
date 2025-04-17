@@ -1,3 +1,7 @@
+# 5.3.5
+* Added new component `Markdown` which builds in the style of Arcane, and supports Latex
+* Added new component `TextSelect` which allows all children to be selectable and copied in the same selection group of each other.
+
 # 5.3.4
 * Chat box fixes
 
