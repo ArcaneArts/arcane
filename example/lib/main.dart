@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
@@ -45,85 +44,47 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChatScreen(
-        gutter: false,
-        header: const Bar(titleText: "Chat Bubbles"),
-        style: ChatStyle.bubbles,
-        provider: MyChatProvider(users: [
-          MyUser(id: "0", name: "Dan"),
-          MyUser(id: "1", name: "Alice"),
-          MyUser(id: "2", name: "Bob"),
-          MyUser(id: "3", name: "Charlie"),
-        ], messages: BehaviorSubject.seeded([])),
-        sender: "0");
+    return FillScreen(
+        child: TextButton(
+      child: Text("Open Sheet"),
+      onPressed: () => Sheet(builder: (context) => SheetScreen()).open(context),
+    ));
   }
 }
 
-/// Define a message model and implement AbstractChatMessage
-class MyMessage implements AbstractChatMessage {
-  final String id;
-  final String message;
-  @override
-  final DateTime timestamp;
-  @override
-  final String senderId;
-
-  MyMessage({
-    required this.id,
-    required this.message,
-    required this.timestamp,
-    required this.senderId,
-  });
-
-  /// Build the content for the message
-  @override
-  Widget get messageWidget => Markdown(message);
-}
-
-/// Define a user model and implement AbstractChatUser
-class MyUser extends AbstractChatUser {
-  @override
-  final String id;
-  @override
-  final String name;
-
-  MyUser({
-    required this.id,
-    required this.name,
-  });
-
-  /// Build the avatar for the user
-  @override
-  Widget get avatar => const Icon(Icons.user);
-}
-
-// You need a Provider that extends ChatProvider to handle messages
-class MyChatProvider extends ChatProvider {
-  final List<MyUser> users;
-  final BehaviorSubject<List<MyMessage>> messages;
-
-  MyChatProvider({
-    required this.users,
-    required this.messages,
-  });
+class SheetScreen extends StatelessWidget {
+  const SheetScreen({super.key});
 
   @override
-  Future<MyUser> getUser(String id) async =>
-      users.firstWhere((element) => element.id == id);
-
-  @override
-  Stream<List<MyMessage>> streamLastMessages() => messages;
-
-  @override
-  Future<void> sendMessage(String message) async {
-    messages.add([
-      ...messages.value,
-      MyMessage(
-        id: Random.secure().nextDouble().toString(),
-        senderId: "0",
-        message: message,
-        timestamp: DateTime.timestamp(),
-      ),
-    ]);
-  }
+  Widget build(BuildContext context) => ArcaneScreen(
+      gutter: false,
+      title: "This is a sheet",
+      actions: const [
+        IconButtonMenu(
+            icon: Icons.activity_thin,
+            items: [MenuButton(child: Text("Do Thing"))])
+      ],
+      child: Collection(
+        children: [
+          Section(
+              titleText: "Section One",
+              child: SListView.builder(
+                builder: (context, i) => ListTile(
+                  titleText: "Entry $i",
+                  leadingIcon: Icons.activity_thin,
+                ),
+                childCount: 10,
+              )),
+          Section(
+              titleText: "Section One",
+              child: SGridView.builder(
+                builder: (context, i) => BasicCard(
+                  onPressed: () =>
+                      DialogText(title: "GGG", onConfirm: (t) {}).open(context),
+                  title: Text("Entry $i"),
+                ),
+                childCount: 10,
+              ))
+        ],
+      ));
 }

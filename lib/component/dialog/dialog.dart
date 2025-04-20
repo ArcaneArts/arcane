@@ -4,7 +4,11 @@ import 'package:arcane/generated/arcane_shadcn/src/components/overlay/dialog.dar
 mixin ArcaneDialogLauncher on Widget {
   Future<T?> open<T>(BuildContext context) {
     return showDialog<T>(
-        context: context, barrierDismissible: true, builder: (context) => this);
+        context: context,
+        barrierDismissible: true,
+        useSafeArea: false,
+        barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.9),
+        builder: (context) => this);
   }
 }
 
