@@ -1,3 +1,9 @@
+# 5.3.6
+* SYNC Upstream Fixes for PhoneInput & RadioGroup
+* ADD `titleText`, `subtitleText`, `leadingIcon` to `ListTile`
+* FIX Chat Screen now supports Shift+Enter to make new lines
+* FIX Chat Screen message bubbles now support using Markdown as their widget without breaking intrinsics / sizing issues caused by both us with intrinsics and from gpt_markdown for using spans.
+
 # 5.3.5
 * Added new component `Markdown` which builds in the style of Arcane, and supports Latex
 * Added new component `TextSelect` which allows all children to be selectable and copied in the same selection group of each other.

@@ -149,8 +149,11 @@ class CheckboxTile extends StatelessWidget {
 
 class Tile extends StatelessWidget {
   final Widget? title;
+  final String? titleText;
   final Widget? subtitle;
+  final String? subtitleText;
   final Widget? leading;
+  final IconData? leadingIcon;
   final Widget? trailing;
   final VoidCallback? onPressed;
   final EdgeInsets contentPadding;
@@ -171,6 +174,9 @@ class Tile extends StatelessWidget {
 
   const Tile({
     super.key,
+    this.leadingIcon,
+    this.titleText,
+    this.subtitleText,
     this.title,
     this.subtitle,
     this.leading,
@@ -237,8 +243,8 @@ class Tile extends StatelessWidget {
                             : Icons.chevron_down_ionic),
                         onPressed: () {})
                     : null),
-            title: title,
-            subtitle: subtitle,
+            title: titleText != null ? Text(titleText!) : title,
+            subtitle: subtitleText != null ? Text(subtitleText!) : subtitle,
           ))
         ],
       ));
@@ -249,20 +255,20 @@ class Tile extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (leading != null)
+              if (leading != null && leadingIcon == null)
                 Padding(
                   padding: EdgeInsets.only(right: leadingPadding.right),
-                  child: leading!,
+                  child: leading ?? Icon(leadingIcon),
                 ),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (title != null)
+                  if (title != null || titleText != null)
                     DefaultTextStyle(
                         style: Theme.of(context).typography.medium.copyWith(
                             color: Theme.of(context).colorScheme.foreground),
-                        child: title!),
+                        child: title ?? Text(titleText!)),
                 ],
               )),
               if (trailing != null)
@@ -276,7 +282,7 @@ class Tile extends StatelessWidget {
         child: Padding(
             padding: EdgeInsets.only(
                 left: contentPadding.left +
-                    (leading != null
+                    (leading != null || leadingIcon != null
                         ? (leadingPadding.right +
                             leadingPadding.left +
                             knownIconSize)
@@ -289,7 +295,7 @@ class Tile extends StatelessWidget {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (subtitle != null)
+                    if (subtitle != null || subtitleText != null)
                       DefaultTextStyle(
                               style: Theme.of(context)
                                   .typography
@@ -298,7 +304,7 @@ class Tile extends StatelessWidget {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .foreground),
-                              child: subtitle!)
+                              child: subtitle ?? Text(subtitleText!))
                           .withOpacity(0.9),
                   ],
                 ))

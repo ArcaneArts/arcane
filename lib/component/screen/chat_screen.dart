@@ -373,17 +373,29 @@ class ChatBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ChatScreenState state = context.pylon<ChatScreenState>();
+
+    state.chatBoxFocus.onKeyEvent = (FocusNode node, KeyEvent key) {
+      if (!HardwareKeyboard.instance.isShiftPressed &&
+          key.logicalKey.keyLabel == 'Enter') {
+        if (key is KeyDownEvent || key is KeyRepeatEvent) {
+          state.send(state.chatBoxController.text);
+        }
+        return KeyEventResult.handled;
+      }
+
+      return KeyEventResult.ignored;
+    };
     Widget w = TextField(
       maxLength: state.widget.maxMessageLength,
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
       autofocus: autofocus,
-      maxLines: 3,
+      maxLines: 9,
+      focusNode: state.chatBoxFocus,
       minLines: 1,
-      textInputAction: TextInputAction.done,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.newline,
       border: false,
       controller: state.chatBoxController,
-      focusNode: state.chatBoxFocus,
-      onSubmitted: state.send,
       placeholder: state.widget.placeholder,
       trailing: IconButton(
         icon: const Icon(Icons.send_ionic),
@@ -547,7 +559,7 @@ class ChatMessageBubble extends StatelessWidget {
                   avatar.padOnly(top: 8, bottom: 8),
                 ],
               ],
-            ).iw)
+            ))
         .withAlign(sender ? Alignment.centerRight : Alignment.centerLeft)
         .pad(8);
   }
