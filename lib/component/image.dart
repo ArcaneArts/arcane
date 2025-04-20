@@ -1,7 +1,6 @@
 import 'package:arcane/arcane.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:flutter_thumbhash/flutter_thumbhash.dart';
 import 'package:octo_image/octo_image.dart';
 
 /// A configuration class that defines how an image should be displayed.
@@ -86,7 +85,7 @@ class ImageView extends StatefulWidget with BoxSignal {
 
   /// Style configuration for the image.
   final ImageStyle style;
- 
+
   /// Duration for the fade animation when transitioning from placeholder to actual image.
   final Duration? fadeOutDuration;
 
@@ -135,12 +134,10 @@ class _ImageViewState extends State<ImageView> {
           errorBuilder: (context, e, es) => ImagePlaceholderView(
                 isError: true,
                 style: widget.style,
-                thumbHash: widget.thumbHash,
                 blurHash: widget.blurHash,
               ),
           placeholderBuilder: (w) => ImagePlaceholderView(
                 style: widget.style,
-                thumbHash: widget.thumbHash,
                 blurHash: widget.blurHash,
               ),
           image: url == null
@@ -177,9 +174,6 @@ class ImagePlaceholderView extends StatelessWidget {
   /// BlurHash string for generating a blurred placeholder.
   final String? blurHash;
 
-  /// ThumbHash string for generating a thumbnail placeholder.
-  final String? thumbHash;
-
   /// Style configuration for the placeholder.
   final ImageStyle style;
 
@@ -192,8 +186,7 @@ class ImagePlaceholderView extends StatelessWidget {
       {super.key,
       this.isError = false,
       this.style = const ImageStyle(),
-      this.blurHash,
-      this.thumbHash});
+      this.blurHash});
 
   @override
   Widget build(BuildContext context) {
@@ -204,15 +197,7 @@ class ImagePlaceholderView extends StatelessWidget {
               image: BlurHashImage(blurHash!),
             ),
           )
-        : thumbHash != null
-            ? SizedBox.expand(
-                child: ImageWithStyle(
-                  gapless: true,
-                  style: style,
-                  image: ThumbHash.fromBase64(thumbHash!).toImage(),
-                ),
-              )
-            : Container();
+        : Container();
 
     if (isError) {
       ph = ph

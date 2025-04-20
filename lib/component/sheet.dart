@@ -43,7 +43,11 @@ class KeyboardSheet extends StatelessWidget with ArcaneKBSheetLauncher {
       dismissBehavior: const ss.SheetKeyboardDismissBehavior.onDragDown(
         isContentScrollAware: true,
       ),
-      child: ss.ScrollableSheet(
+      child: ss.Sheet(
+          scrollConfiguration: const ss.SheetScrollConfiguration(),
+          decoration: ss.MaterialSheetDecoration(
+            size: ss.SheetSize.stretch,
+          ),
           child: ss.SheetContentScaffold(
               backgroundColor: Colors.transparent,
               body: SurfaceCard(

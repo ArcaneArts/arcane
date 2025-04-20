@@ -1,8 +1,15 @@
 # 5.3.6
+* BREAKING `ImageView` removed `thumbhash` property. Use Blurhash
 * SYNC Upstream Fixes for PhoneInput & RadioGroup
 * ADD `titleText`, `subtitleText`, `leadingIcon` to `ListTile`
 * FIX Chat Screen now supports Shift+Enter to make new lines
 * FIX Chat Screen message bubbles now support using Markdown as their widget without breaking intrinsics / sizing issues caused by both us with intrinsics and from gpt_markdown for using spans.
+* UPDATE `toxic` min to `>=1.3.3 <2.0.0` breaking `<1.3.3` hard dependencies
+* UPDATE `desktop_drop` to `>=0.5.0 <0.7.0` to support `0.6.0`
+* UPDATE `flutter_blurhash` to `>=0.8.2 <1.0.0` to support `0.9.0` (performance improvements)
+* UPDATE `flutter_hooks` to `>=0.21.0 <0.22.0` breaking `<0.21.0` hard dependencies (basic renames)
+* UPDATE `smooth_sheets` to `>=0.11.0 <0.12.0` breaking `<0.11.0` hard dependencies (breaking changes to `ScrollableSheet`)
+* REMOVE `flutter_thumbhash` as it is no longer used in `ImageView` due to flickering issues. Use blurhash
 
 # 5.3.5
 * Added new component `Markdown` which builds in the style of Arcane, and supports Latex
