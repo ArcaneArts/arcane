@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "5.0.2"
+    version: "5.3.5"
   archive:
     dependency: transitive
     description:
@@ -215,6 +215,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  expressions:
+    dependency: transitive
+    description:
+      name: expressions
+      sha256: "308a621b602923dd8a0cf3072793b24850d06453eb49c6b698cbda41a282e904"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.5+2"
   fake_async:
     dependency: transitive
     description:
@@ -223,6 +231,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  faker:
+    dependency: transitive
+    description:
+      name: faker
+      sha256: "544c34e9e1d322824156d5a8d451bc1bb778263b892aded24ec7ba77b0706624"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   fast_log:
     dependency: transitive
     description:
@@ -324,6 +340,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  flutter_math_fork:
+    dependency: transitive
+    description:
+      name: flutter_math_fork
+      sha256: "284bab89b2fbf1bc3a0baf13d011c1dd324d004e35d177626b77f2fc056366ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.3"
   flutter_phosphor_icons:
     dependency: transitive
     description:
@@ -398,6 +422,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.6.2"
+  gpt_markdown:
+    dependency: transitive
+    description:
+      name: gpt_markdown
+      sha256: "98dbf7cd95d4ebe678ead0718761af5ed7358165b10a1c1bfe295dd367763b7e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.16"
+  haptic_feedback:
+    dependency: transitive
+    description:
+      name: haptic_feedback
+      sha256: d3b5ad41858d18a35d317636c9cdc1cb8aef23c7b861ca5896273acc68e1a98a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1+1"
+  hive:
+    dependency: transitive
+    description:
+      name: hive
+      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
+  hive_flutter:
+    dependency: transitive
+    description:
+      name: hive_flutter
+      sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   http:
     dependency: transitive
     description:
@@ -558,6 +614,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -710,6 +774,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      sha256: "489024f942069c2920c844ee18bb3d467c69e48955a4f32d1677f71be103e310"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.4"
   pylon:
     dependency: transitive
     description:
@@ -726,6 +798,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.2"
   rxdart:
     dependency: transitive
     description:
@@ -734,13 +814,21 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  serviced:
+    dependency: transitive
+    description:
+      name: serviced
+      sha256: a551d515eed267187d7d7c7d222831a731abbf43ad58b9241a409de0b52a583c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   shadcn_flutter:
     dependency: transitive
     description:
       path: "../arcane_shadcn"
       relative: true
     source: path
-    version: "0.0.32"
+    version: "0.0.34"
   shared_preferences:
     dependency: transitive
     description:
@@ -994,6 +1082,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      sha256: a97ce2013f240b2f3807bcbaf218765b6f301c3eff91092bcfa23a039e7dd151
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   typed_data:
     dependency: transitive
     description:
@@ -1171,5 +1267,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.7.0-0 <4.0.0"
+  dart: ">=3.7.0 <4.0.0"
   flutter: ">=3.29.0"
