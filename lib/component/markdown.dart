@@ -165,6 +165,7 @@ class ArcaneTableMd extends BlockMd {
                         }
 
                         return TD(MdWidget(
+                          context,
                           (e[index] ?? "").trim(),
                           false,
                           config: config,

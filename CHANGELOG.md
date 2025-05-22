@@ -1,3 +1,9 @@
+# 5.3.8
+* Fix md widget not following semantic versioning
+
+# 5.3.7
+* Update to FireCrud 3
+
 # 5.3.6
 * BREAKING `ImageView` removed `thumbhash` property. Use Blurhash
 * BREAKING `smooth_sheets` removed along with `KeyboardSheet`
