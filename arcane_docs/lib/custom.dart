@@ -3301,7 +3301,11 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
           if (widget.title != null) Text(widget.title!).h2(),
           if (widget.title != null) const Gap(12),
           TabList(
-            onChanged: (_) {},
+            onChanged: (v) {
+              setState(() {
+                index = v;
+              });
+            },
             index: index,
             children: [
               TabItem(

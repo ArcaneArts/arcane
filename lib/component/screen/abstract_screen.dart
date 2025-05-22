@@ -62,6 +62,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
           physics: physics,
         )
       : FillScreen(
+          fab: fab,
           overrideBackgroundColor: overrideBackgroundColor,
           // fab: fab,
           footer: footer,

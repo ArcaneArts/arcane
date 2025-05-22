@@ -4,6 +4,8 @@
 * Upgrade Shad Deps
 * REMOVED `Supplier` and `Consumer` from utils
 * Ui Fixes, Sync Upstream
+* FABs now work on ArcaneScreens using RenderBox Children
+* Fixed Doc Code preview tab not working
 
 # 5.3.8
 * Fix md widget not following semantic versioning
