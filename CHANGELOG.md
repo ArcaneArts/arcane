@@ -1,3 +1,7 @@
+# 5.4.0
+* Open constraint for skeletonizer to support flutter 3.32
+* Open constraint for value_layout_builder to support flutter 3.32
+
 # 5.3.8
 * Fix md widget not following semantic versioning
 
