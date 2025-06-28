@@ -18,6 +18,50 @@ extension XDateTimeStartEnds on DateTime {
 }
 
 extension XWidgetArcane on Widget {
+  Widget padSliverBy({
+    double? left,
+    double? top,
+    double? right,
+    double? bottom,
+    double? horizontal,
+    double? vertical,
+  }) =>
+      SliverPadding(
+        padding: EdgeInsets.symmetric(
+              horizontal: horizontal ?? 0.0,
+              vertical: vertical ?? 0.0,
+            ) +
+            EdgeInsets.only(
+              left: left ?? 0.0,
+              top: top ?? 0.0,
+              right: right ?? 0.0,
+              bottom: bottom ?? 0.0,
+            ),
+        sliver: this,
+      );
+
+  Widget padBy({
+    double? left,
+    double? top,
+    double? right,
+    double? bottom,
+    double? horizontal,
+    double? vertical,
+  }) =>
+      Padding(
+        padding: EdgeInsets.symmetric(
+              horizontal: horizontal ?? 0.0,
+              vertical: vertical ?? 0.0,
+            ) +
+            EdgeInsets.only(
+              left: left ?? 0.0,
+              top: top ?? 0.0,
+              right: right ?? 0.0,
+              bottom: bottom ?? 0.0,
+            ),
+        child: this,
+      );
+
   Widget shimmer({bool loading = true}) => Skeletonizer(
         effect: ShimmerEffect(
             duration: Arcane.globalTheme.shimmer.duration,
