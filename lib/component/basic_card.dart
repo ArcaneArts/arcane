@@ -91,6 +91,8 @@ class BasicCard extends StatelessWidget {
   /// Padding applied to the inner Basic widget
   final EdgeInsetsGeometry? basicPadding;
 
+  final bool spanned;
+
   /// Creates a [BasicCard] widget.
   ///
   /// A [BasicCard] is a convenience widget that combines [Card] and [Basic] to create
@@ -127,6 +129,7 @@ class BasicCard extends StatelessWidget {
     this.trailingAlignment,
     this.titleAlignment,
     this.subtitleAlignment,
+    this.spanned = false,
     this.contentAlignment,
     this.contentSpacing, // 16
     this.titleSpacing, //4
@@ -135,33 +138,40 @@ class BasicCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Card(
-      onPressed: onPressed,
-      padding: padding,
-      surfaceOpacity: surfaceOpacity,
-      surfaceBlur: surfaceBlur,
-      filled: filled,
-      duration: duration,
-      clipBehavior: clipBehavior,
-      borderRadius: borderRadius,
-      borderColor: borderColor,
-      borderWidth: borderWidth,
-      boxShadow: boxShadow,
-      fillColor: fillColor,
-      child: Basic(
-        padding: basicPadding,
-        title: title,
-        leading: leading,
-        subtitle: subtitle,
-        trailing: trailing,
-        content: content,
-        contentAlignment: contentAlignment,
-        contentSpacing: contentSpacing,
-        leadingAlignment: leadingAlignment,
-        mainAxisAlignment: mainAxisAlignment,
-        subtitleAlignment: subtitleAlignment,
-        titleAlignment: titleAlignment,
-        titleSpacing: titleSpacing,
-        trailingAlignment: trailingAlignment,
-      ));
+  Widget build(BuildContext context) {
+    Widget b = Basic(
+      padding: basicPadding,
+      title: title,
+      leading: leading,
+      subtitle: subtitle,
+      trailing: trailing,
+      content: content,
+      contentAlignment: contentAlignment,
+      contentSpacing: contentSpacing,
+      leadingAlignment: leadingAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      subtitleAlignment: subtitleAlignment,
+      titleAlignment: titleAlignment,
+      titleSpacing: titleSpacing,
+      trailingAlignment: trailingAlignment,
+    );
+    return Card(
+        onPressed: onPressed,
+        padding: padding,
+        surfaceOpacity: surfaceOpacity,
+        surfaceBlur: surfaceBlur,
+        filled: filled,
+        duration: duration,
+        clipBehavior: clipBehavior,
+        borderRadius: borderRadius,
+        borderColor: borderColor,
+        borderWidth: borderWidth,
+        boxShadow: boxShadow,
+        fillColor: fillColor,
+        child: spanned
+            ? Row(
+                children: [b],
+              )
+            : b);
+  }
 }

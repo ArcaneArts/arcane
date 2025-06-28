@@ -1,5 +1,8 @@
 # 5.3.11
 * Sync Upstream
+* Add `FancyCard`, `FancyIcon`, `FancyProgress`
+* Add `ButtonPanel` and `PanelButton`
+* Add `BasicCard.spanned` to make it not center align across horizon
 
 # 5.3.10
 * Liquid Glass
