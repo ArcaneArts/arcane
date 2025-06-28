@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
@@ -15,6 +16,7 @@ class ArcaneTheme {
   final double contrast;
   final double spin;
   final ArcaneBlurMode blurMode;
+  final ArcaneLiquidGlass liquidGlass;
   final double defaultHeaderHeight;
   final ChatTheme chat;
   final ToastTheme toast;
@@ -33,9 +35,10 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.liquidGlass = const ArcaneLiquidGlass(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
-    this.blurMode = ArcaneBlurMode.backdropFilter,
+    this.blurMode = ArcaneBlurMode.liquidGlass,
     this.edge = const EdgeTheme(),
     this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,
@@ -54,7 +57,7 @@ class ArcaneTheme {
     this.scaling = 1.0,
     this.radius = 0.4,
     this.surfaceOpacity = 0.6,
-    this.surfaceBlur = 24,
+    this.surfaceBlur = 8,
     this.themeMode = ThemeMode.system,
   });
 
@@ -114,6 +117,41 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
+}
+
+class ArcaneLiquidGlass {
+  /// The shape of this glass.
+  ///
+  /// This is the shape of the glass that will be rendered.
+  final LiquidShape? shape;
+
+  /// Whether this glass should be rendered "inside" of the glass, or on top.
+  ///
+  /// If it is rendered inside, it will be on top of [blur], but the color tint
+  /// of the glass will affect the child, and it will also be refracted.
+  final bool glassContainsChild;
+
+  /// The clip behavior of this glass.
+  ///
+  /// Defaults to [Clip.none], so [child] will not be clipped.
+  final Clip clipBehavior;
+
+  final LiquidGlassSettings? settings;
+
+  const ArcaneLiquidGlass({
+    this.shape,
+    this.glassContainsChild = false,
+    this.clipBehavior = Clip.hardEdge,
+    this.settings = const LiquidGlassSettings(
+      glassColor: Color.fromARGB(0, 255, 255, 255),
+      thickness: 15,
+      chromaticAberration: 1,
+      blend: 20,
+      lightAngle: 0.5 * pi,
+      lightIntensity: 0.01,
+      ambientStrength: .01,
+    ),
+  });
 }
 
 class ArcaneHaptics {

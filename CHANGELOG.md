@@ -1,3 +1,9 @@
+# 5.3.11
+* Sync Upstream
+
+# 5.3.10
+* Liquid Glass
+
 # 5.3.9
 * Open constraint for skeletonizer to support flutter 3.32
 * Open constraint for value_layout_builder to support flutter 3.32

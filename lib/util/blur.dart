@@ -13,6 +13,7 @@ enum ArcaneBlurMode {
   backdropFilter,
   frost,
   disabled,
+  liquidGlass,
 }
 
 enum EdgeDirection {
@@ -63,6 +64,11 @@ class ArcaneBlur extends StatelessWidget {
 
     ArcaneBlurMode mode = getBlurMode(context);
 
+    if (!ui.ImageFilter.isShaderFilterSupported &&
+        mode == ArcaneBlurMode.liquidGlass) {
+      mode = ArcaneBlurMode.backdropFilter;
+    }
+
     if (mode == ArcaneBlurMode.disabled) {
       return child;
     }
@@ -86,6 +92,20 @@ class ArcaneBlur extends StatelessWidget {
       return _BackdropFilterBlur(
         blurriness: intensity,
         tileMode: tileMode,
+        child: child,
+      );
+    }
+
+    if (mode == ArcaneBlurMode.liquidGlass) {
+      ArcaneLiquidGlass g = ArcaneTheme.of(context).liquidGlass;
+
+      return LiquidGlass(
+        shape: g.shape ??
+            LiquidRoundedSuperellipse(
+                borderRadius: Theme.of(context).radiusMdRadius),
+        glassContainsChild: g.glassContainsChild,
+        settings: (g.settings ?? LiquidGlassSettings(blur: intensity)),
+        clipBehavior: g.clipBehavior,
         child: child,
       );
     }

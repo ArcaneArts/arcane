@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "5.3.8"
+    version: "5.3.11"
   archive:
     dependency: transitive
     description:
@@ -224,6 +224,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   expressions:
     dependency: transitive
     description:
@@ -385,10 +393,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_svg
-      sha256: d44bf546b13025ec7353091516f6881f1d4c633993cb109c3916c3a0159dadf1
+      sha256: cd57f7969b4679317c17af6fd16ee233c1e60a82ed209d8a475c54fd6fd6f845
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -419,10 +427,10 @@ packages:
     dependency: transitive
     description:
       name: gpt_markdown
-      sha256: "80f45e45c4c5636c040a64910aa543a4697442f7224391f0aeced3d2ed3a8c06"
+      sha256: "7817c79254bf81985f518562d85e4bfabe9462067822eb4f7fc6267c3158e28e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.19"
+    version: "1.1.0"
   haptic_feedback:
     dependency: transitive
     description:
@@ -507,10 +515,10 @@ packages:
     dependency: transitive
     description:
       name: jovial_svg
-      sha256: "5e45b05845c8cbfec99ea32f177473ab2573d2c48479b29922c44ad329881d72"
+      sha256: "6791b1435547bdc0793081a166d41a8a313ebc61e4e5136fb7a3218781fb9e50"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.25"
+    version: "1.1.27"
   js:
     dependency: transitive
     description:
@@ -559,6 +567,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  liquid_glass_renderer:
+    dependency: transitive
+    description:
+      name: liquid_glass_renderer
+      sha256: "060c29c804fb7aa7dd73901eaaedb5ba89cd431ca663c4fe7b8d6eefca685977"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1-dev.9"
   matcher:
     dependency: transitive
     description:
@@ -739,10 +755,10 @@ packages:
     dependency: transitive
     description:
       name: posix
-      sha256: f0d7856b6ca1887cfa6d1d394056a296ae33489db914e365e2044fdada449e62
+      sha256: "6323a5b0fa688b6a010df4905a56b00181479e6d10534cecfecede2aa55add61"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.2"
+    version: "6.0.3"
   precision_stopwatch:
     dependency: transitive
     description:
@@ -920,10 +936,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: "0669c70faae6270521ee4f05bffd2919892d42d1276e6c495be80174b6bc0ef6"
+      sha256: c254ade258ec8282947a0acbbc90b9575b4f19673533ee46f2f6e9b3aeefd7c0
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.1"
+    version: "3.4.0"
   syntax_highlight:
     dependency: transitive
     description:
@@ -1096,10 +1112,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "44cc7104ff32563122a929e4620cf3efd584194eec6d1d913eb5ba593dbcf6de"
+      sha256: a4f059dc26fc8295b5921376600a194c4ec7d55e72f2fe4c7d2831e103d461e6
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.18"
+    version: "1.1.19"
   vector_graphics_codec:
     dependency: transitive
     description:
@@ -1112,10 +1128,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "1b4b9e706a10294258727674a340ae0d6e64a7231980f9f9a3d12e4b42407aad"
+      sha256: "557a315b7d2a6dbb0aaaff84d857967ce6bdc96a63dc6ee2a57ce5a6ee5d3331"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.16"
+    version: "1.1.17"
   vector_math:
     dependency: transitive
     description:
@@ -1165,5 +1181,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-  dart: ">=3.7.0 <4.0.0"
-  flutter: ">=3.32.0"
+  dart: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.4"
