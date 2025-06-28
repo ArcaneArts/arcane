@@ -58,7 +58,7 @@ class Markdown extends StatelessWidget {
           HighlightedText(),
           SourceTag(),
         ],
-        onLinkTab: (url, title) => openLink(context, url, title),
+        onLinkTap: (url, title) => openLink(context, url, title),
       );
 
   Widget buildLink(
