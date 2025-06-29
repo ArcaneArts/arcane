@@ -144,9 +144,10 @@ class ArcaneLiquidGlass {
     this.clipBehavior = Clip.hardEdge,
     this.settings = const LiquidGlassSettings(
       glassColor: Color.fromARGB(0, 255, 255, 255),
-      thickness: 15,
+      thickness: 7,
       chromaticAberration: 1,
       blend: 20,
+      blur: 8,
       lightAngle: 0.5 * pi,
       lightIntensity: 0.01,
       ambientStrength: .01,
