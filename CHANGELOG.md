@@ -1,3 +1,7 @@
+# 5.3.12
+* Flow stuff
+* Fix blur issues 
+
 # 5.3.11
 * Sync Upstream
 * Add `FancyCard`, `FancyIcon`, `FancyProgress`
