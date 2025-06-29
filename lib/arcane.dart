@@ -53,6 +53,7 @@ export 'component/layout/button_panel.dart';
 export 'component/layout/fancy_card.dart';
 export 'component/layout/fancy_icon.dart';
 export 'component/layout/fancy_progress.dart';
+export 'component/layout/form_header.dart';
 export 'component/logo.dart';
 export 'component/markdown.dart';
 export 'component/mutable_text.dart';
