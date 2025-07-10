@@ -357,6 +357,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_math_fork:
     dependency: transitive
     description:
@@ -799,6 +804,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
+  reactive_forms:
+    dependency: transitive
+    description:
+      name: reactive_forms
+      sha256: "4c8fe71f21ac88996c01a56fe19ea5ec39b47292cb07f99a467e1bb977136a98"
+      url: "https://pub.dev"
+    source: hosted
+    version: "18.1.1"
   rxdart:
     dependency: "direct main"
     description:

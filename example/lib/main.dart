@@ -44,11 +44,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FillScreen(
-        child: TextButton(
-      child: Text("Open Sheet"),
-      onPressed: () => Sheet(builder: (context) => SheetScreen()).open(context),
-    ));
+    return ArcaneScreen(
+      title: "Form Example",
+      child: Collection(),
+    );
   }
 }
 
