@@ -45,7 +45,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ArcaneScreen(
-      title: "Form Example",
+      title: "Form Example with some long text",
+      subtitle: "Some Subtitle Text or some shit",
+      actions: [IconButton(icon: Icon(Icons.dots_three_vertical))],
       child: Collection(),
     );
   }

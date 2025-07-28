@@ -1,3 +1,9 @@
+# 5.3.14
+* Bar better size text
+
+# 5.3.13
+* GPT Markdown keeps making breaking changes on minor version bumps, pegging it to 1.1.2, no more automatic upgrades for you.
+
 # 5.3.12
 * Flow stuff
 * Fix blur issues 

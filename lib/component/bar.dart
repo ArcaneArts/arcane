@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:arcane/arcane.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -215,8 +217,8 @@ class Bar extends StatelessWidget {
         useGlass: useGlass ?? this.useGlass,
         backButton: backButton ?? this.backButton,
         ignoreContextSignals: ignoreContextSignals ?? this.ignoreContextSignals,
-        child: child ?? this.child,
         barFooter: barFooter ?? this.barFooter,
+        child: child ?? this.child,
       );
 
   @override
@@ -236,7 +238,7 @@ class Bar extends StatelessWidget {
                 if (barHeader != null) barHeader!,
                 SafeBar.withSafety(
                     context,
-                    AppBar(
+                    NoIntrinsicAppBar(
                       leading: InjectBarLeading.mutate(context, [
                         if ((backButton == BarBackButtonMode.always ||
                                 (backButton == BarBackButtonMode.whenPinned &&
@@ -254,9 +256,9 @@ class Bar extends StatelessWidget {
                       surfaceOpacity: 0,
                       trailing: InjectBarTrailing.mutate(context,
                           [...trailing, if (actions != null) actions!]),
-                      title: titleText?.text ?? title,
-                      header: headerText?.text ?? header,
-                      subtitle: subtitleText?.text ?? subtitle,
+                      title: (titleText?.text ?? title)?.ast(2),
+                      header: (headerText?.text ?? header)?.ast(1),
+                      subtitle: (subtitleText?.text ?? subtitle)?.ast(1),
                       trailingExpanded: trailingExpanded,
                       alignment: alignment,
                       padding: padding,
@@ -276,12 +278,15 @@ class Bar extends StatelessWidget {
 }
 
 extension XAST on Widget {
-  Widget get ast => this is Text
+  Widget ast(int ml) => this is Text
       ? AutoSizeText(
           (this as Text).data ?? "",
           style: (this as Text).style,
           minFontSize: 9,
+          overflow: TextOverflow.ellipsis,
           maxFontSize: (this as Text).style?.fontSize ?? 16,
+          maxLines: ml,
+          wrapWords: false,
         )
       : this;
 }
@@ -585,4 +590,147 @@ class InjectBarHeader {
   ///
   /// See [Injection](../../../doc/components/bar.md#injection) in the documentation.
   const InjectBarHeader({required this.header});
+}
+
+class NoIntrinsicAppBar extends StatefulWidget {
+  final List<Widget> trailing;
+  final List<Widget> leading;
+  final Widget? child;
+  final Widget? title;
+  final Widget? header; // small widget placed on top of title
+  final Widget? subtitle; // small widget placed below title
+  final bool
+      trailingExpanded; // expand the trailing instead of the main content
+  final AlignmentGeometry alignment;
+  final Color? backgroundColor;
+  final double? leadingGap;
+  final double? trailingGap;
+  final EdgeInsetsGeometry? padding;
+  final double? height;
+  final bool useSafeArea;
+  final double? surfaceBlur;
+  final double? surfaceOpacity;
+
+  const NoIntrinsicAppBar({
+    super.key,
+    this.trailing = const [],
+    this.leading = const [],
+    this.title,
+    this.header,
+    this.subtitle,
+    this.child,
+    this.trailingExpanded = false,
+    this.alignment = Alignment.center,
+    this.padding,
+    this.backgroundColor,
+    this.leadingGap,
+    this.trailingGap,
+    this.height,
+    this.surfaceBlur,
+    this.surfaceOpacity,
+    this.useSafeArea = true,
+  }) : assert(
+          child == null || title == null,
+          'Cannot provide both child and title',
+        );
+
+  @override
+  State<NoIntrinsicAppBar> createState() => _AppBarState();
+}
+
+class _AppBarState extends State<NoIntrinsicAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scaling = theme.scaling;
+    final barData = Data.maybeOf<ScaffoldBarData>(context);
+    final surfaceBlur = widget.surfaceBlur ?? theme.surfaceBlur;
+    final surfaceOpacity = widget.surfaceOpacity ?? theme.surfaceOpacity;
+
+    return FocusTraversalGroup(
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: surfaceBlur ?? 0,
+            sigmaY: surfaceBlur ?? 0,
+          ),
+          child: Container(
+            color: widget.backgroundColor ??
+                theme.colorScheme.background.scaleAlpha(surfaceOpacity ?? 1),
+            alignment: widget.alignment,
+            padding: widget.padding ??
+                (const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 12,
+                    ) *
+                    scaling),
+            child: SafeArea(
+              top: widget.useSafeArea &&
+                  barData?.isHeader == true &&
+                  barData?.childIndex == 0,
+              right: widget.useSafeArea,
+              left: widget.useSafeArea,
+              bottom: widget.useSafeArea &&
+                  barData?.isHeader == false &&
+                  barData?.childIndex == (barData?.childrenCount ?? 0) - 1,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (widget.leading.isNotEmpty)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: widget.leading,
+                    ).gap(widget.leadingGap ?? (4 * scaling)),
+                  Flexible(
+                    fit:
+                        widget.trailingExpanded ? FlexFit.loose : FlexFit.tight,
+                    child: widget.child ??
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (widget.header != null)
+                              KeyedSubtree(
+                                key: const ValueKey('header'),
+                                child: widget.header!.muted().small(),
+                              ),
+                            if (widget.title != null)
+                              KeyedSubtree(
+                                key: const ValueKey('title'),
+                                child: widget.title!.large().medium(),
+                              ),
+                            if (widget.subtitle != null)
+                              KeyedSubtree(
+                                key: const ValueKey('subtitle'),
+                                child: widget.subtitle!.muted().small(),
+                              ),
+                          ],
+                        ),
+                  ),
+                  if (widget.trailing.isNotEmpty)
+                    if (!widget.trailingExpanded)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: widget.trailing,
+                      ).gap(widget.trailingGap ?? (4 * scaling))
+                    else
+                      Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: widget.trailing,
+                        ).gap(widget.trailingGap ?? (4 * scaling)),
+                      ),
+                ],
+              ).gap(18 * scaling),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

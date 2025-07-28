@@ -63,13 +63,13 @@ class Markdown extends StatelessWidget {
 
   Widget buildLink(
     BuildContext context,
-    String text,
+    InlineSpan text,
     String url,
     TextStyle style,
   ) =>
       HoverCard(
           child: Text(
-            text,
+            text.toPlainText(),
             style: TextStyle(
                 color: Theme.of(context)
                     .colorScheme
@@ -81,7 +81,7 @@ class Markdown extends StatelessWidget {
                   child: Basic(
                 leadingAlignment: Alignment.center,
                 leading: Icon(Icons.globe),
-                title: Text(text),
+                title: Text(text.toPlainText()),
                 subtitle: Text(url),
               )));
 
