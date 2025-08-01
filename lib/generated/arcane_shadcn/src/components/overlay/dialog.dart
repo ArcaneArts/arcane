@@ -1,5 +1,4 @@
-import 'package:pylon/pylon.dart';
-import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 class ModalBackdrop extends StatelessWidget {
@@ -111,20 +110,23 @@ class ModalContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fullScreenMode = Model.maybeOf<bool>(context, kFullScreenMode);
-    return SurfaceCard(
-      clipBehavior: clipBehavior,
-      borderRadius: fullScreenMode == true ? BorderRadius.zero : borderRadius,
-      borderWidth: fullScreenMode == true ? 0 : borderWidth,
-      borderColor: borderColor,
-      filled: filled,
-      fillColor: fillColor,
-      boxShadow: fullScreenMode == true ? const [] : boxShadow,
-      padding: padding,
-      surfaceOpacity: surfaceOpacity,
-      surfaceBlur: surfaceBlur,
-      duration: duration,
-      child: child,
-    );
+    return Glass(
+        ignoreContextSignals: true,
+        child: Card(
+          clipBehavior: clipBehavior,
+          borderRadius:
+              fullScreenMode == true ? BorderRadius.zero : borderRadius,
+          borderWidth: fullScreenMode == true ? 0 : borderWidth,
+          borderColor: borderColor,
+          filled: filled,
+          fillColor: fillColor,
+          boxShadow: fullScreenMode == true ? const [] : boxShadow,
+          padding: padding,
+          surfaceOpacity: 0,
+          surfaceBlur: 0,
+          duration: duration,
+          child: child,
+        ));
   }
 }
 

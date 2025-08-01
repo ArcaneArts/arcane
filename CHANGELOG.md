@@ -1,3 +1,7 @@
+# 5.3.15
+* Improved liquid ass
+* Added MagicTile and MagicFab
+
 # 5.3.14
 * Bar better size text
 

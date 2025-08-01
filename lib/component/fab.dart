@@ -58,10 +58,10 @@ class FabMenu extends StatelessWidget {
   ///
   /// This is typically an icon or text describing the menu's purpose.
   final Widget child;
-  
+
   /// Optional widget to display before the main content.
   final Widget? leading;
-  
+
   /// List of menu items to display when the button is pressed.
   final List<MenuItem> items;
 
@@ -121,10 +121,10 @@ class Fab extends StatelessWidget {
   /// This is typically an icon or text. Text will automatically be styled with
   /// large text, and icons will be automatically enlarged.
   final Widget child;
-  
+
   /// Optional widget to display before the main content.
   final Widget? leading;
-  
+
   /// Function to call when the button is pressed.
   final VoidCallback? onPressed;
 
@@ -145,19 +145,23 @@ class Fab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PaddingAll(
       padding: 8,
-      child: SurfaceCard(
-        padding: EdgeInsets.zero,
-        child: GhostButton(
-          density: ButtonDensity.iconComfortable,
-          leading: leading,
-          onPressed: onPressed,
-          child: child is Text
-              ? (child as Text).large()
-              : child is Icon
-                  ? (child as Icon).large()
-                  : child,
-        ),
-      )).blurIn;
+      child: Glass(
+          ignoreContextSignals: true,
+          child: Card(
+            surfaceOpacity: 0,
+            surfaceBlur: 0,
+            padding: EdgeInsets.zero,
+            child: GhostButton(
+              density: ButtonDensity.iconComfortable,
+              leading: leading,
+              onPressed: onPressed,
+              child: child is Text
+                  ? (child as Text).large()
+                  : child is Icon
+                      ? (child as Icon).large()
+                      : child,
+            ),
+          ))).blurIn;
 }
 
 /// A floating action button that displays a group of related buttons when pressed.
@@ -173,16 +177,16 @@ class Fab extends StatelessWidget {
 class FabGroup extends StatelessWidget {
   /// The content of the main button.
   final Widget child;
-  
+
   /// Optional widget to display before the main content.
   final Widget? leading;
-  
+
   /// Function that returns the list of buttons to display when opened.
   ///
   /// This function should return a list of widgets (typically [Fab] widgets)
   /// that will be shown when the main button is pressed.
   final List<Widget> Function(BuildContext) children;
-  
+
   /// Whether to display the child buttons horizontally.
   ///
   /// If true, buttons are arranged in a horizontal row.

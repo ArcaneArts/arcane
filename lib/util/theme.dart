@@ -1,9 +1,12 @@
-import 'dart:math';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart' as c;
 import 'package:flutter/material.dart' as m;
+import 'package:flutter_randomcolor/flutter_randomcolor.dart';
+import 'package:tinycolor2/tinycolor2.dart';
 
 class ArcaneTheme {
   final double radius;
@@ -143,14 +146,17 @@ class ArcaneLiquidGlass {
     this.glassContainsChild = false,
     this.clipBehavior = Clip.hardEdge,
     this.settings = const LiquidGlassSettings(
-      glassColor: Color.fromARGB(0, 255, 255, 255),
-      thickness: 7,
-      chromaticAberration: 1,
+      glassColor: Color.fromARGB(0, 0, 0, 0),
+      thickness: 20,
+      saturation: 1,
+      lightness: 1,
+      refractiveIndex: 1.61,
+      chromaticAberration: 0,
       blend: 20,
       blur: 8,
-      lightAngle: 0.5 * pi,
-      lightIntensity: 0.01,
-      ambientStrength: .01,
+      lightAngle: 0,
+      lightIntensity: 0,
+      ambientStrength: 0,
     ),
   });
 }
@@ -290,4 +296,50 @@ class ArcaneThemeOverride extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Pylon<ArcaneTheme?>(
       builder: builder, value: mutator(Arcane.themeOf(context)));
+}
+
+Color randomColor(dynamic seed,
+    {bool radiant = false, double? targetLuminance, int maxIter = 50}) {
+  bool dark = Arcane.globalTheme.shadThemeData.brightness == Brightness.dark;
+
+  Color color = RandomColor.getColorObject(Options(
+      seed: seed == null
+          ? null
+          : sha256
+              .convert(utf8.encode(seed.toString()))
+              .bytes
+              .fold(192844 ^ (seed?.hashCode ?? 485), (a, b) => (a ?? 0) ^ b),
+      luminosity: dark ? Luminosity.dark : Luminosity.light));
+
+  if (192844 ^ (seed?.hashCode ?? 485) % 2 == 0) {
+    color = color.spin(90);
+  }
+
+  if (targetLuminance != null) {
+    int g = 0;
+    while ((color.computeLuminance() - targetLuminance).abs() > 0.05 &&
+        g++ < maxIter) {
+      if (color.computeLuminance() < targetLuminance) {
+        color = color.lighten(1);
+      } else {
+        color = color.darken(1);
+      }
+    }
+
+    return color;
+  }
+
+  if (dark && !radiant) {
+    int g = 0;
+    while (color.computeLuminance() > 0.08 && g++ < maxIter) {
+      color = color.darken(1);
+    }
+  } else if (dark && radiant) {
+    int g = 0;
+    while (color.computeLuminance() < 0.15 && g++ < maxIter) {
+      color = color.lighten(1);
+    }
+  }
+
+  return color;
 }

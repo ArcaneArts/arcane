@@ -1,4 +1,4 @@
-import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/arcane.dart';
 
 class Card extends StatelessWidget {
   final Widget child;
@@ -111,20 +111,21 @@ class SurfaceCard extends StatelessWidget {
         child: child,
       );
     }
-    return Card(
-      clipBehavior: clipBehavior,
-      borderRadius: borderRadius,
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-      filled: filled,
-      fillColor: fillColor,
-      boxShadow: boxShadow,
-      padding: padding,
-      surfaceOpacity: surfaceOpacity ?? theme.surfaceOpacity,
-      surfaceBlur: surfaceBlur ?? theme.surfaceBlur,
-      duration: duration,
-      child: child,
-    );
+    return Glass(
+        ignoreContextSignals: true,
+        child: Card(
+          clipBehavior: clipBehavior,
+          borderRadius: borderRadius,
+          borderWidth: borderWidth,
+          borderColor: borderColor,
+          filled: filled,
+          fillColor: fillColor,
+          boxShadow: boxShadow,
+          padding: padding,
+          surfaceOpacity: 0,
+          surfaceBlur: 0,
+          duration: duration,
+          child: child,
+        ));
   }
 }
-

@@ -55,6 +55,8 @@ export 'component/layout/fancy_icon.dart';
 export 'component/layout/fancy_progress.dart';
 export 'component/layout/form_header.dart';
 export 'component/logo.dart';
+export 'component/magic/fab.dart';
+export 'component/magic/tile.dart';
 export 'component/markdown.dart';
 export 'component/mutable_text.dart';
 export 'component/popup_menu.dart';

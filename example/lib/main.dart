@@ -22,21 +22,13 @@ class ExampleArcaneApp extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => ArcaneShortcuts(
-          shortcuts: {
-            LogicalKeySet(
-              LogicalKeyboardKey.control,
-              LogicalKeyboardKey.alt,
-              LogicalKeyboardKey.keyF,
-            ): didShortcut
-          },
-          child: ArcaneApp(
-            home: HomeScreen(),
-            showPerformanceOverlay: false,
-            theme: ArcaneTheme(
-                themeMode: ThemeMode.system,
-                scheme: ContrastedColorScheme.fromScheme(ColorSchemes.violet)),
-          ));
+  Widget build(BuildContext context) => ArcaneShortcuts(shortcuts: {
+        LogicalKeySet(
+          LogicalKeyboardKey.control,
+          LogicalKeyboardKey.alt,
+          LogicalKeyboardKey.keyF,
+        ): didShortcut
+      }, child: ArcaneApp(home: HomeScreen(), showPerformanceOverlay: false));
 }
 
 class HomeScreen extends StatelessWidget {
@@ -45,10 +37,55 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ArcaneScreen(
-      title: "Form Example with some long text",
+      title: "Form Example with some long text\n",
       subtitle: "Some Subtitle Text or some shit",
       actions: [IconButton(icon: Icon(Icons.dots_three_vertical))],
-      child: Collection(),
+      fab: FabMenu(
+        child: Text("Entry"),
+        leading: Icon(Icons.play_circle),
+        items: [
+          MenuButton(child: Text("AAAA")),
+          MenuButton(child: Text("AAAA")),
+          MenuButton(child: Text("AAAA"))
+        ],
+      ),
+      child: Collection(
+        children: [
+          Collection(
+            children: [
+              ...List.generate(
+                  5,
+                  (i) => MagicTile(
+                        leading: Icon(Icons.address_book,
+                            color: randomColor(i, targetLuminance: 0.8)),
+                        title: Text("Some entry $i"),
+                        subtitle: Text("This is a subtitle for entry $i"),
+                      ))
+            ],
+          ),
+          Section(
+              titleText: "Some Section",
+              subtitleText: "fsdfjsdfjd",
+              child: Collection(
+                children: [
+                  ...List.generate(
+                      35,
+                      (i) => MagicTile(
+                            onPressed: () =>
+                                DialogConfirm(title: "title", onConfirm: () {})
+                                    .open(context),
+                            trailing: Icon(Icons.address_book,
+                                color: randomColor(i * 192283,
+                                    targetLuminance: 0.8)),
+                            leading: Icon(Icons.address_book,
+                                color: randomColor(i, targetLuminance: 0.8)),
+                            title: Text("Some entry $i"),
+                            subtitle: Text("This is a subtitle for entry $i"),
+                          ))
+                ],
+              ))
+        ],
+      ),
     );
   }
 }
