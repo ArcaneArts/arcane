@@ -66,10 +66,13 @@ dependencies:
   haptic_feedback: ">=0.5.1+1 <1.0.0"
   url_launcher: ">=6.3.1 <7.0.0"
   intl: ">=0.19.0 <0.21.0"
-  gpt_markdown: 1.1.2
-  liquid_glass_renderer: ^0.1.1-dev.10
   flutter_randomcolor: ">=1.0.18 <2.0.0"
   crypto: ">=3.0.6 <4.0.0"
+  flutter_staggered_grid_view: ">=0.7.0 <1.0.0"
+  custom_refresh_indicator: ">=4.0.0 <5.0.0"
+  measure_size: ">=4.0.0 <5.0.0"
+  gpt_markdown: 1.1.2
+  liquid_glass_renderer: ^0.1.1-dev.10
 dev_dependencies:
   flutter_lints: ^6.0.0
 flutter:  
