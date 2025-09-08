@@ -394,7 +394,7 @@ class ChatBox extends StatelessWidget {
       minLines: 1,
       keyboardType: TextInputType.multiline,
       textInputAction: TextInputAction.newline,
-      border: false,
+      border: Border(),
       controller: state.chatBoxController,
       placeholder: state.widget.placeholder,
       trailing: IconButton(
@@ -402,15 +402,7 @@ class ChatBox extends StatelessWidget {
         onPressed: () => state.send(state.chatBoxController.text),
       ),
     );
-    return chatBoxBorder
-        ? SurfaceCard(
-            borderRadius: BorderRadius.only(
-              topLeft: Theme.of(context).radiusXlRadius,
-              topRight: Theme.of(context).radiusXlRadius,
-            ),
-            padding: const EdgeInsets.all(8),
-            child: w)
-        : w;
+    return w.pad(3);
   }
 }
 

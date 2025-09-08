@@ -104,6 +104,57 @@ class FabMenu extends StatelessWidget {
       );
 }
 
+class MagicFabMenu extends StatelessWidget {
+  /// The content of the button.
+  ///
+  /// This is typically an icon or text describing the menu's purpose.
+  final Widget child;
+
+  /// Optional widget to display before the main content.
+  final Widget? leading;
+
+  /// List of menu items to display when the button is pressed.
+  final List<MenuItem> items;
+
+  /// Creates a [MagicFabMenu] widget.
+  ///
+  /// The [child] parameter is required and specifies the content of the button.
+  /// The [items] parameter specifies the menu items to display when pressed.
+  ///
+  /// Example:
+  /// ```dart
+  /// MagicFabMenu(
+  ///   child: Text("Options"),
+  ///   leading: Icon(Icons.more_vert),
+  ///   items: [
+  ///     MenuItem(
+  ///       label: "New Document",
+  ///       onPressed: () => createNewDocument(),
+  ///       icon: Icon(Icons.description),
+  ///     ),
+  ///     MenuItem(
+  ///       label: "New Folder",
+  ///       onPressed: () => createNewFolder(),
+  ///       icon: Icon(Icons.folder),
+  ///     ),
+  ///   ],
+  /// )
+  /// ```
+  const MagicFabMenu(
+      {super.key, required this.child, this.leading, this.items = const []});
+
+  @override
+  Widget build(BuildContext context) => MagicFab(
+        leading: leading,
+        onPressed: () => showDropdown(
+            context: context,
+            builder: (context) => DropdownMenu(
+                  children: items,
+                )),
+        child: child,
+      );
+}
+
 /// A basic floating action button with built-in styling.
 ///
 /// [Fab] provides a pre-styled floating action button with a modern appearance,

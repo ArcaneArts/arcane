@@ -3062,6 +3062,7 @@ ArcaneScreen(
       child: SizedBox(
         height: 500,
         child: ArcaneScreen(
+            gutter: false,
             header: Bar(titleText: "Header", trailing: [
               IconButton(
                 icon: Icon(Icons.activity),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
 import 'package:crypto/crypto.dart';
@@ -22,7 +21,7 @@ class ArcaneTheme {
   final ArcaneLiquidGlass liquidGlass;
   final double defaultHeaderHeight;
   final ChatTheme chat;
-  final ToastTheme toast;
+  final ArcaneToastTheme toast;
   final GutterTheme gutter;
   final EdgeTheme edge;
   final CardCarouselTheme cardCarousel;
@@ -45,7 +44,7 @@ class ArcaneTheme {
     this.edge = const EdgeTheme(),
     this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,
-    this.toast = const ToastTheme(),
+    this.toast = const ArcaneToastTheme(),
     this.cardCarousel = const CardCarouselTheme(),
     this.navigationScreen = const NavigationTheme(),
     this.scrollBehavior = const ArcaneScrollBehavior(),
@@ -58,9 +57,9 @@ class ArcaneTheme {
     this.contrast = 0.0,
     this.spin = 0.0,
     this.scaling = 1.0,
-    this.radius = 0.4,
+    this.radius = 0.3,
     this.surfaceOpacity = 0.6,
-    this.surfaceBlur = 8,
+    this.surfaceBlur = 24,
     this.themeMode = ThemeMode.system,
   });
 
@@ -75,7 +74,7 @@ class ArcaneTheme {
     double? spin,
     ChatTheme? chat,
     EdgeTheme? edge,
-    ToastTheme? toast,
+    ArcaneToastTheme? toast,
     CardCarouselTheme? cardCarousel,
     GutterTheme? gutter,
     NavigationTheme? navigationScreen,
@@ -147,7 +146,7 @@ class ArcaneLiquidGlass {
     this.clipBehavior = Clip.hardEdge,
     this.settings = const LiquidGlassSettings(
       glassColor: Color.fromARGB(0, 0, 0, 0),
-      thickness: 20,
+      thickness: 10,
       saturation: 1,
       lightness: 1,
       refractiveIndex: 1.61,
@@ -203,8 +202,8 @@ ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
     ThemeData(
       colorScheme: (theme.scheme ??
               ContrastedColorScheme(
-                  light: ColorSchemes.lightZinc(),
-                  dark: ColorSchemes.darkZinc()))
+                  light: ColorSchemes.lightDefaultColor,
+                  dark: ColorSchemes.darkDefaultColor))
           .scheme(brightness)
           .spin(theme.spin)
           .contrast(theme.contrast),

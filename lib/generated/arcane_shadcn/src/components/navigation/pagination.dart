@@ -1,5 +1,100 @@
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
+/// Theme data for customizing [Pagination] widget appearance.
+///
+/// This class defines the visual and behavioral properties that can be applied to
+/// [Pagination] widgets, including spacing between controls and label display
+/// preferences. These properties can be set at the theme level to provide
+/// consistent styling across the application.
+class PaginationTheme {
+  /// The spacing between pagination controls.
+  final double? gap;
+
+  /// Whether to show the previous/next labels.
+  final bool? showLabel;
+
+  /// Creates a [PaginationTheme].
+  const PaginationTheme({
+    this.gap,
+    this.showLabel,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  PaginationTheme copyWith({
+    ValueGetter<double?>? gap,
+    ValueGetter<bool?>? showLabel,
+  }) {
+    return PaginationTheme(
+      gap: gap == null ? this.gap : gap(),
+      showLabel: showLabel == null ? this.showLabel : showLabel(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is PaginationTheme &&
+        other.gap == gap &&
+        other.showLabel == showLabel;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        gap,
+        showLabel,
+      );
+}
+
+/// A navigation widget for paginated content with comprehensive page controls.
+///
+/// [Pagination] provides an intuitive interface for navigating through paginated
+/// content such as search results, data tables, or article lists. It displays
+/// page numbers, navigation arrows, and skip-to-edge controls with intelligent
+/// page range management to handle large page counts elegantly.
+///
+/// Key features:
+/// - Page number display with intelligent range selection
+/// - Previous/next navigation arrows
+/// - Skip to first/last page controls
+/// - Configurable maximum visible page numbers
+/// - Automatic page range calculation for large datasets
+/// - Optional label display for Previous/Next buttons
+/// - Customizable spacing and appearance
+/// - Theme integration for consistent styling
+///
+/// Page display strategies:
+/// - Small page counts: Show all page numbers
+/// - Large page counts: Show current page with surrounding context
+/// - Edge handling: Adjust range when near first or last page
+/// - Current page highlighting: Visual indication of active page
+///
+/// Navigation behaviors:
+/// - Direct page selection by tapping page numbers
+/// - Sequential navigation with previous/next buttons
+/// - Quick jump to first/last pages
+/// - Conditional hiding of controls at boundaries
+/// - Callback-based page change notification
+///
+/// The widget automatically calculates the optimal page number range to display
+/// based on the current page and total page count, ensuring users always have
+/// context about their position in the dataset.
+///
+/// Example:
+/// ```dart
+/// Pagination(
+///   page: currentPage,
+///   totalPages: totalPageCount,
+///   maxPages: 5, // Show up to 5 page numbers
+///   onPageChanged: (page) => setState(() {
+///     currentPage = page;
+///     _loadPageData(page);
+///   }),
+///   showSkipToFirstPage: true,
+///   showSkipToLastPage: true,
+///   hidePreviousOnFirstPage: true,
+///   hideNextOnLastPage: true,
+/// );
+/// ```
 class Pagination extends StatelessWidget {
   final int page;
   final int totalPages;
@@ -11,7 +106,8 @@ class Pagination extends StatelessWidget {
   final bool showSkipToLastPage;
   final bool hidePreviousOnFirstPage;
   final bool hideNextOnLastPage;
-  final bool showLabel;
+  final bool? showLabel;
+  final double? gap;
 
   const Pagination({
     super.key,
@@ -23,7 +119,8 @@ class Pagination extends StatelessWidget {
     this.showSkipToLastPage = true,
     this.hidePreviousOnFirstPage = false,
     this.hideNextOnLastPage = false,
-    this.showLabel = true,
+    this.showLabel,
+    this.gap,
   });
 
   bool get hasPrevious => page > 1;
@@ -66,7 +163,8 @@ class Pagination extends StatelessWidget {
   bool get hasMorePreviousPages => firstShownPage > 1;
   bool get hasMoreNextPages => lastShownPage < totalPages;
 
-  Widget _buildPreviousLabel(ShadcnLocalizations localizations) {
+  Widget _buildPreviousLabel(
+      ShadcnLocalizations localizations, bool showLabel) {
     if (showLabel) {
       return GhostButton(
         onPressed: hasPrevious ? () => onPageChanged(page - 1) : null,
@@ -80,7 +178,8 @@ class Pagination extends StatelessWidget {
     );
   }
 
-  Widget _buildNextLabel(ShadcnLocalizations localizations) {
+  Widget _buildNextLabel(
+      ShadcnLocalizations localizations, bool showLabel) {
     if (showLabel) {
       return GhostButton(
         onPressed: hasNext ? () => onPageChanged(page + 1) : null,
@@ -98,6 +197,15 @@ class Pagination extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<PaginationTheme>(context);
+    final gap = styleValue(
+        widgetValue: this.gap,
+        themeValue: compTheme?.gap,
+        defaultValue: 4 * scaling);
+    final showLabel = styleValue(
+        widgetValue: this.showLabel,
+        themeValue: compTheme?.showLabel,
+        defaultValue: true);
     ShadcnLocalizations localizations = ShadcnLocalizations.of(context);
     return IntrinsicHeight(
       child: Row(
@@ -105,7 +213,7 @@ class Pagination extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!hidePreviousOnFirstPage || hasPrevious)
-            _buildPreviousLabel(localizations),
+            _buildPreviousLabel(localizations, showLabel),
           if (hasMorePreviousPages) ...[
             if (showSkipToFirstPage && firstShownPage - 1 > 1)
               GhostButton(
@@ -139,9 +247,10 @@ class Pagination extends StatelessWidget {
                 child: Text('$totalPages'),
               ),
           ],
-          if (!hideNextOnLastPage || hasNext) _buildNextLabel(localizations),
+          if (!hideNextOnLastPage || hasNext)
+            _buildNextLabel(localizations, showLabel),
         ],
-      ).gap(4 * scaling),
+      ).gap(gap),
     );
   }
 }

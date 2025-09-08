@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/unicorn.dart';
 
 class MagicTile extends StatelessWidget with BoxSignal {
   final Widget? title;
@@ -52,6 +53,12 @@ class MagicTile extends StatelessWidget with BoxSignal {
                   padding: EdgeInsets.symmetric(
                       horizontal: fatPad ? 16 : 0, vertical: 4),
                   child: Card(
+                    surfaceOpacity: context.isTranslucent
+                        ? ArcaneTheme.of(context).surfaceOpacity
+                        : null,
+                    surfaceBlur: context.isTranslucent
+                        ? ArcaneTheme.of(context).surfaceBlur
+                        : null,
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       leading: Container(

@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/unicorn.dart';
 import 'package:flutter/foundation.dart';
 
 /// Defines the directions for the anti-flicker gradient used with [GlassAntiFlicker].
@@ -176,11 +177,16 @@ class Glass extends StatelessWidget {
         ? Container(
             color: kShowStoppedGlass
                 ? Colors.red
-                : disabledColor ?? Theme.of(context).colorScheme.background,
+                : disabledColor ??
+                    (context.isTranslucent
+                        ? Colors.transparent
+                        : Theme.of(context).colorScheme.background),
             child: child,
           )
         : ArcaneBlur(
-            child: child, intensity: Theme.of(context).surfaceBlur ?? 16);
+            intensity: Theme.of(context).surfaceBlur ?? 24,
+            child: child,
+          );
 
     if (under != null) {
       b = Stack(

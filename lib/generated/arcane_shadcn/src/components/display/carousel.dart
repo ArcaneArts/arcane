@@ -82,9 +82,7 @@ class SlidingCarouselTransition extends CarouselTransition {
   final double gap;
 
   /// Creates a sliding carousel transition.
-  const SlidingCarouselTransition({
-    this.gap = 0,
-  });
+  const SlidingCarouselTransition({this.gap = 0});
 
   @override
   List<Widget> layout(
@@ -138,33 +136,37 @@ class SlidingCarouselTransition extends CarouselTransition {
       final item = itemBuilder(context, itemIndex);
       double position = i.toDouble();
       // offset the gap
-      items.add(_PlacedCarouselItem._(
-        relativeIndex: i,
-        child: item,
-        position: position,
-      ));
+      items.add(
+        _PlacedCarouselItem._(
+          relativeIndex: i,
+          child: item,
+          position: position,
+        ),
+      );
     }
     if (direction == Axis.horizontal) {
       return [
         for (var item in items)
           Positioned(
-              left: snapOffsetAlignment +
-                  (item.position - currentIndex) * size +
-                  (gap * item.relativeIndex),
-              width: size,
-              height: constraints.maxHeight,
-              child: item.child),
+            left: snapOffsetAlignment +
+                (item.position - currentIndex) * size +
+                (gap * item.relativeIndex),
+            width: size,
+            height: constraints.maxHeight,
+            child: item.child,
+          ),
       ];
     } else {
       return [
         for (var item in items)
           Positioned(
-              top: snapOffsetAlignment +
-                  (item.position - currentIndex) * size +
-                  (gap * item.relativeIndex),
-              width: constraints.maxWidth,
-              height: size,
-              child: item.child),
+            top: snapOffsetAlignment +
+                (item.position - currentIndex) * size +
+                (gap * item.relativeIndex),
+            width: constraints.maxWidth,
+            height: size,
+            child: item.child,
+          ),
       ];
     }
   }
@@ -220,35 +222,39 @@ class FadingCarouselTransition extends CarouselTransition {
       final item = itemBuilder(context, itemIndex);
       double position = i.toDouble();
       // offset the gap
-      items.add(_PlacedCarouselItem._(
-        relativeIndex: i,
-        child: item,
-        position: position,
-      ));
+      items.add(
+        _PlacedCarouselItem._(
+          relativeIndex: i,
+          child: item,
+          position: position,
+        ),
+      );
     }
     if (direction == Axis.horizontal) {
       return [
         for (var item in items)
           Positioned(
-              left: snapOffsetAlignment,
-              width: size,
-              height: constraints.maxHeight,
-              child: Opacity(
-                opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
-                child: item.child,
-              )),
+            left: snapOffsetAlignment,
+            width: size,
+            height: constraints.maxHeight,
+            child: Opacity(
+              opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
+              child: item.child,
+            ),
+          ),
       ];
     } else {
       return [
         for (var item in items)
           Positioned(
-              top: snapOffsetAlignment,
-              width: constraints.maxWidth,
-              height: size,
-              child: Opacity(
-                opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
-                child: item.child,
-              )),
+            top: snapOffsetAlignment,
+            width: constraints.maxWidth,
+            height: size,
+            child: Opacity(
+              opacity: (1 - (progress - item.position).abs()).clamp(0.0, 1.0),
+              child: item.child,
+            ),
+          ),
       ];
     }
   }
@@ -281,17 +287,25 @@ class CarouselController extends Listenable {
   /// Animates to the next item.
   void animateNext(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
-        AnimationRequest(
-            (_controller.value + 1).roundToDouble(), duration, curve),
-        false);
+      AnimationRequest(
+        (_controller.value + 1).roundToDouble(),
+        duration,
+        curve,
+      ),
+      false,
+    );
   }
 
   /// Animates to the previous item.
   void animatePrevious(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
-        AnimationRequest(
-            (_controller.value - 1).roundToDouble(), duration, curve),
-        false);
+      AnimationRequest(
+        (_controller.value - 1).roundToDouble(),
+        duration,
+        curve,
+      ),
+      false,
+    );
   }
 
   /// Snaps the current value to the nearest integer.
@@ -302,7 +316,8 @@ class CarouselController extends Listenable {
   /// Animates the current value to the nearest integer.
   void animateSnap(Duration duration, [Curve curve = Curves.easeInOut]) {
     _controller.push(
-        AnimationRequest(_controller.value.roundToDouble(), duration, curve));
+      AnimationRequest(_controller.value.roundToDouble(), duration, curve),
+    );
   }
 
   /// Jumps to the specified value.
@@ -311,8 +326,11 @@ class CarouselController extends Listenable {
   }
 
   /// Animates to the specified value.
-  void animateTo(double value, Duration duration,
-      [Curve curve = Curves.linear]) {
+  void animateTo(
+    double value,
+    Duration duration, [
+    Curve curve = Curves.linear,
+  ]) {
     _controller.push(AnimationRequest(value, duration, curve), false);
   }
 
@@ -363,8 +381,117 @@ enum CarouselAlignment {
   const CarouselAlignment(this.alignment);
 }
 
-/// A carousel widget.
-/// The carousel widget is used to display a list of items in a carousel view.
+/// Theme data for [Carousel].
+class CarouselTheme {
+  final CarouselAlignment? alignment;
+  final Axis? direction;
+  final bool? wrap;
+  final bool? pauseOnHover;
+  final Duration? autoplaySpeed;
+  final bool? draggable;
+  final Duration? speed;
+  final Curve? curve;
+
+  const CarouselTheme({
+    this.alignment,
+    this.direction,
+    this.wrap,
+    this.pauseOnHover,
+    this.autoplaySpeed,
+    this.draggable,
+    this.speed,
+    this.curve,
+  });
+
+  CarouselTheme copyWith({
+    ValueGetter<CarouselAlignment?>? alignment,
+    ValueGetter<Axis?>? direction,
+    ValueGetter<bool?>? wrap,
+    ValueGetter<bool?>? pauseOnHover,
+    ValueGetter<Duration?>? autoplaySpeed,
+    ValueGetter<bool?>? draggable,
+    ValueGetter<Duration?>? speed,
+    ValueGetter<Curve?>? curve,
+  }) {
+    return CarouselTheme(
+      alignment: alignment == null ? this.alignment : alignment(),
+      direction: direction == null ? this.direction : direction(),
+      wrap: wrap == null ? this.wrap : wrap(),
+      pauseOnHover: pauseOnHover == null ? this.pauseOnHover : pauseOnHover(),
+      autoplaySpeed:
+          autoplaySpeed == null ? this.autoplaySpeed : autoplaySpeed(),
+      draggable: draggable == null ? this.draggable : draggable(),
+      speed: speed == null ? this.speed : speed(),
+      curve: curve == null ? this.curve : curve(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CarouselTheme &&
+        other.alignment == alignment &&
+        other.direction == direction &&
+        other.wrap == wrap &&
+        other.pauseOnHover == pauseOnHover &&
+        other.autoplaySpeed == autoplaySpeed &&
+        other.draggable == draggable &&
+        other.speed == speed &&
+        other.curve == curve;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        alignment,
+        direction,
+        wrap,
+        pauseOnHover,
+        autoplaySpeed,
+        draggable,
+        speed,
+        curve,
+      );
+}
+
+/// Interactive carousel widget with automatic transitions and customizable layouts.
+///
+/// A high-level carousel widget that displays a sequence of items with smooth
+/// transitions between them. Supports automatic progression, manual navigation,
+/// multiple transition types, and extensive customization options.
+///
+/// ## Features
+///
+/// - **Multiple transition types**: Sliding and fading transitions with customizable timing
+/// - **Automatic progression**: Optional auto-play with configurable duration per item
+/// - **Manual navigation**: Programmatic control through [CarouselController]
+/// - **Flexible sizing**: Fixed or fractional size constraints for responsive layouts
+/// - **Interactive controls**: Pause on hover, wrap-around navigation, and touch gestures
+/// - **Flexible alignment**: Multiple alignment options for different layout needs
+/// - **Directional support**: Horizontal or vertical carousel orientation
+///
+/// ## Usage Patterns
+///
+/// **Basic automatic carousel:**
+/// ```dart
+/// Carousel(
+///   itemCount: images.length,
+///   duration: Duration(seconds: 3),
+///   itemBuilder: (context, index) => Image.asset(images[index]),
+///   transition: CarouselTransition.sliding(gap: 16),
+/// )
+/// ```
+///
+/// **Controlled carousel with custom navigation:**
+/// ```dart
+/// final controller = CarouselController();
+/// 
+/// Carousel(
+///   controller: controller,
+///   itemCount: products.length,
+///   itemBuilder: (context, index) => ProductCard(products[index]),
+///   transition: CarouselTransition.fading(),
+///   pauseOnHover: true,
+/// )
+/// ```
 class Carousel extends StatefulWidget {
   /// The carousel transition.
   final CarouselTransition transition;
@@ -453,8 +580,10 @@ class Carousel extends StatefulWidget {
     this.disableOverheadScrolling = true,
     this.disableDraggingVelocity = false,
     required this.transition,
-  }) : assert(wrap || itemCount != null,
-            'itemCount must be provided if wrap is false');
+  }) : assert(
+          wrap || itemCount != null,
+          'itemCount must be provided if wrap is false',
+        );
 
   @override
   State<Carousel> createState() => _CarouselState();
@@ -473,12 +602,68 @@ class _CarouselState extends State<Carousel>
 
   late int _currentIndex;
 
+  CarouselTheme? _theme;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _theme = ComponentTheme.maybeOf<CarouselTheme>(context);
+  }
+
+  CarouselAlignment get _alignment => styleValue(
+        widgetValue: widget.alignment,
+        themeValue: _theme?.alignment,
+        defaultValue: CarouselAlignment.center,
+      );
+
+  Axis get _direction => styleValue(
+        widgetValue: widget.direction,
+        themeValue: _theme?.direction,
+        defaultValue: Axis.horizontal,
+      );
+
+  bool get _wrap => styleValue(
+        widgetValue: widget.wrap,
+        themeValue: _theme?.wrap,
+        defaultValue: true,
+      );
+
+  bool get _pauseOnHover => styleValue(
+        widgetValue: widget.pauseOnHover,
+        themeValue: _theme?.pauseOnHover,
+        defaultValue: true,
+      );
+
+  Duration? get _autoplaySpeed => styleValue(
+        widgetValue: widget.autoplaySpeed,
+        themeValue: _theme?.autoplaySpeed,
+        defaultValue: null,
+      );
+
+  bool get _draggable => styleValue(
+        widgetValue: widget.draggable,
+        themeValue: _theme?.draggable,
+        defaultValue: true,
+      );
+
+  Duration get _speed => styleValue(
+        widgetValue: widget.speed,
+        themeValue: _theme?.speed,
+        defaultValue: const Duration(milliseconds: 200),
+      );
+
+  Curve get _curve => styleValue(
+        widgetValue: widget.curve,
+        themeValue: _theme?.curve,
+        defaultValue: Curves.easeInOut,
+      );
+
   Duration? get _currentSlideDuration {
     double currentIndex = _controller.getCurrentIndex(widget.itemCount);
     final int index = currentIndex.floor();
     Duration? duration = widget.durationBuilder?.call(index) ?? widget.duration;
-    if (duration != null && widget.autoplaySpeed != null) {
-      duration += widget.autoplaySpeed!;
+    if (duration != null && _autoplaySpeed != null) {
+      duration += _autoplaySpeed!;
     }
     return duration;
   }
@@ -500,7 +685,7 @@ class _CarouselState extends State<Carousel>
     }
     if (!shouldStart) {
       if (_currentSlideDuration != null) {
-        if (!widget.pauseOnHover || !hovered) {
+        if (!_pauseOnHover || !hovered) {
           shouldStart = true;
         }
       }
@@ -546,22 +731,20 @@ class _CarouselState extends State<Carousel>
       }
     }
     if (shouldAutoPlay) {
-      if (!widget.wrap &&
+      if (!_wrap &&
           widget.itemCount != null &&
           _controller.value >= widget.itemCount! - 1) {
+        _controller.animateTo(0, _autoplaySpeed ?? _speed, _curve);
+      } else if (!_wrap && widget.itemCount != null && _controller.value <= 0) {
         _controller.animateTo(
-            0, widget.autoplaySpeed ?? widget.speed, widget.curve);
-      } else if (!widget.wrap &&
-          widget.itemCount != null &&
-          _controller.value <= 0) {
-        _controller.animateTo(widget.itemCount! - 1,
-            widget.autoplaySpeed ?? widget.speed, widget.curve);
+          widget.itemCount! - 1,
+          _autoplaySpeed ?? _speed,
+          _curve,
+        );
       } else if (widget.autoplayReverse) {
-        _controller.animatePrevious(
-            widget.autoplaySpeed ?? widget.speed, widget.curve);
+        _controller.animatePrevious(_autoplaySpeed ?? _speed, _curve);
       } else {
-        _controller.animateNext(
-            widget.autoplaySpeed ?? widget.speed, widget.curve);
+        _controller.animateNext(_autoplaySpeed ?? _speed, _curve);
       }
     }
     if (_dragVelocity.abs() > 0.01 && !dragging) {
@@ -574,13 +757,19 @@ class _CarouselState extends State<Carousel>
         if (widget.disableOverheadScrolling) {
           if (_lastDragValue < targetValue) {
             _controller.animateTo(
-                _lastDragValue.floorToDouble() + 1, widget.speed, widget.curve);
+              _lastDragValue.floorToDouble() + 1,
+              _speed,
+              _curve,
+            );
           } else {
             _controller.animateTo(
-                _lastDragValue.floorToDouble() - 1, widget.speed, widget.curve);
+              _lastDragValue.floorToDouble() - 1,
+              _speed,
+              _curve,
+            );
           }
         } else {
-          _controller.animateSnap(widget.speed, widget.curve);
+          _controller.animateSnap(_speed, _curve);
         }
       }
     }
@@ -601,7 +790,7 @@ class _CarouselState extends State<Carousel>
 
   void _onControllerChange() {
     setState(() {});
-    if (!widget.wrap && widget.itemCount != null) {
+    if (!_wrap && widget.itemCount != null) {
       if (_controller.value < 0) {
         _controller._controller.value = 0;
       } else if (_controller.value >= widget.itemCount!) {
@@ -645,13 +834,19 @@ class _CarouselState extends State<Carousel>
       child: LayoutBuilder(
         builder: (context, constraints) {
           var carouselWidget = buildCarousel(context, constraints);
-          if (widget.draggable) {
-            if (widget.direction == Axis.horizontal) {
-              carouselWidget =
-                  buildHorizontalDragger(context, carouselWidget, constraints);
+          if (_draggable) {
+            if (_direction == Axis.horizontal) {
+              carouselWidget = buildHorizontalDragger(
+                context,
+                carouselWidget,
+                constraints,
+              );
             } else {
-              carouselWidget =
-                  buildVerticalDragger(context, carouselWidget, constraints);
+              carouselWidget = buildVerticalDragger(
+                context,
+                carouselWidget,
+                constraints,
+              );
             }
           }
           return carouselWidget;
@@ -661,7 +856,10 @@ class _CarouselState extends State<Carousel>
   }
 
   Widget buildHorizontalDragger(
-      BuildContext context, Widget carouselWidget, BoxConstraints constraints) {
+    BuildContext context,
+    Widget carouselWidget,
+    BoxConstraints constraints,
+  ) {
     double size;
     if (widget.sizeConstraint is CarouselFixedConstraint) {
       size = (widget.sizeConstraint as CarouselFixedConstraint).size;
@@ -680,7 +878,7 @@ class _CarouselState extends State<Carousel>
         _dragVelocity = 0;
       },
       onHorizontalDragUpdate: (details) {
-        if (widget.draggable) {
+        if (_draggable) {
           setState(() {
             var increment = -details.primaryDelta! / size;
             _controller.jumpTo(progressedValue + increment);
@@ -694,14 +892,17 @@ class _CarouselState extends State<Carousel>
         } else {
           _dragVelocity = -details.primaryVelocity! / size / 100.0;
         }
-        _controller.animateSnap(widget.speed, widget.curve);
+        _controller.animateSnap(_speed, _curve);
         _check();
       },
     );
   }
 
   Widget buildVerticalDragger(
-      BuildContext context, Widget carouselWidget, BoxConstraints constraints) {
+    BuildContext context,
+    Widget carouselWidget,
+    BoxConstraints constraints,
+  ) {
     double size;
     if (widget.sizeConstraint is CarouselFixedConstraint) {
       size = (widget.sizeConstraint as CarouselFixedConstraint).size;
@@ -720,7 +921,7 @@ class _CarouselState extends State<Carousel>
         _dragVelocity = 0;
       },
       onVerticalDragUpdate: (details) {
-        if (widget.draggable) {
+        if (_draggable) {
           setState(() {
             var increment = -details.primaryDelta! / size;
             _controller.jumpTo(progressedValue + increment);
@@ -734,14 +935,14 @@ class _CarouselState extends State<Carousel>
         } else {
           _dragVelocity = -details.primaryVelocity! / size / 100.0;
         }
-        _controller.animateSnap(widget.speed, widget.curve);
+        _controller.animateSnap(_speed, _curve);
         _check();
       },
     );
   }
 
   double get progressedValue {
-    if (!widget.wrap && widget.itemCount != null) {
+    if (!_wrap && widget.itemCount != null) {
       return _controller.value.clamp(0.0, widget.itemCount!.toDouble() - 1);
     } else {
       return _controller.value;
@@ -754,11 +955,11 @@ class _CarouselState extends State<Carousel>
         context,
         progress: progressedValue,
         constraints: constraints,
-        alignment: widget.alignment,
-        direction: widget.direction,
+        alignment: _alignment,
+        direction: _direction,
         sizeConstraint: widget.sizeConstraint,
         progressedIndex: progressedValue,
-        wrap: widget.wrap,
+        wrap: _wrap,
         itemCount: widget.itemCount,
         itemBuilder: widget.itemBuilder,
         reverse: widget.reverse,

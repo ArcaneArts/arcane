@@ -23,6 +23,20 @@ enum SortDirection {
   descending,
 }
 
+typedef OnContextInvokeCallback<T extends Intent> = Object? Function(T intent,
+    [BuildContext? context]);
+
+class CallbackContextAction<T extends Intent> extends ContextAction<T> {
+  final OnContextInvokeCallback onInvoke;
+
+  CallbackContextAction({required this.onInvoke});
+
+  @override
+  Object? invoke(T intent, [BuildContext? context]) {
+    return onInvoke(intent, context);
+  }
+}
+
 class SafeLerp<T> {
   final T? Function(T? a, T? b, double t) nullableLerp;
 
@@ -883,14 +897,14 @@ class TimeOfDay {
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
   TimeOfDay copyWith({
-    int? hour,
-    int? minute,
-    int? second,
+    ValueGetter<int>? hour,
+    ValueGetter<int>? minute,
+    ValueGetter<int>? second,
   }) {
     return TimeOfDay(
-      hour: hour ?? this.hour,
-      minute: minute ?? this.minute,
-      second: second ?? this.second,
+      hour: hour == null ? this.hour : hour(),
+      minute: minute == null ? this.minute : minute(),
+      second: second == null ? this.second : second(),
     );
   }
 
@@ -1146,5 +1160,19 @@ extension TextEditingValueExtension on TextEditingValue {
       text: newText,
       selection: selection,
     );
+  }
+}
+
+typedef OnContextedCallback<T extends Intent> = Object? Function(T intent,
+    [BuildContext? context]);
+
+class ContextCallbackAction<T extends Intent> extends ContextAction<T> {
+  final OnContextedCallback<T> onInvoke;
+
+  ContextCallbackAction({required this.onInvoke});
+
+  @override
+  Object? invoke(T intent, [BuildContext? context]) {
+    return onInvoke(intent, context);
   }
 }

@@ -26,6 +26,121 @@ class DividerProperties {
   }
 }
 
+/// Theme data for customizing [Divider] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [Divider] widgets, including line color, dimensions, spacing, and
+/// child padding. These properties can be set at the theme level
+/// to provide consistent styling across the application.
+class DividerTheme {
+  /// Color of the divider line.
+  final Color? color;
+
+  /// Height of the divider widget.
+  final double? height;
+
+  /// Thickness of the divider line.
+  final double? thickness;
+
+  /// Empty space to the leading edge of the divider.
+  final double? indent;
+
+  /// Empty space to the trailing edge of the divider.
+  final double? endIndent;
+
+  /// Padding around the [Divider.child].
+  final EdgeInsetsGeometry? padding;
+
+  /// Creates a [DividerTheme].
+  const DividerTheme({
+    this.color,
+    this.height,
+    this.thickness,
+    this.indent,
+    this.endIndent,
+    this.padding,
+  });
+
+  /// Creates a copy of this theme but with the given fields replaced by the
+  /// new values.
+  DividerTheme copyWith({
+    ValueGetter<Color?>? color,
+    ValueGetter<double?>? height,
+    ValueGetter<double?>? thickness,
+    ValueGetter<double?>? indent,
+    ValueGetter<double?>? endIndent,
+    ValueGetter<EdgeInsetsGeometry?>? padding,
+  }) {
+    return DividerTheme(
+      color: color == null ? this.color : color(),
+      height: height == null ? this.height : height(),
+      thickness: thickness == null ? this.thickness : thickness(),
+      indent: indent == null ? this.indent : indent(),
+      endIndent: endIndent == null ? this.endIndent : endIndent(),
+      padding: padding == null ? this.padding : padding(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is DividerTheme &&
+      color == other.color &&
+      height == other.height &&
+      thickness == other.thickness &&
+      indent == other.indent &&
+      endIndent == other.endIndent &&
+      padding == other.padding;
+
+  @override
+  int get hashCode =>
+      Object.hash(color, height, thickness, indent, endIndent, padding);
+}
+
+/// A horizontal line widget used to visually separate content sections.
+///
+/// [Divider] creates a thin horizontal line that spans the available width,
+/// optionally with indentation from either end. It's commonly used to separate
+/// content sections, list items, or create visual breaks in layouts. The divider
+/// can optionally contain a child widget (such as text) that appears centered
+/// on the divider line.
+///
+/// Key features:
+/// - Horizontal line spanning available width
+/// - Configurable thickness and color
+/// - Optional indentation from start and end
+/// - Support for child widgets (text, icons, etc.)
+/// - Customizable padding around child content
+/// - Theme integration for consistent styling
+/// - Implements PreferredSizeWidget for flexible layout
+///
+/// The divider automatically adapts to the current theme's border color
+/// and can be customized through individual properties or theme configuration.
+/// When a child is provided, the divider line is broken to accommodate the
+/// child content with appropriate padding.
+///
+/// Common use cases:
+/// - Separating sections in forms or settings screens
+/// - Creating breaks between list items
+/// - Dividing content areas in complex layouts
+/// - Adding labeled dividers with text or icons
+///
+/// Example:
+/// ```dart
+/// Column(
+///   children: [
+///     Text('Section 1'),
+///     Divider(),
+///     Text('Section 2'),
+///     Divider(
+///       child: Text('OR', style: TextStyle(color: Colors.grey)),
+///       thickness: 2,
+///       indent: 20,
+///       endIndent: 20,
+///     ),
+///     Text('Section 3'),
+///   ],
+/// );
+/// ```
 class Divider extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final double? height;
@@ -52,6 +167,37 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<DividerTheme>(context);
+    final color = styleValue(
+      widgetValue: this.color,
+      themeValue: compTheme?.color,
+      defaultValue: theme.colorScheme.border,
+    );
+    final thickness = styleValue(
+      widgetValue: this.thickness,
+      themeValue: compTheme?.thickness,
+      defaultValue: 1.0,
+    );
+    final height = styleValue(
+      widgetValue: this.height,
+      themeValue: compTheme?.height,
+      defaultValue: thickness,
+    );
+    final indent = styleValue(
+      widgetValue: this.indent,
+      themeValue: compTheme?.indent,
+      defaultValue: 0.0,
+    );
+    final endIndent = styleValue(
+      widgetValue: this.endIndent,
+      themeValue: compTheme?.endIndent,
+      defaultValue: 0.0,
+    );
+    final padding = styleValue(
+      widgetValue: this.padding,
+      themeValue: compTheme?.padding,
+      defaultValue: EdgeInsets.symmetric(horizontal: theme.scaling * 8),
+    );
     if (child != null) {
       return SizedBox(
         width: double.infinity,
@@ -61,12 +207,12 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Expanded(
                 child: SizedBox(
-                  height: height ?? 1,
+                  height: height,
                   child: AnimatedValueBuilder(
                       value: DividerProperties(
-                        color: color ?? theme.colorScheme.border,
-                        thickness: thickness ?? 1,
-                        indent: indent ?? 0,
+                        color: color,
+                        thickness: thickness,
+                        indent: indent,
                         endIndent: 0,
                       ),
                       duration: kDefaultDuration,
@@ -83,18 +229,16 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
                       }),
                 ),
               ),
-              child!.muted().small().withPadding(
-                  padding: padding ??
-                      EdgeInsets.symmetric(horizontal: theme.scaling * 8)),
+              child!.muted().small().withPadding(padding: padding),
               Expanded(
                 child: SizedBox(
-                  height: height ?? 1,
+                  height: height,
                   child: AnimatedValueBuilder(
                       value: DividerProperties(
-                        color: color ?? theme.colorScheme.border,
-                        thickness: thickness ?? 1,
+                        color: color,
+                        thickness: thickness,
                         indent: 0,
-                        endIndent: endIndent ?? 0,
+                        endIndent: endIndent,
                       ),
                       duration: kDefaultDuration,
                       lerp: DividerProperties.lerp,
@@ -116,14 +260,14 @@ class Divider extends StatelessWidget implements PreferredSizeWidget {
       );
     }
     return SizedBox(
-      height: height ?? 1,
+      height: height,
       width: double.infinity,
       child: AnimatedValueBuilder(
           value: DividerProperties(
-            color: color ?? theme.colorScheme.border,
-            thickness: thickness ?? 1,
-            indent: indent ?? 0,
-            endIndent: endIndent ?? 0,
+            color: color,
+            thickness: thickness,
+            indent: indent,
+            endIndent: endIndent,
           ),
           lerp: DividerProperties.lerp,
           duration: kDefaultDuration,

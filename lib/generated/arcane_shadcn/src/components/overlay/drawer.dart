@@ -4,9 +4,169 @@ import 'dart:math';
 import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
+/// Builder function signature for drawer content.
+///
+/// Parameters:
+/// - [context]: build context for the drawer content
+/// - [extraSize]: additional size available due to backdrop transforms
+/// - [size]: total size constraints for the drawer
+/// - [padding]: safe area padding to respect
+/// - [stackIndex]: index in the drawer stack (for layered drawers)
 typedef DrawerBuilder = Widget Function(BuildContext context, Size extraSize,
     Size size, EdgeInsets padding, int stackIndex);
 
+/// Theme configuration for drawer and sheet overlays.
+///
+/// Defines visual properties for drawer and sheet components including
+/// surface effects, drag handles, and barrier appearance.
+///
+/// Features:
+/// - Surface opacity and blur effects
+/// - Customizable barrier colors
+/// - Drag handle appearance control
+/// - Consistent theming across drawer types
+///
+/// Example:
+/// ```dart
+/// ComponentThemeData(
+///   data: {
+///     DrawerTheme: DrawerTheme(
+///       surfaceOpacity: 0.9,
+///       barrierColor: Colors.black54,
+///       showDragHandle: true,
+///     ),
+///   },
+///   child: MyApp(),
+/// )
+/// ```
+class DrawerTheme {
+  /// Surface opacity for backdrop effects.
+  final double? surfaceOpacity;
+  
+  /// Surface blur intensity for backdrop effects.
+  final double? surfaceBlur;
+  
+  /// Color of the barrier behind the drawer.
+  final Color? barrierColor;
+  
+  /// Whether to display the drag handle for draggable drawers.
+  final bool? showDragHandle;
+  
+  /// Size of the drag handle when displayed.
+  final Size? dragHandleSize;
+
+  /// Creates a [DrawerTheme].
+  ///
+  /// All parameters are optional and will use system defaults when null.
+  ///
+  /// Parameters:
+  /// - [surfaceOpacity] (double?, optional): opacity for backdrop surface effects
+  /// - [surfaceBlur] (double?, optional): blur intensity for backdrop effects  
+  /// - [barrierColor] (Color?, optional): color of the modal barrier
+  /// - [showDragHandle] (bool?, optional): whether to show drag handles
+  /// - [dragHandleSize] (Size?, optional): size of the drag handle
+  ///
+  /// Example:
+  /// ```dart
+  /// const DrawerTheme(
+  ///   surfaceOpacity: 0.95,
+  ///   showDragHandle: true,
+  ///   barrierColor: Color.fromRGBO(0, 0, 0, 0.7),
+  /// )
+  /// ```
+  const DrawerTheme({
+    this.surfaceOpacity,
+    this.surfaceBlur,
+    this.barrierColor,
+    this.showDragHandle,
+    this.dragHandleSize,
+  });
+
+  DrawerTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+    ValueGetter<Color?>? barrierColor,
+    ValueGetter<bool?>? showDragHandle,
+    ValueGetter<Size?>? dragHandleSize,
+  }) {
+    return DrawerTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+      barrierColor: barrierColor == null ? this.barrierColor : barrierColor(),
+      showDragHandle:
+          showDragHandle == null ? this.showDragHandle : showDragHandle(),
+      dragHandleSize:
+          dragHandleSize == null ? this.dragHandleSize : dragHandleSize(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is DrawerTheme &&
+      other.surfaceOpacity == surfaceOpacity &&
+      other.surfaceBlur == surfaceBlur &&
+      other.barrierColor == barrierColor &&
+      other.showDragHandle == showDragHandle &&
+      other.dragHandleSize == dragHandleSize;
+
+  @override
+  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur, barrierColor,
+      showDragHandle, dragHandleSize);
+
+  @override
+  String toString() =>
+      'DrawerTheme(surfaceOpacity: $surfaceOpacity, surfaceBlur: $surfaceBlur, barrierColor: $barrierColor, showDragHandle: $showDragHandle, dragHandleSize: $dragHandleSize)';
+}
+
+/// Opens a drawer overlay with comprehensive customization options.
+///
+/// Creates a modal drawer that slides in from the specified position with
+/// draggable interaction, backdrop transformation, and proper theme integration.
+/// Returns a completer that can be used to control the drawer lifecycle.
+///
+/// Features:
+/// - Configurable slide-in positions (left, right, top, bottom)
+/// - Draggable interaction with gesture support
+/// - Backdrop transformation and scaling effects
+/// - Safe area handling and proper theming
+/// - Dismissible barriers and custom backdrop builders
+///
+/// Parameters:
+/// - [context] (BuildContext, required): build context for overlay creation
+/// - [builder] (WidgetBuilder, required): function that builds drawer content
+/// - [position] (OverlayPosition, required): side from which drawer slides in
+/// - [expands] (bool, default: false): whether drawer should expand to fill available space
+/// - [draggable] (bool, default: true): whether drawer can be dragged to dismiss
+/// - [barrierDismissible] (bool, default: true): whether tapping barrier dismisses drawer
+/// - [backdropBuilder] (WidgetBuilder?, optional): custom backdrop builder
+/// - [useSafeArea] (bool, default: true): whether to respect device safe areas
+/// - [showDragHandle] (bool?, optional): whether to show drag handle
+/// - [borderRadius] (BorderRadiusGeometry?, optional): corner radius for drawer
+/// - [dragHandleSize] (Size?, optional): size of the drag handle
+/// - [transformBackdrop] (bool, default: true): whether to scale backdrop
+/// - [surfaceOpacity] (double?, optional): opacity for surface effects
+/// - [surfaceBlur] (double?, optional): blur intensity for surface effects
+/// - [barrierColor] (Color?, optional): color of the modal barrier
+/// - [animationController] (AnimationController?, optional): custom animation controller
+/// - [autoOpen] (bool, default: true): whether to automatically open on creation
+/// - [constraints] (BoxConstraints?, optional): size constraints for drawer
+/// - [alignment] (AlignmentGeometry?, optional): alignment within constraints
+///
+/// Returns:
+/// A [DrawerOverlayCompleter] that provides control over the drawer lifecycle.
+///
+/// Example:
+/// ```dart
+/// final completer = openDrawerOverlay<String>(
+///   context: context,
+///   position: OverlayPosition.left,
+///   builder: (context) => DrawerContent(),
+///   draggable: true,
+///   barrierDismissible: true,
+/// );
+/// final result = await completer.future;
+/// ```
 DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -16,7 +176,7 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
-  bool showDragHandle = true,
+  bool? showDragHandle,
   BorderRadiusGeometry? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,
@@ -28,6 +188,12 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  showDragHandle ??= theme?.showDragHandle ?? true;
+  surfaceOpacity ??= theme?.surfaceOpacity;
+  surfaceBlur ??= theme?.surfaceBlur;
+  barrierColor ??= theme?.barrierColor;
+  dragHandleSize ??= theme?.dragHandleSize;
   return openRawDrawer<T>(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -45,7 +211,7 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
         draggable: draggable,
         extraSize: extraSize,
         size: size,
-        showDragHandle: showDragHandle,
+        showDragHandle: showDragHandle ?? true,
         dragHandleSize: dragHandleSize,
         padding: padding,
         borderRadius: borderRadius,
@@ -62,6 +228,45 @@ DrawerOverlayCompleter<T?> openDrawerOverlay<T>({
   );
 }
 
+/// Opens a sheet overlay with minimal styling and full-screen expansion.
+///
+/// Creates a sheet overlay that slides in from the specified position,
+/// typically used for bottom sheets or side panels. Unlike drawers,
+/// sheets don't transform the backdrop and have minimal decoration.
+///
+/// Features:
+/// - Full-screen expansion with edge-to-edge content
+/// - Minimal styling and decoration
+/// - Optional drag interaction
+/// - Safe area integration
+/// - Barrier dismissal support
+///
+/// Parameters:
+/// - [context] (BuildContext, required): build context for overlay creation
+/// - [builder] (WidgetBuilder, required): function that builds sheet content
+/// - [position] (OverlayPosition, required): side from which sheet slides in
+/// - [barrierDismissible] (bool, default: true): whether tapping barrier dismisses sheet
+/// - [transformBackdrop] (bool, default: false): whether to transform backdrop
+/// - [backdropBuilder] (WidgetBuilder?, optional): custom backdrop builder
+/// - [barrierColor] (Color?, optional): color of the modal barrier
+/// - [draggable] (bool, default: false): whether sheet can be dragged to dismiss
+/// - [animationController] (AnimationController?, optional): custom animation controller
+/// - [autoOpen] (bool, default: true): whether to automatically open on creation
+/// - [constraints] (BoxConstraints?, optional): size constraints for sheet
+/// - [alignment] (AlignmentGeometry?, optional): alignment within constraints
+///
+/// Returns:
+/// A [DrawerOverlayCompleter] that provides control over the sheet lifecycle.
+///
+/// Example:
+/// ```dart
+/// final completer = openSheetOverlay<bool>(
+///   context: context,
+///   position: OverlayPosition.bottom,
+///   builder: (context) => BottomSheetContent(),
+///   draggable: true,
+/// );
+/// ```
 DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -76,6 +281,8 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   BoxConstraints? constraints,
   AlignmentGeometry? alignment,
 }) {
+  final theme = ComponentTheme.maybeOf<DrawerTheme>(context);
+  barrierColor ??= theme?.barrierColor;
   return openRawDrawer<T>(
     context: context,
     transformBackdrop: transformBackdrop,
@@ -105,6 +312,22 @@ DrawerOverlayCompleter<T?> openSheetOverlay<T>({
   );
 }
 
+/// Opens a drawer and returns a future that completes when dismissed.
+///
+/// Convenience function that opens a drawer overlay and returns the future
+/// directly, suitable for use with async/await patterns.
+///
+/// Returns:
+/// A [Future] that completes with the result when the drawer is dismissed.
+///
+/// Example:
+/// ```dart
+/// final result = await openDrawer<String>(
+///   context: context,
+///   position: OverlayPosition.left,
+///   builder: (context) => MyDrawerContent(),
+/// );
+/// ```
 Future<T?> openDrawer<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -114,7 +337,7 @@ Future<T?> openDrawer<T>({
   bool barrierDismissible = true,
   WidgetBuilder? backdropBuilder,
   bool useSafeArea = true,
-  bool showDragHandle = true,
+  bool? showDragHandle,
   BorderRadiusGeometry? borderRadius,
   Size? dragHandleSize,
   bool transformBackdrop = true,
@@ -147,6 +370,22 @@ Future<T?> openDrawer<T>({
   ).future;
 }
 
+/// Opens a sheet and returns a future that completes when dismissed.
+///
+/// Convenience function that opens a sheet overlay and returns the future
+/// directly, suitable for use with async/await patterns.
+///
+/// Returns:
+/// A [Future] that completes with the result when the sheet is dismissed.
+///
+/// Example:
+/// ```dart
+/// final accepted = await openSheet<bool>(
+///   context: context,
+///   position: OverlayPosition.bottom,
+///   builder: (context) => ConfirmationSheet(),
+/// );
+/// ```
 Future<T?> openSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -229,17 +468,18 @@ class _DrawerWrapperState extends State<DrawerWrapper>
   late ControlledAnimation _extraOffset;
 
   OverlayPosition get resolvedPosition {
-    if (widget.position == OverlayPosition.start) {
+    var position = widget.position;
+    if (position == OverlayPosition.start) {
       return Directionality.of(context) == TextDirection.ltr
           ? OverlayPosition.left
           : OverlayPosition.right;
     }
-    if (widget.position == OverlayPosition.end) {
+    if (position == OverlayPosition.end) {
       return Directionality.of(context) == TextDirection.ltr
           ? OverlayPosition.right
           : OverlayPosition.left;
     }
-    return widget.position;
+    return position;
   }
 
   @override
@@ -344,6 +584,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             }
           },
           child: Row(
+            textDirection: TextDirection.ltr,
             mainAxisSize: MainAxisSize.min,
             children: [
               AnimatedBuilder(
@@ -358,7 +599,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                     return Transform.scale(
                         scaleX:
                             1 + _extraOffset.value / getSize(context).width / 4,
-                        alignment: AlignmentDirectional.centerEnd,
+                        alignment: Alignment.centerRight,
                         child: child);
                   },
                   animation: _extraOffset,
@@ -407,6 +648,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
             }
           },
           child: Row(
+            textDirection: TextDirection.ltr,
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.showDragHandle) ...[
@@ -420,7 +662,7 @@ class _DrawerWrapperState extends State<DrawerWrapper>
                     return Transform.scale(
                         scaleX:
                             1 + _extraOffset.value / getSize(context).width / 4,
-                        alignment: AlignmentDirectional.centerStart,
+                        alignment: Alignment.centerLeft,
                         child: child);
                   },
                   animation: _extraOffset,
@@ -1377,20 +1619,28 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
   Widget build(BuildContext context) {
     AlignmentGeometry alignment;
     Offset startFractionalOffset;
-    bool padTop = widget.useSafeArea && widget.position != OverlayPosition.top;
-    bool padBottom =
-        widget.useSafeArea && widget.position != OverlayPosition.bottom;
-    bool padLeft =
-        widget.useSafeArea && widget.position != OverlayPosition.left;
-    bool padRight =
-        widget.useSafeArea && widget.position != OverlayPosition.right;
-    switch (widget.position) {
+    var position = widget.position;
+    final textDirection = Directionality.of(context);
+    if (position == OverlayPosition.start) {
+      position = textDirection == TextDirection.ltr
+          ? OverlayPosition.left
+          : OverlayPosition.right;
+    } else if (position == OverlayPosition.end) {
+      position = textDirection == TextDirection.ltr
+          ? OverlayPosition.right
+          : OverlayPosition.left;
+    }
+    bool padTop = widget.useSafeArea && position != OverlayPosition.top;
+    bool padBottom = widget.useSafeArea && position != OverlayPosition.bottom;
+    bool padLeft = widget.useSafeArea && position != OverlayPosition.left;
+    bool padRight = widget.useSafeArea && position != OverlayPosition.right;
+    switch (position) {
       case OverlayPosition.left:
-        alignment = AlignmentDirectional.centerStart;
+        alignment = Alignment.centerLeft;
         startFractionalOffset = const Offset(-1, 0);
         break;
       case OverlayPosition.right:
-        alignment = AlignmentDirectional.centerEnd;
+        alignment = Alignment.centerRight;
         startFractionalOffset = const Offset(1, 0);
         break;
       case OverlayPosition.top:
@@ -1432,13 +1682,13 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
             Size additionalSize;
             Offset additionalOffset;
             bool insetTop =
-                widget.useSafeArea && widget.position == OverlayPosition.top;
+                widget.useSafeArea && position == OverlayPosition.top;
             bool insetBottom =
-                widget.useSafeArea && widget.position == OverlayPosition.bottom;
+                widget.useSafeArea && position == OverlayPosition.bottom;
             bool insetLeft =
-                widget.useSafeArea && widget.position == OverlayPosition.left;
+                widget.useSafeArea && position == OverlayPosition.left;
             bool insetRight =
-                widget.useSafeArea && widget.position == OverlayPosition.right;
+                widget.useSafeArea && position == OverlayPosition.right;
             MediaQueryData mediaQueryData = MediaQuery.of(context);
             EdgeInsets padding =
                 mediaQueryData.padding + mediaQueryData.viewInsets;
@@ -1446,7 +1696,7 @@ class DrawerEntryWidgetState<T> extends State<DrawerEntryWidget<T>>
               additionalSize = Size.zero;
               additionalOffset = Offset.zero;
             } else {
-              switch (widget.position) {
+              switch (position) {
                 case OverlayPosition.left:
                   additionalSize = Size(extraSize.width / 2, 0);
                   additionalOffset = Offset(-additionalSize.width, 0);

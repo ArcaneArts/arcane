@@ -117,7 +117,7 @@ class _MutableTextState extends State<MutableText> {
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
                 placeholder: widget.placeholder,
-                border: widget.border,
+                border: widget.border ? null : Border(),
                 onSubmitted: (v) {
                   setState(() {
                     _editing = false;

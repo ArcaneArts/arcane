@@ -22,13 +22,24 @@ class ExampleArcaneApp extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => ArcaneShortcuts(shortcuts: {
-        LogicalKeySet(
-          LogicalKeyboardKey.control,
-          LogicalKeyboardKey.alt,
-          LogicalKeyboardKey.keyF,
-        ): didShortcut
-      }, child: ArcaneApp(home: HomeScreen(), showPerformanceOverlay: false));
+  Widget build(BuildContext context) => ArcaneShortcuts(
+          shortcuts: {
+            LogicalKeySet(
+              LogicalKeyboardKey.control,
+              LogicalKeyboardKey.alt,
+              LogicalKeyboardKey.keyF,
+            ): didShortcut
+          },
+          child: ArcaneApp(
+            home: HomeScreen(),
+            showPerformanceOverlay: false,
+            theme: ArcaneTheme(
+                scheme: ContrastedColorScheme(
+                    light: ColorSchemes.lightDefaultColor.copyWith(),
+                    dark: ColorSchemes.darkDefaultColor),
+                themeMode: ThemeMode.light,
+                blurMode: ArcaneBlurMode.backdropFilter),
+          ));
 }
 
 class HomeScreen extends StatelessWidget {
@@ -40,7 +51,7 @@ class HomeScreen extends StatelessWidget {
       title: "Form Example with some long text\n",
       subtitle: "Some Subtitle Text or some shit",
       actions: [IconButton(icon: Icon(Icons.dots_three_vertical))],
-      fab: FabMenu(
+      fab: MagicFabMenu(
         child: Text("Entry"),
         leading: Icon(Icons.play_circle),
         items: [
@@ -57,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                   5,
                   (i) => MagicTile(
                         leading: Icon(Icons.address_book,
-                            color: randomColor(i, targetLuminance: 0.8)),
+                            color: randomColor(i, targetLuminance: 0.1)),
                         title: Text("Some entry $i"),
                         subtitle: Text("This is a subtitle for entry $i"),
                       ))
@@ -76,9 +87,9 @@ class HomeScreen extends StatelessWidget {
                                     .open(context),
                             trailing: Icon(Icons.address_book,
                                 color: randomColor(i * 192283,
-                                    targetLuminance: 0.8)),
+                                    targetLuminance: 0.1)),
                             leading: Icon(Icons.address_book,
-                                color: randomColor(i, targetLuminance: 0.8)),
+                                color: randomColor(i, targetLuminance: 0.1)),
                             title: Text("Some entry $i"),
                             subtitle: Text("This is a subtitle for entry $i"),
                           ))

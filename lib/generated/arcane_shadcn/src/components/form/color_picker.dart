@@ -7,11 +7,253 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
-class ColorInputController extends ValueNotifier<ColorDerivative>
-    with ComponentController<ColorDerivative> {
-  ColorInputController(super.value);
+/// Theme configuration for [ColorInput] widget styling and behavior.
+///
+/// Defines the visual properties and default behaviors for color input components
+/// including popover presentation, picker modes, and interaction features. Applied
+/// globally through [ComponentTheme] or per-instance for customization.
+///
+/// Supports comprehensive customization of color picker appearance, positioning,
+/// and functionality to match application design requirements.
+class ColorInputTheme {
+  /// Whether to display alpha (transparency) controls by default.
+  ///
+  /// When true, color pickers include alpha/opacity sliders and inputs.
+  /// When false, only RGB/HSV controls are shown. Individual components
+  /// can override this theme setting.
+  final bool? showAlpha;
+
+  /// Alignment point on the popover for anchor attachment.
+  ///
+  /// Determines where the color picker popover positions itself relative
+  /// to the anchor widget. When null, uses framework default alignment.
+  final AlignmentGeometry? popoverAlignment;
+
+  /// Alignment point on the anchor widget for popover positioning.
+  ///
+  /// Specifies which part of the trigger widget the popover should align to.
+  /// When null, uses framework default anchor alignment.
+  final AlignmentGeometry? popoverAnchorAlignment;
+
+  /// Internal padding applied to the color picker popover content.
+  ///
+  /// Controls spacing around the color picker interface within the popover
+  /// container. When null, uses framework default padding.
+  final EdgeInsetsGeometry? popoverPadding;
+
+  /// Default interaction mode for color input triggers.
+  ///
+  /// Determines whether color selection opens a popover or modal dialog.
+  /// When null, uses framework default prompt mode behavior.
+  final PromptMode? mode;
+
+  /// Default color picker interface type.
+  ///
+  /// Specifies whether to use HSV, HSL, or other color picker implementations.
+  /// When null, uses framework default picker mode.
+  final ColorPickerMode? pickerMode;
+
+  /// Whether to enable screen color sampling functionality.
+  ///
+  /// When true, color pickers include tools to sample colors directly from
+  /// the screen. Platform support varies. When null, uses framework default.
+  final bool? allowPickFromScreen;
+
+  /// Whether to display color value labels in picker interfaces.
+  ///
+  /// When true, shows numeric color values (hex, RGB, HSV, etc.) alongside
+  /// visual color pickers. When null, uses framework default label visibility.
+  final bool? showLabel;
+
+  /// Creates a [ColorInputTheme].
+  ///
+  /// All parameters are optional and fall back to framework defaults when null.
+  /// The theme can be applied globally or to specific color input instances.
+  const ColorInputTheme({
+    this.showAlpha,
+    this.popoverAlignment,
+    this.popoverAnchorAlignment,
+    this.popoverPadding,
+    this.mode,
+    this.pickerMode,
+    this.allowPickFromScreen,
+    this.showLabel,
+  });
+
+  /// Creates a copy of this theme with specified properties overridden.
+  ///
+  /// Each parameter function is called only if provided, allowing selective
+  /// overrides while preserving existing values for unspecified properties.
+  ColorInputTheme copyWith({
+    ValueGetter<bool?>? showAlpha,
+    ValueGetter<AlignmentGeometry?>? popoverAlignment,
+    ValueGetter<AlignmentGeometry?>? popoverAnchorAlignment,
+    ValueGetter<EdgeInsetsGeometry?>? popoverPadding,
+    ValueGetter<PromptMode?>? mode,
+    ValueGetter<ColorPickerMode?>? pickerMode,
+    ValueGetter<bool?>? allowPickFromScreen,
+    ValueGetter<bool?>? showLabel,
+  }) {
+    return ColorInputTheme(
+      showAlpha: showAlpha == null ? this.showAlpha : showAlpha(),
+      popoverAlignment:
+          popoverAlignment == null ? this.popoverAlignment : popoverAlignment(),
+      popoverAnchorAlignment: popoverAnchorAlignment == null
+          ? this.popoverAnchorAlignment
+          : popoverAnchorAlignment(),
+      popoverPadding:
+          popoverPadding == null ? this.popoverPadding : popoverPadding(),
+      mode: mode == null ? this.mode : mode(),
+      pickerMode: pickerMode == null ? this.pickerMode : pickerMode(),
+      allowPickFromScreen: allowPickFromScreen == null
+          ? this.allowPickFromScreen
+          : allowPickFromScreen(),
+      showLabel: showLabel == null ? this.showLabel : showLabel(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ColorInputTheme &&
+        other.showAlpha == showAlpha &&
+        other.popoverAlignment == popoverAlignment &&
+        other.popoverAnchorAlignment == popoverAnchorAlignment &&
+        other.popoverPadding == popoverPadding &&
+        other.mode == mode &&
+        other.pickerMode == pickerMode &&
+        other.allowPickFromScreen == allowPickFromScreen &&
+        other.showLabel == showLabel;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      showAlpha,
+      popoverAlignment,
+      popoverAnchorAlignment,
+      popoverPadding,
+      mode,
+      pickerMode,
+      allowPickFromScreen,
+      showLabel);
 }
 
+/// Reactive controller for managing color input state with color operations.
+///
+/// Extends [ValueNotifier] to provide state management for color input widgets
+/// using [ColorDerivative] values that support multiple color space representations.
+/// Enables programmatic color changes while maintaining color space fidelity.
+///
+/// The controller manages [ColorDerivative] objects which preserve original
+/// color space information (HSV, HSL, RGB) for accurate color manipulations
+/// and prevents precision loss during color space conversions.
+///
+/// Example:
+/// ```dart
+/// final controller = ColorInputController(
+///   ColorDerivative.fromColor(Colors.blue),
+/// );
+///
+/// // React to changes
+/// controller.addListener(() {
+///   print('Color changed to: ${controller.value.color}');
+/// });
+///
+/// // Programmatic control
+/// controller.value = ColorDerivative.fromHSV(HSVColor.fromColor(Colors.red));
+/// ```
+class ColorInputController extends ValueNotifier<ColorDerivative>
+    with ComponentController<ColorDerivative> {
+  /// Creates a [ColorInputController] with the specified initial color.
+  ///
+  /// The [value] parameter provides the initial color as a [ColorDerivative].
+  /// The controller notifies listeners when the color changes through any
+  /// method calls or direct value assignment.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = ColorInputController(
+  ///   ColorDerivative.fromColor(Colors.green),
+  /// );
+  /// ```
+  ColorInputController(super.value);
+
+  /// Sets the color to a new [Color] value.
+  ///
+  /// Converts the color to a [ColorDerivative] preserving RGB color space
+  /// information. Notifies listeners of the change.
+  void setColor(Color color) {
+    value = ColorDerivative.fromColor(color);
+  }
+
+  /// Sets the color to a new HSV color value.
+  ///
+  /// Uses [ColorDerivative.fromHSV] to preserve HSV color space information
+  /// for accurate hue, saturation, and value manipulations.
+  void setHSVColor(HSVColor hsvColor) {
+    value = ColorDerivative.fromHSV(hsvColor);
+  }
+
+  /// Sets the color to a new HSL color value.
+  ///
+  /// Uses [ColorDerivative.fromHSL] to preserve HSL color space information
+  /// for accurate hue, saturation, and lightness manipulations.
+  void setHSLColor(HSLColor hslColor) {
+    value = ColorDerivative.fromHSL(hslColor);
+  }
+
+  /// Gets the current color as a standard [Color] object.
+  Color get color => value.toColor();
+
+  /// Gets the current color as an HSV color representation.
+  HSVColor get hsvColor => value.toHSVColor();
+
+  /// Gets the current color as an HSL color representation.
+  HSLColor get hslColor => value.toHSLColor();
+}
+
+/// Reactive color input with automatic state management and controller support.
+///
+/// A high-level color picker widget that provides automatic state management through
+/// the controlled component pattern. Supports both controller-based and callback-based
+/// state management with comprehensive customization options for color picker presentation,
+/// interaction modes, and visual styling.
+///
+/// ## Features
+///
+/// - **Multiple picker modes**: HSV, HSL, and RGB color picker interfaces
+/// - **Alpha channel support**: Optional transparency/opacity controls
+/// - **Screen color sampling**: Pick colors directly from screen (platform dependent)
+/// - **Color history**: Automatic recent color tracking and storage
+/// - **Flexible presentation**: Popover or modal dialog interaction modes
+/// - **Accessibility support**: Full keyboard navigation and screen reader compatibility
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = ColorInputController(
+///   ColorDerivative.fromColor(Colors.blue),
+/// );
+///
+/// ControlledColorInput(
+///   controller: controller,
+///   showAlpha: true,
+///   allowPickFromScreen: true,
+///   pickerMode: ColorPickerMode.hsv,
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// ColorDerivative currentColor = ColorDerivative.fromColor(Colors.red);
+///
+/// ControlledColorInput(
+///   initialValue: currentColor,
+///   onChanged: (color) => setState(() => currentColor = color),
+///   mode: PromptMode.popover,
+/// )
+/// ```
 class ControlledColorInput extends StatelessWidget
     with ControlledComponent<ColorDerivative> {
   @override
@@ -26,16 +268,16 @@ class ControlledColorInput extends StatelessWidget
   @override
   final ColorInputController? controller;
 
-  final bool showAlpha;
+  final bool? showAlpha;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? placeholder;
-  final PromptMode mode;
-  final ColorPickerMode pickerMode;
+  final PromptMode? mode;
+  final ColorPickerMode? pickerMode;
   final Widget? dialogTitle;
-  final bool allowPickFromScreen;
-  final bool showLabel;
+  final bool? allowPickFromScreen;
+  final bool? showLabel;
   final ColorHistoryStorage? storage;
 
   const ControlledColorInput({
@@ -45,16 +287,16 @@ class ControlledColorInput extends StatelessWidget
     this.onChanged,
     this.controller,
     this.enabled = true,
-    this.showAlpha = true,
+    this.showAlpha,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.placeholder,
-    this.mode = PromptMode.dialog,
-    this.pickerMode = ColorPickerMode.rgb,
+    this.mode,
+    this.pickerMode,
     this.dialogTitle,
-    this.allowPickFromScreen = true,
-    this.showLabel = true,
+    this.allowPickFromScreen,
+    this.showLabel,
     this.storage,
   });
 
@@ -744,7 +986,7 @@ class ColorInputSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final ColorPickerMode mode;
   final ValueChanged<ColorPickerMode>? onModeChanged;
   final VoidCallback? onPickFromScreen;
@@ -778,33 +1020,36 @@ class _ColorInputSetState extends State<ColorInputSet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Tabs(
-                index: _tabIndex,
-                onChanged: (value) {
-                  setState(() {
-                    _tabIndex = value;
-                  });
-                },
-                children: [
-                  // Text(localizations.colorPickerTabRGB),
-                  // Text(localizations.colorPickerTabHSL),
-                  // Text(localizations.colorPickerTabHSV),
-                  // if (widget.storage != null)
-                  //   Text(localizations.colorPickerTabRecent),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabRGB),
-                  ),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabHSL),
-                  ),
-                  TabItem(
-                    child: Text(localizations.colorPickerTabHSV),
-                  ),
-                  if (widget.storage != null)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Tabs(
+                  index: _tabIndex,
+                  onChanged: (value) {
+                    setState(() {
+                      _tabIndex = value;
+                    });
+                  },
+                  children: [
+                    // Text(localizations.colorPickerTabRGB),
+                    // Text(localizations.colorPickerTabHSL),
+                    // Text(localizations.colorPickerTabHSV),
+                    // if (widget.storage != null)
+                    //   Text(localizations.colorPickerTabRecent),
                     TabItem(
-                      child: Text(localizations.colorPickerTabRecent),
+                      child: Text(localizations.colorPickerTabRGB),
                     ),
-                ]),
+                    TabItem(
+                      child: Text(localizations.colorPickerTabHSL),
+                    ),
+                    TabItem(
+                      child: Text(localizations.colorPickerTabHSV),
+                    ),
+                    if (widget.storage != null)
+                      TabItem(
+                        child: Text(localizations.colorPickerTabRecent),
+                      ),
+                  ]),
+            ),
             Gap(theme.scaling * 16),
             _buildContent(context, theme, constraints.maxWidth),
           ],
@@ -881,7 +1126,7 @@ class ColorPickerSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onColorChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final VoidCallback? onPickFromScreen;
   final ColorPickerMode mode;
 
@@ -890,7 +1135,7 @@ class ColorPickerSet extends StatefulWidget {
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
-    this.showAlpha = true,
+    this.showAlpha,
     this.mode = ColorPickerMode.rgb,
     this.onPickFromScreen,
   });
@@ -915,7 +1160,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     super.initState();
     ColorDerivative color = widget.color;
     var rgbColor = color.toColor();
-    if (widget.showAlpha) {
+    if (widget.showAlpha ?? true) {
       _hexController.text = '#${rgbColor.value.toRadixString(16)}';
     } else {
       _hexController.text = '#${rgbColor.value.toRadixString(16).substring(2)}';
@@ -950,7 +1195,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     if (oldWidget.color != widget.color || oldWidget.mode != widget.mode) {
       ColorDerivative color = widget.color;
       var rgbColor = color.toColor();
-      if (widget.showAlpha) {
+      if (widget.showAlpha ?? true) {
         _hexController.text = '#${rgbColor.value.toRadixString(16)}';
       } else {
         _hexController.text =
@@ -989,7 +1234,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
     if (a.isEmpty || b.isEmpty || c.isEmpty) {
       return;
     }
-    if (widget.showAlpha && alpha.isEmpty) {
+    if ((widget.showAlpha ?? true) && alpha.isEmpty) {
       return;
     }
     double aValue = double.tryParse(a) ?? 0;
@@ -1182,9 +1427,9 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                           ),
                   ),
                 ),
-                if (widget.showAlpha) Gap(theme.scaling * 16),
+                if (widget.showAlpha ?? true) Gap(theme.scaling * 16),
                 // alpha
-                if (widget.showAlpha)
+                if (widget.showAlpha ?? true)
                   SizedBox(
                     height: 32 * theme.scaling,
                     child: Container(
@@ -1251,7 +1496,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                       color = Color(int.parse(hex, radix: 16));
                     } else {
                       color = widget.color.toColor();
-                      if (widget.showAlpha) {
+                      if (widget.showAlpha ?? true) {
                         _hexController.text =
                             '#${color.value.toRadixString(16)}';
                       } else {
@@ -1321,7 +1566,7 @@ class _ColorPickerSetState extends State<ColorPickerSet> {
                           ],
                         ),
                       ),
-                      if (widget.showAlpha)
+                      if (widget.showAlpha ?? true)
                         _wrapTextField(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1356,7 +1601,7 @@ class MiniColorPickerSet extends StatefulWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onColorChanged;
   final ValueChanged<ColorDerivative>? onColorChangeEnd;
-  final bool showAlpha;
+  final bool? showAlpha;
   final VoidCallback? onPickFromScreen;
   final ColorPickerMode mode;
 
@@ -1365,7 +1610,7 @@ class MiniColorPickerSet extends StatefulWidget {
     required this.color,
     this.onColorChanged,
     this.onColorChangeEnd,
-    this.showAlpha = true,
+    this.showAlpha,
     this.mode = ColorPickerMode.rgb,
     this.onPickFromScreen,
   });
@@ -1481,9 +1726,9 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
                     ),
             ),
           ),
-          if (widget.showAlpha) Gap(theme.scaling * 16),
+          if (widget.showAlpha ?? true) Gap(theme.scaling * 16),
           // alpha
-          if (widget.showAlpha)
+          if (widget.showAlpha ?? true)
             SizedBox(
               height: 32 * theme.scaling,
               child: Container(
@@ -1550,32 +1795,32 @@ class _MiniColorPickerSetState extends State<MiniColorPickerSet> {
 class ColorInput extends StatelessWidget {
   final ColorDerivative color;
   final ValueChanged<ColorDerivative>? onChanged;
-  final bool showAlpha;
+  final bool? showAlpha;
   final AlignmentGeometry? popoverAlignment;
   final AlignmentGeometry? popoverAnchorAlignment;
   final EdgeInsetsGeometry? popoverPadding;
   final Widget? placeholder;
-  final PromptMode mode;
-  final ColorPickerMode pickerMode;
+  final PromptMode? mode;
+  final ColorPickerMode? pickerMode;
   final Widget? dialogTitle;
-  final bool allowPickFromScreen;
-  final bool showLabel;
+  final bool? allowPickFromScreen;
+  final bool? showLabel;
   final ColorHistoryStorage? storage;
   final bool? enabled;
   const ColorInput({
     super.key,
     required this.color,
     this.onChanged,
-    this.showAlpha = true,
+    this.showAlpha,
     this.popoverAlignment,
     this.popoverAnchorAlignment,
     this.popoverPadding,
     this.placeholder,
-    this.mode = PromptMode.dialog,
-    this.pickerMode = ColorPickerMode.rgb,
+    this.mode,
+    this.pickerMode,
     this.dialogTitle,
-    this.allowPickFromScreen = true,
-    this.showLabel = false,
+    this.allowPickFromScreen,
+    this.showLabel,
     this.storage,
     this.enabled,
   });
@@ -1584,6 +1829,39 @@ class ColorInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = ShadcnLocalizations.of(context);
     final theme = Theme.of(context);
+    final compTheme = ComponentTheme.maybeOf<ColorInputTheme>(context);
+    final showAlpha = styleValue<bool>(
+        widgetValue: this.showAlpha,
+        themeValue: compTheme?.showAlpha,
+        defaultValue: true);
+    final popoverAlignment = styleValue<AlignmentGeometry>(
+        widgetValue: this.popoverAlignment,
+        themeValue: compTheme?.popoverAlignment,
+        defaultValue: AlignmentDirectional.topStart);
+    final popoverAnchorAlignment = styleValue<AlignmentGeometry>(
+        widgetValue: this.popoverAnchorAlignment,
+        themeValue: compTheme?.popoverAnchorAlignment,
+        defaultValue: AlignmentDirectional.bottomStart);
+    final popoverPadding = styleValue<EdgeInsetsGeometry>(
+        widgetValue: this.popoverPadding,
+        themeValue: compTheme?.popoverPadding,
+        defaultValue: EdgeInsets.all(theme.scaling * 16));
+    final mode = styleValue(
+        widgetValue: this.mode,
+        themeValue: compTheme?.mode,
+        defaultValue: PromptMode.dialog);
+    final pickerMode = styleValue(
+        widgetValue: this.pickerMode,
+        themeValue: compTheme?.pickerMode,
+        defaultValue: ColorPickerMode.rgb);
+    final allowPickFromScreen = styleValue<bool>(
+        widgetValue: this.allowPickFromScreen,
+        themeValue: compTheme?.allowPickFromScreen,
+        defaultValue: true);
+    final showLabel = styleValue<bool>(
+        widgetValue: this.showLabel,
+        themeValue: compTheme?.showLabel,
+        defaultValue: false);
     return ObjectFormField(
       enabled: enabled,
       dialogTitle: dialogTitle,

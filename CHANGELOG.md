@@ -1,3 +1,7 @@
+# 6.0.0
+* BREAKING Changed minimum flutter version to 3.35
+* See https://github.com/ArcaneArts/arcane_shadcn/pull/35
+
 # 5.3.15
 * Improved liquid ass
 * Added MagicTile and MagicFab

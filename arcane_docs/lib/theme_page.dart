@@ -10,30 +10,22 @@ class ThemePage extends StatefulWidget {
 }
 
 final Map<String, ColorScheme> colorSchemes = {
-  'lightBlue': ColorSchemes.lightBlue(),
-  'darkBlue': ColorSchemes.darkBlue(),
-  'lightGray': ColorSchemes.lightGray(),
-  'darkGray': ColorSchemes.darkGray(),
-  'lightGreen': ColorSchemes.lightGreen(),
-  'darkGreen': ColorSchemes.darkGreen(),
-  'lightNeutral': ColorSchemes.lightNeutral(),
-  'darkNeutral': ColorSchemes.darkNeutral(),
-  'lightOrange': ColorSchemes.lightOrange(),
-  'darkOrange': ColorSchemes.darkOrange(),
-  'lightRed': ColorSchemes.lightRed(),
-  'darkRed': ColorSchemes.darkRed(),
-  'lightRose': ColorSchemes.lightRose(),
-  'darkRose': ColorSchemes.darkRose(),
-  'lightSlate': ColorSchemes.lightSlate(),
-  'darkSlate': ColorSchemes.darkSlate(),
-  'lightStone': ColorSchemes.lightStone(),
-  'darkStone': ColorSchemes.darkStone(),
-  'lightViolet': ColorSchemes.lightViolet(),
-  'darkViolet': ColorSchemes.darkViolet(),
-  'lightYellow': ColorSchemes.lightYellow(),
-  'darkYellow': ColorSchemes.darkYellow(),
-  'lightZinc': ColorSchemes.lightZinc(),
-  'darkZinc': ColorSchemes.darkZinc(),
+  'lightBlue': ColorSchemes.lightBlue,
+  'darkBlue': ColorSchemes.darkBlue,
+  'lightGreen': ColorSchemes.lightGreen,
+  'darkGreen': ColorSchemes.darkGreen,
+  'lightDefaultColor': ColorSchemes.lightDefaultColor,
+  'darkDefaultColor': ColorSchemes.darkDefaultColor,
+  'lightOrange': ColorSchemes.lightOrange,
+  'darkOrange': ColorSchemes.darkOrange,
+  'lightRed': ColorSchemes.lightRed,
+  'darkRed': ColorSchemes.darkRed,
+  'lightRose': ColorSchemes.lightRose,
+  'darkRose': ColorSchemes.darkRose,
+  'lightViolet': ColorSchemes.lightViolet,
+  'darkViolet': ColorSchemes.darkViolet,
+  'lightYellow': ColorSchemes.lightYellow,
+  'darkYellow': ColorSchemes.darkYellow,
 };
 
 String? nameFromColorScheme(ColorScheme scheme) {
@@ -67,7 +59,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   void initState() {
     super.initState();
-    colors = ColorSchemes.darkZinc().toColorMap();
+    colors = ColorSchemes.darkViolet.toColorMap();
     spin = 0;
     contrast = 0;
   }
