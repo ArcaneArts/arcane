@@ -13,6 +13,7 @@ class ArcaneTheme {
   final ContrastedColorScheme? scheme;
   final ScrollPhysics physics;
   final double surfaceOpacity;
+  final double surfaceOpacityLight;
   final double surfaceBlur;
   final double scaling;
   final double contrast;
@@ -40,7 +41,7 @@ class ArcaneTheme {
     this.liquidGlass = const ArcaneLiquidGlass(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
-    this.blurMode = ArcaneBlurMode.liquidGlass,
+    this.blurMode = ArcaneBlurMode.backdropFilter,
     this.edge = const EdgeTheme(),
     this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,
@@ -58,7 +59,8 @@ class ArcaneTheme {
     this.spin = 0.0,
     this.scaling = 1.0,
     this.radius = 0.3,
-    this.surfaceOpacity = 0.6,
+    this.surfaceOpacity = 0.55,
+    this.surfaceOpacityLight = 0.55,
     this.surfaceBlur = 24,
     this.themeMode = ThemeMode.system,
   });
@@ -68,6 +70,7 @@ class ArcaneTheme {
     double? defaultHeaderHeight,
     ContrastedColorScheme? scheme,
     double? surfaceOpacity,
+    double? surfaceOpacityLight,
     double? surfaceBlur,
     double? scaling,
     double? contrast,
@@ -96,6 +99,7 @@ class ArcaneTheme {
         radius: radius ?? this.radius,
         scheme: scheme ?? this.scheme,
         surfaceOpacity: surfaceOpacity ?? this.surfaceOpacity,
+        surfaceOpacityLight: surfaceOpacityLight ?? this.surfaceOpacityLight,
         surfaceBlur: surfaceBlur ?? this.surfaceBlur,
         scaling: scaling ?? this.scaling,
         contrast: contrast ?? this.contrast,
@@ -209,7 +213,9 @@ ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
           .contrast(theme.contrast),
       radius: theme.radius,
       scaling: theme.scaling,
-      surfaceOpacity: theme.surfaceOpacity,
+      surfaceOpacity: brightness == Brightness.light
+          ? theme.surfaceOpacityLight
+          : theme.surfaceOpacity,
       surfaceBlur:
           theme.blurMode == ArcaneBlurMode.disabled ? 0 : theme.surfaceBlur,
     );

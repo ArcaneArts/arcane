@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/card_section.dart';
 import 'package:flutter/services.dart';
 
 bool v = false;
@@ -31,15 +32,11 @@ class ExampleArcaneApp extends StatelessWidget {
             ): didShortcut
           },
           child: ArcaneApp(
-            home: HomeScreen(),
-            showPerformanceOverlay: false,
-            theme: ArcaneTheme(
-                scheme: ContrastedColorScheme(
-                    light: ColorSchemes.lightDefaultColor.copyWith(),
-                    dark: ColorSchemes.darkDefaultColor),
-                themeMode: ThemeMode.light,
-                blurMode: ArcaneBlurMode.backdropFilter),
-          ));
+              home: HomeScreen(),
+              showPerformanceOverlay: false,
+              theme: ArcaneTheme(
+                  themeMode: ThemeMode.dark,
+                  blurMode: ArcaneBlurMode.backdropFilter)));
 }
 
 class HomeScreen extends StatelessWidget {
@@ -62,6 +59,26 @@ class HomeScreen extends StatelessWidget {
       ),
       child: Collection(
         children: [
+          CardSection(
+            titleText: "Hello Section",
+            subtitleText: "This is a subtitle",
+            leadingIcon: Icons.address_book,
+            trailing:
+                IconButtonMenu(icon: Icons.dots_three_vertical, items: []),
+            children: [
+              ListTile(
+                leading: Icon(Icons.address_book),
+                title: Text("Entry 1"),
+                subtitle: Text("This is a subtitle"),
+              ),
+              ListTile(
+                leading: Icon(Icons.address_book),
+                title: Text("Entry 3"),
+                subtitle: Text("This is a subtitle"),
+              )
+            ],
+          ).padLeft(16).padRight(16),
+          Gap(16),
           Collection(
             children: [
               ...List.generate(

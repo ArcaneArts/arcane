@@ -11,6 +11,7 @@ export 'package:arcane/util/shaders/pixelate.dart';
 export 'package:arcane/util/shaders/pixelate_blur.dart';
 export 'package:arcane/util/shaders/rgb.dart';
 export 'package:arcane/util/shaders/warp.dart';
+export 'package:arcane/util/unicorn.dart';
 
 export 'component/app.dart';
 export 'component/bar.dart';
@@ -23,6 +24,7 @@ export 'component/collection/arcane_grid.dart';
 export 'component/collection/arcane_list.dart';
 export 'component/collection/collection.dart';
 export 'component/collection/section.dart';
+export 'component/glow_card.dart';
 export 'component/conjured.dart';
 export 'component/cycle_button.dart';
 export 'component/data_table.dart';

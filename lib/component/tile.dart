@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/card_section.dart';
 import 'package:faker/faker.dart';
 
 typedef ListTile = Tile;
@@ -227,7 +228,7 @@ class Tile extends StatelessWidget {
   Widget get styledTitle => title is Text ? title!.medium() : title!;
 
   Widget buildTile(BuildContext context) => Padding(
-      padding: contentPadding,
+      padding: context.pylonOr<OverrideEdgeInsets>()?.insets ?? contentPadding,
       child: Row(
         children: [
           Expanded(
@@ -251,7 +252,8 @@ class Tile extends StatelessWidget {
 
   Widget buildSliver(BuildContext context) => GlassSection(
       header: Padding(
-          padding: contentPadding,
+          padding:
+              context.pylonOr<OverrideEdgeInsets>()?.insets ?? contentPadding,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

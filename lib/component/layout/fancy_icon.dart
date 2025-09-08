@@ -3,8 +3,9 @@ import 'package:arcane/arcane.dart';
 class FancyIcon extends StatelessWidget {
   final IconData icon;
   final double? size;
+  final Color? color;
 
-  const FancyIcon({super.key, required this.icon, this.size});
+  const FancyIcon({super.key, required this.icon, this.size, this.color});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -15,8 +16,9 @@ class FancyIcon extends StatelessWidget {
         ),
         child: Icon(icon,
             size: size,
-            color: Theme.of(context)
-                .colorScheme
-                .accentForeground), // This is the White-ish color as you wanted on dark theme.
+            color: color ??
+                Theme.of(context)
+                    .colorScheme
+                    .accentForeground), // This is the White-ish color as you wanted on dark theme.
       );
 }

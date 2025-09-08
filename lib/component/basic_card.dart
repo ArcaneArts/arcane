@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/component/glow_card.dart';
 
 /// A wrapper widget that combines the functionality of [Card] and [Basic] components
 /// to create styled cards with structured content.
@@ -18,6 +19,8 @@ class BasicCard extends StatelessWidget {
 
   /// Whether the card has a filled background
   final bool filled;
+
+  final String? thumbHash;
 
   /// Background color of the card
   final Color? fillColor;
@@ -113,6 +116,7 @@ class BasicCard extends StatelessWidget {
     this.fillColor,
     this.borderRadius,
     this.clipBehavior = Clip.none,
+    this.thumbHash,
     this.borderColor,
     this.borderWidth,
     this.boxShadow,
@@ -155,7 +159,8 @@ class BasicCard extends StatelessWidget {
       titleSpacing: titleSpacing,
       trailingAlignment: trailingAlignment,
     );
-    return Card(
+    return GlowCard(
+        thumbHash: thumbHash,
         onPressed: onPressed,
         padding: padding,
         surfaceOpacity: surfaceOpacity,
