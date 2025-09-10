@@ -44,11 +44,13 @@ class ArcaneBlur extends StatelessWidget {
   final TileMode tileMode;
   final ArcaneBlurMode? mode;
   final Widget child;
+  final BorderRadius? borderRadius;
 
   const ArcaneBlur({
     super.key,
     this.intensity = 0,
     this.tileMode = TileMode.clamp,
+    this.borderRadius,
     this.mode,
     required this.child,
   });

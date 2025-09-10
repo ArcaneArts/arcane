@@ -1,96 +1,183 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
-import 'package:toxic_flutter/toxic_flutter.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
+/// Theme configuration for [OverflowMarquee] scrolling text displays.
+///
+/// Provides comprehensive styling and behavior options for marquee animations
+/// including scroll direction, timing, fade effects, and animation curves.
+/// All properties are optional and will fall back to default values when not specified.
+///
+/// Animation Properties:
+/// - [direction]: Horizontal or vertical scrolling axis
+/// - [duration]: Complete cycle time for one full scroll
+/// - [delayDuration]: Pause time before restarting animation
+/// - [curve]: Easing function for smooth animation transitions
+///
+/// Visual Properties:
+/// - [step]: Pixel step size for scroll speed calculation
+/// - [fadePortion]: Edge fade effect intensity (0.0 to 1.0)
+///
+/// Example:
+/// ```dart
+/// OverflowMarqueeTheme(
+///   direction: Axis.horizontal,
+///   duration: Duration(seconds: 5),
+///   delayDuration: Duration(seconds: 1),
+///   fadePortion: 0.1,
+///   curve: Curves.easeInOut,
+/// )
+/// ```
+class OverflowMarqueeTheme {
+  /// Scrolling direction of the marquee.
+  final Axis? direction;
+
+  /// Duration of one full scroll cycle.
+  final Duration? duration;
+
+  /// Delay before scrolling starts again.
+  final Duration? delayDuration;
+
+  /// Step size used to compute scroll speed.
+  final double? step;
+
+  /// Portion of the child to fade at the edges.
+  final double? fadePortion;
+
+  /// Animation curve of the scroll.
+  final Curve? curve;
+
+  const OverflowMarqueeTheme({
+    this.direction,
+    this.duration,
+    this.delayDuration,
+    this.step,
+    this.fadePortion,
+    this.curve,
+  });
+
+  OverflowMarqueeTheme copyWith({
+    ValueGetter<Axis?>? direction,
+    ValueGetter<Duration?>? duration,
+    ValueGetter<Duration?>? delayDuration,
+    ValueGetter<double?>? step,
+    ValueGetter<double?>? fadePortion,
+    ValueGetter<Curve?>? curve,
+  }) {
+    return OverflowMarqueeTheme(
+      direction: direction == null ? this.direction : direction(),
+      duration: duration == null ? this.duration : duration(),
+      delayDuration:
+          delayDuration == null ? this.delayDuration : delayDuration(),
+      step: step == null ? this.step : step(),
+      fadePortion: fadePortion == null ? this.fadePortion : fadePortion(),
+      curve: curve == null ? this.curve : curve(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is OverflowMarqueeTheme &&
+        other.direction == direction &&
+        other.duration == duration &&
+        other.delayDuration == delayDuration &&
+        other.step == step &&
+        other.fadePortion == fadePortion &&
+        other.curve == curve;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(direction, duration, delayDuration, step, fadePortion, curve);
+}
+
+/// Automatically scrolling widget for content that overflows its container.
+///
+/// Creates smooth, continuous scrolling animation for content that exceeds the
+/// available space. Commonly used for long text labels, news tickers, or any
+/// content that needs horizontal or vertical scrolling to be fully visible.
+///
+/// Key Features:
+/// - **Auto-scroll Detection**: Only animates when content actually overflows
+/// - **Bi-directional Support**: Horizontal and vertical scrolling modes
+/// - **Edge Fading**: Smooth fade effects at container boundaries
+/// - **Customizable Timing**: Configurable duration, delay, and animation curves
+/// - **Performance Optimized**: Uses Flutter's Ticker system for smooth 60fps animation
+/// - **Theme Integration**: Respects OverflowMarqueeTheme configuration
+///
+/// Animation Behavior:
+/// 1. Measures content size vs. container size
+/// 2. If content fits, displays normally without animation
+/// 3. If content overflows, starts continuous scrolling animation
+/// 4. Scrolls content from start to end position
+/// 5. Pauses briefly (delayDuration) before restarting
+/// 6. Applies edge fade effects for smooth visual transitions
+///
+/// The widget automatically handles text direction (RTL/LTR) and adapts
+/// scroll behavior accordingly for proper internationalization support.
+///
+/// Example:
+/// ```dart
+/// OverflowMarquee(
+///   direction: Axis.horizontal,
+///   duration: Duration(seconds: 8),
+///   delayDuration: Duration(seconds: 2),
+///   fadePortion: 0.15,
+///   child: Text(
+///     'This is a very long text that will scroll horizontally when it overflows the container',
+///     style: TextStyle(fontSize: 16),
+///   ),
+/// )
+/// ```
 class OverflowMarquee extends StatefulWidget {
   final Widget child;
-  final Axis direction;
-  final Duration duration;
-  final double step;
-  final Duration delayDuration;
-  final double fadePortion;
-  final Curve curve;
+  final Axis? direction;
+  final Duration? duration;
+  final double? step;
+  final Duration? delayDuration;
+  final double? fadePortion;
+  final Curve? curve;
 
+  /// Creates an [OverflowMarquee] widget with customizable scrolling behavior.
+  ///
+  /// Parameters:
+  /// - [child] (Widget, required): Content to display and potentially scroll
+  /// - [direction] (Axis?, optional): Scroll direction, defaults to horizontal
+  /// - [duration] (Duration?, optional): Time for one complete scroll cycle
+  /// - [delayDuration] (Duration?, optional): Pause time before restarting animation
+  /// - [step] (double?, optional): Step size for scroll speed calculation
+  /// - [fadePortion] (double?, optional): Fade effect intensity at edges (0.0-1.0)
+  /// - [curve] (Curve?, optional): Animation easing curve
+  ///
+  /// All optional parameters will use theme defaults or built-in fallback values
+  /// when not explicitly provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// OverflowMarquee(
+  ///   duration: Duration(seconds: 10),
+  ///   delayDuration: Duration(seconds: 1),
+  ///   fadePortion: 0.2,
+  ///   child: Text('Long scrolling text content'),
+  /// )
+  /// ```
   const OverflowMarquee({
     super.key,
     required this.child,
-    this.direction = Axis.horizontal,
-    this.duration = const Duration(seconds: 1),
-    this.delayDuration = const Duration(milliseconds: 500),
-    this.step = 100, // note: the speed of the marquee depends on this value
-    // speed = (sizeDiff / step) * duration
-    this.fadePortion = 25,
-    this.curve = Curves.linear,
+    this.direction,
+    this.duration,
+    this.delayDuration,
+    this.step,
+    this.fadePortion,
+    this.curve,
   });
 
   @override
   State<OverflowMarquee> createState() => _OverflowMarqueeState();
 }
 
-class _OverflowMarqueeState extends State<OverflowMarquee> {
-  late BehaviorSubject<(bool, bool)> _shouldTick;
-  late Key vKey;
-  @override
-  void initState() {
-    vKey = UniqueKey();
-    _shouldTick = BehaviorSubject.seeded((false, false));
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => VisibilityDetector(
-      key: vKey,
-      child: _shouldTick.distinct().buildNullable((should) => TickerMode(
-          enabled: (should?.$1 ?? false) && (should?.$2 ?? false),
-          child: _OverflowMarqueeTicker(
-              onShouldTick: (v) => _shouldTick.add((v, _shouldTick.value.$2)),
-              direction: widget.direction,
-              duration: widget.duration,
-              step: widget.step,
-              delayDuration: widget.delayDuration,
-              fadePortion: widget.fadePortion,
-              curve: widget.curve,
-              child: widget.child))),
-      onVisibilityChanged: (vc) =>
-          _shouldTick.add((_shouldTick.value.$1, vc.visibleFraction > 0)));
-}
-
-class _OverflowMarqueeTicker extends StatefulWidget {
-  final Widget child;
-  final Axis direction;
-  final Duration duration;
-  final double step;
-  final Duration delayDuration;
-  final double fadePortion;
-  final Curve curve;
-  final ValueChanged<bool> onShouldTick;
-
-  const _OverflowMarqueeTicker({
-    super.key,
-    required this.child,
-    this.direction = Axis.horizontal,
-    this.duration = const Duration(seconds: 1),
-    this.delayDuration = const Duration(milliseconds: 500),
-    this.step = 100, // note: the speed of the marquee depends on this value
-    // speed = (sizeDiff / step) * duration
-    this.fadePortion = 25,
-    required this.onShouldTick,
-    this.curve = Curves.linear,
-  });
-
-  @override
-  State<_OverflowMarqueeTicker> createState() => _OverflowMarqueeTickerState();
-}
-
-class _OverflowMarqueeTickerState extends State<_OverflowMarqueeTicker>
+class _OverflowMarqueeState extends State<OverflowMarquee>
     with SingleTickerProviderStateMixin {
   late Ticker _ticker;
   Duration elapsed = Duration.zero;
@@ -117,16 +204,37 @@ class _OverflowMarqueeTickerState extends State<_OverflowMarqueeTicker>
   @override
   Widget build(BuildContext context) {
     final textDirection = Directionality.of(context);
+    final compTheme = ComponentTheme.maybeOf<OverflowMarqueeTheme>(context);
+    final direction = styleValue(
+        widgetValue: widget.direction,
+        themeValue: compTheme?.direction,
+        defaultValue: Axis.horizontal);
+    final fadePortion = styleValue(
+        widgetValue: widget.fadePortion,
+        themeValue: compTheme?.fadePortion,
+        defaultValue: 25.0);
+    final duration = styleValue(
+        widgetValue: widget.duration,
+        themeValue: compTheme?.duration,
+        defaultValue: const Duration(seconds: 1));
+    final delayDuration = styleValue(
+        widgetValue: widget.delayDuration,
+        themeValue: compTheme?.delayDuration,
+        defaultValue: const Duration(milliseconds: 500));
+    final step = styleValue(
+        widgetValue: widget.step,
+        themeValue: compTheme?.step,
+        defaultValue: 100.0);
+    final curve = widget.curve ?? compTheme?.curve ?? Curves.linear;
     return ClipRect(
       child: _OverflowMarqueeLayout(
-        onShouldTick: widget.onShouldTick,
-        direction: widget.direction,
-        fadePortion: widget.fadePortion,
-        duration: widget.duration,
-        delayDuration: widget.delayDuration,
+        direction: direction,
+        fadePortion: fadePortion,
+        duration: duration,
+        delayDuration: delayDuration,
         ticker: _ticker,
         elapsed: elapsed,
-        step: widget.step,
+        step: step,
         textDirection: textDirection,
         child: widget.child,
       ),
@@ -143,7 +251,6 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
   final Duration elapsed;
   final double step;
   final TextDirection textDirection;
-  final ValueChanged<bool> onShouldTick;
 
   const _OverflowMarqueeLayout({
     required this.direction,
@@ -154,7 +261,6 @@ class _OverflowMarqueeLayout extends SingleChildRenderObjectWidget {
     required this.elapsed,
     required this.step,
     required this.textDirection,
-    required this.onShouldTick,
     required Widget child,
   }) : super(child: child);
 
@@ -463,7 +569,6 @@ class _RenderOverflowMarqueeLayout extends RenderShiftedBox
           ticker.stop();
         }
       }
-
       var progress = offsetProgress;
       final offset = direction == Axis.horizontal
           ? Offset(-sizeDiff * progress, 0)

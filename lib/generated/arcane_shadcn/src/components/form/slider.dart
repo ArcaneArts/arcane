@@ -5,11 +5,122 @@ import 'package:flutter/services.dart';
 
 import '../../../shadcn_flutter.dart';
 
+/// Reactive controller for managing slider state with value operations.
+///
+/// Extends [ValueNotifier] to provide state management for slider widgets
+/// using [SliderValue] objects that support both single and range slider
+/// configurations. Enables programmatic slider value changes and provides
+/// convenient methods for common slider operations.
+///
+/// The controller manages [SliderValue] objects which can represent either
+/// single values or dual-thumb range values, providing unified state management
+/// for different slider types.
+///
+/// Example:
+/// ```dart
+/// final controller = SliderController(SliderValue.single(0.5));
+///
+/// // React to changes
+/// controller.addListener(() {
+///   print('Slider value: ${controller.value}');
+/// });
+///
+/// // Programmatic control
+/// controller.setValue(0.75);
+/// controller.setRange(0.2, 0.8);
+/// ```
 class SliderController extends ValueNotifier<SliderValue>
     with ComponentController<SliderValue> {
+  /// Creates a [SliderController] with the specified initial value.
+  ///
+  /// The [value] parameter provides the initial slider configuration as a
+  /// [SliderValue]. The controller notifies listeners when the value changes
+  /// through any method calls or direct value assignment.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = SliderController(SliderValue.single(0.3));
+  /// ```
   SliderController(super.value);
+
+  /// Sets the slider to a single value configuration.
+  ///
+  /// Converts the slider to single-thumb mode with the specified [value].
+  /// The value should be within the slider's min/max bounds.
+  void setValue(double value) {
+    this.value = SliderValue.single(value);
+  }
+
+  /// Sets the slider to a range value configuration.
+  ///
+  /// Converts the slider to dual-thumb mode with the specified [start] and [end] values.
+  /// The values should be within the slider's min/max bounds with start <= end.
+  void setRange(double start, double end) {
+    value = SliderValue.ranged(start, end);
+  }
+
+  /// Returns true if the slider is in single-value mode.
+  bool get isSingle => !value.isRanged;
+
+  /// Returns true if the slider is in range mode.
+  bool get isRanged => value.isRanged;
+
+  /// Gets the current single value (valid only in single mode).
+  ///
+  /// Throws an exception if called when the slider is in range mode.
+  double get singleValue => value.value;
+
+  /// Gets the current range start value (valid only in range mode).
+  ///
+  /// Throws an exception if called when the slider is in single mode.
+  double get rangeStart => value.start;
+
+  /// Gets the current range end value (valid only in range mode).
+  ///
+  /// Throws an exception if called when the slider is in single mode.
+  double get rangeEnd => value.end;
 }
 
+/// Reactive slider with automatic state management and controller support.
+///
+/// A high-level slider widget that provides automatic state management through
+/// the controlled component pattern. Supports both single-value and range sliders
+/// with comprehensive customization options for styling, behavior, and interaction.
+///
+/// ## Features
+///
+/// - **Single and range modes**: Unified interface for different slider types
+/// - **Discrete divisions**: Optional snap-to-value behavior with tick marks
+/// - **Keyboard navigation**: Full arrow key support with custom step sizes
+/// - **Hint values**: Visual preview of suggested or default values
+/// - **Accessibility support**: Screen reader compatibility and semantic labels
+/// - **Form integration**: Automatic validation and form field registration
+///
+/// ## Usage Patterns
+///
+/// **Controller-based (recommended for complex state):**
+/// ```dart
+/// final controller = SliderController(SliderValue.single(0.5));
+///
+/// ControlledSlider(
+///   controller: controller,
+///   min: 0.0,
+///   max: 100.0,
+///   divisions: 100,
+/// )
+/// ```
+///
+/// **Callback-based (simple state management):**
+/// ```dart
+/// double currentValue = 50.0;
+///
+/// ControlledSlider(
+///   initialValue: SliderValue.single(currentValue),
+///   onChanged: (value) => setState(() => currentValue = value.single),
+///   min: 0.0,
+///   max: 100.0,
+/// )
+/// ```
 class ControlledSlider extends StatelessWidget
     with ControlledComponent<SliderValue> {
   @override
@@ -117,6 +228,108 @@ class SliderValue {
     return SliderValue.ranged((_start! * divisions).round() / divisions,
         (_end * divisions).round() / divisions);
   }
+}
+
+/// Theme for [Slider].
+class SliderTheme {
+  /// Height of the track.
+  final double? trackHeight;
+
+  /// Color of the inactive track.
+  final Color? trackColor;
+
+  /// Color of the active portion of the track.
+  final Color? valueColor;
+
+  /// Color of the inactive track when disabled.
+  final Color? disabledTrackColor;
+
+  /// Color of the active track when disabled.
+  final Color? disabledValueColor;
+
+  /// Background color of the thumb.
+  final Color? thumbColor;
+
+  /// Border color of the thumb.
+  final Color? thumbBorderColor;
+
+  /// Border color of the thumb when focused.
+  final Color? thumbFocusedBorderColor;
+
+  /// Size of the thumb.
+  final double? thumbSize;
+
+  /// Creates a [SliderTheme].
+  const SliderTheme({
+    this.trackHeight,
+    this.trackColor,
+    this.valueColor,
+    this.disabledTrackColor,
+    this.disabledValueColor,
+    this.thumbColor,
+    this.thumbBorderColor,
+    this.thumbFocusedBorderColor,
+    this.thumbSize,
+  });
+
+  /// Returns a copy of this theme with the given fields replaced.
+  SliderTheme copyWith({
+    ValueGetter<double?>? trackHeight,
+    ValueGetter<Color?>? trackColor,
+    ValueGetter<Color?>? valueColor,
+    ValueGetter<Color?>? disabledTrackColor,
+    ValueGetter<Color?>? disabledValueColor,
+    ValueGetter<Color?>? thumbColor,
+    ValueGetter<Color?>? thumbBorderColor,
+    ValueGetter<Color?>? thumbFocusedBorderColor,
+    ValueGetter<double?>? thumbSize,
+  }) {
+    return SliderTheme(
+      trackHeight: trackHeight == null ? this.trackHeight : trackHeight(),
+      trackColor: trackColor == null ? this.trackColor : trackColor(),
+      valueColor: valueColor == null ? this.valueColor : valueColor(),
+      disabledTrackColor: disabledTrackColor == null
+          ? this.disabledTrackColor
+          : disabledTrackColor(),
+      disabledValueColor: disabledValueColor == null
+          ? this.disabledValueColor
+          : disabledValueColor(),
+      thumbColor: thumbColor == null ? this.thumbColor : thumbColor(),
+      thumbBorderColor:
+          thumbBorderColor == null ? this.thumbBorderColor : thumbBorderColor(),
+      thumbFocusedBorderColor: thumbFocusedBorderColor == null
+          ? this.thumbFocusedBorderColor
+          : thumbFocusedBorderColor(),
+      thumbSize: thumbSize == null ? this.thumbSize : thumbSize(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is SliderTheme &&
+        other.trackHeight == trackHeight &&
+        other.trackColor == trackColor &&
+        other.valueColor == valueColor &&
+        other.disabledTrackColor == disabledTrackColor &&
+        other.disabledValueColor == disabledValueColor &&
+        other.thumbColor == thumbColor &&
+        other.thumbBorderColor == thumbBorderColor &&
+        other.thumbFocusedBorderColor == thumbFocusedBorderColor &&
+        other.thumbSize == thumbSize;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      trackHeight,
+      trackColor,
+      valueColor,
+      disabledTrackColor,
+      disabledValueColor,
+      thumbColor,
+      thumbBorderColor,
+      thumbFocusedBorderColor,
+      thumbSize);
 }
 
 class IncreaseSliderValue extends Intent {
@@ -626,6 +839,7 @@ class _SliderState extends State<Slider>
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<SliderTheme>(context);
     var value = widget.value;
     var start = value.start;
     var end = value.end;
@@ -664,11 +878,12 @@ class _SliderState extends State<Slider>
             bottom: 0,
             child: Center(
               child: Container(
-                height: 6 * scaling,
+                height: (compTheme?.trackHeight ?? 6) * scaling,
                 decoration: BoxDecoration(
                   color: enabled
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.mutedForeground,
+                      ? (compTheme?.valueColor ?? theme.colorScheme.primary)
+                      : (compTheme?.disabledValueColor ??
+                          theme.colorScheme.mutedForeground),
                   borderRadius: BorderRadius.circular(theme.radiusSm),
                 ),
               ),
@@ -681,6 +896,7 @@ class _SliderState extends State<Slider>
       BuildContext context, BoxConstraints constraints, ThemeData theme) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<SliderTheme>(context);
     return Positioned(
       left: 0,
       right: 0,
@@ -688,11 +904,12 @@ class _SliderState extends State<Slider>
       bottom: 0,
       child: Center(
         child: Container(
-          height: 6 * scaling,
+          height: (compTheme?.trackHeight ?? 6) * scaling,
           decoration: BoxDecoration(
             color: enabled
-                ? theme.colorScheme.primary.scaleAlpha(0.2)
-                : theme.colorScheme.muted,
+                ? (compTheme?.trackColor ??
+                    theme.colorScheme.primary.scaleAlpha(0.2))
+                : (compTheme?.disabledTrackColor ?? theme.colorScheme.muted),
             borderRadius: BorderRadius.circular(theme.radiusSm),
           ),
         ),
@@ -711,6 +928,7 @@ class _SliderState extends State<Slider>
       VoidCallback onDecrease) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<SliderTheme>(context);
     if (widget.divisions != null) {
       value = (value * widget.divisions!).round() / widget.divisions!;
     }
@@ -754,25 +972,28 @@ class _SliderState extends State<Slider>
                 ),
               },
               child: Container(
-                width: 16 * scaling,
-                height: 16 * scaling,
+                width: (compTheme?.thumbSize ?? 16) * scaling,
+                height: (compTheme?.thumbSize ?? 16) * scaling,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.background,
+                  color: compTheme?.thumbColor ?? theme.colorScheme.background,
                   shape: BoxShape.circle,
-                  border: focusing
-                      ? Border.all(
-                          color: enabled
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.mutedForeground,
-                          width: 2 * scaling,
-                          strokeAlign: BorderSide.strokeAlignOutside,
-                        )
-                      : Border.all(
-                          color: enabled
-                              ? theme.colorScheme.primary.scaleAlpha(0.5)
-                              : theme.colorScheme.mutedForeground,
-                          width: 1 * scaling,
-                        ),
+                  border: Border.all(
+                    color: focusing
+                        ? (enabled
+                            ? (compTheme?.thumbFocusedBorderColor ??
+                                theme.colorScheme.primary)
+                            : (compTheme?.disabledValueColor ??
+                                theme.colorScheme.mutedForeground))
+                        : (enabled
+                            ? (compTheme?.thumbBorderColor ??
+                                theme.colorScheme.primary.scaleAlpha(0.5))
+                            : (compTheme?.disabledValueColor ??
+                                theme.colorScheme.mutedForeground)),
+                    width: focusing ? 2 * scaling : 1 * scaling,
+                    strokeAlign: focusing
+                        ? BorderSide.strokeAlignOutside
+                        : BorderSide.strokeAlignInside,
+                  ),
                 ),
               ),
             ),

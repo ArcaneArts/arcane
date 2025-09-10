@@ -1,6 +1,41 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/components/layout/focus_outline.dart';
+
+/// Theme data for customizing [InputOTP] widget appearance.
+///
+/// This class defines the visual properties that can be applied to
+/// [InputOTP] widgets, including spacing between OTP input fields
+/// and the height of the input containers. These properties can be
+/// set at the theme level to provide consistent styling across the application.
+class InputOTPTheme {
+  final double? spacing;
+  final double? height;
+
+  const InputOTPTheme({this.spacing, this.height});
+
+  InputOTPTheme copyWith({
+    ValueGetter<double?>? spacing,
+    ValueGetter<double?>? height,
+  }) {
+    return InputOTPTheme(
+      spacing: spacing == null ? this.spacing : spacing(),
+      height: height == null ? this.height : height(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is InputOTPTheme &&
+        other.spacing == spacing &&
+        other.height == height;
+  }
+
+  @override
+  int get hashCode => Object.hash(spacing, height);
+}
 
 class _InputOTPSpacing extends StatelessWidget {
   const _InputOTPSpacing();
@@ -8,7 +43,8 @@ class _InputOTPSpacing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return SizedBox(width: theme.scaling * 8);
+    final compTheme = ComponentTheme.maybeOf<InputOTPTheme>(context);
+    return SizedBox(width: compTheme?.spacing ?? theme.scaling * 8);
   }
 }
 
@@ -300,37 +336,32 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: AnimatedBuilder(
-                animation: widget.data.focusNode!,
+              child: ListenableBuilder(
+                listenable: widget.data.focusNode!,
                 builder: (context, child) {
-                  if (widget.data.focusNode!.hasFocus) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: theme.colorScheme.ring,
-                            strokeAlign: BorderSide.strokeAlignOutside),
-                        borderRadius: getBorderRadiusByRelativeIndex(
-                          theme,
-                          widget.data.relativeIndex,
-                          widget.data.groupLength,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: theme.colorScheme.border,
-                            strokeAlign: BorderSide.strokeAlignOutside),
-                        borderRadius: getBorderRadiusByRelativeIndex(
-                          theme,
-                          widget.data.relativeIndex,
-                          widget.data.groupLength,
-                        ),
-                      ),
-                    );
-                  }
+                  return FocusOutline(
+                    focused: widget.data.focusNode!.hasFocus,
+                    borderRadius: getBorderRadiusByRelativeIndex(
+                      theme,
+                      widget.data.relativeIndex,
+                      widget.data.groupLength,
+                    ),
+                    child: child!,
+                  );
                 },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.input.scaleAlpha(0.3),
+                    border: Border.all(
+                      color: theme.colorScheme.border,
+                    ),
+                    borderRadius: getBorderRadiusByRelativeIndex(
+                      theme,
+                      widget.data.relativeIndex,
+                      widget.data.groupLength,
+                    ),
+                  ),
+                ),
               ),
             ),
             if (_value != null)
@@ -343,14 +374,18 @@ class _OTPCharacterInputState extends State<_OTPCharacterInput> {
               ),
             Positioned.fill(
               key: _key,
-              child: Center(
-                child: Opacity(
-                  opacity: _value == null ? 1 : 0,
+              child: Opacity(
+                opacity: _value == null ? 1 : 0,
+                child: ComponentTheme(
+                  data: const FocusOutlineTheme(
+                    border: Border.fromBorderSide(BorderSide.none),
+                  ),
                   child: TextField(
-                    border: false,
+                    border: const Border.fromBorderSide(BorderSide.none),
+                    decoration: const BoxDecoration(),
                     expands: false,
                     maxLines: null,
-                    textAlignVertical: TextAlignVertical.top,
+                    textAlignVertical: TextAlignVertical.center,
                     keyboardType: widget.keyboardType,
                     readOnly: widget.readOnly,
                     textAlign: TextAlign.center,
@@ -468,6 +503,52 @@ extension OTPCodepointListExtension on OTPCodepointList {
   }
 }
 
+/// A specialized input widget for One-Time Password (OTP) and verification code entry.
+///
+/// [InputOTP] provides a user-friendly interface for entering OTP codes, verification
+/// numbers, and similar sequential input scenarios. The widget displays a series of
+/// individual input fields that automatically advance focus as the user types,
+/// creating an intuitive experience for multi-digit input.
+///
+/// Key features:
+/// - Sequential character input with automatic focus advancement
+/// - Customizable field layout with separators and spacing
+/// - Support for various character types (digits, letters, symbols)
+/// - Keyboard navigation and clipboard paste support
+/// - Form integration with validation support
+/// - Accessibility features for screen readers
+/// - Theming and visual customization
+///
+/// The widget uses a flexible child system that allows mixing input fields
+/// with separators, spaces, and custom widgets:
+/// - Character input fields for actual OTP digits/letters
+/// - Separators for visual grouping (e.g., dashes, dots)
+/// - Spacing elements for layout control
+/// - Custom widgets for specialized display needs
+///
+/// Common use cases:
+/// - SMS verification codes (e.g., 6-digit codes)
+/// - Two-factor authentication tokens
+/// - Credit card security codes
+/// - License key input
+/// - PIN code entry
+///
+/// Example:
+/// ```dart
+/// InputOTP(
+///   children: [
+///     CharacterInputOTPChild(),
+///     CharacterInputOTPChild(),
+///     CharacterInputOTPChild(),
+///     InputOTPChild.separator,
+///     CharacterInputOTPChild(),
+///     CharacterInputOTPChild(),
+///     CharacterInputOTPChild(),
+///   ],
+///   onChanged: (code) => _handleOTPChange(code),
+///   onSubmitted: (code) => _verifyOTP(code),
+/// );
+/// ```
 class InputOTP extends StatefulWidget {
   final List<InputOTPChild> children;
   final OTPCodepointList? initialValue;
@@ -630,8 +711,9 @@ class _InputOTPState extends State<InputOTP>
             )));
       }
     }
+    final compTheme = ComponentTheme.maybeOf<InputOTPTheme>(context);
     return SizedBox(
-      height: theme.scaling * 36,
+      height: compTheme?.height ?? theme.scaling * 36,
       child: IntrinsicWidth(
         child: Row(
           children: [

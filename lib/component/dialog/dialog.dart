@@ -7,7 +7,7 @@ mixin ArcaneDialogLauncher on Widget {
         context: context,
         barrierDismissible: true,
         useSafeArea: false,
-        barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.9),
+        barrierColor: Colors.black.withOpacity(0.3),
         builder: (context) => this);
   }
 }
@@ -20,7 +20,6 @@ class ArcaneDialog extends StatelessWidget {
   final List<Widget>? actions;
   final double? surfaceBlur;
   final double? surfaceOpacity;
-  final Color? barrierColor;
   final double padding;
 
   const ArcaneDialog({
@@ -33,7 +32,6 @@ class ArcaneDialog extends StatelessWidget {
     this.trailing,
     this.surfaceBlur,
     this.surfaceOpacity,
-    this.barrierColor,
   });
 
   @override
@@ -45,8 +43,7 @@ class ArcaneDialog extends StatelessWidget {
           padding: EdgeInsets.all(padding * Theme.of(context).scaling),
           trailing: trailing,
           surfaceBlur: surfaceBlur,
-          surfaceOpacity: surfaceOpacity,
-          barrierColor: barrierColor)
+          surfaceOpacity: surfaceOpacity)
       .blurIn;
 }
 
@@ -58,7 +55,6 @@ class ArcaneAlertDialog extends StatefulWidget {
   final List<Widget>? actions;
   final double? surfaceBlur;
   final double? surfaceOpacity;
-  final Color? barrierColor;
   final EdgeInsetsGeometry? padding;
 
   const ArcaneAlertDialog({
@@ -70,7 +66,6 @@ class ArcaneAlertDialog extends StatefulWidget {
     this.trailing,
     this.surfaceBlur,
     this.surfaceOpacity,
-    this.barrierColor,
     this.padding,
   });
 
@@ -104,7 +99,8 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
           widget.trailing!.iconXLarge().iconMutedForeground(),
       ],
     ).gap(16 * scaling);
-    return ModalContainer(
+    Widget d = ModalContainer(
+      borderColor: Theme.of(context).colorScheme.border,
       borderRadius: themeData.borderRadiusXxl,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -141,6 +137,7 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
             )
         ],
       ).gap(16 * scaling),
-    );
+    ).blurIn;
+    return d;
   }
 }

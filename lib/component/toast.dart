@@ -1,23 +1,23 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/components/overlay/toast.dart';
 
-class ToastTheme {
+class ArcaneToastTheme {
   final ToastLocation location;
   final Duration entryDuration;
   final Duration showDuration;
 
-  const ToastTheme({
+  const ArcaneToastTheme({
     this.location = ToastLocation.bottomLeft,
     this.entryDuration = const Duration(milliseconds: 500),
     this.showDuration = const Duration(seconds: 3),
   });
 
-  ToastTheme copyWith({
+  ArcaneToastTheme copyWith({
     ToastLocation? location,
     Duration? entryDuration,
     Duration? showDuration,
   }) {
-    return ToastTheme(
+    return ArcaneToastTheme(
       location: location ?? this.location,
       entryDuration: entryDuration ?? this.entryDuration,
       showDuration: showDuration ?? this.showDuration,
@@ -32,7 +32,7 @@ mixin ArcaneToastLauncher on Widget {
   ToastLocation? get location;
 
   void open(BuildContext context) {
-    ToastTheme t = ArcaneTheme.of(context).toast;
+    ArcaneToastTheme t = ArcaneTheme.of(context).toast;
     PylonBuilder builder = Pylon.mirror(context, (context) => this);
     showToast(
         context: context,

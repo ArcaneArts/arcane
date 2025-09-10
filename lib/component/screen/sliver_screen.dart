@@ -188,7 +188,7 @@ class _SliverScreenState extends State<SliverScreen> {
                           top: true, builder: (context) => widget.header!),
                     ),
                   ),
-                  stopping: !(blurring || widget.background != null),
+                  stopping: !(blurring),
                 )),
           ),
         PylonRemove<InjectScreenFooter>(

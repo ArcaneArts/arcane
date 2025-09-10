@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:arcane/util/unicorn.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class GlassSection extends StatelessWidget {
@@ -12,6 +13,7 @@ class GlassSection extends StatelessWidget {
         builder: (context, state) => Glass(
           ignoreContextSignals: true,
           disabled: !state.isPinned,
+          disabledColor: context.isTranslucent ? Colors.transparent : null,
           child: header,
         ),
         sliver: sliver,

@@ -17,6 +17,7 @@ class MagicTile extends StatelessWidget with BoxSignal {
   final double fatThreshold;
   final double leadingThreshold;
   final double trailingThreshold;
+  final String? thumbHash;
 
   const MagicTile({
     super.key,
@@ -24,6 +25,7 @@ class MagicTile extends StatelessWidget with BoxSignal {
     this.subtitle,
     this.leading,
     this.trailing,
+    this.thumbHash,
     this.onPressed,
     this.titleText,
     this.subtitleText,
@@ -51,7 +53,14 @@ class MagicTile extends StatelessWidget with BoxSignal {
               ? Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: fatPad ? 16 : 0, vertical: 4),
-                  child: Card(
+                  child: GlowCard(
+                    thumbHash: thumbHash,
+                    surfaceOpacity: context.isTranslucent
+                        ? ArcaneTheme.of(context).surfaceOpacity
+                        : null,
+                    surfaceBlur: context.isTranslucent
+                        ? ArcaneTheme.of(context).surfaceBlur
+                        : null,
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       leading: Container(

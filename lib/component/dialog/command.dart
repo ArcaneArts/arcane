@@ -61,88 +61,85 @@ class _DialogCommandState extends State<DialogCommand> {
     return PaddingTop(
       padding: min(
           d3, (h * validOptions.length) + (validOptions.isNotEmpty ? 3 : 0)),
-      child: ArcaneDialog(
-        padding: 4,
-        content: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: d3),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  leading: widget.leading,
-                  trailing: widget.trailing,
-                  style: Theme.of(context)
-                      .typography
-                      .h3
-                      .copyWith(fontWeight: FontWeight.w100),
-                  border: false,
-                  keyboardType: widget.keyboardType,
-                  maxLength: widget.maxLength,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  focusNode: focusNode,
-                  controller: controller,
-                  placeholder: widget.placeholder,
-                  // sameSizeHintStyle: true, TODO: fix
-                  onChanged: (value) => setState(() {}),
-                  onSubmitted: (value) {
-                    Navigator.of(context).pop(true);
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: d3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              leading: widget.leading,
+              trailing: widget.trailing,
+              style: Theme.of(context)
+                  .typography
+                  .h3
+                  .copyWith(fontWeight: FontWeight.w100),
+              border: Border(),
+              keyboardType: widget.keyboardType,
+              maxLength: widget.maxLength,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              focusNode: focusNode,
+              controller: controller,
+              placeholder: widget.placeholder,
+              // sameSizeHintStyle: true, TODO: fix
+              onChanged: (value) => setState(() {}),
+              onSubmitted: (value) {
+                Navigator.of(context).pop(true);
 
-                    if (validOptions.isNotEmpty &&
-                        !validOptions.contains(value)) {
-                      widget.onConfirm(validOptions.first);
-                    } else {
-                      widget.onConfirm(value);
-                    }
-                  },
-                  obscureText: widget.obscureText,
-                  initialValue: widget.initialValue,
-                ),
-                if (validOptions.isNotEmpty)
-                  PaddingVertical(
-                      padding: 1,
-                      child: Container(
-                        height: 1,
-                        color: Theme.of(context).colorScheme.muted,
-                      )),
-                if (validOptions.isNotEmpty)
-                  ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: d3,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ...validOptions
-                                .map((e) => SizedBox(
-                                      height: h,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                              child: GhostButton(
-                                            trailing: e == validOptions.first
-                                                ? Icon(
-                                                    Icons
-                                                        .return_down_back_outline_ionic,
-                                                    size: 16,
-                                                  )
-                                                : null,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(e),
-                                            onPressed: () {
-                                              controller.text = e;
-                                              widget.onConfirm(e);
-                                            },
-                                          ))
-                                        ],
-                                      ),
-                                    ))
-                                .toList(),
-                          ],
-                        ),
-                      )),
-              ],
-            )),
+                if (validOptions.isNotEmpty && !validOptions.contains(value)) {
+                  widget.onConfirm(validOptions.first);
+                } else {
+                  widget.onConfirm(value);
+                }
+              },
+              obscureText: widget.obscureText,
+              initialValue: widget.initialValue,
+            ),
+            if (validOptions.isNotEmpty)
+              PaddingVertical(
+                  padding: 1,
+                  child: Container(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.muted,
+                  )),
+            if (validOptions.isNotEmpty)
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: d3,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ...validOptions
+                            .map((e) => SizedBox(
+                                  height: h,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: GhostButton(
+                                        trailing: e == validOptions.first
+                                            ? Icon(
+                                                Icons
+                                                    .return_down_back_outline_ionic,
+                                                size: 16,
+                                              )
+                                            : null,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e),
+                                        onPressed: () {
+                                          controller.text = e;
+                                          widget.onConfirm(e);
+                                        },
+                                      ))
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                      ],
+                    ),
+                  )),
+          ],
+        ),
       ).iw,
     );
   }

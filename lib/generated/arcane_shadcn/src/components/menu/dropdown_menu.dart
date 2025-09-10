@@ -15,6 +15,7 @@ OverlayCompleter<T?> showDropdown<T>({
   Object? regionGroupId,
   Offset? offset,
   AlignmentGeometry? transitionAlignment,
+  AlignmentGeometry? alignment,
   EdgeInsetsGeometry? margin,
   bool follow = true,
   bool consumeOutsideTaps = false,
@@ -32,7 +33,7 @@ OverlayCompleter<T?> showDropdown<T>({
   final overlayManager = OverlayManager.of(context);
   return overlayManager.showMenu<T>(
     context: context,
-    alignment: Alignment.topCenter,
+    alignment: alignment ?? Alignment.topCenter,
     offset: offset ?? (const Offset(0, 4) * scaling),
     follow: follow,
     clipBehavior: clipBehavior,
@@ -69,6 +70,41 @@ class DropdownMenuData {
   DropdownMenuData(this.key);
 }
 
+/// Theme for [DropdownMenu].
+class DropdownMenuTheme {
+  /// Surface opacity for the popup container.
+  final double? surfaceOpacity;
+
+  /// Surface blur for the popup container.
+  final double? surfaceBlur;
+
+  /// Creates a [DropdownMenuTheme].
+  const DropdownMenuTheme({this.surfaceOpacity, this.surfaceBlur});
+
+  /// Returns a copy of this theme with the given fields replaced.
+  DropdownMenuTheme copyWith({
+    ValueGetter<double?>? surfaceOpacity,
+    ValueGetter<double?>? surfaceBlur,
+  }) {
+    return DropdownMenuTheme(
+      surfaceOpacity:
+          surfaceOpacity == null ? this.surfaceOpacity : surfaceOpacity(),
+      surfaceBlur: surfaceBlur == null ? this.surfaceBlur : surfaceBlur(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DropdownMenuTheme &&
+        other.surfaceOpacity == surfaceOpacity &&
+        other.surfaceBlur == surfaceBlur;
+  }
+
+  @override
+  int get hashCode => Object.hash(surfaceOpacity, surfaceBlur);
+}
+
 class DropdownMenu extends StatefulWidget {
   final double? surfaceOpacity;
   final double? surfaceBlur;
@@ -90,6 +126,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isSheetOverlay = SheetOverlayHandler.isSheetOverlay(context);
+    final compTheme = ComponentTheme.maybeOf<DropdownMenuTheme>(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(
         minWidth: 192,
@@ -108,8 +145,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
           return MenuPopup(
             // does not need to check for theme.surfaceOpacity and theme.surfaceBlur
             // MenuPopup already has default values for these properties
-            surfaceOpacity: widget.surfaceOpacity,
-            surfaceBlur: widget.surfaceBlur,
+            surfaceOpacity: widget.surfaceOpacity ?? compTheme?.surfaceOpacity,
+            surfaceBlur: widget.surfaceBlur ?? compTheme?.surfaceBlur,
             children: children,
           );
         },

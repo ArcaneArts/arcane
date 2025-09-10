@@ -5,6 +5,70 @@ import 'package:flutter/rendering.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 import 'package:arcane/generated/arcane_shadcn/src/resizer.dart';
 
+/// Theme for [HorizontalResizableDragger] and [VerticalResizableDragger].
+class ResizableDraggerTheme {
+  /// Background color of the dragger.
+  final Color? color;
+
+  /// Border radius of the dragger.
+  final double? borderRadius;
+
+  /// Width of the dragger.
+  final double? width;
+
+  /// Height of the dragger.
+  final double? height;
+
+  /// Icon size inside the dragger.
+  final double? iconSize;
+
+  /// Icon color inside the dragger.
+  final Color? iconColor;
+
+  const ResizableDraggerTheme({
+    this.color,
+    this.borderRadius,
+    this.width,
+    this.height,
+    this.iconSize,
+    this.iconColor,
+  });
+
+  ResizableDraggerTheme copyWith({
+    ValueGetter<Color?>? color,
+    ValueGetter<double?>? borderRadius,
+    ValueGetter<double?>? width,
+    ValueGetter<double?>? height,
+    ValueGetter<double?>? iconSize,
+    ValueGetter<Color?>? iconColor,
+  }) {
+    return ResizableDraggerTheme(
+      color: color == null ? this.color : color(),
+      borderRadius: borderRadius == null ? this.borderRadius : borderRadius(),
+      width: width == null ? this.width : width(),
+      height: height == null ? this.height : height(),
+      iconSize: iconSize == null ? this.iconSize : iconSize(),
+      iconColor: iconColor == null ? this.iconColor : iconColor(),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ResizableDraggerTheme &&
+        other.color == color &&
+        other.borderRadius == borderRadius &&
+        other.width == width &&
+        other.height == height &&
+        other.iconSize == iconSize &&
+        other.iconColor == iconColor;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(color, borderRadius, width, height, iconSize, iconColor);
+}
+
 /// A Horizontal dragger that can be used as a divider between resizable panes.
 class HorizontalResizableDragger extends StatelessWidget {
   /// Creates a [HorizontalResizableDragger].
@@ -14,18 +78,42 @@ class HorizontalResizableDragger extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<ResizableDraggerTheme>(context);
+    final color = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.color,
+        defaultValue: theme.colorScheme.border);
+    final borderRadius = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radiusSm);
+    final width = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.width,
+        defaultValue: 3 * 4 * scaling);
+    final height = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.height,
+        defaultValue: 4 * 4 * scaling);
+    final iconSize = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.iconSize,
+        defaultValue: 4 * 2.5 * scaling);
+    final iconColor =
+        styleValue(themeValue: compTheme?.iconColor, defaultValue: null);
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.border,
-          borderRadius: BorderRadius.circular(theme.radiusSm),
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
         ),
         alignment: Alignment.center,
-        width: 3 * 4 * scaling,
-        height: 4 * 4 * scaling,
+        width: width,
+        height: height,
         child: Icon(
           RadixIcons.dragHandleDots2,
-          size: 4 * 2.5 * scaling,
+          size: iconSize,
+          color: iconColor,
         ),
       ),
     );
@@ -41,20 +129,44 @@ class VerticalResizableDragger extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scaling = theme.scaling;
+    final compTheme = ComponentTheme.maybeOf<ResizableDraggerTheme>(context);
+    final color = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.color,
+        defaultValue: theme.colorScheme.border);
+    final borderRadius = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.radiusSm);
+    final width = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.width,
+        defaultValue: 4 * 4 * scaling);
+    final height = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.height,
+        defaultValue: 3 * 4 * scaling);
+    final iconSize = styleValue(
+        widgetValue: null,
+        themeValue: compTheme?.iconSize,
+        defaultValue: 4 * 2.5 * scaling);
+    final iconColor =
+        styleValue(themeValue: compTheme?.iconColor, defaultValue: null);
     return Center(
       child: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.border,
-          borderRadius: BorderRadius.circular(theme.radiusSm),
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
         ),
         alignment: Alignment.center,
-        width: 4 * 4 * scaling,
-        height: 3 * 4 * scaling,
+        width: width,
+        height: height,
         child: Transform.rotate(
           angle: pi / 2,
           child: Icon(
             RadixIcons.dragHandleDots2,
-            size: 4 * 2.5 * scaling,
+            size: iconSize,
+            color: iconColor,
           ),
         ),
       ),
@@ -435,7 +547,46 @@ class _ResizablePanelData {
 
 typedef OptionalWidgetBuilder = Widget? Function(BuildContext context);
 
+/// A container widget that creates resizable panels separated by interactive dividers.
+///
+/// This widget provides a flexible layout system where multiple child panes
+/// can be resized by the user through draggable dividers. It supports both
+/// horizontal and vertical orientations, allowing users to adjust the relative
+/// sizes of the contained panels by dragging the separators between them.
+///
+/// Each [ResizablePane] child can have its own sizing constraints, minimum and
+/// maximum sizes, and collapse behavior. The panel automatically manages the
+/// distribution of available space and handles user interactions for resizing.
+///
+/// Example:
+/// ```dart
+/// ResizablePanel.horizontal(
+///   children: [
+///     ResizablePane(
+///       child: Container(color: Colors.red),
+///       minSize: 100,
+///       defaultSize: 200,
+///     ),
+///     ResizablePane(
+///       child: Container(color: Colors.blue),
+///       flex: 1,
+///     ),
+///     ResizablePane(
+///       child: Container(color: Colors.green),
+///       defaultSize: 150,
+///       maxSize: 300,
+///     ),
+///   ],
+/// );
+/// ```
 class ResizablePanel extends StatefulWidget {
+  /// Default builder for dividers between resizable panes.
+  ///
+  /// Creates appropriate divider widgets based on the panel orientation:
+  /// - Horizontal panels get vertical dividers
+  /// - Vertical panels get horizontal dividers
+  ///
+  /// This is the default value for [dividerBuilder] when none is specified.
   static Widget? defaultDividerBuilder(BuildContext context) {
     final data = Data.of<ResizableData>(context);
     if (data.direction == Axis.horizontal) {
@@ -445,6 +596,13 @@ class ResizablePanel extends StatefulWidget {
     }
   }
 
+  /// Default builder for interactive drag handles between resizable panes.
+  ///
+  /// Creates appropriate dragger widgets based on the panel orientation:
+  /// - Horizontal panels get vertical draggers
+  /// - Vertical panels get horizontal draggers
+  ///
+  /// This is the default value for [draggerBuilder] when none is specified.
   static Widget? defaultDraggerBuilder(BuildContext context) {
     final data = Data.of<ResizableData>(context);
     if (data.direction == Axis.horizontal) {
@@ -454,12 +612,63 @@ class ResizablePanel extends StatefulWidget {
     }
   }
 
+  /// The axis along which the panels are arranged and can be resized.
+  ///
+  /// When [Axis.horizontal], panels are arranged left-to-right with vertical
+  /// dividers between them. When [Axis.vertical], panels are arranged
+  /// top-to-bottom with horizontal dividers between them.
   final Axis direction;
+  
+  /// The list of resizable panes that make up this panel.
+  ///
+  /// Each pane can specify its own sizing constraints, default size, and
+  /// collapse behavior. At least two panes are typically needed to create
+  /// a meaningful resizable interface.
   final List<ResizablePane> children;
+  
+  /// Optional builder for creating divider widgets between panes.
+  ///
+  /// Called to create the visual separator between adjacent panes. If null,
+  /// uses [defaultDividerBuilder] to create appropriate dividers based on
+  /// the panel orientation.
   final OptionalWidgetBuilder? dividerBuilder;
+  
+  /// Optional builder for creating interactive drag handles between panes.
+  ///
+  /// Called to create draggable resize handles between adjacent panes. These
+  /// handles allow users to adjust pane sizes. If null, no drag handles are
+  /// displayed but dividers may still be present if [dividerBuilder] is set.
   final OptionalWidgetBuilder? draggerBuilder;
+  
+  /// The thickness of the draggable area between panes.
+  ///
+  /// Controls the size of the interactive region for resizing. A larger value
+  /// makes it easier to grab and drag the resize handles, while a smaller
+  /// value provides a more compact appearance.
   final double? draggerThickness;
 
+  /// Creates a horizontal resizable panel with panes arranged left-to-right.
+  ///
+  /// This is a convenience constructor that sets [direction] to [Axis.horizontal]
+  /// and provides default builders for dividers and draggers appropriate for
+  /// horizontal layouts.
+  ///
+  /// Parameters:
+  /// - [children] (List<ResizablePane>, required): The panes to arrange horizontally
+  /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
+  /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
+  /// - [draggerThickness] (double?, optional): Size of the draggable resize area
+  ///
+  /// Example:
+  /// ```dart
+  /// ResizablePanel.horizontal(
+  ///   children: [
+  ///     ResizablePane(child: LeftSidebar(), defaultSize: 200),
+  ///     ResizablePane(child: MainContent(), flex: 1),
+  ///     ResizablePane(child: RightPanel(), defaultSize: 150),
+  ///   ],
+  /// );
+  /// ```
   const ResizablePanel.horizontal({
     super.key,
     required this.children,
@@ -468,6 +677,28 @@ class ResizablePanel extends StatefulWidget {
     this.draggerThickness,
   }) : direction = Axis.horizontal;
 
+  /// Creates a vertical resizable panel with panes arranged top-to-bottom.
+  ///
+  /// This is a convenience constructor that sets [direction] to [Axis.vertical]
+  /// and provides default builders for dividers and draggers appropriate for
+  /// vertical layouts.
+  ///
+  /// Parameters:
+  /// - [children] (List<ResizablePane>, required): The panes to arrange vertically
+  /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
+  /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
+  /// - [draggerThickness] (double?, optional): Size of the draggable resize area
+  ///
+  /// Example:
+  /// ```dart
+  /// ResizablePanel.vertical(
+  ///   children: [
+  ///     ResizablePane(child: Header(), defaultSize: 60),
+  ///     ResizablePane(child: Content(), flex: 1),
+  ///     ResizablePane(child: Footer(), defaultSize: 40),
+  ///   ],
+  /// );
+  /// ```
   const ResizablePanel.vertical({
     super.key,
     required this.children,
@@ -476,6 +707,28 @@ class ResizablePanel extends StatefulWidget {
     this.draggerThickness,
   }) : direction = Axis.vertical;
 
+  /// Creates a resizable panel with the specified direction and configuration.
+  ///
+  /// This is the general constructor that allows full customization of the
+  /// panel orientation and behavior. Use the convenience constructors
+  /// [ResizablePanel.horizontal] and [ResizablePanel.vertical] for typical use cases.
+  ///
+  /// Parameters:
+  /// - [direction] (Axis, required): The axis along which panes are arranged
+  /// - [children] (List<ResizablePane>, required): The panes to arrange
+  /// - [dividerBuilder] (OptionalWidgetBuilder?, optional): Custom divider builder
+  /// - [draggerBuilder] (OptionalWidgetBuilder?, optional): Custom dragger builder
+  /// - [draggerThickness] (double?, optional): Size of the draggable resize area
+  ///
+  /// Example:
+  /// ```dart
+  /// ResizablePanel(
+  ///   direction: Axis.horizontal,
+  ///   draggerThickness: 8.0,
+  ///   children: [...],
+  ///   draggerBuilder: (context) => CustomDragger(),
+  /// );
+  /// ```
   const ResizablePanel({
     super.key,
     required this.direction,
@@ -663,25 +916,125 @@ class _Resizer extends StatefulWidget {
 
 class _ResizerState extends State<_Resizer> {
   Resizer? _dragSession;
+
   void _onDragStart(DragStartDetails details) {
     _dragSession = Resizer(
       widget.panelState.computeDraggers(),
     );
+
+    // Call onSizeChangeStart callbacks for affected panes
+    _callSizeChangeStartCallbacks();
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     _dragSession!.dragDivider(widget.index + 1, details.primaryDelta!);
     widget.panelState.updateDraggers(_dragSession!.items);
+
+    // Call onSizeChange callbacks for affected panes
+    _callSizeChangeCallbacks();
   }
 
   void _onDragEnd(DragEndDetails details) {
+    // Call onSizeChangeEnd callbacks for affected panes
+    _callSizeChangeEndCallbacks();
     _dragSession = null;
   }
 
   void _onDragCancel() {
     _dragSession!.reset();
     widget.panelState.updateDraggers(_dragSession!.items);
+
+    // Call onSizeChangeCancel callbacks for affected panes
+    _callSizeChangeCancelCallbacks();
     _dragSession = null;
+  }
+
+  void _callSizeChangeStartCallbacks() {
+    if (_dragSession == null) return;
+
+    // Call callbacks for the two panes adjacent to this divider
+    _callStartCallbackForPane(
+        widget.index, _dragSession!.items[widget.index].value);
+    if (widget.index + 1 < _dragSession!.items.length) {
+      _callStartCallbackForPane(
+          widget.index + 1, _dragSession!.items[widget.index + 1].value);
+    }
+  }
+
+  void _callSizeChangeCallbacks() {
+    if (_dragSession == null) return;
+
+    // Call callbacks for the two panes adjacent to this divider
+    _callChangeCallbackForPane(
+        widget.index, _dragSession!.items[widget.index].newValue);
+    if (widget.index + 1 < _dragSession!.items.length) {
+      _callChangeCallbackForPane(
+          widget.index + 1, _dragSession!.items[widget.index + 1].newValue);
+    }
+  }
+
+  void _callSizeChangeEndCallbacks() {
+    if (_dragSession == null) return;
+
+    // Call callbacks for the two panes adjacent to this divider
+    _callEndCallbackForPane(
+        widget.index, _dragSession!.items[widget.index].newValue);
+    if (widget.index + 1 < _dragSession!.items.length) {
+      _callEndCallbackForPane(
+          widget.index + 1, _dragSession!.items[widget.index + 1].newValue);
+    }
+  }
+
+  void _callSizeChangeCancelCallbacks() {
+    if (_dragSession == null) return;
+
+    // Call callbacks for the two panes adjacent to this divider
+    _callCancelCallbackForPane(
+        widget.index, _dragSession!.items[widget.index].newValue);
+    if (widget.index + 1 < _dragSession!.items.length) {
+      _callCancelCallbackForPane(
+          widget.index + 1, _dragSession!.items[widget.index + 1].newValue);
+    }
+  }
+
+  ResizablePaneController? _getControllerAtIndex(int paneIndex) {
+    if (paneIndex < 0 || paneIndex >= widget.panelState.widget.children.length) {
+      return null;
+    }
+
+    // Find controller by matching the widget at the given index
+    final targetWidget = widget.panelState.widget.children[paneIndex];
+    for (final controller in widget.panelState._controllers) {
+      final paneState = controller._paneState;
+      if (paneState?.widget == targetWidget) {
+        return controller;
+      }
+    }
+    return null;
+  }
+
+  void _callStartCallbackForPane(int paneIndex, double size) {
+    final controller = _getControllerAtIndex(paneIndex);
+    final callback = controller?._paneState?.widget.onSizeChangeStart;
+    callback?.call(size);
+  }
+
+  void _callChangeCallbackForPane(int paneIndex, double size) {
+    final controller = _getControllerAtIndex(paneIndex);
+    final callback = controller?._paneState?.widget.onSizeChange;
+    callback?.call(size);
+  }
+
+  void _callEndCallbackForPane(int paneIndex, double size) {
+    final controller = _getControllerAtIndex(paneIndex);
+    final callback = controller?._paneState?.widget.onSizeChangeEnd;
+    callback?.call(size);
+  }
+
+  void _callCancelCallbackForPane(int paneIndex, double size) {
+    final controller = _getControllerAtIndex(paneIndex);
+    final callback = controller?._paneState?.widget.onSizeChangeCancel;
+    callback?.call(size);
   }
 
   @override
