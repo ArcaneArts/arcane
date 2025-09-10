@@ -48,7 +48,6 @@ export 'component/icon_button.dart';
 export 'component/icons.dart';
 export 'component/image.dart';
 export 'component/layout/button_panel.dart';
-export 'component/layout/fancy_card.dart';
 export 'component/layout/fancy_icon.dart';
 export 'component/layout/fancy_progress.dart';
 export 'component/layout/form_header.dart';

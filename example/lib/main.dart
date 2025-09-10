@@ -35,7 +35,7 @@ class ExampleArcaneApp extends StatelessWidget {
               home: HomeScreen(),
               showPerformanceOverlay: false,
               theme: ArcaneTheme(
-                  themeMode: ThemeMode.dark,
+                  themeMode: ThemeMode.light,
                   blurMode: ArcaneBlurMode.backdropFilter)));
 }
 

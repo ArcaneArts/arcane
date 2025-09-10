@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/glow_card.dart';
 
 class MagicTile extends StatelessWidget with BoxSignal {
   final Widget? title;

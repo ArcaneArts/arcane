@@ -30,7 +30,7 @@ class ColorSchemes {
   ColorSchemes._();
   static const ColorScheme lightBlue = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -108,7 +108,7 @@ class ColorSchemes {
 
   static const ColorScheme lightDefaultColor = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF0A0A0A),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF0A0A0A),
@@ -186,7 +186,7 @@ class ColorSchemes {
 
   static const ColorScheme lightGreen = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -264,7 +264,7 @@ class ColorSchemes {
 
   static const ColorScheme lightOrange = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -342,7 +342,7 @@ class ColorSchemes {
 
   static const ColorScheme lightRed = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -420,7 +420,7 @@ class ColorSchemes {
 
   static const ColorScheme lightRose = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -498,7 +498,7 @@ class ColorSchemes {
 
   static const ColorScheme lightViolet = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
@@ -576,7 +576,7 @@ class ColorSchemes {
 
   static const ColorScheme lightYellow = ColorScheme(
     brightness: Brightness.light,
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFebebeb),
     foreground: Color(0xFF09090B),
     card: Color(0xFFFFFFFF),
     cardForeground: Color(0xFF09090B),
