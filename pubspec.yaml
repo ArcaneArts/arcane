@@ -76,6 +76,7 @@ dependencies:
   gpt_markdown: 1.1.2
   liquid_glass_renderer: ^0.1.1-dev.10
   flutter_thumbhash: ^0.1.0+1
+  throttled: ^1.0.1
 dev_dependencies:
   flutter_lints: ^6.0.0
 flutter:

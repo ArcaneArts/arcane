@@ -1,17 +1,16 @@
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/settings/core.dart';
 
-class KUIString extends StatefulWidget {
+class ArcaneStringField extends StatefulWidget {
   final int? minLines;
   final int? maxLines;
 
-  const KUIString({super.key, this.minLines, this.maxLines});
+  const ArcaneStringField({super.key, this.minLines, this.maxLines});
 
   @override
-  State<KUIString> createState() => _KUIStringState();
+  State<ArcaneStringField> createState() => _ArcaneStringFieldState();
 }
 
-class _KUIStringState extends State<KUIString> {
+class _ArcaneStringFieldState extends State<ArcaneStringField> {
   late TextEditingController controller;
   late FocusNode focusNode;
 
@@ -32,10 +31,10 @@ class _KUIStringState extends State<KUIString> {
     field.provider.setValue(field.meta.effectiveKey, controller.text);
   }
 
-  KField<String> get field => context.pylon<KField<String>>();
+  ArcaneField<String> get field => context.pylon<ArcaneField<String>>();
 
   @override
-  Widget build(BuildContext context) => KFieldWrapper<String>(
+  Widget build(BuildContext context) => ArcaneFieldWrapper<String>(
       builder: (context) => TextField(
             controller: controller,
             focusNode: focusNode,

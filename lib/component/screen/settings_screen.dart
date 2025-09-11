@@ -1,11 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/card_section.dart';
-import 'package:arcane/component/settings/bool_node.dart';
-import 'package:arcane/component/settings/core.dart';
-import 'package:arcane/component/settings/date_node.dart';
-import 'package:arcane/component/settings/enum_node.dart';
-import 'package:arcane/component/settings/string_node.dart';
-import 'package:arcane/component/settings/time_node.dart';
 
 Map<String, dynamic> _storage = {};
 
@@ -18,102 +11,99 @@ class TestSettings extends StatelessWidget {
         children: [
           Gap(16),
           CardSection(
+            leadingIcon: Icons.text_aa,
+            subtitleText: "Represents Text Inputs",
             titleText: "Strings",
             thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
             children: [
-              KField<String>(
-                  meta: KMeta(name: "First Name", placeholder: "Daniel"),
-                  provider: KMapProvider(defaultValue: "", storage: _storage),
-                  builder: (context) => KUIString()),
-              KField<String>(
-                  meta: KMeta(name: "Last Name", placeholder: "Mills"),
-                  provider: KMapProvider(defaultValue: "", storage: _storage),
-                  builder: (context) => KUIString()),
-              KField<String>(
-                  meta: KMeta(
-                    name: "Bio",
-                    placeholder: "Some bio or something...",
-                  ),
-                  provider: KMapProvider(defaultValue: "", storage: _storage),
-                  builder: (context) => KUIString(
-                        maxLines: 5,
-                        minLines: 3,
-                      ))
+              ArcaneInput.text(
+                  name: "First Name",
+                  placeholder: "Daniel",
+                  getter: () async => _storage["fname"],
+                  setter: (v) async => _storage["fname"] = v),
+              ArcaneInput.textArea(
+                  name: "Bio",
+                  placeholder: "Some bio or something...",
+                  description: "Some kind of description",
+                  getter: () async => _storage["fname"],
+                  setter: (v) async => _storage["fname"] = v),
             ],
           ),
           Gap(16),
           CardSection(
+            leadingIcon: Icons.dots_nine,
+            subtitleText: "Represents Enum Inputs",
             thumbHash: "1SgOHAR6KJQIeJp3eYhrYKIGFg",
             titleText: "Enums",
             children: [
-              KField<CrossAxisAlignment>(
-                  meta: KMeta(
-                    name: "Cross Axis Alignment",
-                  ),
-                  provider: KMapProvider(
-                      defaultValue: CrossAxisAlignment.start,
-                      storage: _storage),
-                  builder: (context) => KUIEnumNode<CrossAxisAlignment>(
-                        options: CrossAxisAlignment.values,
-                      )),
-              KField<ThemeMode>(
-                  meta: KMeta(
-                    name: "Theme Mode",
-                  ),
-                  provider: KMapProvider(
-                      defaultValue: ThemeMode.system, storage: _storage),
-                  builder: (context) => KUIEnumNode<ThemeMode>(
-                        options: ThemeMode.values,
-                      )),
+              ArcaneInput.select<CrossAxisAlignment>(
+                  name: "Cross Axis Alignment",
+                  defaultValue: CrossAxisAlignment.start,
+                  options: CrossAxisAlignment.values,
+                  getter: () async => _storage["caa"],
+                  setter: (v) async => _storage["caa"] = v),
+              ArcaneInput.selectCards<ThemeMode>(
+                  name: "Theme Mode",
+                  defaultValue: ThemeMode.system,
+                  options: ThemeMode.values,
+                  getter: () async => _storage["st"],
+                  setter: (v) async => _storage["st"] = v),
             ],
           ),
           Gap(16),
           CardSection(
+            leadingIcon: Icons.user_switch,
+            subtitleText: "Represents Boolean Inputs",
             titleText: "Bool",
+            thumbHash: "HBkSHYSIeHiPiHh8eJd4eTN0EEQG",
             children: [
-              KField<bool>(
-                  meta: KMeta(
-                    name: "Its a bool",
-                  ),
-                  provider:
-                      KMapProvider(defaultValue: false, storage: _storage),
-                  builder: (context) => KUIBoolNode()),
-              KField<bool>(
-                  meta: KMeta(
-                      name: "With a description",
-                      description:
-                          "Heres some random description about this nonsense"),
-                  provider:
-                      KMapProvider(defaultValue: false, storage: _storage),
-                  builder: (context) => KUIBoolNode()),
-              KField<bool>(
-                  meta: KMeta(
-                      icon: Icons.address_book,
-                      name: "With an icon",
-                      description: "And some kind of description"),
-                  provider:
-                      KMapProvider(defaultValue: false, storage: _storage),
-                  builder: (context) => KUIBoolNode()),
+              ArcaneInput.checkbox(
+                  name: "Its a bool",
+                  getter: () async => _storage["a"],
+                  setter: (v) async => _storage["a"] = v),
+              ArcaneInput.checkbox(
+                  name: "With a description",
+                  description:
+                      "Heres some random description about this nonsense",
+                  getter: () async => _storage["b"],
+                  setter: (v) async => _storage["b"] = v),
+              ArcaneInput.checkbox(
+                  icon: Icons.address_book,
+                  name: "With an icon",
+                  description: "And some kind of description",
+                  getter: () async => _storage["c"],
+                  setter: (v) async => _storage["c"] = v),
             ],
           ),
           Gap(16),
           CardSection(
+            leadingIcon: Icons.calendar_blank,
             titleText: "Date & Time",
+            thumbHash: "3PcNNYSFeXh/d3eld0iHZoZgVwh2",
+            subtitleText: "Represents Date / Time Inputs",
             children: [
-              KField<DateTime>(
-                  meta: KMeta(
-                    name: "Its Date Time",
-                  ),
-                  provider: KMapProvider(
-                      defaultValue: DateTime.now(), storage: _storage),
-                  builder: (context) => KUIDateNode()),
-              KField<DateTime>(
-                  meta: KMeta(
-                    name: "Now's the Time!",
-                  ),
-                  provider: KMapProvider(
-                      defaultValue: DateTime.now(), storage: _storage),
-                  builder: (context) => KUITimeNode()),
+              ArcaneInput.date(
+                  name: "Its Date Time",
+                  getter: () async => _storage["d"],
+                  setter: (v) async => _storage["d"] = v),
+              ArcaneInput.time(
+                  name: "Now's the Time!",
+                  getter: () async => _storage["d2"],
+                  setter: (v) async => _storage["d2"] = v),
+            ],
+          ),
+          Gap(16),
+          CardSection(
+            leadingIcon: Icons.color_fill_outline_ionic,
+            titleText: "Colors",
+            thumbHash: "1QcSHQRnh493V4dIh4eXh1h4kJUI",
+            subtitleText: "Represents Color Inputs",
+            children: [
+              ArcaneInput.color(
+                  name: "Color Picker",
+                  defaultValue: Colors.red,
+                  getter: () async => _storage["d2"],
+                  setter: (v) async => _storage["d2"] = v)
             ],
           ),
           Gap(16)
