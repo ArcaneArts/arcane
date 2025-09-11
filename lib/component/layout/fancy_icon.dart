@@ -11,7 +11,7 @@ class FancyIcon extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.foreground.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon,
@@ -19,6 +19,6 @@ class FancyIcon extends StatelessWidget {
             color: color ??
                 Theme.of(context)
                     .colorScheme
-                    .accentForeground), // This is the White-ish color as you wanted on dark theme.
+                    .foreground), // This is the White-ish color as you wanted on dark theme.
       );
 }

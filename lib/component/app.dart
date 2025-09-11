@@ -334,6 +334,8 @@ class ArcaneAppState extends State<ArcaneApp> {
   /// The current theme of the application.
   ArcaneTheme get currentTheme => _theme;
 
+  set $rawThemeInject(ArcaneTheme theme) => _theme = theme;
+
   @override
   void didUpdateWidget(ArcaneApp oldWidget) {
     super.didUpdateWidget(oldWidget);

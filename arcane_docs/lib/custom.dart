@@ -19,6 +19,8 @@ List<ShadcnDocsSection> customSections = [
     ShadcnDocsPage("Static Table", "static_table"),
     ShadcnDocsPage("Dialogs", "dialogs"),
     ShadcnDocsPage("Search", "search"),
+    ShadcnDocsPage("Cards", "cards"),
+    ShadcnDocsPage("Input", "arcane_input"),
     ShadcnDocsPage("Image", "image"),
     ShadcnDocsPage("Center Body", "center_body"),
     ShadcnDocsPage("Mutable Text", "mutable_text"),
@@ -182,6 +184,33 @@ List<GoRoute> customRoutes = [
               exampleSearchBox,
               exampleSearchButtonTransactional,
               exampleSearchButtonLive,
+            ],
+          )),
+  GoRoute(
+      path: "cards",
+      name: "cards",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'cards',
+            description: 'Helpful Widgets for cards',
+            displayName: 'Cards',
+            children: [exampleGlowCard, exampleBasicCard, exampleCardSection],
+          )),
+  GoRoute(
+      path: "arcane_input",
+      name: "arcane_input",
+      builder: (_, __) => ArcaneComponentPage(
+            name: 'arcane_input',
+            description: 'Helpful Widgets for forms & input',
+            displayName: 'Input',
+            children: [
+              exampleInputComposition,
+              exampleInputText,
+              exampleInputBool,
+              exampleInputSelectDropdown,
+              exampleInputSelectCards,
+              exampleInputDate,
+              exampleInputTime,
+              exampleInputColor
             ],
           )),
   GoRoute(
@@ -537,6 +566,711 @@ class NoteScreen extends StatelessWidget with ArcaneRoute {
             ],
           )),
 ];
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Map<String, dynamic> _storage = {};
+
+Widget get exampleInputBool => ArcaneUsageExample(
+      padding: 0,
+      title: 'Boolean Input',
+      code: r"""
+ArcaneInput.checkbox(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+    
+// Without icon
+ArcaneInput.checkbox(
+    name: "The field no icon",
+    description: "The field description",
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+
+// With just the name
+ArcaneInput.checkbox(
+    name: "The field alone",
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.checkbox(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.checkbox(
+              name: "The field no icon",
+              description: "The field description",
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.checkbox(
+              name: "The field alone",
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputSelectDropdown => ArcaneUsageExample(
+      padding: 0,
+      title: 'Dropdown',
+      code: r"""
+ArcaneInput.selectDropdown<BlendMode>(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    defaultValue: BlendMode.srcATop,
+    options: BlendMode.values,
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+    
+// Without icon
+ArcaneInput.selectDropdown<BlendMode>(
+    name: "The field name no icon",
+    description: "The field description",
+    defaultValue: BlendMode.srcATop,
+    options: BlendMode.values,
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+    
+// With just the name
+ArcaneInput.selectDropdown<BlendMode>(
+    name: "The field",
+    defaultValue: BlendMode.srcATop,
+    options: BlendMode.values,
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.selectDropdown<BlendMode>(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              defaultValue: BlendMode.srcATop,
+              options: BlendMode.values,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.selectDropdown<BlendMode>(
+              name: "The field name no icon",
+              description: "The field description",
+              defaultValue: BlendMode.srcATop,
+              options: BlendMode.values,
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.selectDropdown<BlendMode>(
+              name: "The field",
+              defaultValue: BlendMode.srcATop,
+              options: BlendMode.values,
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputSelectCards => ArcaneUsageExample(
+      padding: 0,
+      title: 'Select Cards',
+      code: r"""
+ArcaneInput.selectCards<ThemeMode>(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    defaultValue: ThemeMode.system,
+    options: ThemeMode.values,
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+    
+// Without icon
+ArcaneInput.selectCards<ThemeMode>(
+    name: "The field name no icon",
+    description: "The field description",
+    defaultValue: ThemeMode.system,
+    options: ThemeMode.values,
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+    
+// With just the name
+ArcaneInput.selectCards<ThemeMode>(
+    name: "The field",
+    defaultValue: ThemeMode.system,
+    options: ThemeMode.values,
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.selectCards<ThemeMode>(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              defaultValue: ThemeMode.system,
+              options: ThemeMode.values,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.selectCards<ThemeMode>(
+              name: "The field name no icon",
+              description: "The field description",
+              defaultValue: ThemeMode.system,
+              options: ThemeMode.values,
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.selectCards<ThemeMode>(
+              name: "The field",
+              defaultValue: ThemeMode.system,
+              options: ThemeMode.values,
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputDate => ArcaneUsageExample(
+      padding: 0,
+      title: 'Date',
+      code: r"""
+ArcaneInput.date(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+
+// Without icon
+ArcaneInput.date(
+    name: "The field name no icon",
+    description: "The field description",
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+    
+// With just the name
+ArcaneInput.date(
+    name: "The field",
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.date(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.date(
+              name: "The field name no icon",
+              description: "The field description",
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.date(
+              name: "The field",
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputTime => ArcaneUsageExample(
+      padding: 0,
+      title: 'Time',
+      code: r"""
+ArcaneInput.time(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+
+// Without icon
+ArcaneInput.time(
+    name: "The field name no icon",
+    description: "The field description",
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+    
+// With just the name
+ArcaneInput.time(
+    name: "The field",
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.time(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.time(
+              name: "The field name no icon",
+              description: "The field description",
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.time(
+              name: "The field",
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputColor => ArcaneUsageExample(
+      padding: 0,
+      title: 'Color',
+      code: r"""
+ArcaneInput.color(
+    // Optional
+    name: "The field name",
+    description: "The field description",
+    icon: Icons.airplane,
+    
+    // Required
+    getter: () async => _storage["a"],
+    setter: (v) async => _storage["a"] = v),
+
+// Without icon
+ArcaneInput.color(
+    name: "The field name no icon",
+    description: "The field description",
+    getter: () async => _storage["b"],
+    setter: (v) async => _storage["b"] = v),
+    
+// With just the name
+ArcaneInput.color(
+    name: "The field",
+    getter: () async => _storage["c"],
+    setter: (v) async => _storage["c"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.color(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              getter: () async => _storage["a"],
+              setter: (v) async => _storage["a"] = v),
+          ArcaneInput.color(
+              name: "The field name no icon",
+              description: "The field description",
+              getter: () async => _storage["b"],
+              setter: (v) async => _storage["b"] = v),
+          ArcaneInput.color(
+              name: "The field",
+              getter: () async => _storage["c"],
+              setter: (v) async => _storage["c"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputComposition => ArcaneUsageExample(
+      padding: 0,
+      title: 'Composing Inputs',
+      code: r"""
+CardSection(
+  leadingIcon: Icons.text_aa,
+  subtitleText: "Represents Text Inputs",
+  titleText: "Strings",
+  thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
+  children: [
+    ArcaneInput.text(
+        name: "First Name",
+        placeholder: "Daniel",
+        getter: () async => _storage["fname"],
+        setter: (v) async => _storage["fname"] = v),
+        
+    ArcaneInput.textArea(
+        name: "Bio",
+        placeholder: "Some bio or something...",
+        description: "Some kind of description",
+        getter: () async => _storage["fname"],
+        setter: (v) async => _storage["fname"] = v),
+  ],
+),
+
+CardSection(
+  leadingIcon: Icons.dots_nine,
+  subtitleText: "Represents Enum Inputs",
+  thumbHash: "1SgOHAR6KJQIeJp3eYhrYKIGFg",
+  titleText: "Enums",
+  children: [
+    ArcaneInput.select<CrossAxisAlignment>(
+        name: "Cross Axis Alignment",
+        defaultValue: CrossAxisAlignment.start,
+        options: CrossAxisAlignment.values,
+        getter: () async => _storage["caa"],
+        setter: (v) async => _storage["caa"] = v),
+        
+    ArcaneInput.selectCards<ThemeMode>(
+        name: "Theme Mode",
+        defaultValue: ThemeMode.system,
+        options: ThemeMode.values,
+        getter: () async => _storage["st"],
+        setter: (v) async => _storage["st"] = v),
+  ],
+),
+
+CardSection(
+  leadingIcon: Icons.user_switch,
+  subtitleText: "Represents Boolean Inputs",
+  titleText: "Bool",
+  thumbHash: "HBkSHYSIeHiPiHh8eJd4eTN0EEQG",
+  children: [
+    ArcaneInput.checkbox(
+        name: "Its a bool",
+        getter: () async => _storage["a"],
+        setter: (v) async => _storage["a"] = v),
+        
+    ArcaneInput.checkbox(
+        name: "With a description",
+        description:
+        "Heres some random description about this nonsense",
+        getter: () async => _storage["b"],
+        setter: (v) async => _storage["b"] = v),
+        
+    ArcaneInput.checkbox(
+        icon: Icons.address_book,
+        name: "With an icon",
+        description: "And some kind of description",
+        getter: () async => _storage["c"],
+        setter: (v) async => _storage["c"] = v),
+  ],
+),
+
+CardSection(
+  leadingIcon: Icons.calendar_blank,
+  titleText: "Date & Time",
+  thumbHash: "3PcNNYSFeXh/d3eld0iHZoZgVwh2",
+  subtitleText: "Represents Date / Time Inputs",
+  children: [
+    ArcaneInput.date(
+        name: "Its Date Time",
+        getter: () async => _storage["d"],
+        setter: (v) async => _storage["d"] = v),
+        
+    ArcaneInput.time(
+        name: "Now's the Time!",
+        getter: () async => _storage["d2"],
+        setter: (v) async => _storage["d2"] = v),
+  ],
+),
+
+CardSection(
+  leadingIcon: Icons.color_fill_outline_ionic,
+  titleText: "Colors",
+  thumbHash: "1QcSHQRnh493V4dIh4eXh1h4kJUI",
+  subtitleText: "Represents Color Inputs",
+  children: [
+    ArcaneInput.color(
+        name: "Color Picker",
+        defaultValue: Colors.red,
+        getter: () async => _storage["d2"],
+        setter: (v) async => _storage["d2"] = v)
+  ],
+),
+
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CardSection(
+            leadingIcon: Icons.text_aa,
+            subtitleText: "Represents Text Inputs",
+            titleText: "Strings",
+            thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
+            children: [
+              ArcaneInput.text(
+                  name: "First Name",
+                  placeholder: "Daniel",
+                  getter: () async => _storage["fname"],
+                  setter: (v) async => _storage["fname"] = v),
+              ArcaneInput.textArea(
+                  name: "Bio",
+                  placeholder: "Some bio or something...",
+                  description: "Some kind of description",
+                  getter: () async => _storage["fname"],
+                  setter: (v) async => _storage["fname"] = v),
+            ],
+          ),
+          Gap(16),
+          CardSection(
+            leadingIcon: Icons.dots_nine,
+            subtitleText: "Represents Enum Inputs",
+            thumbHash: "1SgOHAR6KJQIeJp3eYhrYKIGFg",
+            titleText: "Enums",
+            children: [
+              ArcaneInput.select<CrossAxisAlignment>(
+                  name: "Cross Axis Alignment",
+                  defaultValue: CrossAxisAlignment.start,
+                  options: CrossAxisAlignment.values,
+                  getter: () async => _storage["caa"],
+                  setter: (v) async => _storage["caa"] = v),
+              ArcaneInput.selectCards<ThemeMode>(
+                  name: "Theme Mode",
+                  defaultValue: ThemeMode.system,
+                  options: ThemeMode.values,
+                  getter: () async => _storage["st"],
+                  setter: (v) async => _storage["st"] = v),
+            ],
+          ),
+          Gap(16),
+          CardSection(
+            leadingIcon: Icons.user_switch,
+            subtitleText: "Represents Boolean Inputs",
+            titleText: "Bool",
+            thumbHash: "HBkSHYSIeHiPiHh8eJd4eTN0EEQG",
+            children: [
+              ArcaneInput.checkbox(
+                  name: "Its a bool",
+                  getter: () async => _storage["a"],
+                  setter: (v) async => _storage["a"] = v),
+              ArcaneInput.checkbox(
+                  name: "With a description",
+                  description:
+                      "Heres some random description about this nonsense",
+                  getter: () async => _storage["b"],
+                  setter: (v) async => _storage["b"] = v),
+              ArcaneInput.checkbox(
+                  icon: Icons.address_book,
+                  name: "With an icon",
+                  description: "And some kind of description",
+                  getter: () async => _storage["c"],
+                  setter: (v) async => _storage["c"] = v),
+            ],
+          ),
+          Gap(16),
+          CardSection(
+            leadingIcon: Icons.calendar_blank,
+            titleText: "Date & Time",
+            thumbHash: "3PcNNYSFeXh/d3eld0iHZoZgVwh2",
+            subtitleText: "Represents Date / Time Inputs",
+            children: [
+              ArcaneInput.date(
+                  name: "Its Date Time",
+                  getter: () async => _storage["d"],
+                  setter: (v) async => _storage["d"] = v),
+              ArcaneInput.time(
+                  name: "Now's the Time!",
+                  getter: () async => _storage["d2"],
+                  setter: (v) async => _storage["d2"] = v),
+            ],
+          ),
+          Gap(16),
+          CardSection(
+            leadingIcon: Icons.color_fill_outline_ionic,
+            titleText: "Colors",
+            thumbHash: "1QcSHQRnh493V4dIh4eXh1h4kJUI",
+            subtitleText: "Represents Color Inputs",
+            children: [
+              ArcaneInput.color(
+                  name: "Color Picker",
+                  defaultValue: Colors.red,
+                  getter: () async => _storage["d2"],
+                  setter: (v) async => _storage["d2"] = v)
+            ],
+          ),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleInputText => ArcaneUsageExample(
+      padding: 0,
+      title: 'Text Input',
+      code: r"""
+ArcaneInput.text(
+  // Required
+  getter: () async => _storage["k"],
+  setter: (v) async => _storage["k"] = v,
+
+  // Optional
+  name: "The field name",
+  description: "The field description",
+  icon: Icons.airplane,
+  placeholder: "The Hint",
+  defaultValue: "")
+
+// Example without an icon
+ArcaneInput.text(
+    name: "But without an icon",
+    description: "The field description",
+    placeholder: "The Hint",
+    defaultValue: "",
+    getter: () async => _storage["kz"],
+    setter: (v) async => _storage["kz"] = v),
+
+// Simple example
+ArcaneInput.text(
+    name: "Just the Name",
+    getter: () async => _storage["kx"],
+    setter: (v) async => _storage["kx"] = v),
+    
+// Text Area 
+ArcaneInput.textArea(
+  name: "Text area",
+  getter: () async => _storage["kx"],
+  setter: (v) async => _storage["kx"] = v),
+""",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ArcaneInput.text(
+              name: "The field name",
+              description: "The field description",
+              icon: Icons.airplane,
+              placeholder: "The Hint",
+              defaultValue: "",
+              getter: () async => _storage["k"],
+              setter: (v) async => _storage["k"] = v),
+          Divider().pad(16),
+          ArcaneInput.text(
+              name: "But without an icon",
+              description: "The field description",
+              placeholder: "The Hint",
+              defaultValue: "",
+              getter: () async => _storage["kz"],
+              setter: (v) async => _storage["kz"] = v),
+          Divider().pad(16),
+          ArcaneInput.text(
+              name: "Just the Name",
+              getter: () async => _storage["kx"],
+              setter: (v) async => _storage["kx"] = v),
+          Divider().pad(16),
+          ArcaneInput.textArea(
+              name: "Text area",
+              getter: () async => _storage["kx"],
+              setter: (v) async => _storage["kx"] = v),
+        ],
+      ).ih.pad(16),
+    );
+
+Widget get exampleGlowCard => ArcaneUsageExample(
+      padding: 0,
+      title: 'Glow Card',
+      code: r"""
+GlowCard(
+  thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
+  child: Text("I glow the thumbhash!\n* Basic Card also supports this\n* Card Section too!")
+)
+""",
+      child: GlowCard(
+          thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
+          child: Text(
+              "I glow the thumbhash!\n* Basic Card also supports this\n* Card Section too!")),
+    );
+
+Widget get exampleBasicCard => ArcaneUsageExample(
+      padding: 0,
+      title: 'Basic Card',
+      code: r"""
+BasicCard(
+  title: Text("Title"),
+  subtitle: Text("The Subtitle"),
+  leading: Icon(Icons.address_book),
+  trailing: IconButtonMenu(
+      icon: Icons.dots_three_vertical,
+      items: [MenuButton(child: Text("Menu or whatever"))]),
+)
+""",
+      child: BasicCard(
+        title: Text("Title"),
+        subtitle: Text("The Subtitle"),
+        leading: Icon(Icons.address_book),
+        trailing: IconButtonMenu(
+            icon: Icons.dots_three_vertical,
+            items: [MenuButton(child: Text("Menu or whatever"))]),
+      ),
+    );
+
+Widget get exampleCardSection => ArcaneUsageExample(
+      padding: 0,
+      title: 'Card Section',
+      code: r"""
+CardSection(
+  titleText: "Title",
+  subtitleText: "The Subtitle",
+  leadingIcon: Icons.address_book,
+  trailing: IconButtonMenu(
+      icon: Icons.dots_three_vertical,
+      items: [MenuButton(child: Text("Menu or whatever"))]),
+  children: [
+    ListTile(
+      titleText: "Some Option",
+      subtitleText: "Some description",
+      leadingIcon: Icons.activity_bold,
+    ),
+    ListTile(
+      titleText: "Some Option 2",
+      subtitleText: "Some description",
+      leadingIcon: Icons.add_circle_outline_ionic,
+    ),
+    ListTile(
+      titleText: "Some Option 3",
+      subtitleText: "Some description",
+      leadingIcon: Icons.airplane_landing_light,
+    )
+  ],
+)
+""",
+      child: CardSection(
+        titleText: "Title",
+        subtitleText: "The Subtitle",
+        leadingIcon: Icons.address_book,
+        trailing: IconButtonMenu(
+            icon: Icons.dots_three_vertical,
+            items: [MenuButton(child: Text("Menu or whatever"))]),
+        children: [
+          ListTile(
+            titleText: "Some Option",
+            subtitleText: "Some description",
+            leadingIcon: Icons.activity_bold,
+          ),
+          ListTile(
+            titleText: "Some Option 2",
+            subtitleText: "Some description",
+            leadingIcon: Icons.add_circle_outline_ionic,
+          ),
+          ListTile(
+            titleText: "Some Option 3",
+            subtitleText: "Some description",
+            leadingIcon: Icons.airplane_landing_light,
+          )
+        ],
+      ).padHorizontal(16),
+    );
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3191,65 +3925,72 @@ class ShadcnWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     sh.ThemeData t = sh.Theme.of(context);
+    ThemeData td = ThemeData(
+        radius: t.radius,
+        surfaceBlur: t.surfaceBlur,
+        surfaceOpacity: t.surfaceOpacity,
+        iconTheme: IconThemeProperties(
+          large: t.iconTheme.large,
+          medium: t.iconTheme.medium,
+          small: t.iconTheme.small,
+          x2Large: t.iconTheme.x2Large,
+          x2Small: t.iconTheme.x2Small,
+          x3Large: t.iconTheme.x3Large,
+          x3Small: t.iconTheme.x3Small,
+          x4Large: t.iconTheme.x4Large,
+          x4Small: t.iconTheme.x4Small,
+          xLarge: t.iconTheme.xLarge,
+          xSmall: t.iconTheme.xSmall,
+        ),
+        platform: t.platform,
+        scaling: t.scaling,
+        typography: Typography(
+            sans: t.typography.sans,
+            mono: t.typography.mono,
+            xSmall: t.typography.xSmall,
+            small: t.typography.small,
+            base: t.typography.base,
+            large: t.typography.large,
+            xLarge: t.typography.xLarge,
+            x2Large: t.typography.x2Large,
+            x3Large: t.typography.x3Large,
+            x4Large: t.typography.x4Large,
+            x5Large: t.typography.x5Large,
+            x6Large: t.typography.x6Large,
+            x7Large: t.typography.x7Large,
+            x8Large: t.typography.x8Large,
+            x9Large: t.typography.x9Large,
+            thin: t.typography.thin,
+            light: t.typography.light,
+            extraLight: t.typography.extraLight,
+            normal: t.typography.normal,
+            medium: t.typography.medium,
+            semiBold: t.typography.semiBold,
+            bold: t.typography.bold,
+            extraBold: t.typography.extraBold,
+            black: t.typography.black,
+            italic: t.typography.italic,
+            h1: t.typography.h1,
+            h2: t.typography.h2,
+            h3: t.typography.h3,
+            h4: t.typography.h4,
+            p: t.typography.p,
+            blockQuote: t.typography.blockQuote,
+            inlineCode: t.typography.inlineCode,
+            lead: t.typography.lead,
+            textLarge: t.typography.textLarge,
+            textSmall: t.typography.textSmall,
+            textMuted: t.typography.textMuted),
+        colorScheme: ColorScheme.fromMap(t.colorScheme.toMap()));
     return Theme(
-      data: ThemeData(
-          radius: t.radius,
-          surfaceBlur: t.surfaceBlur,
-          surfaceOpacity: t.surfaceOpacity,
-          iconTheme: IconThemeProperties(
-            large: t.iconTheme.large,
-            medium: t.iconTheme.medium,
-            small: t.iconTheme.small,
-            x2Large: t.iconTheme.x2Large,
-            x2Small: t.iconTheme.x2Small,
-            x3Large: t.iconTheme.x3Large,
-            x3Small: t.iconTheme.x3Small,
-            x4Large: t.iconTheme.x4Large,
-            x4Small: t.iconTheme.x4Small,
-            xLarge: t.iconTheme.xLarge,
-            xSmall: t.iconTheme.xSmall,
-          ),
-          platform: t.platform,
-          scaling: t.scaling,
-          typography: Typography(
-              sans: t.typography.sans,
-              mono: t.typography.mono,
-              xSmall: t.typography.xSmall,
-              small: t.typography.small,
-              base: t.typography.base,
-              large: t.typography.large,
-              xLarge: t.typography.xLarge,
-              x2Large: t.typography.x2Large,
-              x3Large: t.typography.x3Large,
-              x4Large: t.typography.x4Large,
-              x5Large: t.typography.x5Large,
-              x6Large: t.typography.x6Large,
-              x7Large: t.typography.x7Large,
-              x8Large: t.typography.x8Large,
-              x9Large: t.typography.x9Large,
-              thin: t.typography.thin,
-              light: t.typography.light,
-              extraLight: t.typography.extraLight,
-              normal: t.typography.normal,
-              medium: t.typography.medium,
-              semiBold: t.typography.semiBold,
-              bold: t.typography.bold,
-              extraBold: t.typography.extraBold,
-              black: t.typography.black,
-              italic: t.typography.italic,
-              h1: t.typography.h1,
-              h2: t.typography.h2,
-              h3: t.typography.h3,
-              h4: t.typography.h4,
-              p: t.typography.p,
-              blockQuote: t.typography.blockQuote,
-              inlineCode: t.typography.inlineCode,
-              lead: t.typography.lead,
-              textLarge: t.typography.textLarge,
-              textSmall: t.typography.textSmall,
-              textMuted: t.typography.textMuted),
-          colorScheme: ColorScheme.fromMap(t.colorScheme.toMap())),
-      child: Builder(builder: (context) => child),
+      data: td,
+      child: ArcaneApp(
+        theme: ArcaneTheme(
+            $forceThemeData: td,
+            scheme: ContrastedColorScheme(
+                light: td.colorScheme, dark: td.colorScheme)),
+        home: Builder(builder: (context) => child),
+      ),
     );
   }
 }
@@ -3295,58 +4036,62 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
             dark:
                 ColorScheme.fromMap(sh.Theme.of(context).colorScheme.toMap())),
       ),
-      builder: (context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.title != null) Text(widget.title!).h2(),
-          if (widget.title != null) const Gap(12),
-          TabList(
-            onChanged: (v) {
-              setState(() {
-                index = v;
-              });
-            },
-            index: index,
-            children: [
-              TabItem(
-                child: const Text('Preview').semiBold().textSmall(),
-              ),
-              TabItem(
-                child: const Text('Code').semiBold().textSmall(),
-              ),
-            ],
-          ),
-          const Gap(12),
-          RepaintBoundary(
-            child: Offstage(
-              offstage: index != 0,
-              child: OutlinedContainer(
-                key: _key,
-                child: ClipRect(
-                  child: Container(
-                    padding: EdgeInsets.all(widget.padding),
-                    constraints: const BoxConstraints(minHeight: 350),
-                    child: Center(
-                      child: widget.child,
+      builder: (context) {
+        Arcane.$app ??= ArcaneAppState();
+        Arcane.$app!.$rawThemeInject = context.pylon<ArcaneTheme?>()!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.title != null) Text(widget.title!).h2(),
+            if (widget.title != null) const Gap(12),
+            TabList(
+              onChanged: (v) {
+                setState(() {
+                  index = v;
+                });
+              },
+              index: index,
+              children: [
+                TabItem(
+                  child: const Text('Preview').semiBold().textSmall(),
+                ),
+                TabItem(
+                  child: const Text('Code').semiBold().textSmall(),
+                ),
+              ],
+            ),
+            const Gap(12),
+            RepaintBoundary(
+              child: Offstage(
+                offstage: index != 0,
+                child: OutlinedContainer(
+                  key: _key,
+                  child: ClipRect(
+                    child: Container(
+                      padding: EdgeInsets.all(widget.padding),
+                      constraints: const BoxConstraints(minHeight: 350),
+                      child: Center(
+                        child: widget.child,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          RepaintBoundary(
-            child: Offstage(
-              offstage: index != 1,
-              child: ArcaneCodeSnippetBuilder(
-                code: widget.code,
-                mode: 'dart',
-                summarize: widget.summarize,
+            RepaintBoundary(
+              child: Offstage(
+                offstage: index != 1,
+                child: ArcaneCodeSnippetBuilder(
+                  code: widget.code,
+                  mode: 'dart',
+                  summarize: widget.summarize,
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        );
+      },
     );
   }
 }

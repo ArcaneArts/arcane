@@ -8,6 +8,7 @@ import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
 class ArcaneTheme {
+  final ThemeData? $forceThemeData;
   final double radius;
   final ArcaneShimmerTheme shimmer;
   final ContrastedColorScheme? scheme;
@@ -38,6 +39,7 @@ class ArcaneTheme {
       shadThemeBuilder;
 
   const ArcaneTheme({
+    this.$forceThemeData,
     this.liquidGlass = const ArcaneLiquidGlass(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
@@ -66,6 +68,7 @@ class ArcaneTheme {
   });
 
   ArcaneTheme copyWith({
+    ThemeData? $forceThemeData,
     double? radius,
     double? defaultHeaderHeight,
     ContrastedColorScheme? scheme,
@@ -91,6 +94,7 @@ class ArcaneTheme {
         shadThemeBuilder,
   }) =>
       ArcaneTheme(
+        $forceThemeData: $forceThemeData ?? this.$forceThemeData,
         edge: edge ?? this.edge,
         toast: toast ?? this.toast,
         defaultHeaderHeight: defaultHeaderHeight ?? this.defaultHeaderHeight,
@@ -116,7 +120,8 @@ class ArcaneTheme {
 
   static ArcaneTheme of(BuildContext context) => Arcane.themeOf(context);
 
-  ThemeData get shadThemeData => shadThemeBuilder(this, themeMode.brightness);
+  ThemeData get shadThemeData =>
+      $forceThemeData ?? shadThemeBuilder(this, themeMode.brightness);
 
   m.ThemeData get materialThemeData =>
       materialThemeBuilder(this, themeMode.brightness);
