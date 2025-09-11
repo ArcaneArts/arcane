@@ -1,3 +1,11 @@
+# 6.1.0
+* Added `CardSection`, essentially an opinionated `BasicCard` with a list of children and a fancier icon border, and a divider between the card header and child content.
+* Added `GlowCard`, which supports a shader rendered thumbHash property as the card's background. This was also extended to support `BasicCard` and `CardSection`.
+* Added `ArcaneInput`, `ArcaneField` and associated classes to make it much easier to get input from the user. See https://tome.arcane.art/#/components/arcane_input
+* Improved the appearance of light themes, the background is slightly dimmer to allow for better card & surface contrast. Actual shadcn does not do this, however the cards on default shad just look like outlined boxes with no "meat". Compare & tune for yourself.
+* Additional Utility methods in `TimeOfDay`, & `.padHorizontal`, `.sliverPadHorizontal`
+* Sync Upstream from `shadcn_flutter`
+
 # 6.0.0
 * BREAKING Changed minimum flutter version to 3.35
 * See https://github.com/ArcaneArts/arcane_shadcn/pull/35
