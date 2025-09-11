@@ -18,6 +18,16 @@ extension XDateTimeStartEnds on DateTime {
 }
 
 extension XWidgetArcane on Widget {
+  Widget padHorizontal(double value) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: value),
+        child: this,
+      );
+
+  Widget padSliverHorizontal(double value) => SliverPadding(
+        padding: EdgeInsets.symmetric(horizontal: value),
+        sliver: this,
+      );
+
   Widget padSliverBy({
     double? left,
     double? top,
