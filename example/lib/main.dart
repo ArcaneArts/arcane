@@ -32,10 +32,10 @@ class ExampleArcaneApp extends StatelessWidget {
             ): didShortcut
           },
           child: ArcaneApp(
-              home: HomeScreen(),
+              home: TestSettings(),
               showPerformanceOverlay: false,
               theme: ArcaneTheme(
-                  themeMode: ThemeMode.light,
+                  themeMode: ThemeMode.system,
                   blurMode: ArcaneBlurMode.backdropFilter)));
 }
 

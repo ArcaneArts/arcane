@@ -21,18 +21,4 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
 flutter:
-  shaders:
-    - packages/arcane/resources/shaders/frost.frag
-    - packages/arcane/resources/shaders/pixelate.frag
-    - packages/arcane/resources/shaders/pixelate_blur.frag
-    - packages/arcane/resources/shaders/rgb.frag
-    - packages/arcane/resources/shaders/loader.frag
-    - packages/arcane/resources/shaders/glyph.frag
-    - packages/arcane/resources/shaders/invert.frag
-    - packages/arcane/resources/shaders/warp.frag
-    - packages/arcane/resources/shaders/black_hole.frag
-    - packages/arcane/resources/shaders/lux.frag
-    - packages/arcane/resources/shaders/cascade.frag
-    - packages/arcane/resources/shaders/edge.frag
-    - packages/arcane/resources/shaders/arcane_blur.frag
   uses-material-design: true
