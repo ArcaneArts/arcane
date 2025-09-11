@@ -41,12 +41,14 @@ class CardCarousel extends StatefulWidget {
   /// These widgets are laid out horizontally in a row that can be scrolled.
   /// Typically, these would be card-like widgets, but any widget can be used.
   final List<Widget> children;
-  
+
   /// Controls the intensity of the edge gradient fade effect.
   ///
   /// Higher values create sharper gradients. If null, the value from
   /// [CardCarouselTheme] is used.
   final int? sharpness;
+
+  final Color? featherColor;
 
   /// Creates a [CardCarousel] widget.
   ///
@@ -75,7 +77,8 @@ class CardCarousel extends StatefulWidget {
   ///   ],
   /// )
   /// ```
-  const CardCarousel({super.key, this.children = const [], this.sharpness});
+  const CardCarousel(
+      {super.key, this.children = const [], this.sharpness, this.featherColor});
 
   @override
   State<CardCarousel> createState() => _CardCarouselState();
@@ -118,7 +121,8 @@ class _CardCarouselState extends State<CardCarousel> {
                     curve: Curves.easeOutExpo,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(colors: [
-                      if (_controller.position.pixels > 0) cs.background,
+                      if (_controller.position.pixels > 0)
+                        widget.featherColor ?? cs.background,
                       ...List.generate(
                           (widget.sharpness ??
                                   ArcaneTheme.of(context)
@@ -126,12 +130,13 @@ class _CardCarouselState extends State<CardCarousel> {
                                       .sharpness)
                               .clamp(1, 12)
                               .toInt(),
-                          (_) => cs.background.withOpacity(0)),
+                          (_) => (widget.featherColor ?? cs.background)
+                              .withOpacity(0)),
                       if (_controller.hasClients &&
                           _controller.position.hasContentDimensions &&
                           _controller.position.pixels <
                               _controller.position.maxScrollExtent)
-                        cs.background
+                        widget.featherColor ?? cs.background
                     ])),
                   ))),
       ],

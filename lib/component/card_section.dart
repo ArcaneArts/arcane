@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/glow_card.dart';
 
 class CardSection extends StatelessWidget {
   final Widget? leading;
@@ -39,7 +38,7 @@ class CardSection extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Pylon<OverrideEdgeInsets>(
       value: OverrideEdgeInsets(
-          const EdgeInsets.symmetric(vertical: 8, horizontal: 8)),
+          const EdgeInsets.symmetric(vertical: 8, horizontal: 0)),
       builder: (context) => GlowCard(
         thumbHash: thumbHash,
         child: Column(

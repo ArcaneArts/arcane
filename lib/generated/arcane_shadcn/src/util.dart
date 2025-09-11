@@ -896,6 +896,13 @@ class TimeOfDay {
 
   TimeOfDay.now() : this.fromDateTime(DateTime.now());
 
+  DateTime toDateTime([DateTime? onDay]) {
+    onDay ??= DateTime.now();
+    return onDay.isUtc
+        ? DateTime.utc(onDay.year, onDay.month, onDay.day, hour, minute, second)
+        : DateTime(onDay.year, onDay.month, onDay.day, hour, minute, second);
+  }
+  
   TimeOfDay copyWith({
     ValueGetter<int>? hour,
     ValueGetter<int>? minute,
