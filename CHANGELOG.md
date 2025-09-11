@@ -4,7 +4,13 @@
 * Added `ArcaneInput`, `ArcaneField` and associated classes to make it much easier to get input from the user. See https://tome.arcane.art/#/components/arcane_input
 * Improved the appearance of light themes, the background is slightly dimmer to allow for better card & surface contrast. Actual shadcn does not do this, however the cards on default shad just look like outlined boxes with no "meat". Compare & tune for yourself.
 * Additional Utility methods in `TimeOfDay`, & `.padHorizontal`, `.sliverPadHorizontal`
-* Sync Upstream from `shadcn_flutter`
+* Sync Upstream from `shadcn_flutter` (see https://github.com/ArcaneArts/arcane_shadcn/pull/36)
+  * Fixed Input OTP Form Value not in onSubmit values
+  * ThemeData now has default values
+  * Export FocusOutline
+  * Fix Sortable onDragEnd not triggered when the drag failed
+  * Added missing intrinsic computation on Resizable component
+  * Added "optionalDivider" option to resizable
 
 # 6.0.0
 * BREAKING Changed minimum flutter version to 3.35

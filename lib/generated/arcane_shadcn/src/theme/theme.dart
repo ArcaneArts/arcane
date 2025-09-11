@@ -93,8 +93,19 @@ class ThemeData {
   final double? surfaceBlur;
 
   ThemeData({
-    required this.colorScheme,
-    required this.radius,
+    this.colorScheme = ColorSchemes.lightDefaultColor,
+    this.radius = 0.5,
+    this.scaling = 1,
+    this.typography = const Typography.geist(),
+    this.iconTheme = const IconThemeProperties(),
+    TargetPlatform? platform,
+    this.surfaceOpacity,
+    this.surfaceBlur,
+  }) : _platform = platform;
+
+  ThemeData.dark({
+    this.colorScheme = ColorSchemes.darkDefaultColor,
+    this.radius = 0.5,
     this.scaling = 1,
     this.typography = const Typography.geist(),
     this.iconTheme = const IconThemeProperties(),
