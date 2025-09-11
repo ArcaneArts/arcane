@@ -86,12 +86,18 @@ class CheckboxTile extends StatelessWidget {
   final TileWidgetPosition checkPosition;
   final ValueChanged<bool?>? onChanged;
   final bool tristate;
+  final String? subtitleText;
+  final String? titleText;
+  final IconData? leadingIcon;
 
   const CheckboxTile({
     super.key,
     this.checkPosition = TileWidgetPosition.trailing,
     this.title,
     this.subtitle,
+    this.leadingIcon,
+    this.titleText,
+    this.subtitleText,
     this.leading,
     this.trailing,
     this.tristate = false,
@@ -130,11 +136,14 @@ class CheckboxTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tile(
-        title: title,
-        subtitle: subtitle,
+        title: titleText != null ? Text(titleText!) : title,
+        subtitle: subtitleText != null ? Text(subtitleText!) : subtitle,
         leading: checkPosition == TileWidgetPosition.leading
-            ? buildCheckbox(context, leading: leading)
-            : leading,
+            ? buildCheckbox(context,
+                trailing: leadingIcon != null ? Icon(leadingIcon!) : leading)
+            : leadingIcon != null
+                ? Icon(leadingIcon!)
+                : leading,
         trailing: checkPosition == TileWidgetPosition.trailing
             ? buildCheckbox(context, trailing: trailing)
             : trailing,

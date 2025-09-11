@@ -92,30 +92,6 @@ void main() {
                 ],
               ),
               StepItem(
-                title: const Text('Add the fonts'),
-                content: [
-                  const Text('Add the fonts to your pubspec.yaml file.').p(),
-                  const CodeSnippet(
-                    code: '''
-  shaders:
-    - packages/arcane/resources/shaders/frost.frag
-    - packages/arcane/resources/shaders/pixelate.frag
-    - packages/arcane/resources/shaders/pixelate_blur.frag
-    - packages/arcane/resources/shaders/rgb.frag
-    - packages/arcane/resources/shaders/loader.frag
-    - packages/arcane/resources/shaders/glyph.frag
-    - packages/arcane/resources/shaders/invert.frag
-    - packages/arcane/resources/shaders/warp.frag
-    - packages/arcane/resources/shaders/black_hole.frag
-    - packages/arcane/resources/shaders/lux.frag
-    - packages/arcane/resources/shaders/cascade.frag
-    - packages/arcane/resources/shaders/edge.frag
-    - packages/arcane/resources/shaders/arcane_blur.frag''',
-                    mode: 'yaml',
-                  ).sized(height: 300).p(),
-                ],
-              ),
-              StepItem(
                 title: const Text('Run the app'),
                 content: [
                   const Text('Run the app using the following command:').p(),
@@ -134,11 +110,8 @@ void main() {
                   'pubspec.yaml file:')
               .p(),
           const CodeSnippet(
-            // code: 'shadcn_flutter:\n'
-            //     '  git:\n'
-            //     '    url: "https://github.com/ArcaneArts/arcane.git"',
             code: 'dependencies:\n'
-                '  shadcn_flutter:\n'
+                '  arcane:\n'
                 '    git:\n'
                 '      url: "https://github.com/ArcaneArts/arcane.git"',
             mode: 'yaml',

@@ -20,7 +20,7 @@ class GlowCard extends StatelessWidget {
   const GlowCard({
     super.key,
     required this.child,
-    this.thumbHash = "q00KRIZudohldncwmYlxhy/82w",
+    this.thumbHash,
     this.padding,
     this.intensityMultiplier = 1,
     this.borderRadius,
@@ -89,8 +89,8 @@ class GlowCard extends StatelessWidget {
                       child: MagicThumbHash(
                               useShaders: true, thumbHash: thumbHash!)
                           .withOpacity(((theme.brightness == Brightness.light
-                                      ? 0.2
-                                      : 0.2) *
+                                      ? 0.15
+                                      : 0.15) *
                                   intensityMultiplier)
                               .clamp(0.001, 1)))),
             Padding(

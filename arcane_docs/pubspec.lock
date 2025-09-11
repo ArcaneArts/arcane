@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "6.0.3"
+    version: "6.0.4"
   archive:
     dependency: transitive
     description:
@@ -614,6 +614,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.1"
+  json_object_lite:
+    dependency: transitive
+    description:
+      name: json_object_lite
+      sha256: "700df54266f1c91f471f879f11fc11ff4820a9440b5611d9e56a78f31e4a7b7f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.2"
   leak_tracker:
     dependency: transitive
     description:
