@@ -98,20 +98,6 @@ class ArcaneBlur extends StatelessWidget {
       );
     }
 
-    if (mode == ArcaneBlurMode.liquidGlass) {
-      ArcaneLiquidGlass g = ArcaneTheme.of(context).liquidGlass;
-
-      return LiquidGlass(
-        shape: g.shape ??
-            LiquidRoundedSuperellipse(
-                borderRadius: Theme.of(context).radiusMdRadius),
-        glassContainsChild: g.glassContainsChild,
-        settings: (g.settings ?? LiquidGlassSettings(blur: intensity)),
-        clipBehavior: g.clipBehavior,
-        child: child,
-      );
-    }
-
     return child;
   }
 }

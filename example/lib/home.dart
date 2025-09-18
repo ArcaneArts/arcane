@@ -14,16 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => ArcaneScreen(
-          child: Collection(
-        children: [
-          Card(
-              // plug it in
-              child: ListTile(
-            title: Text("This is a title"),
-            subtitleText: "xdfdsdf asdf asdfas df asdf",
-            leading: Icon(Icons.diamond),
-          )).pad(16).shimmer(loading: false)
-        ],
+  Widget build(BuildContext context) => FillScreen(
+          child: Stack(
+        fit: StackFit.expand,
+        children: [Markdown("# Test ")],
       ));
 }

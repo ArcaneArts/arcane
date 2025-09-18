@@ -20,7 +20,6 @@ class ArcaneTheme {
   final double contrast;
   final double spin;
   final ArcaneBlurMode blurMode;
-  final ArcaneLiquidGlass liquidGlass;
   final double defaultHeaderHeight;
   final ChatTheme chat;
   final ArcaneToastTheme toast;
@@ -40,7 +39,6 @@ class ArcaneTheme {
 
   const ArcaneTheme({
     this.$forceThemeData,
-    this.liquidGlass = const ArcaneLiquidGlass(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
     this.blurMode = ArcaneBlurMode.backdropFilter,
@@ -128,45 +126,6 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
-}
-
-class ArcaneLiquidGlass {
-  /// The shape of this glass.
-  ///
-  /// This is the shape of the glass that will be rendered.
-  final LiquidShape? shape;
-
-  /// Whether this glass should be rendered "inside" of the glass, or on top.
-  ///
-  /// If it is rendered inside, it will be on top of [blur], but the color tint
-  /// of the glass will affect the child, and it will also be refracted.
-  final bool glassContainsChild;
-
-  /// The clip behavior of this glass.
-  ///
-  /// Defaults to [Clip.none], so [child] will not be clipped.
-  final Clip clipBehavior;
-
-  final LiquidGlassSettings? settings;
-
-  const ArcaneLiquidGlass({
-    this.shape,
-    this.glassContainsChild = false,
-    this.clipBehavior = Clip.hardEdge,
-    this.settings = const LiquidGlassSettings(
-      glassColor: Color.fromARGB(0, 0, 0, 0),
-      thickness: 10,
-      saturation: 1,
-      lightness: 1,
-      refractiveIndex: 1.61,
-      chromaticAberration: 0,
-      blend: 20,
-      blur: 8,
-      lightAngle: 0,
-      lightIntensity: 0,
-      ambientStrength: 0,
-    ),
-  });
 }
 
 class ArcaneHaptics {
