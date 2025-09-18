@@ -1,5 +1,4 @@
 import 'package:arcane/arcane.dart';
-import 'package:arcane/component/glow_card.dart';
 
 /// A wrapper widget that combines the functionality of [Card] and [Basic] components
 /// to create styled cards with structured content.
@@ -96,6 +95,8 @@ class BasicCard extends StatelessWidget {
 
   final bool spanned;
 
+  final bool dashedBorder;
+
   /// Creates a [BasicCard] widget.
   ///
   /// A [BasicCard] is a convenience widget that combines [Card] and [Basic] to create
@@ -113,6 +114,7 @@ class BasicCard extends StatelessWidget {
     super.key,
     this.padding,
     this.filled = false,
+    this.dashedBorder = false,
     this.fillColor,
     this.borderRadius,
     this.clipBehavior = Clip.none,
@@ -160,6 +162,7 @@ class BasicCard extends StatelessWidget {
       trailingAlignment: trailingAlignment,
     );
     return GlowCard(
+        dashedBorder: dashedBorder,
         thumbHash: thumbHash,
         onPressed: onPressed,
         padding: padding,

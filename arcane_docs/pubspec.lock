@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "6.1.1"
+    version: "6.2.0"
   archive:
     dependency: transitive
     description:
@@ -255,14 +255,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
   expressions:
     dependency: transitive
     description:
@@ -490,10 +482,10 @@ packages:
     dependency: transitive
     description:
       name: gpt_markdown
-      sha256: "68d5337c8a00fc03a37dbddf84a6fd90401c30e99b6baf497ef9522a81fc34ee"
+      sha256: "8174983f2ed7d8576d25810913e3afe3f8ffdaa3172c0c823b7cfc289b67f380"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.4"
   haptic_feedback:
     dependency: transitive
     description:
@@ -646,14 +638,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  liquid_glass_renderer:
-    dependency: transitive
-    description:
-      name: liquid_glass_renderer
-      sha256: "4a4203d720bc565108bd8c0df7d9b4694bfd5d4444654171d36998093e23584c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.1-dev.10"
   logging:
     dependency: transitive
     description:

@@ -189,6 +189,7 @@ class Card extends StatelessWidget {
   final double? surfaceBlur;
   final Duration? duration;
   final VoidCallback? onPressed;
+  final bool dashedBorder;
 
   const Card({
     super.key,
@@ -205,6 +206,7 @@ class Card extends StatelessWidget {
     this.surfaceBlur,
     this.duration,
     this.onPressed,
+    this.dashedBorder = false,
   });
 
   @override
@@ -269,6 +271,7 @@ class Card extends StatelessWidget {
     );
 
     return OutlinedContainer(
+      dashedBorder: dashedBorder,
       clipBehavior: clipBehavior,
       borderRadius: borderRadius,
       borderWidth: borderWidth,

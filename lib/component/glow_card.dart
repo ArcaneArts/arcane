@@ -16,10 +16,12 @@ class GlowCard extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool? filled;
   final Color? fillColor;
+  final bool dashedBorder;
 
   const GlowCard({
     super.key,
     required this.child,
+    this.dashedBorder = false,
     this.thumbHash,
     this.padding,
     this.intensityMultiplier = 1,
@@ -40,6 +42,7 @@ class GlowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (thumbHash == null) {
       return Card(
+        dashedBorder: dashedBorder,
         padding: padding,
         borderRadius: borderRadius,
         borderColor: borderColor,
@@ -70,6 +73,7 @@ class GlowCard extends StatelessWidget {
     );
 
     return Card(
+        dashedBorder: dashedBorder,
         borderRadius: borderRadius,
         borderColor: borderColor,
         borderWidth: borderWidth,

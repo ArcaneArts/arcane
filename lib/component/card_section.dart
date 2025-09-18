@@ -15,6 +15,7 @@ class CardSection extends StatelessWidget {
   final double leadingThreshold;
   final double trailingThreshold;
   final String? thumbHash;
+  final bool dashedBorder;
 
   const CardSection(
       {super.key,
@@ -31,7 +32,8 @@ class CardSection extends StatelessWidget {
       this.leadingIcon,
       this.titleText,
       this.subtitleText,
-      this.children = const []});
+      this.children = const [],
+      this.dashedBorder = false});
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class CardSection extends StatelessWidget {
       value: OverrideEdgeInsets(
           const EdgeInsets.symmetric(vertical: 8, horizontal: 0)),
       builder: (context) => GlowCard(
+        dashedBorder: dashedBorder,
         thumbHash: thumbHash,
         child: Column(
           mainAxisSize: MainAxisSize.min,

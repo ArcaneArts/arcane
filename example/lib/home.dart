@@ -14,9 +14,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => FillScreen(
-          child: Stack(
-        fit: StackFit.expand,
-        children: [Markdown("# Test ")],
-      ));
+  Widget build(BuildContext context) =>
+      FillScreen(child: Center(child: TextField()));
 }

@@ -1,8 +1,10 @@
 # 6.2.0
 * BREAKING Removed liquid glass
-* (possibly breaking) upgraded gpt_markdown to 1.1.4 to <2.0.0, this may cause breaking changes in the future if gpt_markdown continues to not follow semantic versioning conventions.
 * Removed all docs from the pub package, view this at https://tome.arcane.art or in the github repo docs folder. Doing this cut the package size in half from 2+mb to around 1mb.
 * `TextField` now supports shift+enter by default to make new lines in multiline mode. Also added the `autoClearOnSubmit` (defaults false to remain compatible). You can also replicate this functionality with `FocusNode().withShiftEnter(node, controller, autoClear)`
+* `Card`, `GlowCard` `BasicCard` `CardSection` and `OutlinedContainer` all now support `dashedBorder`
+* `country_flags` expanded to support 4x
+* (possibly breaking) upgraded `gpt_markdown` to 1.1.4 to <2.0.0, this may cause breaking changes in the future if gpt_markdown continues to not follow semantic versioning conventions.
 
 # 6.1.1
 * Added the `Tabbed` widget to improve making tabs in-card or in-content, not screen wide

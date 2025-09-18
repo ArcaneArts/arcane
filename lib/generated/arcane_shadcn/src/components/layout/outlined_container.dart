@@ -124,27 +124,32 @@ class OutlinedContainerTheme {
         boxShadow,
         padding,
         surfaceOpacity,
-        surfaceBlur,);
+        surfaceBlur,
+      );
 }
 
 class DashedBorderSignal {
   final List<double> borderStyle;
+  final BorderType borderType;
 
   const DashedBorderSignal({
     this.borderStyle = const [5, 5],
+    this.borderType = BorderType.RRect,
   });
 }
 
 /// Adds a dashed border mode
 class DashBorderMode extends StatelessWidget {
-  final List<double> borderstyle;
+  final DashedBorderSignal signal;
   final PylonBuilder builder;
   const DashBorderMode(
-      {super.key, required this.borderstyle, required this.builder});
+      {super.key,
+      this.signal = const DashedBorderSignal(),
+      required this.builder});
 
   @override
   Widget build(BuildContext context) => Pylon<DashedBorderSignal?>(
-        value: DashedBorderSignal(borderStyle: borderstyle),
+        value: signal,
         builder: builder,
       );
 }
@@ -176,10 +181,12 @@ class OutlinedContainer extends StatefulWidget {
   final double? width;
   final double? height;
   final Duration? duration;
+  final bool dashedBorder;
 
   const OutlinedContainer({
     super.key,
     required this.child,
+    this.dashedBorder = false,
     this.borderColor,
     this.backgroundColor,
     this.clipBehavior = Clip.antiAlias,
@@ -204,6 +211,11 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
   @override
   Widget build(BuildContext context) {
     DashedBorderSignal? signal = context.pylonOr<DashedBorderSignal>();
+
+    if (widget.dashedBorder && signal == null) {
+      signal = const DashedBorderSignal();
+    }
+
     final ThemeData theme = Theme.of(context);
     final scaling = theme.scaling;
     final compTheme = ComponentTheme.maybeOf<OutlinedContainerTheme>(context);
@@ -262,11 +274,13 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
       height: widget.height,
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-          style: borderStyle,
-        ),
+        border: signal != null
+            ? Border()
+            : Border.all(
+                color: borderColor,
+                width: borderWidth,
+                style: borderStyle,
+              ),
         borderRadius: borderRadius,
         boxShadow: boxShadow,
       ),
@@ -281,26 +295,25 @@ class _OutlinedContainerState extends State<OutlinedContainer> {
       ),
     );
 
-    if (signal != null) {
-      childWidget = DottedBorder(
-          color: widget.borderColor ?? theme.colorScheme.muted,
-          strokeWidth: 4,
-          dashPattern: signal.borderStyle,
-          radius: Radius.circular(8),
-          borderType: BorderType.RRect,
-          stackFit: StackFit.passthrough,
-          padding: EdgeInsets.zero,
-          strokeCap: StrokeCap.round,
-          borderPadding: EdgeInsets.all(0.5),
-          child: childWidget);
-    }
-
     if (widget.surfaceBlur != null && widget.surfaceBlur! > 0) {
       childWidget = SurfaceBlur(
         surfaceBlur: surfaceBlur,
         borderRadius: subtractByBorder(borderRadius, borderWidth),
         child: childWidget,
       );
+    }
+    if (signal != null) {
+      childWidget = DottedBorder(
+          color: borderColor,
+          strokeWidth: borderWidth * 2,
+          dashPattern: signal.borderStyle,
+          radius: borderRadius.topLeft,
+          borderType: signal.borderType,
+          stackFit: StackFit.passthrough,
+          padding: EdgeInsets.zero,
+          strokeCap: StrokeCap.round,
+          borderPadding: EdgeInsets.zero,
+          child: childWidget);
     }
     return childWidget;
   }
