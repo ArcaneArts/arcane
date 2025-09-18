@@ -271,6 +271,7 @@ extension XSliverWidget on Widget {
         TextButtonMenu() ||
         IconButtonMenu() ||
         IconButton() ||
+        Skeletonizer() ||
         AnimatedContainer() =>
           false,
         BarSection() ||

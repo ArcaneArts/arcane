@@ -1,3 +1,9 @@
+# 6.1.2
+* `TextField` now supports shift+enter by default to make new lines in multiline mode. Also added the `autoClearOnSubmit` (defaults false to remain compatible). You can also replicate this functionality with `FocusNode().withShiftEnter(node, controller, autoClear)`
+
+# 6.1.1
+* Added the `Tabbed` widget to improve making tabs in-card or in-content, not screen wide
+
 # 6.1.0
 * Added `CardSection`, essentially an opinionated `BasicCard` with a list of children and a fancier icon border, and a divider between the card header and child content.
 * Added `GlowCard`, which supports a shader rendered thumbHash property as the card's background. This was also extended to support `BasicCard` and `CardSection`.

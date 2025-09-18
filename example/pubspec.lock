@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "6.1.0"
+    version: "6.1.1"
   archive:
     dependency: transitive
     description:
@@ -479,6 +479,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  gui_shape:
+    dependency: "direct main"
+    description:
+      name: gui_shape
+      sha256: "63d49daed465ead0efea05f0f4931dbd8644bbf0cbc8412d3f1efe3ae4b17d25"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   haptic_feedback:
     dependency: transitive
     description:

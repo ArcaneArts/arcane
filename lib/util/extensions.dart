@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 
 extension XDateTimeRangeArcane on DateTimeRange {
@@ -7,6 +8,30 @@ extension XDateTimeRangeArcane on DateTimeRange {
   DateTimeRange get toLocal => DateTimeRange(start.toLocal(), end.toLocal());
 
   DateTimeRange get fullDay => DateTimeRange(start.startOfDay, end.endOfDay);
+}
+
+extension XFocusNode on FocusNode {
+  FocusNode withShiftEnter(
+      {required void Function(String) onSubmit,
+      required TextEditingController controller,
+      bool autoClear = true}) {
+    onKeyEvent = (FocusNode node, KeyEvent key) {
+      if (!HardwareKeyboard.instance.isShiftPressed &&
+          key.logicalKey.keyLabel == 'Enter') {
+        if (key is KeyDownEvent || key is KeyRepeatEvent) {
+          onSubmit(controller.text);
+          if (autoClear) {
+            controller.clear();
+          }
+        }
+        return KeyEventResult.handled;
+      }
+
+      return KeyEventResult.ignored;
+    };
+
+    return this;
+  }
 }
 
 extension XDateTimeStartEnds on DateTime {
@@ -73,12 +98,21 @@ extension XWidgetArcane on Widget {
       );
 
   Widget shimmer({bool loading = true}) => Skeletonizer(
+        enableSwitchAnimation: true,
+        textBoneBorderRadius: TextBoneBorderRadius(
+            Arcane.globalTheme.shadThemeData.borderRadiusLg),
+        switchAnimationConfig:
+            SwitchAnimationConfig(duration: 250.ms, reverseDuration: 250.ms),
         effect: ShimmerEffect(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
             duration: Arcane.globalTheme.shimmer.duration,
             baseColor: Arcane.globalTheme.shimmer.baseColor ??
                 Arcane.globalTheme.shadThemeData.colorScheme.secondary,
             highlightColor: Arcane.globalTheme.shimmer.highlightColor ??
-                Arcane.globalTheme.shadThemeData.colorScheme.primary),
+                Arcane.globalTheme.shadThemeData.colorScheme.secondary.lerp(
+                    Arcane.globalTheme.shadThemeData.colorScheme.primary,
+                    0.15)),
         enabled: loading,
         child: this,
       );

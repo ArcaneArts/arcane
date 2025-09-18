@@ -760,6 +760,7 @@ class TextField extends StatefulWidget with TextInput {
     this.border,
     this.borderRadius,
     this.filled,
+    this.autoClearOnSubmit = false,
     this.statesController,
     this.features = const [],
     this.submitFormatters = const [],
@@ -1037,6 +1038,8 @@ class TextField extends StatefulWidget with TextInput {
 
   @override
   State<TextField> createState() => TextFieldState();
+
+  final bool autoClearOnSubmit;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1519,6 +1522,7 @@ class TextFieldState extends State<TextField>
       (widget.focusNode ?? _focusNode)?.addListener(_handleFocusChanged);
     }
     _effectiveFocusNode.canRequestFocus = widget.enabled;
+    _effectiveFocusNode._withShiftEnter(onSubmit: widget.onSubmitted ?? (_) {}, controller: effectiveController, autoClear: widget.autoClearOnSubmit);
 
     for (var i = 0;
         i < max(oldWidget.features.length, widget.features.length);
@@ -2308,4 +2312,28 @@ class TextFieldSetSelectionIntent extends Intent {
 
 class TextFieldSelectAllAndCopyIntent extends Intent {
   const TextFieldSelectAllAndCopyIntent();
+}
+
+extension _XFocusNode on FocusNode {
+  FocusNode _withShiftEnter(
+      {required void Function(String) onSubmit,
+      required TextEditingController controller,
+      bool autoClear = true}) {
+    onKeyEvent = (FocusNode node, KeyEvent key) {
+      if (!HardwareKeyboard.instance.isShiftPressed &&
+          key.logicalKey.keyLabel == 'Enter') {
+        if (key is KeyDownEvent || key is KeyRepeatEvent) {
+          onSubmit(controller.text);
+          if (autoClear) {
+            controller.clear();
+          }
+        }
+        return KeyEventResult.handled;
+      }
+
+      return KeyEventResult.ignored;
+    };
+
+    return this;
+  }
 }
