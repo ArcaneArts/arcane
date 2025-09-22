@@ -124,67 +124,64 @@ class _DialogConfirmTextState extends State<DialogConfirmText>
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: ArcaneDialog(
-          title: Text(widget.title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (widget.description != null ||
-                  widget.descriptionWidget is! SizedBox)
-                widget.description != null
-                    ? Text(widget.description!)
-                    : widget.descriptionWidget,
-              const Gap(16),
-              AnimatedBuilder(
-                animation:
-                    Listenable.merge([_shakeAnimation, _colorController]),
-                builder: (context, child) => Transform.translate(
-                  offset: Offset(_shakeAnimation.value, 0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: _colorAnimation?.value,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      keyboardType: widget.keyboardType,
-                      maxLines: 1,
-                      focusNode: focusNode,
-                      controller: controller,
-                      placeholder: Text(widget.verificationText),
-                      onSubmitted: _handleSubmit,
-                      style: TextStyle(
-                        color: _isError
-                            ? Theme.of(context).colorScheme.destructive
-                            : null,
-                      ),
+  Widget build(BuildContext context) => ArcaneDialog(
+        title: Text(widget.title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.description != null ||
+                widget.descriptionWidget is! SizedBox)
+              widget.description != null
+                  ? Text(widget.description!)
+                  : widget.descriptionWidget,
+            const Gap(16),
+            AnimatedBuilder(
+              animation: Listenable.merge([_shakeAnimation, _colorController]),
+              builder: (context, child) => Transform.translate(
+                offset: Offset(_shakeAnimation.value, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: _colorAnimation?.value,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    keyboardType: widget.keyboardType,
+                    maxLines: 1,
+                    focusNode: focusNode,
+                    controller: controller,
+                    placeholder: Text(widget.verificationText),
+                    onSubmitted: _handleSubmit,
+                    style: TextStyle(
+                      color: _isError
+                          ? Theme.of(context).colorScheme.destructive
+                          : null,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-          actions: [
-            OutlineButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(widget.cancelText),
             ),
-            widget.destructive
-                ? DestructiveButton(
-                    onPressed: () {
-                      _handleSubmit(controller.text);
-                    },
-                    child: Text(widget.confirmText),
-                  )
-                : PrimaryButton(
-                    onPressed: () {
-                      _handleSubmit(controller.text);
-                    },
-                    child: Text(widget.confirmText),
-                  ),
-            if (widget.actions != null) ...widget.actions!,
           ],
-        ).iw,
-      );
+        ),
+        actions: [
+          OutlineButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(widget.cancelText),
+          ),
+          widget.destructive
+              ? DestructiveButton(
+                  onPressed: () {
+                    _handleSubmit(controller.text);
+                  },
+                  child: Text(widget.confirmText),
+                )
+              : PrimaryButton(
+                  onPressed: () {
+                    _handleSubmit(controller.text);
+                  },
+                  child: Text(widget.confirmText),
+                ),
+          if (widget.actions != null) ...widget.actions!,
+        ],
+      ).iw;
 }

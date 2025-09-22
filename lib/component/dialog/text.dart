@@ -54,51 +54,49 @@ class _DialogTextState extends State<DialogText> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: ArcaneDialog(
-          title: Text(widget.title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (widget.description != null ||
-                  widget.descriptionWidget is! SizedBox)
-                widget.description != null
-                    ? Text(widget.description!)
-                    : widget.descriptionWidget,
-              const Gap(16),
-              TextField(
-                keyboardType: widget.keyboardType,
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                maxLength: widget.maxLength,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                focusNode: focusNode,
-                controller: controller,
-                placeholder: widget.placeholder,
-                onSubmitted: (value) {
-                  Navigator.of(context).pop(true);
-                  widget.onConfirm(value);
-                },
-                obscureText: widget.obscureText,
-                initialValue: widget.initialValue,
-              ),
-            ],
-          ),
-          actions: [
-            OutlineButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(widget.cancelText),
-            ),
-            PrimaryButton(
-              onPressed: () {
+  Widget build(BuildContext context) => ArcaneDialog(
+        title: Text(widget.title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.description != null ||
+                widget.descriptionWidget is! SizedBox)
+              widget.description != null
+                  ? Text(widget.description!)
+                  : widget.descriptionWidget,
+            const Gap(16),
+            TextField(
+              keyboardType: widget.keyboardType,
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              maxLength: widget.maxLength,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              focusNode: focusNode,
+              controller: controller,
+              placeholder: widget.placeholder,
+              onSubmitted: (value) {
                 Navigator.of(context).pop(true);
-                widget.onConfirm(controller.text);
+                widget.onConfirm(value);
               },
-              child: Text(widget.confirmText),
+              obscureText: widget.obscureText,
+              initialValue: widget.initialValue,
             ),
-            if (widget.actions != null) ...widget.actions!,
           ],
-        ).iw,
-      );
+        ),
+        actions: [
+          OutlineButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(widget.cancelText),
+          ),
+          PrimaryButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              widget.onConfirm(controller.text);
+            },
+            child: Text(widget.confirmText),
+          ),
+          if (widget.actions != null) ...widget.actions!,
+        ],
+      ).iw;
 }

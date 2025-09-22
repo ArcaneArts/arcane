@@ -56,5 +56,5 @@ class DialogConfirm extends StatelessWidget with ArcaneDialogLauncher {
                     ),
               if (actions != null) ...actions!,
             ],
-      );
+      ).iw;
 }

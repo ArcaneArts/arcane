@@ -138,6 +138,15 @@ class _ArcaneAlertDialogState extends State<ArcaneAlertDialog> {
         ],
       ).gap(16 * scaling),
     ).blurIn;
-    return d;
+    return Center(
+      child: SingleChildScrollView(
+          child: AnimatedPadding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        duration: 450.milliseconds,
+        curve: Curves.easeOutCirc,
+        child: d,
+      )),
+    );
   }
 }

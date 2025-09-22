@@ -14,6 +14,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      FillScreen(child: Center(child: TextField()));
+  Widget build(BuildContext context) => FillScreen(
+      header: Bar(
+        title: Text("Derp?"),
+      ),
+      child: Center(
+        child: PrimaryButton(
+          child: Text("Dialog"),
+          onPressed: () =>
+              DialogText(title: "D", onConfirm: (x) {}).open(context),
+        ).iw.ih,
+      ));
 }
