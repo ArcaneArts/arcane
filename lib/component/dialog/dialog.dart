@@ -7,7 +7,7 @@ mixin ArcaneDialogLauncher on Widget {
         context: context,
         barrierDismissible: true,
         useSafeArea: false,
-        barrierColor: Colors.black.withOpacity(0.3),
+        barrierColor: ArcaneTheme.of(context).barrierColors.dialog,
         builder: (context) => this);
   }
 }

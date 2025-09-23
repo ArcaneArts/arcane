@@ -88,7 +88,35 @@ class Arcane {
       Data.maybeOf<MenuGroupData>(context)?.closeAll();
 }
 
+class _MenuBackdrop {
+  final bool visible;
+  const _MenuBackdrop(this.visible);
+}
+
 class ArcaneShadEvents implements ShadcnEvents {
+  @override
+  Widget onBuildInterceptPopoverOverlay(BuildContext context, Widget child) =>
+      ArcaneTheme.of(context).barrierColors.menu.alpha == 0
+          ? child
+          : (context.pylonOr<_MenuBackdrop>()?.visible ?? false)
+              ? child
+              : Pylon<_MenuBackdrop>(
+                  value: const _MenuBackdrop(true),
+                  builder: (context) => Stack(
+                    children: [
+                      IgnorePointer(
+                        child: Container(
+                          color: ArcaneTheme.of(context).barrierColors.menu,
+                        ),
+                      ).animate().fadeIn(
+                          begin: 0,
+                          curve: Curves.easeOutCirc,
+                          duration: 500.ms),
+                      child,
+                    ],
+                  ),
+                );
+
   @override
   void onButtonPressed(BuildContext context, AbstractButtonStyle style) {
     Arcane.hapticButton();

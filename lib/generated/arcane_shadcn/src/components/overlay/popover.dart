@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pylon/pylon.dart';
 import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
+import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 
 class PopoverOverlayHandler extends OverlayHandler {
   const PopoverOverlayHandler();
@@ -170,7 +171,9 @@ class PopoverOverlayHandler extends OverlayHandler {
                             return animationCompleter.future;
                           },
                         );
-                        return popoverAnchor;
+                        return $shadEvent?.onBuildInterceptPopoverOverlay(
+                                context, popoverAnchor) ??
+                            popoverAnchor;
                       }),
                 );
               }),
@@ -740,7 +743,7 @@ OverlayCompleter<T?> showPopover<T>({
 /// Example usage:
 /// ```dart
 /// final controller = PopoverController();
-/// 
+///
 /// // Show a popover
 /// final popover = await controller.show<String>(
 ///   context: context,
@@ -757,7 +760,7 @@ OverlayCompleter<T?> showPopover<T>({
 class Popover {
   /// Global key for accessing the overlay handler state.
   final GlobalKey<OverlayHandlerStateMixin> key;
-  
+
   /// The overlay completer that manages this popover's lifecycle.
   final OverlayCompleter entry;
 
@@ -846,16 +849,16 @@ class Popover {
 ///   @override
 ///   _MyWidgetState createState() => _MyWidgetState();
 /// }
-/// 
+///
 /// class _MyWidgetState extends State<MyWidget> {
 ///   final PopoverController _popoverController = PopoverController();
-///   
+///
 ///   @override
 ///   void dispose() {
 ///     _popoverController.dispose();
 ///     super.dispose();
 ///   }
-///   
+///
 ///   void _showMenu() async {
 ///     await _popoverController.show(
 ///       context: context,

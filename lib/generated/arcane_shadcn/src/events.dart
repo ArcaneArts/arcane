@@ -10,4 +10,6 @@ abstract class ShadcnEvents {
   void onButtonPressed(BuildContext context, AbstractButtonStyle style);
   void onDialogOpened(BuildContext context);
   void onToastOpened(BuildContext context);
+  Widget onBuildInterceptPopoverOverlay(BuildContext context, Widget child) =>
+      child;
 }

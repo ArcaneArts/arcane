@@ -349,6 +349,8 @@ class ArcaneAppState extends State<ArcaneApp> {
         value: _theme,
         builder: (context) => usesRouter
             ? ShadcnApp.router(
+                menuHandler: PopoverOverlayHandler(),
+                popoverHandler: PopoverOverlayHandler(),
                 routeInformationProvider: widget.routeInformationProvider,
                 routeInformationParser: widget.routeInformationParser,
                 routerDelegate: widget.routerDelegate,
@@ -380,6 +382,8 @@ class ArcaneAppState extends State<ArcaneApp> {
                 disableBrowserContextMenu: widget.disableBrowserContextMenu,
               )
             : ShadcnApp(
+                menuHandler: PopoverOverlayHandler(),
+                popoverHandler: PopoverOverlayHandler(),
                 navigatorKey: widget.navigatorKey,
                 home: widget.home,
                 routes: {

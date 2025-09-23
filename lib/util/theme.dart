@@ -19,6 +19,7 @@ class ArcaneTheme {
   final double scaling;
   final double contrast;
   final double spin;
+  final ArcaneBarriers barrierColors;
   final ArcaneBlurMode blurMode;
   final double defaultHeaderHeight;
   final ChatTheme chat;
@@ -39,6 +40,7 @@ class ArcaneTheme {
 
   const ArcaneTheme({
     this.$forceThemeData,
+    this.barrierColors = const ArcaneBarriers(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
     this.blurMode = ArcaneBlurMode.backdropFilter,
@@ -126,6 +128,30 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
+}
+
+class ArcaneBarriers {
+  final Color barrierColor;
+  final double barrierOpacity;
+  final Color? dialogBarrierColor;
+  final double? dialogBarrierOpacity;
+  final Color? menuBarrierColor;
+  final double? menuBarrierOpacity;
+
+  const ArcaneBarriers({
+    this.barrierColor = Colors.black,
+    this.barrierOpacity = 0.3,
+    this.dialogBarrierColor,
+    this.dialogBarrierOpacity,
+    this.menuBarrierColor,
+    this.menuBarrierOpacity,
+  });
+
+  Color get dialog => (dialogBarrierColor ?? barrierColor)
+      .withOpacity(dialogBarrierOpacity ?? barrierOpacity);
+
+  Color get menu => (menuBarrierColor ?? barrierColor)
+      .withOpacity(menuBarrierOpacity ?? barrierOpacity);
 }
 
 class ArcaneHaptics {
