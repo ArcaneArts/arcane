@@ -33,21 +33,23 @@ class _HomeScreenState extends State<HomeScreen> {
           CardSection(
             titleText: "Icon Menu",
             children: [
-              IconButtonMenu(icon: Icons.activity, items: [
-                MenuButton(
-                  child: Text("Button 1"),
-                  subMenu: [
-                    MenuButton(child: Text("Button 2")),
-                    MenuButton(child: Text("Button 2")),
-                    MenuButton(child: Text("Button 2")),
-                    MenuButton(child: Text("Button 2")),
-                    MenuDivider(),
-                    MenuButton(child: Text("Button 2")),
-                    MenuButton(child: Text("Button 2")),
-                    MenuButton(child: Text("Button 2"))
-                  ],
-                ),
-              ])
+              ColorSchemeOverride(
+                  mutator: (c) => c.copyWith(accent: () => Colors.red),
+                  child: IconButtonMenu(icon: Icons.activity, items: [
+                    MenuButton(
+                      child: Text("Button 1"),
+                      subMenu: [
+                        MenuButton(child: Text("Button 2")),
+                        MenuButton(child: Text("Button 2")),
+                        MenuButton(child: Text("Button 2")),
+                        MenuButton(child: Text("Button 2")),
+                        MenuDivider(),
+                        MenuButton(child: Text("Button 2")),
+                        MenuButton(child: Text("Button 2")),
+                        MenuButton(child: Text("Button 2"))
+                      ],
+                    ),
+                  ]))
             ],
           ),
           Gap(16),

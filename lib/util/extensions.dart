@@ -2,6 +2,10 @@ import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 
+extension XIconData on IconData {
+  Widget get icon => Icon(this);
+}
+
 extension XDateTimeRangeArcane on DateTimeRange {
   DateTimeRange get toUtc => DateTimeRange(start.toUtc(), end.toUtc());
 

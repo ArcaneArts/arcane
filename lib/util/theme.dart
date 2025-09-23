@@ -281,6 +281,20 @@ extension XThemeModeToBrightness on ThemeMode {
       };
 }
 
+class ColorSchemeOverride extends StatelessWidget {
+  final ColorScheme Function(ColorScheme scheme) mutator;
+  final Widget child;
+
+  const ColorSchemeOverride(
+      {super.key, required this.mutator, required this.child});
+
+  @override
+  Widget build(BuildContext context) => Theme(
+      data: Theme.of(context)
+          .copyWith(colorScheme: () => mutator(Theme.of(context).colorScheme)),
+      child: child);
+}
+
 class ArcaneThemeOverride extends StatelessWidget {
   final ArcaneTheme Function(ArcaneTheme theme) mutator;
   final PylonBuilder builder;
