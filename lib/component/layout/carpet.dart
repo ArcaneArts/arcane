@@ -291,22 +291,22 @@ class CarpetStyle {
   }
 }
 
-class MagicCarpet<T> extends StatefulWidget with SliverSignal {
+class Carpet<T> extends StatefulWidget with SliverSignal {
   final QuiltTileBuilder<T> tileBuilder;
   final QuiltTileFaucet<T> tileFaucet;
   final CarpetStyle style;
 
-  const MagicCarpet(
+  const Carpet(
       {super.key,
       required this.tileBuilder,
       required this.tileFaucet,
       this.style = const CarpetStyle()});
 
   @override
-  State<MagicCarpet<T>> createState() => _MagicCarpetState<T>();
+  State<Carpet<T>> createState() => _CarpetState<T>();
 }
 
-class _MagicCarpetState<T> extends State<MagicCarpet<T>>
+class _CarpetState<T> extends State<Carpet<T>>
     with SingleTickerProviderStateMixin {
   late TransplantingQuiltFaucet<T> _faucet;
   late Ticker _ticker;

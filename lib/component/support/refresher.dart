@@ -1,13 +1,13 @@
 import 'package:arcane/arcane.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
-class MagicRefresher extends StatefulWidget {
+class ListRefresher extends StatefulWidget {
   final Widget child;
   final IndicatorController? controller;
   final Future<void> Function()? onLoadTop;
   final Future<void> Function()? onLoadBottom;
 
-  const MagicRefresher({
+  const ListRefresher({
     super.key,
     required this.child,
     this.controller,
@@ -16,10 +16,10 @@ class MagicRefresher extends StatefulWidget {
   });
 
   @override
-  State<MagicRefresher> createState() => _MagicRefresherState();
+  State<ListRefresher> createState() => _ListRefresherState();
 }
 
-class _MagicRefresherState extends State<MagicRefresher> {
+class _ListRefresherState extends State<ListRefresher> {
   late IndicatorController _ctrl;
 
   @override

@@ -43,123 +43,17 @@ class FabSocket extends StatelessWidget {
       );
 }
 
-/// A floating action button that displays a dropdown menu when pressed.
-///
-/// [FabMenu] combines a [Fab] with a dropdown menu that appears when the button
-/// is pressed. This is useful for providing a set of related actions without
-/// cluttering the UI with multiple buttons.
-///
-/// See also:
-///  * [doc/component/fab.md] for more detailed documentation
-///  * [Fab], which provides the basic floating action button functionality
-///  * [FabSocket], which can be used to position this component
-class FabMenu extends StatelessWidget {
-  /// The content of the button.
-  ///
-  /// This is typically an icon or text describing the menu's purpose.
-  final Widget child;
-
-  /// Optional widget to display before the main content.
-  final Widget? leading;
-
-  /// List of menu items to display when the button is pressed.
-  final List<MenuItem> items;
-
-  /// Creates a [FabMenu] widget.
-  ///
-  /// The [child] parameter is required and specifies the content of the button.
-  /// The [items] parameter specifies the menu items to display when pressed.
-  ///
-  /// Example:
-  /// ```dart
-  /// FabMenu(
-  ///   child: Text("Options"),
-  ///   leading: Icon(Icons.more_vert),
-  ///   items: [
-  ///     MenuItem(
-  ///       label: "New Document",
-  ///       onPressed: () => createNewDocument(),
-  ///       icon: Icon(Icons.description),
-  ///     ),
-  ///     MenuItem(
-  ///       label: "New Folder",
-  ///       onPressed: () => createNewFolder(),
-  ///       icon: Icon(Icons.folder),
-  ///     ),
-  ///   ],
-  /// )
-  /// ```
-  const FabMenu(
-      {super.key, required this.child, this.leading, this.items = const []});
-
-  @override
-  Widget build(BuildContext context) => Fab(
-        leading: leading,
-        onPressed: () => showDropdown(
-            context: context,
-            builder: (context) => DropdownMenu(
-                  children: items,
-                )),
-        child: child,
-      );
-}
-
-class MagicFabMenu extends StatelessWidget {
-  /// The content of the button.
-  ///
-  /// This is typically an icon or text describing the menu's purpose.
-  final Widget child;
-
-  /// Optional widget to display before the main content.
-  final Widget? leading;
-
-  /// List of menu items to display when the button is pressed.
-  final List<MenuItem> items;
-
-  /// Creates a [MagicFabMenu] widget.
-  ///
-  /// The [child] parameter is required and specifies the content of the button.
-  /// The [items] parameter specifies the menu items to display when pressed.
-  ///
-  /// Example:
-  /// ```dart
-  /// MagicFabMenu(
-  ///   child: Text("Options"),
-  ///   leading: Icon(Icons.more_vert),
-  ///   items: [
-  ///     MenuItem(
-  ///       label: "New Document",
-  ///       onPressed: () => createNewDocument(),
-  ///       icon: Icon(Icons.description),
-  ///     ),
-  ///     MenuItem(
-  ///       label: "New Folder",
-  ///       onPressed: () => createNewFolder(),
-  ///       icon: Icon(Icons.folder),
-  ///     ),
-  ///   ],
-  /// )
-  /// ```
-  const MagicFabMenu(
-      {super.key, required this.child, this.leading, this.items = const []});
-
-  @override
-  Widget build(BuildContext context) => MagicFab(
-        leading: leading,
-        onPressed: () => showDropdown(
-            context: context,
-            builder: (context) => DropdownMenu(
-                  children: items,
-                )),
-        child: child,
-      );
-}
-
 /// A basic floating action button with built-in styling.
 ///
 /// [Fab] provides a pre-styled floating action button with a modern appearance,
 /// including blur effects. It automatically styles text and icon children to ensure
 /// they are appropriately sized.
+///
+/// If a [leading] widget is provided, on small screens (width < [threshold], default 350),
+/// the leading icon is shown as the button content, and the main [child] is displayed
+/// in a tooltip when hovering or long-pressing the button.
+///
+/// If [menu] is non-empty, pressing the button shows a dropdown menu, overriding [onPressed].
 ///
 /// See also:
 ///  * [doc/component/fab.md] for more detailed documentation
@@ -179,6 +73,22 @@ class Fab extends StatelessWidget {
   /// Function to call when the button is pressed.
   final VoidCallback? onPressed;
 
+  /// The screen width threshold (in logical pixels) below which the leading
+  /// icon is hidden and displayed in a tooltip instead.
+  ///
+  /// When the screen width is less than this threshold and a [leading] icon
+  /// is provided, the button will show only the leading icon, with the main
+  /// [child] content available via tooltip.
+  ///
+  /// Defaults to 350.
+  final double threshold;
+
+  /// Optional list of menu items to display in a dropdown when the button is pressed.
+  ///
+  /// If this list is non-empty, pressing the button will show a dropdown menu with these items,
+  /// overriding the [onPressed] callback. If empty, the [onPressed] callback is used as normal.
+  final List<MenuItem> menu;
+
   /// Creates a [Fab] widget.
   ///
   /// The [child] parameter is required and specifies the content of the button.
@@ -191,12 +101,32 @@ class Fab extends StatelessWidget {
   ///   onPressed: () => print("FAB pressed"),
   /// )
   /// ```
-  const Fab({super.key, required this.child, this.leading, this.onPressed});
+  const Fab({
+    super.key,
+    required this.child,
+    this.leading,
+    this.onPressed,
+    this.threshold = 350,
+    this.menu = const [],
+  });
 
   @override
-  Widget build(BuildContext context) => PaddingAll(
-      padding: 8,
-      child: Glass(
+  Widget build(BuildContext context) {
+    VoidCallback? effectiveOnPressed;
+    if (menu.isNotEmpty) {
+      effectiveOnPressed = () => showDropdown(
+            context: context,
+            builder: (context) => DropdownMenu(children: menu),
+          );
+    } else {
+      effectiveOnPressed = onPressed;
+    }
+
+    double width = MediaQuery.of(context).size.width;
+    if (leading == null || width >= threshold) {
+      return PaddingAll(
+        padding: 8,
+        child: Glass(
           ignoreContextSignals: true,
           child: Card(
             surfaceOpacity: 0,
@@ -205,14 +135,28 @@ class Fab extends StatelessWidget {
             child: GhostButton(
               density: ButtonDensity.iconComfortable,
               leading: leading,
-              onPressed: onPressed,
+              onPressed: effectiveOnPressed,
               child: child is Text
                   ? (child as Text).large()
                   : child is Icon
                       ? (child as Icon).large()
                       : child,
             ),
-          ))).blurIn;
+          ),
+        ),
+      ).blurIn;
+    } else {
+      return Tooltip(
+        child: Fab(
+          onPressed: effectiveOnPressed,
+          threshold: threshold,
+          menu: menu,
+          child: leading!,
+        ),
+        tooltip: (context) => child,
+      );
+    }
+  }
 }
 
 /// A floating action button that displays a group of related buttons when pressed.

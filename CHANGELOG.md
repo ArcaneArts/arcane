@@ -1,3 +1,10 @@
+# 6.3.0
+* BREAKING: Removed `VFS`, `VFSView` and `IOVFS`.
+* BREAKING: Removed `MagicFab`. Use `Fab` instead as it has the features of `MagicFab` now.
+* BREAKING: Removed `FabMenu` Use `Fab` with `menu` instead as it has the features of `FabMenu` now.
+* BREAKING: Renamed `MagicCarpet` to `Carpet`
+* BREAKING: Renamed `MagicRefresher` to `Refresher`
+
 # 6.2.0
 * BREAKING Removed liquid glass
 * Removed all docs from the pub package, view this at https://tome.arcane.art or in the github repo docs folder. Doing this cut the package size in half from 2+mb to around 1mb.
