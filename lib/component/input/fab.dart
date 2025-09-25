@@ -33,6 +33,10 @@ class FabSocket extends StatelessWidget {
   /// ```
   const FabSocket({super.key, required this.child});
 
+  /// Positions the [child] FAB in the bottom-right corner of the parent widget
+  /// using [Align] for alignment and [PaddingAll] for 8-pixel padding on all sides,
+  /// providing a standard socket for components like [Fab], [FabMenu], or [FabGroup]
+  /// without additional layout complexity.
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.bottomRight,
@@ -70,7 +74,13 @@ class Fab extends StatelessWidget {
   /// Optional widget to display before the main content.
   final Widget? leading;
 
-  /// Function to call when the button is pressed.
+  /// Callback invoked when the button is pressed.
+  ///
+  /// This function is executed when the user taps the button. If the [menu]
+  /// parameter is provided and contains items, the [onPressed] callback is
+  /// overridden, and a [DropdownMenu] is displayed instead using [showDropdown].
+  /// For standard button behavior without a menu, provide a simple action like
+  /// navigating to a new screen or triggering a dialog.
   final VoidCallback? onPressed;
 
   /// The screen width threshold (in logical pixels) below which the leading
@@ -110,6 +120,16 @@ class Fab extends StatelessWidget {
     this.menu = const [],
   });
 
+  /// Builds the [Fab] widget, applying responsive layout logic based on screen width
+  /// and menu configuration while integrating with [Glass] for blur effects, [Card]
+  /// for surface styling, [GhostButton] for interactive behavior, and [Tooltip] for
+  /// content display on small screens.
+  ///
+  /// Determines the effective press handler: if [menu] is non-empty, shows a [DropdownMenu]
+  /// via [showDropdown]; otherwise, invokes [onPressed]. On screens narrower than [threshold]
+  /// with a [leading] icon, displays only the leading icon and uses [Tooltip] to reveal the
+  /// main [child] on hover or long press. Automatically styles [child] if it's a [Text] or [Icon]
+  /// using extension methods like [large()]. Applies [blurIn] animation for visual enhancement.
   @override
   Widget build(BuildContext context) {
     VoidCallback? effectiveOnPressed;
@@ -217,6 +237,16 @@ class FabGroup extends StatelessWidget {
       required this.children,
       this.horizontal = false});
 
+  /// Builds the [FabGroup] widget by creating a [Fab] that, when pressed, displays
+  /// a [Popover] containing the buttons returned by [children], arranged horizontally
+  /// or vertically based on [horizontal].
+  ///
+  /// Uses a [_PopRef] instance wrapped in a [Pylon] to track the [OverlayCompleter]
+  /// for the popover, enabling programmatic dismissal via [dismissFabGroup]. The
+  /// popover is positioned with an offset (70 pixels right for vertical, 70 pixels
+  /// down for horizontal) and consumes outside taps for automatic closure. Upon
+  /// closure, calls [dismissFabGroup] to clean up any remaining pylons. Integrates
+  /// with [showPopover] for overlay management and [Row]/[Column] for button layout.
   @override
   Widget build(BuildContext context) {
     return Fab(

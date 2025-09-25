@@ -1,14 +1,18 @@
 import 'package:arcane/arcane.dart';
 
-/// A customizable button with an icon as its primary content.
+/// A customizable [IconButton] widget that serves as a core input component for icon-based user interactions in the Arcane Flutter project.
 ///
-/// [IconButton] provides a variety of styles, shapes, and behaviors to match
-/// your application's design needs. It offers multiple variants like primary,
-/// secondary, outline, ghost, link, text, and destructive styles, along with
-/// customizable sizing and interaction handling.
+/// This widget provides a flexible button with an icon as its primary content, supporting various styles (primary, secondary, outline, ghost, link, text, destructive), shapes (rectangle, rounded, circle), sizes (small, normal, large), and densities for padding adjustments. It handles standard tap gestures as well as advanced interactions like long press, secondary/tertiary taps, hover, and focus states.
 ///
-/// See also:
-///  * [doc/component/icon_button.md] for more detailed documentation
+/// Key features include:
+/// - Multiple variance styles for different emphasis levels in UI hierarchies.
+/// - Customizable leading and trailing widgets for compound icons, badges, or tooltips.
+/// - Support for disabled states, transition animations, and focus management.
+/// - Advanced gesture callbacks enabling complex interactions beyond simple taps.
+///
+/// The [IconButton] integrates seamlessly with other input components such as [Fab] and [FabGroup] for floating actions, [CycleButton] for toggleable icon states, and [GestureDetector] for custom gesture extensions. Specialized variants like [DeleteIconButton] build upon it for destructive actions. It leverages [ArcaneTheme] for consistent styling and color schemes, and can be embedded within [FieldWrapper] or managed by [ArcaneFieldProvider] in form contexts. Commonly used to trigger [Dialog]s, [Popover]s, or [Tooltip]s for contextual actions.
+///
+/// For detailed usage examples, API references, and integration patterns, consult the component documentation.
 class IconButton extends StatelessWidget {
   /// The icon to display in the button.
   final Widget icon;
@@ -475,6 +479,12 @@ class IconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Constructs the [IconButton] by delegating to the underlying [Button] widget.
+    ///
+    /// This method assembles the button's configuration using the provided [variance], [size], [density], and [shape] to define its visual style.
+    /// It passes all gesture handlers (tap, long press, etc.) and state callbacks (hover, focus) to enable interactive behavior.
+    /// The [icon] is set as the child, with optional [leading] and [trailing] widgets for extended layouts.
+    /// Returns a fully configured [Button] that respects [ArcaneTheme] and handles null safety for optional parameters via defaults.
     return Button(
       onPressed: onPressed,
       enabled: enabled,
