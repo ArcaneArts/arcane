@@ -1,10 +1,19 @@
 import 'package:arcane/arcane.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
+/// Defines the possible states of the [ArcaneSidebar] in Arcane UI,
+/// enabling responsive navigation layouts that integrate with [BottomNavigationBar]
+/// for seamless app-wide navigation flows.
+///
+/// - [expanded]: The sidebar is fully visible, displaying labels and content for detailed navigation.
+/// - [collapsed]: The sidebar is minimized to icons only, optimizing screen space in compact views.
 enum ArcaneSidebarState {
   expanded,
   collapsed,
 }
+
+List<Widget> _defWList(BuildContext context) => [];
+Widget _defSliver(BuildContext context) => SliverToBoxAdapter();
 
 extension XArcaneSidebarStatePylon on BuildContext {
   bool get isSidebarExpanded =>
@@ -14,15 +23,32 @@ extension XArcaneSidebarStatePylon on BuildContext {
       ArcaneSidebarState.expanded;
 }
 
-List<Widget> _defWList(BuildContext context) => [];
-Widget _defSliver(BuildContext context) => SliverToBoxAdapter();
-
+/// A utility class for reserving arbitrary vertical space in [ArcaneSidebar] headers,
+/// ensuring consistent layout and preventing shifts when conditional content like
+/// [ArcaneSidebarHeader] is rendered or hidden, promoting smooth animations
+/// and performance in [CustomScrollView] integrations.
 class ArbitraryHeaderSpace {
   final double height;
 
   const ArbitraryHeaderSpace(this.height);
 }
 
+/// A collapsible sidebar navigation component for Arcane UI applications,
+/// providing a space-efficient side menu that integrates seamlessly with [BottomNavigationBar]
+/// for comprehensive app navigation. Supports theming via [ArcaneTheme], content sections
+/// using [Section], and smooth animations for expansion/collapse. Designed for performance
+/// with minimal rebuilds using Pylon state management and [AnimatedSize].
+///
+/// Key features:
+/// - Dual mode: Standard widget or sliver for use in [CustomScrollView] within [NavigationScreen].
+/// - Customizable width, animation curves, and durations for fluid user interactions.
+/// - Optional header and footer builders for dynamic content, e.g., [ArcaneSidebarHeader] and [ArcaneSidebarFooter].
+/// - Divider support for visual separation from main content areas like [Glass] panels.
+/// - Integrates with [ArcaneApp] for full-screen navigation and [IconButton] for actions.
+///
+/// Usage: Employ in [ArcaneApp] side panels or [NavigationScreen] for hierarchical navigation,
+/// pairing with [ArcaneSidebarButton] for selectable items to maintain theme consistency
+/// and avoid layout jumps.
 class ArcaneSidebar extends StatefulWidget {
   final List<Widget> Function(BuildContext context) children;
   final PylonBuilder sliver;
@@ -35,6 +61,25 @@ class ArcaneSidebar extends StatefulWidget {
   final Duration expansionAnimationDuration;
   final bool sidebarDivider;
 
+  /// Creates a standard non-sliver [ArcaneSidebar] widget for direct use in layouts.
+  ///
+  /// The {children} parameter is a builder function returning a [List]<[Widget]> of sidebar content,
+  /// typically [ArcaneSidebarButton] instances or [Section] dividers for organized navigation items,
+  /// initialized responsively based on [ArcaneTheme] and current [BuildContext].
+  ///
+  /// {header} is an optional [PylonBuilder] for custom top content, such as [ArcaneSidebarHeader],
+  /// allowing integration with user profiles or search via [IconButton].
+  ///
+  /// {footer} is an optional [PylonBuilder] for bottom content, like [ArcaneSidebarFooter] with toggles.
+  ///
+  /// {width} sets the expanded width (default: 250), while {collapsedWidth} sets the minimized width (default: 52),
+  /// both respecting [ArcaneTheme] spacing for consistent sizing.
+  ///
+  /// {expansionAnimationCurve} (default: [Curves.easeOutCirc]) and {expansionAnimationDuration}
+  /// (default: 333ms) control the smooth transition, ensuring performant animations without jank.
+  ///
+  /// {sidebarDivider} (default: true) adds a subtle vertical line using [Theme.of(context).colorScheme.muted]
+  /// for separation from adjacent [Glass] or main content.
   const ArcaneSidebar({
     super.key,
     this.header,
@@ -65,6 +110,11 @@ class ArcaneSidebar extends StatefulWidget {
   State<ArcaneSidebar> createState() => _ArcaneSidebarState();
 }
 
+/// Internal state class for [ArcaneSidebar], managing dynamic sizing of header and footer
+/// to prevent layout shifts during state changes, and orchestrating the build process
+/// with Pylon for reactive updates. Ensures efficient rendering by measuring sizes
+/// post-frame and limiting setState invocations, integrating [AnimatedSize] and
+/// [CustomScrollView] for smooth, theme-aware navigation in [ArcaneApp].
 class _ArcaneSidebarState extends State<ArcaneSidebar> {
   GlobalKey footerKey = GlobalKey();
   GlobalKey headerKey = GlobalKey();
@@ -81,6 +131,10 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
     });
   }
 
+  /// Dynamically updates the footer height by measuring the [GlobalKey]'s render box,
+  /// returning true if the size changed to trigger targeted rebuilds only when necessary,
+  /// optimizing performance in dynamic [ArcaneSidebar] layouts with variable footer content
+  /// like [ArcaneSidebarFooter].
   bool updateFooterSize() {
     try {
       double v = footerKey.currentContext?.size?.height ?? 0;
@@ -92,6 +146,10 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
     return false;
   }
 
+  /// Dynamically updates the header height by measuring the [GlobalKey]'s render box,
+  /// returning true if the size changed to trigger targeted rebuilds only when necessary,
+  /// supporting responsive [ArcaneSidebarHeader] rendering without unnecessary full rebuilds
+  /// in [CustomScrollView] contexts.
   bool updateHeaderSize() {
     try {
       double v = headerKey.currentContext?.size?.height ?? 0;
@@ -103,12 +161,23 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
     return false;
   }
 
+  /// Constructs the core content sliver or list for [ArcaneSidebar], delegating to
+  /// the appropriate builder based on sliver mode, ensuring compatibility with
+  /// [SliverStickyHeader] and [CustomScrollView] for performant scrolling
+  /// integrated with [NavigationScreen].
   Widget buildSliverContent(BuildContext context) => widget._isSliver
       ? widget.sliver(context)
       : SListView(
           children: widget.children(context),
         );
 
+  /// Renders the complete [ArcaneSidebar] with animation and state management,
+  /// using [Pylon] to listen for [ArcaneSidebarState] changes and [AnimatedSize]
+  /// for width transitions. Positions header/footer via [SliverStickyHeader] and
+  /// absolute layout to avoid scroll interference, includes optional divider for
+  /// theming separation, and supports custom [SidebarScrollController] for external
+  /// scroll control. Integrates [Glass] effects implicitly through [ArcaneTheme]
+  /// for modern, performant navigation in [ArcaneApp] with [BottomNavigationBar].
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -179,6 +248,18 @@ class _ArcaneSidebarState extends State<ArcaneSidebar> {
   }
 }
 
+/// A responsive header component for [ArcaneSidebar], adapting content visibility
+/// based on expansion state via Pylon. Built on [Bar] for structured title, actions,
+/// and back navigation, with optional [Glass] blur for elevated appearance.
+///
+/// Key features:
+/// - Collapses to minimal view in narrow states, using {collapsedBuilder} for custom icons.
+/// - Supports leading/trailing widgets like [IconButton] for actions or menus.
+/// - Integrates [ArcaneTheme] for colors, spacing, and typography in titles/subtitles.
+/// - Back button modes ([BarBackButtonMode]) for navigation history in [NavigationScreen].
+///
+/// Usage: Provide as {header} to [ArcaneSidebar] for top-level branding or search integration,
+/// ensuring no layout shifts with [ArbitraryHeaderSpace] if conditional.
 class ArcaneSidebarHeader extends StatelessWidget {
   final List<Widget> trailing;
   final List<Widget> leading;
@@ -269,6 +350,17 @@ class ArcaneSidebarHeader extends StatelessWidget {
   }
 }
 
+/// A bottom footer component for [ArcaneSidebar], providing a fixed-position panel
+/// with divider separation and trailing actions like expansion toggle.
+/// Uses [SurfaceCard] for subtle elevation and integrates [ArcaneTheme] colors.
+///
+/// {content} is the main left-aligned widget, visible only when expanded, e.g., user info or quick links.
+///
+/// {trailing} is the right-aligned widget (default: [ArcaneSidebarExpansionToggle]), for controls
+/// like [IconButton] or menus, ensuring accessibility in navigation flows with [BottomNavigationBar].
+///
+/// Usage: Pass as {footer} to [ArcaneSidebar] for persistent bottom navigation or settings,
+/// maintaining performance by avoiding scroll inclusion.
 class ArcaneSidebarFooter extends StatelessWidget {
   final Widget content;
   final Widget trailing;
@@ -303,6 +395,11 @@ class ArcaneSidebarFooter extends StatelessWidget {
       ));
 }
 
+/// Default trailing toggle for [ArcaneSidebarFooter], rendering chevron icons
+/// that respond to [ArcaneSidebarState] via Pylon for expansion/collapse.
+/// Handles drawer dismissal with [Arcane.closeDrawer] when active, integrating
+/// seamlessly with [ArcaneApp]'s navigation drawer system and [IconButton] styling
+/// from [ArcaneTheme] for consistent touch targets.
 class ArcaneSidebarExpansionToggle extends StatelessWidget {
   const ArcaneSidebarExpansionToggle({super.key});
 
@@ -321,12 +418,32 @@ class ArcaneSidebarExpansionToggle extends StatelessWidget {
       );
 }
 
+/// A wrapper for providing custom [ScrollController] to [ArcaneSidebar],
+/// enabling external management of scroll position and behavior in
+/// [CustomScrollView] setups, such as syncing with [NavigationScreen] or
+/// [BottomNavigationBar] transitions for smooth user experience.
 class SidebarScrollController {
   final ScrollController? controller;
 
   SidebarScrollController({this.controller});
 }
 
+/// An interactive button widget for navigation items in [ArcaneSidebar],
+/// adapting from icon-only in collapsed state to full label display when expanded.
+/// Uses [GhostButton] for subtle pressed states and highlights selection with
+/// muted background from [ArcaneTheme]. Supports animations via [AnimatedContainer]
+/// and [AnimatedPadding] for fluid transitions without performance overhead.
+///
+/// {icon} is the primary visual element, sourced from Arcane [icons] for consistency.
+///
+/// {label} provides the main text, hidden when collapsed, using normal typography.
+///
+/// {subLabel} adds secondary info like counts, in muted small text.
+///
+/// {onTap} is the selection callback, typically navigating via [ArcaneApp] routes.
+///
+/// {selected} (default: false) applies visual feedback for active items, integrating
+/// with [Section] highlighting in larger navigation hierarchies.
 class ArcaneSidebarButton extends StatelessWidget {
   final Widget icon;
   final String? label;

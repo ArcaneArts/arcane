@@ -6,15 +6,20 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 
 /// Controls the behavior of the back button in a [Bar] widget.
 ///
-/// See more details in the [documentation](../../../doc/components/bar.md#barbackbuttonmode).
+/// This enum defines modes for displaying the back button in Arcane's bar components,
+/// integrating with navigation in [AbstractScreen], [FillScreen], [NavigationScreen],
+/// and [SliverScreen]. Key features include conditional visibility based on navigation
+/// state and pinning, ensuring seamless back navigation without heavy animations for
+/// performance. Usage: Set in [Bar]'s constructor to manage pop behavior in headers
+/// or footers, returning the appropriate [IconButton] or none based on context.
 enum BarBackButtonMode {
-  /// Never show the back button
+  /// Never show the back button, useful for root screens or custom navigation in [ArcaneApp].
   never,
 
-  /// Always show the back button if navigation can pop
+  /// Always show the back button if navigation can pop, ideal for standard [AbstractScreen] flows.
   always,
 
-  /// Show the back button only when the bar is pinned
+  /// Show the back button only when the bar is pinned, optimizing for [SliverScreen] or scrollable UIs.
   whenPinned
 }
 

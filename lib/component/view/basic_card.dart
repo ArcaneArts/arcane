@@ -1,17 +1,40 @@
 import 'package:arcane/arcane.dart';
 
-/// A wrapper widget that combines the functionality of [Card] and [Basic] components
-/// to create styled cards with structured content.
+/// A basic card widget in the Arcane UI library that extends the functionality of
+/// [Card] with integrated [ArcaneTheme] styling, customizable padding, elevation,
+/// and structured content layout. It combines [GlowCard] for visual effects like
+/// shadows and borders with [Basic] for organizing title, subtitle, leading,
+/// trailing, and content sections, providing a lightweight, performant container
+/// for simple content display.
 ///
-/// [BasicCard] provides a convenient way to create cards with title, subtitle,
-/// leading, trailing, and content sections. It offers flexible layout options,
-/// customizable styling, and touch interactivity.
+/// Key features include:
+/// - Theming integration via [ArcaneTheme] for consistent colors, radii, and shadows.
+/// - Flexible content alignment and spacing for title, subtitle, and body.
+/// - Optional interactivity with [onPressed] for tap handling.
+/// - Support for blurred or opaque surfaces, dashed borders, and thumbnail hashes
+///   for optimized image loading.
+/// - Const decoration and inline composition for minimal rebuilds and efficient
+///   rendering.
 ///
-/// See also:
-///  * [doc/component/basic_card.md] for more detailed documentation
-///  * [Card] - The base card component used by BasicCard for styling
-///  * [Basic] - Used internally to structure the content of the card
-///  * [Tile] - A similar component for list items
+/// Usage: Ideal for displaying concise information in lists such as [DataTable]
+/// rows, [Tile] companions, or within [CardSection] groupings. For example, use
+/// in a [Section] to present user profiles or summary cards:
+///
+/// ```dart
+/// BasicCard(
+///   title: Text('User Profile'),
+///   subtitle: Text('Active Member'),
+///   leading: CircleAvatar(child: Icon(Icons.person)),
+///   content: Text('Detailed description here.'),
+///   trailing: Icon(Icons.arrow_forward),
+///   onPressed: () => navigateToProfile(),
+/// )
+/// ```
+///
+/// Integrates seamlessly with [Container] for additional wrapping, [Padding] for
+/// margins, [BorderRadius] for custom shapes, and [BoxShadow] for depth. For
+/// advanced cards with glow effects, prefer [GlowCard] directly; BasicCard
+/// emphasizes simplicity and performance for basic content cards in Arcane apps.
 class BasicCard extends StatelessWidget {
   /// Padding around the entire card
   final EdgeInsetsGeometry? padding;
@@ -97,10 +120,38 @@ class BasicCard extends StatelessWidget {
 
   final bool dashedBorder;
 
-  /// Creates a [BasicCard] widget.
+  /// Creates a [BasicCard] widget with customizable styling and content structure.
   ///
-  /// A [BasicCard] is a convenience widget that combines [Card] and [Basic] to create
-  /// styled cards with structured content.
+  /// This constructor initializes a basic card that wraps content in [GlowCard] for
+  /// visual styling (e.g., elevation via [boxShadow], borders with [borderColor]
+  /// and [borderWidth], rounded corners using [borderRadius]) and [Basic] for layout
+  /// (e.g., positioning [leading], [title], [subtitle], [content], and [trailing]
+  /// with alignments like [leadingAlignment] and spacing via [contentSpacing]).
+  ///
+  /// Parameters control appearance and behavior:
+  /// - [padding]: Outer padding around the card, defaults to none.
+  /// - [filled]: If true, applies a solid [fillColor] background; otherwise, transparent.
+  /// - [thumbHash]: BlurHash string for placeholder during image loading in content.
+  /// - [fillColor]: Custom background color, overrides [ArcaneTheme] if provided.
+  /// - [borderRadius]: Corner radius geometry, integrates with [ArcaneTheme]'s default.
+  /// - [clipBehavior]: Clipping mode for overflowing content, defaults to [Clip.none].
+  /// - [borderColor] and [borderWidth]: Define border styling, useful for outlined cards.
+  /// - [boxShadow]: Custom shadows for elevation, enhancing depth in [DataTable] or [Tile].
+  /// - [surfaceOpacity] and [surfaceBlur]: Apply semi-transparent or blurred overlays.
+  /// - [duration]: Animation timing for press effects or transitions.
+  /// - [onPressed]: Optional tap handler, enabling interactive cards like in [CardSection].
+  /// - [leading], [title], [subtitle], [content], [trailing]: Core content widgets.
+  /// - [leadingAlignment], [trailingAlignment], [titleAlignment], [subtitleAlignment],
+  ///   [contentAlignment]: Position elements within their slots.
+  /// - [contentSpacing] and [titleSpacing]: Vertical gaps between sections.
+  /// - [mainAxisAlignment]: Aligns content along the main axis, defaults to center.
+  /// - [basicPadding]: Inner padding for the [Basic] layout structure.
+  /// - [spanned]: If true, wraps content in a [Row] for full-width spanning.
+  /// - [dashedBorder]: Renders a dashed border style when true.
+  ///
+  /// Returns a performant [StatelessWidget] suitable for lists or sections, leveraging
+  /// const constructors and inline composition to minimize rebuilds. For usage in
+  /// [ArcaneApp], ensure [ArcaneTheme] is applied at the root for consistent styling.
   ///
   /// Example:
   /// ```dart
@@ -143,6 +194,23 @@ class BasicCard extends StatelessWidget {
     this.basicPadding,
   });
 
+  /// Builds the [BasicCard] widget by composing [Basic] for content layout and
+  /// [GlowCard] for visual styling, applying [ArcaneTheme] integrations for colors
+  /// and shadows while handling spanned layouts via [Row] for full-width display.
+  ///
+  /// This method creates an efficient widget tree: first constructs a [Basic] instance
+  /// to arrange [title], [subtitle], [leading], [trailing], and [content] with specified
+  /// alignments and spacings. It then wraps this in [GlowCard], passing parameters like
+  /// [fillColor], [borderRadius], [boxShadow], and [surfaceBlur] to render themed card
+  /// decoration with optional dashed borders ([dashedBorder]) and press effects
+  /// ([onPressed], [duration]). If [spanned] is true, embeds the [Basic] in a [Row]
+  /// to span available width, ideal for table-like integrations such as [DataTable].
+  ///
+  /// Performance notes: Uses const constructors where possible and avoids unnecessary
+  /// allocations by inlining the composition. Integrates [BorderRadius] and [BoxShadow]
+  /// from [ArcaneTheme] for consistent elevation without custom [Container] wrappers.
+  /// For content clipping, applies [clipBehavior] to prevent overflow in dense UIs
+  /// like [Tile] lists or [CardSection] stacks.
   @override
   Widget build(BuildContext context) {
     Widget b = Basic(

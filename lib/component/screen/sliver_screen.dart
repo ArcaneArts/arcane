@@ -3,6 +3,14 @@ import 'dart:async';
 import 'package:arcane/arcane.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+/// A sliver-based screen component that extends [AbstractScreen] to provide
+/// scrollable layouts using [CustomScrollView], ideal for complex UIs with
+/// dynamic headers, footers, and sidebars. Integrates seamlessly with [ArcaneApp]
+/// and [ArcaneTheme] for theming, supports [Sidebar] via [PylonBuilder], and
+/// enables efficient rendering of slivers like [SliverAppBar], [SliverList],
+/// [SliverGrid], or [SliverToBoxAdapter] for performance-optimized scrolling
+/// with lazy loading. Use for screens requiring pinned elements, floating
+/// behaviors, or nested scrolling as in [NestedScrollView].
 class SliverScreen extends AbstractStatefulScreen {
   final Widget sliver;
   final ScrollController? scrollController;
@@ -10,6 +18,16 @@ class SliverScreen extends AbstractStatefulScreen {
   final ScrollController? sidebarController;
   final PylonBuilder? sidebar;
 
+  /// Constructs a [SliverScreen] with a required main content sliver and optional
+  /// customizations for scrolling, theming, and layout. The [sliver] parameter
+  /// provides the primary scrollable content, typically a [SliverList] or
+  /// [SliverGrid] for efficient rendering. Use [scrollController] to manage
+  /// scroll events and integrate with [NestedScrollView] for coordinated
+  /// scrolling. [physics] allows custom scroll behaviors like bouncing or
+  /// clamping. [sidebarController] and [sidebar] enable [Sidebar] integration
+  /// for resizable layouts. Inherits parameters from [AbstractScreen] for
+  /// headers, footers, FABs, and loading states, ensuring compatibility with
+  /// [ArcaneTheme] and [CustomScrollView] orchestration.
   const SliverScreen({
     this.sidebarController,
     super.overrideBackgroundColor,
@@ -33,6 +51,14 @@ class SliverScreen extends AbstractStatefulScreen {
   State<SliverScreen> createState() => _SliverScreenState();
 }
 
+/// State management for [SliverScreen], handling scroll controllers, blur
+/// effects via [BehaviorSubject] for dynamic header/footer opacity based on
+/// scroll position, and size calculations for layout adjustments. Orchestrates
+/// [CustomScrollView] with slivers for pinned headers ([SliverPinnedHeader]),
+/// gutters ([SliverGutter]), and footer spacing ([SliverToBoxAdapter]),
+/// integrating [Pylon] for dependency injection with [ArcaneTheme], [Sidebar],
+/// and [InjectScreenFooter]. Supports performance through listener bindings
+/// for efficient blur updates and lazy sliver rendering in large lists.
 class _SliverScreenState extends State<SliverScreen> {
   ScrollController? _controller;
   ScrollController? _sidebarController;
@@ -77,6 +103,11 @@ class _SliverScreenState extends State<SliverScreen> {
     super.dispose();
   }
 
+  /// Retrieves or creates a [ScrollController] for the sidebar, binding listeners
+  /// to update [headerBlurSidebar] and [footerBlurSidebar] based on scroll extent.
+  /// Integrates with provided [widget.sidebarController] or creates a new one,
+  /// enabling coordinated scrolling with [Sidebar] and blur effects for
+  /// performance-optimized resizable layouts in [CustomScrollView].
   ScrollController getSidebarController(BuildContext context) {
     void bind() {
       _sidebarController!.addListener(() {
@@ -102,6 +133,13 @@ class _SliverScreenState extends State<SliverScreen> {
     return _sidebarController!;
   }
 
+  /// Retrieves or creates a [ScrollController] for the main content, binding
+  /// listeners to update [footerBlurBottom] and [headerBlurTop] based on scroll
+  /// position. Prioritizes [widget.scrollController], falls back to
+  /// [ModalScrollController] for bottom sheets, or creates a new one. Essential
+  /// for [CustomScrollView] integration, supporting [NestedScrollView] and
+  /// efficient blur transitions in sliver-based UIs with [SliverAppBar] or
+  /// [SliverList].
   ScrollController getController(BuildContext context) {
     void bind() {
       _controller!.addListener(() {
@@ -134,6 +172,11 @@ class _SliverScreenState extends State<SliverScreen> {
     return _controller!;
   }
 
+  /// Dynamically calculates and updates the header height from [headerKey],
+  /// falling back to [ArcaneTheme.defaultHeaderHeight], triggering rebuilds
+  /// for accurate [SliverPinnedHeader] positioning and blur effects in
+  /// [CustomScrollView]. Ensures performance by avoiding unnecessary setState
+  /// calls if size unchanged.
   bool updateHeaderSize() {
     try {
       double v = headerKey.currentContext?.size?.height ??
@@ -146,6 +189,10 @@ class _SliverScreenState extends State<SliverScreen> {
     return false;
   }
 
+  /// Dynamically calculates and updates the footer height from [footerKey],
+  /// enabling precise [SliverToBoxAdapter] spacing and [GlassStopper] blur
+  /// positioning at the bottom of [CustomScrollView]. Supports flexible footer
+  /// integrations via [InjectScreenFooter] without impacting scroll performance.
   bool updateFooterSize() {
     try {
       double v = footerKey.currentContext?.size?.height ?? 0;
@@ -158,6 +205,15 @@ class _SliverScreenState extends State<SliverScreen> {
     return false;
   }
 
+  /// Builds the [SliverScreen] UI using [Scaffold] with [CustomScrollView] for
+  /// sliver orchestration, incorporating [widget.sliver] as the main content
+  /// wrapped in [SliverGutter] for spacing. Manages dynamic blurs ([GlassStopper])
+  /// for headers/footers based on scroll position, integrates [Pylon] for
+  /// [Sidebar], [ArcaneTheme], and [InjectScreenFooter], and positions FAB/foreground
+  /// with padding for header/footer sizes. Optimizes performance via lazy
+  /// rendering of slivers like [SliverPinnedHeader] and [SliverToBoxAdapter],
+  /// supporting complex scrolling UIs with [NestedScrollView] and theme-aware
+  /// elements.
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

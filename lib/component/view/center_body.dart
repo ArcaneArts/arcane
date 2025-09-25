@@ -1,51 +1,75 @@
 import 'package:arcane/arcane.dart';
 
-/// A utility component that displays an icon, an optional message, and an optional
-/// action button centered on the screen.
+/// A centered body widget that displays an icon with optional message and action button,
+/// providing balanced layouts for empty states, errors, or informational displays in Arcane screens.
 ///
-/// [CenterBody] is commonly used for empty states, error messages, or simple
-/// informational displays where content needs to be prominently centered.
+/// [CenterBody] uses [Center] and [Column] to center content vertically and horizontally,
+/// integrating seamlessly with [ArcaneTheme] for consistent styling. It is ideal for use within
+/// [FillScreen] or [AbstractScreen] to create prominent, focused content areas without complex
+/// computations, ensuring high performance through simple widget composition.
 ///
-/// See also:
-///  * [doc/component/center_body.md] for more detailed documentation
+/// Key features include:
+/// - Prominent icon display for visual focus.
+/// - Optional explanatory message below the icon.
+/// - Conditional action button for user interaction.
+/// - Minimal footprint with const constructor for efficient rebuilding.
+///
+/// Usage example:
+/// ```dart
+/// CenterBody(
+///   icon: Icons.info,
+///   message: 'No data available',
+///   actionText: 'Retry',
+///   onActionPressed: () => refreshData(),
+/// )
+/// ```
+///
+/// See also: [Center], [Column], [ArcaneTheme], [FillScreen], [AbstractScreen].
 class CenterBody extends StatelessWidget {
-  /// The icon to display at the center of the screen.
+  /// The icon to display at the center, serving as the primary visual element.
   ///
-  /// This icon serves as the visual focus of the display and should represent
-  /// the state or information being communicated.
+  /// This [IconData] represents the state (e.g., empty, error) and is rendered
+  /// at 56 logical pixels for prominence. Integrates with [ArcaneTheme] icons.
   final IconData icon;
-  
-  /// Optional text message to display below the icon.
+
+  /// Optional message text displayed below the icon for context.
   ///
-  /// This message can provide additional context or explanation about the
-  /// current state.
+  /// Provides explanatory details about the current state, styled via [ArcaneTheme].
+  /// Rendered only if non-null, using default text properties for readability.
   final String? message;
-  
-  /// Optional text for the action button.
+
+  /// Optional label for the action button shown below the message.
   ///
-  /// If provided along with [onActionPressed], a button with this text will be
-  /// displayed below the message.
+  /// If provided with [onActionPressed], creates a [TextButton] for user actions
+  /// like refresh or navigate, ensuring intuitive interaction in centered layouts.
   final String? actionText;
-  
-  /// Function to call when the action button is pressed.
+
+  /// Callback invoked when the action button is pressed.
   ///
-  /// This callback is required if [actionText] is provided.
+  /// Required if [actionText] is set; enables handling events like data refresh
+  /// in [FillScreen] or navigation in [AbstractScreen]. Uses null safety for optional use.
   final VoidCallback? onActionPressed;
 
-  /// Creates a [CenterBody] widget.
+  /// Constructs a [CenterBody] with required icon and optional message/action elements.
   ///
-  /// The [icon] parameter is required and specifies the icon to display.
-  /// The [message] parameter is optional and provides explanatory text.
-  /// If both [actionText] and [onActionPressed] are provided, an action button
-  /// will be displayed below the message.
+  /// - [key]: Standard Flutter widget key for identification.
+  /// - [icon]: Required [IconData] for the central visual element.
+  /// - [message]: Optional [String] for contextual text below the icon.
+  /// - [actionText]: Optional [String] label for the action button.
+  /// - [onActionPressed]: Optional callback for button press handling.
   ///
-  /// Example:
+  /// The const constructor ensures efficient widget tree updates. Use named parameters
+  /// for clarity in Arcane UI compositions, promoting reusable centered content.
+  ///
+  /// Example in a screen:
   /// ```dart
-  /// CenterBody(
-  ///   icon: Icons.inbox,
-  ///   message: "No messages found",
-  ///   actionText: "Refresh",
-  ///   onActionPressed: () => refreshMessages(),
+  /// FillScreen(
+  ///   body: CenterBody(
+  ///     icon: Icons.search_off,
+  ///     message: 'Search for items',
+  ///     actionText: 'Clear',
+  ///     onActionPressed: clearSearch,
+  ///   ),
   /// )
   /// ```
   const CenterBody(

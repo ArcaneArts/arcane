@@ -5,6 +5,11 @@ import 'package:arcane/arcane.dart' hide TileMode, Gradient;
 const int _kIndeterminateLinearDuration = 1800;
 const kDefaultDurationX = Duration(milliseconds: 10000);
 
+/// A customizable linear progress bar widget that supports both determinate and indeterminate progress states,
+/// with optional spark effects at the end for visual enhancement. It integrates seamlessly with the
+/// [ArcaneTheme] for consistent coloring and scaling, providing a polished alternative to the standard
+/// [LinearProgressIndicator]. Use this in loading states within [Section] or [Carpet] layouts to indicate
+/// progress during data operations or async tasks, such as file uploads or API calls in [Dialog] flows.
 class FancyProgressBar extends StatelessWidget {
   static const Curve _line1Head = Interval(
     0.0,
@@ -35,6 +40,17 @@ class FancyProgressBar extends StatelessWidget {
   final bool showSparks;
   final bool disableAnimation;
 
+  /// Creates a [FancyProgressBar] with optional determinate progress value (0.0 to 1.0).
+  ///
+  /// - If [value] is provided, renders a determinate progress bar animating to the specified value.
+  /// - If [value] is null, displays an indeterminate animation with moving segments mimicking
+  ///   [LinearProgressIndicator] indeterminate mode.
+  /// - [backgroundColor] sets the track color, defaulting to a scaled [ArcaneTheme] primary.
+  /// - [minHeight] controls the bar thickness, scaled by [ArcaneTheme.scaling].
+  /// - [color] overrides the progress fill color from [ArcaneTheme.primary].
+  /// - [borderRadius] applies rounded corners, defaulting to zero.
+  /// - [showSparks] enables a radial gradient spark effect at the progress end for visual flair.
+  /// - [disableAnimation] skips animations for static display, useful in performance-critical UIs.
   const FancyProgressBar({
     super.key,
     this.value,
@@ -46,6 +62,12 @@ class FancyProgressBar extends StatelessWidget {
     this.disableAnimation = false,
   });
 
+  /// Builds the progress bar widget, handling determinate and indeterminate modes with smooth
+  /// animations via [AnimatedValueBuilder] and [RepeatedAnimationBuilder]. For determinate mode,
+  /// interpolates properties using [_LinearProgressIndicatorProperties] and paints via
+  /// [_LinearProgressIndicatorPainter]. Indeterminate mode cycles two progress segments with
+  /// predefined curves for fluid motion. Wraps in [ClipRRect] for border radius and [SizedBox]
+  /// for height, ensuring RTL support via [Directionality] and theme integration with [ArcaneTheme].
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -142,6 +164,10 @@ class FancyProgressBar extends StatelessWidget {
   }
 }
 
+/// Internal class holding properties for linear progress interpolation during animations,
+/// supporting both single and dual progress segments for determinate and indeterminate states.
+/// Used by [FancyProgressBar] to smoothly transition between progress values, colors, and effects
+/// while respecting [TextDirection] for RTL layouts.
 class _LinearProgressIndicatorProperties {
   final double start;
   final double end;
@@ -167,6 +193,9 @@ class _LinearProgressIndicatorProperties {
     required this.textDirection,
   });
 
+  /// Linearly interpolates between two [_LinearProgressIndicatorProperties] instances for smooth
+  /// animations in [FancyProgressBar]. Handles optional secondary segments (start2/end2), color
+  /// blending, and scalar values like radius, ensuring null-safe lerping for indeterminate modes.
   static _LinearProgressIndicatorProperties lerp(
     _LinearProgressIndicatorProperties a,
     _LinearProgressIndicatorProperties b,
@@ -197,6 +226,10 @@ double? _lerpDouble(double? a, double? b, double t) {
   return a + (b - a) * t;
 }
 
+/// Custom painter for rendering the [FancyProgressBar] visuals, drawing a rounded background track,
+/// progress fill rectangles (one or two for indeterminate), and optional radial gradient sparks.
+/// Optimizes repaints by comparing all properties, integrating with [ArcaneTheme] colors for consistency
+/// in [Section] or [Dialog] progress indicators.
 class _LinearProgressIndicatorPainter extends CustomPainter {
   static final gradientTransform =
       (Matrix4.identity()..scale(1.0, 0.5)).storage;
@@ -225,6 +258,9 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
     this.textDirection = TextDirection.ltr,
   });
 
+  /// Paints the progress bar on the provided [Canvas] within the given [Size], handling RTL flipping,
+  /// NaN clamping, background rounded rect, progress rectangles (primary and optional secondary),
+  /// and spark effects using [RadialGradient] centered at the end position for dynamic visuals.
   @override
   void paint(Canvas canvas, Size size) {
     var start = this.start;
@@ -307,6 +343,9 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
     }
   }
 
+  /// Determines if repainting is needed by comparing all visual properties against the old delegate,
+  /// including progress values, colors, sparks, and direction, to optimize performance in animated
+  /// [FancyProgressBar] instances within dynamic UIs like [Selector] loading states.
   @override
   bool shouldRepaint(covariant _LinearProgressIndicatorPainter oldDelegate) {
     return oldDelegate.start != start ||
