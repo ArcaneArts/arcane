@@ -227,9 +227,9 @@ class ArcaneInput {
               setter: (_, v) => setter(v)),
           builder: (context) => ArcaneBoolField());
 
-  /// Creates an enum selection field for choosing from a list of enum values.
+  /// Creates an enum selection field for choosing from a list of values.
   /// Supports various modes like dropdown or cards, with customizable builders for items and cards.
-  /// This field is a core part of Arcane's form input system, allowing typed enum selection
+  /// This field is a core part of Arcane's form input system, allowing typed selection
   /// within [Form] widgets, often wrapped by [FieldWrapper] for enhanced UX.
   ///
   /// Parameters:
@@ -245,7 +245,7 @@ class ArcaneInput {
   /// - [setter]: Async enum setter.
   ///
   /// Returns: An [ArcaneField<T>] using [ArcaneEnumField] builder.
-  static ArcaneField select<T extends Enum>(
+  static ArcaneField select<T>(
           {String? name,
           String? description,
           IconData? icon,
@@ -280,7 +280,7 @@ class ArcaneInput {
   /// Parameters: Same as [select], with mode fixed to dropdown.
   ///
   /// Returns: An [ArcaneField<T>] configured for dropdown enum selection.
-  static ArcaneField selectDropdown<T extends Enum>(
+  static ArcaneField selectDropdown<T>(
           {String? name,
           String? description,
           IconData? icon,
@@ -309,7 +309,7 @@ class ArcaneInput {
   /// Parameters: Same as [select], with mode fixed to cards.
   ///
   /// Returns: An [ArcaneField<T>] configured for card enum selection.
-  static ArcaneField selectCards<T extends Enum>(
+  static ArcaneField selectCards<T>(
           {String? name,
           String? description,
           IconData? icon,

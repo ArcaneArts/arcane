@@ -1,9 +1,13 @@
+# 6.3.1
+* `ArcaneInput.select()` now supports any object type not just enums
+
 # 6.3.0
 * BREAKING: Removed `VFS`, `VFSView` and `IOVFS`.
 * BREAKING: Removed `MagicFab`. Use `Fab` instead as it has the features of `MagicFab` now.
 * BREAKING: Removed `FabMenu` Use `Fab` with `menu` instead as it has the features of `FabMenu` now.
 * BREAKING: Renamed `MagicCarpet` to `Carpet`
 * BREAKING: Renamed `MagicRefresher` to `Refresher`
+* Documentation Updates
 
 # 6.2.0
 * BREAKING Removed liquid glass
