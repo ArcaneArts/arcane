@@ -16,10 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
   MainAxisSize mainAxisSize = MainAxisSize.max;
 
   @override
-  Widget build(BuildContext context) => ArcaneScreen(
+  Widget build(BuildContext context) => Screen(
           child: Collection(
         children: [
           Card(
+            onPressed: () => Sheet(
+                builder: (context) =>
+                    Screen(title: "Derp", child: Text("Derp"))).open(context),
             titleText: "Test",
             subtitleText: "Tested",
             leadingIcon: Icons.activity_bold,

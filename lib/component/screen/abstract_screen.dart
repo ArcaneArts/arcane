@@ -6,7 +6,7 @@ import 'package:arcane/arcane.dart';
 /// It ensures efficient rebuilds through const constructors and optional slivers for performance in scrollable views.
 /// Usage: Extend for concrete screens like [ChatScreen] or [FillScreen], providing body content via [CenterBody] or [Section], and theme integration via [ArcaneTheme].
 /// Integrates with [SafeArea] for edge handling and supports [SliverAppBar] in sliver mode for advanced scrolling behaviors.
-class ArcaneScreen extends AbstractStatelessScreen {
+class Screen extends AbstractStatelessScreen {
   final Widget child;
   final PylonBuilder? sidebar;
   final ScrollController? scrollController;
@@ -17,7 +17,7 @@ class ArcaneScreen extends AbstractStatelessScreen {
   final List<Widget>? actions;
   final BarBackButtonMode backButtonMode;
 
-  const ArcaneScreen({
+  const Screen({
     super.overrideBackgroundColor,
     super.key,
     super.background,

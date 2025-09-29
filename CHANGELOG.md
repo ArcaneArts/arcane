@@ -1,6 +1,7 @@
 # 6.4.0
 * `ArcaneInput.select()` now supports any object type not just enums
 * BREAKING: Removed `BasicCard` and `GlowCard` as their features are now in `Card`
+* BREAKING: Renamed `ArcaneScreen` to `Screen`
 
 # 6.3.0
 * BREAKING: Removed `VFS`, `VFSView` and `IOVFS`.

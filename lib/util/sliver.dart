@@ -310,7 +310,7 @@ extension XSliverWidget on Widget {
       }
 
       warn(
-          "Unable to determine if ${runtimeType} is a sliver or not because it's render object is a ${ro.runtimeType} which is neither a RenderSliver nor a RenderBox");
+          "Unable to determine if $runtimeType is a sliver or not because it's render object is a ${ro.runtimeType} which is neither a RenderSliver nor a RenderBox");
       return null;
     }
 
@@ -339,7 +339,7 @@ extension XSliverWidget on Widget {
         }
       }
     } catch (e, es) {
-      error("Failed to check sliver of ${runtimeType} with error: $e. $es");
+      error("Failed to check sliver of $runtimeType with error: $e. $es");
     }
 
     return false;

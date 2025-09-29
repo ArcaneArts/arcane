@@ -2,6 +2,28 @@ import 'package:arcane/arcane.dart';
 import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 
+extension XTextColor on Text {
+  Text withColor(Color color) => Text(
+        data ?? '',
+        key: key,
+        style: (style ?? const TextStyle()).copyWith(color: color),
+        strutStyle: strutStyle,
+        textAlign: textAlign,
+        textDirection: textDirection,
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        textScaleFactor: textScaleFactor,
+        maxLines: maxLines,
+        semanticsLabel: semanticsLabel,
+        textWidthBasis: textWidthBasis,
+        textHeightBehavior: textHeightBehavior,
+        selectionColor: selectionColor,
+        semanticsIdentifier: semanticsIdentifier,
+        textScaler: textScaler,
+      );
+}
+
 extension XIconData on IconData {
   Widget get icon => Icon(this);
 }
