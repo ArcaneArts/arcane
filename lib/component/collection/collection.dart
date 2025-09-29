@@ -9,6 +9,7 @@ import 'package:arcane/arcane.dart';
 /// - Provides builder mode for efficient rendering of large or dynamic lists using [IndexedWidgetBuilder].
 /// - Custom builder mode utilizes [MultiSliver] for advanced sliver-based item generation.
 /// - Automatically chooses between [SListView] for non-sliver children and [MultiSliver] for sliver-compatible content.
+/// - Integrates with [Pylon] for reactive state management in dynamic collections.
 ///
 /// Usage example:
 /// ```dart
