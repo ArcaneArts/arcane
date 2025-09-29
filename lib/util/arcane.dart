@@ -5,6 +5,21 @@ import 'package:arcane/generated/arcane_shadcn/src/events.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:serviced/serviced.dart';
 
+/// Core Arcane utility class for app-wide operations including haptics, navigation, and theme management.
+/// Integrates with [Pylon] for state management and [ArcaneTheme] for consistent theming across the application.
+///
+/// Key features:
+/// - Global access to the app state via [Arcane.$app] and [Arcane.app].
+/// - Haptic feedback methods like [haptic], [hapticViewChange], [hapticAction], [hapticSelect], and [hapticButton], respecting theme settings.
+/// - Navigation utilities such as [push], [pop], [pushReplacement], [pushAndRemoveUntil], [closeDrawer], and [closeMenus] using Pylon routing.
+/// - Theme retrieval with [globalTheme] for app-wide access and [themeOf] for context-specific themes.
+///
+/// Usage example:
+/// ```dart
+/// Arcane.hapticViewChange(); // Triggers haptic feedback for view changes
+/// Arcane.push(context, MyScreen()); // Pushes a new screen using Pylon
+/// ArcaneTheme theme = Arcane.themeOf(context); // Gets theme for current context
+/// ```
 class Arcane {
   static int _lastHaptic = 0;
   static bool _checkHaptics = false;
