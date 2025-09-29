@@ -1,6 +1,23 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/components/overlay/toast.dart';
 
+/// Toast notification dialog for the Arcane UI library.
+///
+/// Displays temporary, non-intrusive notifications that integrate seamlessly with ArcaneTheme for default
+/// positioning, durations, and styling. Uses the toast mixin for easy launching via open() method.
+///
+/// Key features:
+/// - Auto-dismiss after configurable showDuration (defaults from theme).
+/// - Customizable location (e.g., bottomLeft) and entry animations.
+/// - Dismissible by user gesture.
+/// - Renders content via builder in a SurfaceCard with padding.
+///
+/// Usage:
+/// ```dart
+/// Toast(
+///   builder: (context) => const Text('Success!'),
+/// ).open(context);
+/// ```
 class ArcaneToastTheme {
   final ToastLocation location;
   final Duration entryDuration;
@@ -79,6 +96,11 @@ class Toast extends StatelessWidget with ArcaneToastLauncher {
   @override
   final ToastLocation? location;
   final Widget Function(BuildContext context) builder;
+
+  /// Constructs a Toast notification.
+  ///
+  /// The [builder] defines the widget content to display. Optional parameters override theme defaults
+  /// for location, durations, and dismissibility, enabling flexible toast handling in Arcane apps.
 
   const Toast({
     super.key,

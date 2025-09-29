@@ -1,8 +1,6 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/components/overlay/dialog.dart';
 
-import '../../generated/arcane_shadcn/src/util.dart';
-
 /// A mixin that enables any [Widget] to be displayed as a modal dialog in the Arcane UI system.
 ///
 /// This mixin provides the `open` method, which leverages Flutter's [showDialog] to present the
@@ -43,6 +41,9 @@ import '../../generated/arcane_shadcn/src/util.dart';
 /// }
 /// ```
 mixin ArcaneDialogLauncher on Widget {
+  /// Launches the mixed-in widget as a modal dialog in the Arcane UI system.
+  ///
+  /// Supports generic return types for capturing user interactions. Integrates with ArcaneTheme for barrier styling.
   Future<T?> open<T>(BuildContext context) {
     return showDialog<T>(
         context: context,
@@ -70,7 +71,26 @@ mixin ArcaneDialogLauncher on Widget {
 /// - Generic support via [ArcaneDialogLauncher] for returning values like selections or booleans.
 ///
 /// Usage: Instantiate with content and actions, then launch using `open(context)` from the mixin.
-/// For example, see [Confirm] for a pre-built confirmation dialog built on this base.
+///
+/// Example:
+/// ```dart
+/// class InfoDialog extends StatelessWidget with ArcaneDialogLauncher {
+///   @override
+///   Widget build(BuildContext context) => ArcaneDialog(
+///     title: const Text('Info'),
+///     content: const Text('Details'),
+///     actions: [
+///       TextButton(
+///         onPressed: () => Navigator.of(context).pop(),
+///         child: const Text('OK'),
+///       ),
+///     ],
+///   );
+/// }
+/// ```
+///
+/// // To launch:
+/// InfoDialog().open(context);
 class ArcaneDialog extends StatelessWidget {
   /// The optional leading widget, typically an icon, displayed on the left side of the dialog header.
   ///
