@@ -19,40 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) => ArcaneScreen(
           child: Collection(
         children: [
-          CardSection(
-            titleText: "Select Dropdown",
-            children: [
-              ArcaneInput.selectDropdown<MainAxisSize>(
-                  defaultValue: MainAxisSize.max,
-                  options: MainAxisSize.values,
-                  getter: () async => mainAxisSize,
-                  setter: (value) async => setState(() => mainAxisSize = value))
-            ],
-          ),
-          Gap(16),
-          CardSection(
-            titleText: "Icon Menu",
-            children: [
-              ColorSchemeOverride(
-                  mutator: (c) => c.copyWith(accent: () => Colors.red),
-                  child: IconButtonMenu(icon: Icons.activity, items: [
-                    MenuButton(
-                      child: Text("Button 1"),
-                      subMenu: [
-                        MenuButton(child: Text("Button 2")),
-                        MenuButton(child: Text("Button 2")),
-                        MenuButton(child: Text("Button 2")),
-                        MenuButton(child: Text("Button 2")),
-                        MenuDivider(),
-                        MenuButton(child: Text("Button 2")),
-                        MenuButton(child: Text("Button 2")),
-                        MenuButton(child: Text("Button 2"))
-                      ],
-                    ),
-                  ]))
-            ],
-          ),
-          Gap(16),
+          Card(
+            titleText: "Test",
+            subtitleText: "Tested",
+            leadingIcon: Icons.activity_bold,
+            child: Text("Derp"),
+            thumbHash: "3PcNNYSFeXh/d3eld0iHZoZgVwh2",
+          )
         ],
       ));
 }

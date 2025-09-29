@@ -10,7 +10,8 @@ export 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart'
         showGeneralDialog,
         showCommandDialog,
         showColorPickerDialog,
-        showColorPicker;
+        showColorPicker,
+        Card;
 export 'package:conjure/conjure.dart';
 export 'package:dotted_border/dotted_border.dart' hide DashedPainter;
 export 'package:flutter/material.dart' show DataCell;

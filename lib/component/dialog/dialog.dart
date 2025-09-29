@@ -1,6 +1,8 @@
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/components/overlay/dialog.dart';
 
+import '../../generated/arcane_shadcn/src/util.dart';
+
 /// A mixin that enables any [Widget] to be displayed as a modal dialog in the Arcane UI system.
 ///
 /// This mixin provides the `open` method, which leverages Flutter's [showDialog] to present the

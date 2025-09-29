@@ -64,6 +64,7 @@ export 'package:arcane/component/view/logo.dart';
 export 'package:arcane/component/view/markdown.dart';
 export 'package:arcane/component/view/static_table.dart';
 export 'package:arcane/component/view/tile.dart';
+export 'package:arcane/mods/card.dart';
 export 'package:arcane/util/arcane.dart';
 export 'package:arcane/util/blur.dart';
 export 'package:arcane/util/extensions.dart';

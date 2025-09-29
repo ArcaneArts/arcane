@@ -35,6 +35,7 @@ import 'package:arcane/arcane.dart';
 /// margins, [BorderRadius] for custom shapes, and [BoxShadow] for depth. For
 /// advanced cards with glow effects, prefer [GlowCard] directly; BasicCard
 /// emphasizes simplicity and performance for basic content cards in Arcane apps.
+@Deprecated("Use the regular Card widget now. It supports basicness!")
 class BasicCard extends StatelessWidget {
   /// Padding around the entire card
   final EdgeInsetsGeometry? padding;

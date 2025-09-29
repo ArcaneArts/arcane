@@ -14,11 +14,12 @@ import 'package:arcane/arcane.dart';
 /// For glow effects, provide [thumbHash]; otherwise, it behaves like a standard [BasicCard].
 /// Combine with [Gesture] for interactions or nest within [Section] for grouped content.
 /// Performance note: The glow uses [MagicThumbHash] with shaders enabled, ensuring smooth rendering without impacting frame rates in complex UIs.
+@Deprecated("Use the regular Card widget now. It supports thumb hashes!")
 class GlowCard extends StatelessWidget {
   final Widget child;
   final double intensityMultiplier;
-  final EdgeInsetsGeometry? padding;
   final String? thumbHash;
+  final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final Color? borderColor;
   final double? borderWidth;
@@ -92,9 +93,7 @@ class GlowCard extends StatelessWidget {
   /// Outputs: A fully styled [Widget] ready for layout integration, such as in [Section] or [FillScreen].
   /// Ensures efficient composition without deep widget trees, minimizing rebuilds in parent contexts like [SliverScreen].
   @override
-  Widget build(BuildContext context) {
-    if (thumbHash == null) {
-      return Card(
+  Widget build(BuildContext context) => Card(
         dashedBorder: dashedBorder,
         padding: padding,
         borderRadius: borderRadius,
@@ -108,53 +107,9 @@ class GlowCard extends StatelessWidget {
         onPressed: onPressed,
         fillColor: fillColor,
         filled: filled,
+        thumbHash: thumbHash,
+        thumbHashIntensityMultiplier: intensityMultiplier,
+        thumbHashUseShaders: true,
         child: child,
       );
-    }
-
-    CardTheme? compTheme = ComponentTheme.maybeOf<CardTheme>(context);
-    ThemeData theme = Theme.of(context);
-    double scaling = theme.scaling;
-    EdgeInsetsGeometry mPadding = styleValue<EdgeInsetsGeometry>(
-      widgetValue: padding,
-      themeValue: compTheme?.padding,
-      defaultValue: EdgeInsets.all(16 * scaling),
-    );
-    final br = styleValue(
-      themeValue: compTheme?.borderRadius,
-      defaultValue: theme.borderRadiusXl,
-    );
-
-    return Card(
-        dashedBorder: dashedBorder,
-        borderRadius: borderRadius,
-        borderColor: borderColor,
-        borderWidth: borderWidth,
-        clipBehavior: clipBehavior,
-        boxShadow: boxShadow,
-        surfaceOpacity: surfaceOpacity,
-        surfaceBlur: surfaceBlur,
-        duration: duration,
-        onPressed: onPressed,
-        padding: EdgeInsets.zero,
-        child: Stack(
-          children: [
-            if (thumbHash != null)
-              Positioned.fill(
-                  child: ClipRRect(
-                      borderRadius: br,
-                      child: MagicThumbHash(
-                              useShaders: true, thumbHash: thumbHash!)
-                          .withOpacity(((theme.brightness == Brightness.light
-                                      ? 0.15
-                                      : 0.15) *
-                                  intensityMultiplier)
-                              .clamp(0.001, 1)))),
-            Padding(
-              padding: mPadding,
-              child: child,
-            ),
-          ],
-        ));
-  }
 }
