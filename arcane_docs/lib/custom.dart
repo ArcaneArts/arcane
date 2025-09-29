@@ -1186,7 +1186,7 @@ GlowCard(
   child: Text("I glow the thumbhash!\n* Basic Card also supports this\n* Card Section too!")
 )
 """,
-      child: GlowCard(
+      child: Card(
           thumbHash: "H3IFHI4ri5RQpWdCen0rUPLtCQ",
           child: Text(
               "I glow the thumbhash!\n* Basic Card also supports this\n* Card Section too!")),
@@ -1205,7 +1205,7 @@ BasicCard(
       items: [MenuButton(child: Text("Menu or whatever"))]),
 )
 """,
-      child: BasicCard(
+      child: Card(
         title: Text("Title"),
         subtitle: Text("The Subtitle"),
         leading: Icon(Icons.address_book),
@@ -2472,7 +2472,7 @@ MutablePylon<int>(
                       ),
                       sliver: SListView.builder(
                         childCount: 1000,
-                        builder: (context, i) => BasicCard(
+                        builder: (context, i) => Card(
                           title: Text("Tile $i"),
                         ).padBottom(8),
                       ))),
@@ -2865,7 +2865,7 @@ MutablePylon<int>(
                       ),
                       sliver: SListView.builder(
                         childCount: 1000,
-                        builder: (context, i) => BasicCard(
+                        builder: (context, i) => Card(
                           title: Text("Tile $i"),
                         ).padBottom(8),
                       ))),
@@ -4420,7 +4420,7 @@ NavTab s1 = NavTab(
         ),
         sliver: SListView.builder(
           childCount: 1000,
-          builder: (context, i) => BasicCard(
+          builder: (context, i) => Card(
             title: Text("Tile $i"),
           ).padBottom(8),
         )));
@@ -4490,7 +4490,7 @@ NavTab s6 = NavTab(
         ),
         sliver: SListView.builder(
           childCount: 1000,
-          builder: (context, i) => BasicCard(
+          builder: (context, i) => Card(
             title: Text("Tile 2 $i"),
           ).padBottom(8),
         )));
@@ -4506,7 +4506,7 @@ NavTab s7 = NavTab(
         ),
         sliver: SListView.builder(
           childCount: 1000,
-          builder: (context, i) => BasicCard(
+          builder: (context, i) => Card(
             title: Text("Tile 3 $i"),
           ).padBottom(8),
         )));

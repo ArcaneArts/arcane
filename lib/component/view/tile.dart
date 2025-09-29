@@ -504,7 +504,7 @@ class MagicTile extends StatelessWidget with BoxSignal {
               ? Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: fatPad ? 16 : 0, vertical: 4),
-                  child: GlowCard(
+                  child: Card(
                     thumbHash: thumbHash,
                     surfaceOpacity: context.isTranslucent
                         ? ArcaneTheme.of(context).surfaceOpacity

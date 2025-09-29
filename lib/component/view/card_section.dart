@@ -77,7 +77,7 @@ class CardSection extends StatelessWidget {
     return Pylon<OverrideEdgeInsets>(
       value: OverrideEdgeInsets(
           const EdgeInsets.symmetric(vertical: 8, horizontal: 0)),
-      builder: (context) => GlowCard(
+      builder: (context) => Card(
         dashedBorder: dashedBorder,
         thumbHash: thumbHash,
         child: Column(

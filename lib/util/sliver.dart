@@ -255,7 +255,6 @@ extension XSliverWidget on Widget {
         AppBar() ||
         ListTile() ||
         Card() ||
-        BasicCard() ||
         TextField() ||
         TextArea() ||
         Button() ||
