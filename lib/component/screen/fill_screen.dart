@@ -139,7 +139,13 @@ class FillScreen extends AbstractStatelessScreen {
                 )))
       ],
     );
-    
+
+    s = LiquidGlassGroup(
+        global: true,
+        repaint: globalLiquidGlassPusher,
+        settings: ArcaneTheme.of(context).liquidGlassSettings,
+        child: s);
+
     return s;
   }
 }

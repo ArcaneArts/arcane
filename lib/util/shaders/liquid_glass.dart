@@ -3,6 +3,28 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+LiquidGlassRenderPusher globalLiquidGlassPusher = LiquidGlassRenderPusher();
+
+class LiquidGlassRenderPusher implements Listenable {
+  List<VoidCallback> listeners = [];
+
+  void push() {
+    for (VoidCallback listener in listeners) {
+      listener();
+    }
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    listeners.add(listener);
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    listeners.remove(listener);
+  }
+}
+
 /// Configuration class that holds all visual parameters for the liquid glass shader effect.
 /// These parameters control various aspects like refraction, blur, lighting, and color.
 class LiquidGlassSettings {
@@ -82,13 +104,13 @@ class LiquidGlassSettings {
 /// Simplified shape data structure used to pass geometry information to the shader.
 /// Each LiquidGlass widget gets converted into this format for GPU processing.
 /// The border radius is automatically clamped to max(width/2, height/2) to ensure valid geometry.
-class ShapeData {
+class LiquidGlassShapeData {
   final Offset center; // Center position of the glass shape
   final Size size; // Width and height of the glass shape
   final double
       borderRadius; // Border radius (clamped to half of smaller dimension)
   final Color color; // Optional tint color for the glass shape
-  ShapeData(this.center, this.size, this.borderRadius, this.color);
+  LiquidGlassShapeData(this.center, this.size, this.borderRadius, this.color);
 }
 
 _RenderLiquidGlassGroup? globalGroup;
@@ -113,7 +135,7 @@ class LiquidGlassGroup extends StatefulWidget {
   const LiquidGlassGroup({
     super.key,
     this.global = false,
-    required this.settings,
+    this.settings = const LiquidGlassSettings(),
     required this.child,
     this.repaint,
   });
@@ -121,6 +143,8 @@ class LiquidGlassGroup extends StatefulWidget {
   @override
   State<LiquidGlassGroup> createState() => _LiquidGlassGroupState();
 }
+
+Future<FragmentProgram>? _sharedProgram;
 
 class _LiquidGlassGroupState extends State<LiquidGlassGroup> {
   FragmentProgram? _program; // Compiled shader program from the .frag file
@@ -130,9 +154,10 @@ class _LiquidGlassGroupState extends State<LiquidGlassGroup> {
     super.initState();
     // Asynchronously load and compile the fragment shader from assets
     // The shader file contains the GLSL code that creates the glass effect
-    FragmentProgram.fromAsset(
+    _sharedProgram ??= FragmentProgram.fromAsset(
       'packages/arcane/resources/shaders/liquid_glass.frag',
-    ).then((p) => setState(() => _program = p));
+    );
+    _sharedProgram?.then((p) => setState(() => _program = p));
   }
 
   @override
@@ -185,7 +210,6 @@ class _LiquidGlassGroupRenderObject extends SingleChildRenderObjectWidget {
     );
     if (global) {
       globalGroup = renderObject;
-      print("Global object set");
     }
 
     _attachRouteAnimation(context, renderObject);
@@ -360,27 +384,28 @@ class _RenderLiquidGlassGroup extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     // STEP 1: Collect geometry data from all registered glass shapes
-    final shapes = <ShapeData>[];
-    for (var shape in registeredShapes) {
+    List<LiquidGlassShapeData> shapes = [];
+    for (RenderLiquidGlass shape in registeredShapes) {
       // Skip shapes that aren't properly attached or have no size
       if (!shape.attached || shape.size.isEmpty) continue;
 
       // Transform shape coordinates to screen space
-      final transform = shape.getTransformTo(null);
-      final rect = MatrixUtils.transformRect(
+      Matrix4 transform = shape.getTransformTo(null);
+      Rect rect = MatrixUtils.transformRect(
         transform,
         Offset.zero & shape.size,
       );
 
       // Clamp border radius to maximum of half the smaller dimension
-      final maxRadius = (rect.size.width < rect.size.height
+      double maxRadius = (rect.size.width < rect.size.height
               ? rect.size.width
               : rect.size.height) /
           2;
-      final clampedRadius =
+      double clampedRadius =
           shape.borderRadius > maxRadius ? maxRadius : shape.borderRadius;
 
-      shapes.add(ShapeData(rect.center, rect.size, clampedRadius, shape.color));
+      shapes.add(LiquidGlassShapeData(
+          rect.center, rect.size, clampedRadius, shape.color));
     }
 
     // If no shapes are registered, skip rendering
@@ -390,8 +415,8 @@ class _RenderLiquidGlassGroup extends RenderProxyBox {
     }
 
     // Calculate boudary of current render object
-    final boundaryTransform = getTransformTo(null);
-    final boundary = MatrixUtils.transformRect(
+    Matrix4 boundaryTransform = getTransformTo(null);
+    Rect boundary = MatrixUtils.transformRect(
       boundaryTransform,
       Offset.zero & size,
     );
@@ -400,9 +425,9 @@ class _RenderLiquidGlassGroup extends RenderProxyBox {
     // final biggestSize = constraints.biggest;
     // final w = biggestSize.width * _devicePixelRatio;   // Screen width in physical pixels
     // final h = biggestSize.height * _devicePixelRatio;  // Screen height in physical pixels
-    final sh = _shader;
+    FragmentShader sh = _shader;
 
-    var idx = 2;
+    int idx = 2;
 
     // Global shader parameters
     sh
@@ -452,8 +477,8 @@ class _RenderLiquidGlassGroup extends RenderProxyBox {
       ..setFloat(idx++, shapes.length.toDouble()); // Number of shapes
 
     // STEP 3: Pass individual shape data to shader (max 4 shapes supported)
-    for (var i = 0; i < shapes.length && i < maxRects; i++) {
-      final s = shapes[i];
+    for (int i = 0; i < shapes.length && i < maxRects; i++) {
+      LiquidGlassShapeData s = shapes[i];
       sh
             ..setFloat(idx++, s.center.dx * _devicePixelRatio) // Center X
             ..setFloat(idx++, s.center.dy * _devicePixelRatio) // Center Y
@@ -644,7 +669,7 @@ class RenderLiquidGlass extends RenderProxyBox {
 
     var pr = parent;
     while (pr != null && pr is! _RenderLiquidGlassGroup) {
-      pr = pr.parent; // Walk up the render tree
+      pr = pr.parent;
     }
     return (pr as _RenderLiquidGlassGroup?) ?? globalGroup;
   }

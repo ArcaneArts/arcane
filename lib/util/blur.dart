@@ -135,21 +135,11 @@ class ArcaneLiquidGlassBlur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LiquidGlassGroup(
-        settings: const LiquidGlassSettings(
-            blendPx: 5,
-            distortExponent: 4,
-            distortFalloffPx: 16,
-            blurRadiusPx: 4,
-            specStrength: 0,
-            lightbandWidthPx: 60,
-            refractStrength: -0.06,
-            lightbandStrength: 0),
-        child: LiquidGlass(
-          enabled: true,
-          borderRadius: borderRadius?.topLeft.x ?? 0,
-          child: child,
-        ));
+    return LiquidGlass(
+      enabled: true,
+      borderRadius: borderRadius?.topLeft.x ?? 0,
+      child: child,
+    );
   }
 }
 

@@ -368,6 +368,12 @@ class _SliverScreenState extends State<SliverScreen> {
           ],
         ));
 
+    s = LiquidGlassGroup(
+        global: true,
+        repaint: globalLiquidGlassPusher,
+        settings: ArcaneTheme.of(context).liquidGlassSettings,
+        child: s);
+
     return s;
   }
 }

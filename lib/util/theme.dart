@@ -128,6 +128,16 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
+
+  LiquidGlassSettings get liquidGlassSettings => const LiquidGlassSettings(
+      blendPx: 5,
+      distortExponent: 4,
+      distortFalloffPx: 16,
+      blurRadiusPx: 4,
+      specStrength: 0,
+      lightbandWidthPx: 60,
+      refractStrength: -0.06,
+      lightbandStrength: 0);
 }
 
 class ArcaneBarriers {
