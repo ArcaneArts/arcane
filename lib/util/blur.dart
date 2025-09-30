@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/util/shaders/arcane_blur.dart';
+import 'package:fast_log/fast_log.dart';
 import 'package:flutter/rendering.dart';
 
 enum ArcaneBlurMode {
@@ -37,6 +38,23 @@ class EdgeTheme {
     this.size = 28,
     this.autoEdge = false,
   });
+}
+
+bool _warned = false;
+
+ArcaneBlurMode resolveArcaneBlurMode(BuildContext context) {
+  ArcaneBlurMode mode = ArcaneTheme.of(context).blurMode;
+
+  if (!ui.ImageFilter.isShaderFilterSupported &&
+      mode == ArcaneBlurMode.liquidGlass) {
+    mode = ArcaneBlurMode.backdropFilter;
+    if (!_warned) {
+      warn("Liquid Glass rendering is not available on this platform");
+      _warned = true;
+    }
+  }
+
+  return mode;
 }
 
 class ArcaneBlur extends StatelessWidget {
@@ -75,6 +93,11 @@ class ArcaneBlur extends StatelessWidget {
       return child;
     }
 
+    if (mode == ArcaneBlurMode.liquidGlass) {
+      return ArcaneLiquidGlassBlur(
+          intensity: intensity, child: child, borderRadius: borderRadius);
+    }
+
     if (mode == ArcaneBlurMode.frost) {
       return ArcaneShaderBlur(
         intensity: intensity,
@@ -99,6 +122,34 @@ class ArcaneBlur extends StatelessWidget {
     }
 
     return child;
+  }
+}
+
+class ArcaneLiquidGlassBlur extends StatelessWidget {
+  final double intensity;
+  final Widget child;
+  final BorderRadius? borderRadius;
+
+  const ArcaneLiquidGlassBlur(
+      {super.key, this.intensity = 1, required this.child, this.borderRadius});
+
+  @override
+  Widget build(BuildContext context) {
+    return LiquidGlassGroup(
+        settings: const LiquidGlassSettings(
+            blendPx: 5,
+            distortExponent: 4,
+            distortFalloffPx: 16,
+            blurRadiusPx: 4,
+            specStrength: 0,
+            lightbandWidthPx: 60,
+            refractStrength: -0.06,
+            lightbandStrength: 0),
+        child: LiquidGlass(
+          enabled: true,
+          borderRadius: borderRadius?.topLeft.x ?? 0,
+          child: child,
+        ));
   }
 }
 

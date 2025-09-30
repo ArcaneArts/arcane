@@ -269,7 +269,7 @@ class _SliverScreenState extends State<SliverScreen> {
       ],
     );
 
-    return Scaffold(
+    Widget s = Scaffold(
         overrideBackgroundColor: widget.overrideBackgroundColor,
         primary: context.pylonOr<NavigationType>() != NavigationType.drawer,
         child: Stack(
@@ -367,5 +367,7 @@ class _SliverScreenState extends State<SliverScreen> {
             //           )))
           ],
         ));
+
+    return s;
   }
 }

@@ -17,18 +17,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) => Screen(
-          child: Collection(
+      fab: Fab(
+        child: Text("Derp"),
+        leading: Icon(Icons.plus),
+      ),
+      header: Bar(titleText: "Header", trailing: [
+        IconButton(
+          icon: Icon(Icons.activity),
+          onPressed: () {
+            DialogConfirmText(
+                    title: "Text", verificationText: "Derp", onConfirm: () {})
+                .open(context);
+          },
+        )
+      ]),
+      child: MultiSliver(
         children: [
-          Card(
-            onPressed: () => Sheet(
-                builder: (context) =>
-                    Screen(title: "Derp", child: Text("Derp"))).open(context),
-            titleText: "Test",
-            subtitleText: "Tested",
-            leadingIcon: Icons.activity_bold,
-            child: Text("Derp"),
-            thumbHash: "3PcNNYSFeXh/d3eld0iHZoZgVwh2",
-          )
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            sliver: SGridView.builder(
+              childCount: 16,
+              crossAxisSpacing: 8,
+              crossAxisCount: 2,
+              childAspectRatio: 1,
+              mainAxisSpacing: 8,
+              builder: (context, index) => ContextMenu(
+                  child: Card(
+                    child: Center(
+                      child: Basic(
+                        title: Text("Item s1 $index"),
+                        subtitle: Text("Subtitle or something"),
+                      ),
+                    ),
+                  ),
+                  items: [
+                    MenuButton(child: Text("Action 1"), onPressed: () {}),
+                    MenuButton(child: Text("Action 2"), onPressed: () {}),
+                    MenuButton(child: Text("Action 3"), onPressed: () {}),
+                    MenuDivider(),
+                    MenuButton(child: Text("Action 4"), onPressed: () {}),
+                  ]),
+            ),
+          ),
+          BarSection(
+              titleText: "Grid Section",
+              subtitleText: "Subtitle or something",
+              trailing: [
+                IconButton(
+                  icon: Icon(Icons.add_circle_ionic),
+                  onPressed: () {},
+                )
+              ],
+              sliver: SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                sliver: SListView.builder(
+                  childCount: 24,
+                  builder: (context, index) => MagicTile(
+                    leadingIcon: Icons.activity_light,
+                    title: Text("Item $index"),
+                    subtitle: Text("Subtitle or something"),
+                  ),
+                ),
+              ))
         ],
       ));
 }

@@ -1,6 +1,6 @@
 name: arcane
 description: "A modified variant of shadcn_flutter along with new features & improvements. This package follows the changes of shadcn_flutter while also maintaining additional features & fixes."
-version: 6.3.1
+version: 6.4.0
 homepage: https://arcane.art
 documentation: https://tome.arcane.art
 repository: https://github.com/ArcaneArts/arcane
@@ -93,6 +93,7 @@ flutter:
     - packages/arcane/resources/shaders/cascade.frag
     - packages/arcane/resources/shaders/edge.frag
     - packages/arcane/resources/shaders/arcane_blur.frag
+    - packages/arcane/resources/shaders/liquid_glass.frag
     - packages/mesh_gradient/shaders/point_mesh_gradient.frag
   uses-material-design: true
   fonts:

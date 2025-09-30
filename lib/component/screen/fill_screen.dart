@@ -52,7 +52,7 @@ class FillScreen extends AbstractStatelessScreen {
     Widget? footer = this.footer ?? InjectScreenFooter.getFooterWidget(context);
     PylonBuilder? isidebar = context.pylonOr<ArcaneSidebarInjector>()?.builder;
     PylonBuilder? sidebar = this.sidebar ?? isidebar;
-    return Row(
+    Widget s = Row(
       children: [
         if (sidebar != null) sidebar(context),
         Expanded(
@@ -139,5 +139,7 @@ class FillScreen extends AbstractStatelessScreen {
                 )))
       ],
     );
+    
+    return s;
   }
 }

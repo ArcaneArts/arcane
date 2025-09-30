@@ -74,6 +74,7 @@ export 'package:arcane/util/shaders/cascade.dart';
 export 'package:arcane/util/shaders/edge.dart';
 export 'package:arcane/util/shaders/frost.dart';
 export 'package:arcane/util/shaders/glyph.dart';
+export 'package:arcane/util/shaders/liquid_glass.dart';
 export 'package:arcane/util/shaders/loader.dart';
 export 'package:arcane/util/shaders/lux.dart';
 export 'package:arcane/util/shaders/pixelate.dart';

@@ -7,6 +7,7 @@ bool v = false;
 String? vv;
 void main() {
   runZonedGuarded(() {
+    WidgetsFlutterBinding.ensureInitialized();
     runApp("example", const ExampleArcaneApp());
   }, (error, stackTrace) {
     print("Error: $error");
@@ -22,6 +23,5 @@ class ExampleArcaneApp extends StatelessWidget {
       home: HomeScreen(),
       showPerformanceOverlay: false,
       theme: ArcaneTheme(
-          themeMode: ThemeMode.system,
-          blurMode: ArcaneBlurMode.backdropFilter));
+          themeMode: ThemeMode.dark, blurMode: ArcaneBlurMode.liquidGlass));
 }

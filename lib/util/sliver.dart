@@ -201,6 +201,27 @@ class MagicBox extends StatelessWidget {
       );
 }
 
+mixin SliverSignal {}
+mixin BoxSignal {}
+
+class TrustSliver extends StatelessWidget with SliverSignal {
+  final Widget child;
+
+  const TrustSliver(this.child, {super.key});
+
+  @override
+  Widget build(BuildContext context) => child;
+}
+
+class TrustBox extends StatelessWidget with BoxSignal {
+  final Widget child;
+
+  const TrustBox(this.child, {super.key});
+
+  @override
+  Widget build(BuildContext context) => child;
+}
+
 bool _sliverInspectionActive = false;
 bool get isSliverInspectionActive => _sliverInspectionActive;
 
@@ -343,25 +364,4 @@ extension XSliverWidget on Widget {
 
     return false;
   }
-}
-
-mixin SliverSignal {}
-mixin BoxSignal {}
-
-class TrustSliver extends StatelessWidget with SliverSignal {
-  final Widget child;
-
-  const TrustSliver(this.child, {super.key});
-
-  @override
-  Widget build(BuildContext context) => child;
-}
-
-class TrustBox extends StatelessWidget with BoxSignal {
-  final Widget child;
-
-  const TrustBox(this.child, {super.key});
-
-  @override
-  Widget build(BuildContext context) => child;
 }

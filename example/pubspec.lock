@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "6.3.1"
+    version: "6.4.0"
   archive:
     dependency: transitive
     description:
@@ -925,7 +925,7 @@ packages:
     source: hosted
     version: "0.2.12"
   soft_edge_blur:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: soft_edge_blur
       sha256: "3e9a6c981d298d6aa2bf98716bc521fb043708833a570cd9f559a7d523973c51"
