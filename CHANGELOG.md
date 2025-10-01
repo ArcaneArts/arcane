@@ -1,3 +1,8 @@
+# 6.5.0
+* BREAKING: Reworked theme surface options
+* Added `BlurSurfaceEffect`, `IceSurfaceEffect`, `FrostedSurfaceEffect` and `LiquidGlassSurfaceEffect` instead of using `ArcaneBlurMode` enums
+* Created a surface effect api to allow custom surface effects with image filters, shaders, or custom builders
+
 # 6.4.0
 * `ArcaneInput.select()` now supports any object type not just enums
 * BREAKING: Removed `BasicCard` and `GlowCard` as their features are now in `Card`

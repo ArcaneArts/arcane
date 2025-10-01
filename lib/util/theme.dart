@@ -42,7 +42,7 @@ class ArcaneTheme {
     this.barrierColors = const ArcaneBarriers(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
-    this.surfaceEffect = const IceSurfaceEffect(),
+    this.surfaceEffect = const BlurSurfaceEffect(),
     this.backupSurfaceEffect = const BlurSurfaceEffect(),
     this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,

@@ -37,7 +37,7 @@ class Screen extends AbstractStatelessScreen {
     this.subtitle,
     this.actions,
     this.backButtonMode = BarBackButtonMode.always,
-    required this.child,
+    this.child = const Collection(),
   });
 
   /// Builds the screen widget, automatically selecting [SliverScreen] for sliver content or [FillScreen] for regular widgets.
