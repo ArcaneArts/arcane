@@ -15,17 +15,16 @@ class ArcaneTheme {
   final ScrollPhysics physics;
   final double surfaceOpacity;
   final double surfaceOpacityLight;
-  final double surfaceBlur;
   final double scaling;
   final double contrast;
   final double spin;
   final ArcaneBarriers barrierColors;
-  final ArcaneBlurMode blurMode;
+  final SurfaceEffect surfaceEffect;
+  final SurfaceEffect backupSurfaceEffect;
   final double defaultHeaderHeight;
   final ChatTheme chat;
   final ArcaneToastTheme toast;
   final GutterTheme gutter;
-  final EdgeTheme edge;
   final CardCarouselTheme cardCarousel;
   final NavigationTheme navigationScreen;
   final ArcaneHaptics haptics;
@@ -43,8 +42,8 @@ class ArcaneTheme {
     this.barrierColors = const ArcaneBarriers(),
     this.physics = const BouncingScrollPhysics(),
     this.shimmer = const ArcaneShimmerTheme(),
-    this.blurMode = ArcaneBlurMode.backdropFilter,
-    this.edge = const EdgeTheme(),
+    this.surfaceEffect = const IceSurfaceEffect(),
+    this.backupSurfaceEffect = const BlurSurfaceEffect(),
     this.haptics = const ArcaneHaptics(),
     this.defaultHeaderHeight = 0,
     this.toast = const ArcaneToastTheme(),
@@ -63,7 +62,6 @@ class ArcaneTheme {
     this.radius = 0.3,
     this.surfaceOpacity = 0.55,
     this.surfaceOpacityLight = 0.55,
-    this.surfaceBlur = 24,
     this.themeMode = ThemeMode.system,
   });
 
@@ -78,8 +76,9 @@ class ArcaneTheme {
     double? scaling,
     double? contrast,
     double? spin,
+    SurfaceEffect? surfaceEffect,
+    SurfaceEffect? backupSurfaceEffect,
     ChatTheme? chat,
-    EdgeTheme? edge,
     ArcaneToastTheme? toast,
     CardCarouselTheme? cardCarousel,
     GutterTheme? gutter,
@@ -94,8 +93,9 @@ class ArcaneTheme {
         shadThemeBuilder,
   }) =>
       ArcaneTheme(
+        surfaceEffect: surfaceEffect ?? this.surfaceEffect,
+        backupSurfaceEffect: backupSurfaceEffect ?? this.backupSurfaceEffect,
         $forceThemeData: $forceThemeData ?? this.$forceThemeData,
-        edge: edge ?? this.edge,
         toast: toast ?? this.toast,
         defaultHeaderHeight: defaultHeaderHeight ?? this.defaultHeaderHeight,
         cardCarousel: cardCarousel ?? this.cardCarousel,
@@ -104,7 +104,6 @@ class ArcaneTheme {
         scheme: scheme ?? this.scheme,
         surfaceOpacity: surfaceOpacity ?? this.surfaceOpacity,
         surfaceOpacityLight: surfaceOpacityLight ?? this.surfaceOpacityLight,
-        surfaceBlur: surfaceBlur ?? this.surfaceBlur,
         scaling: scaling ?? this.scaling,
         contrast: contrast ?? this.contrast,
         spin: spin ?? this.spin,
@@ -128,16 +127,6 @@ class ArcaneTheme {
 
   c.CupertinoThemeData get cupertinoThemeData =>
       cupertinoThemeBuilder(this, themeMode.brightness);
-
-  LiquidGlassSettings get liquidGlassSettings => const LiquidGlassSettings(
-      blendPx: 5,
-      distortExponent: 4,
-      distortFalloffPx: 16,
-      blurRadiusPx: 4,
-      specStrength: 0,
-      lightbandWidthPx: 60,
-      refractStrength: -0.06,
-      lightbandStrength: 0);
 }
 
 class ArcaneBarriers {
@@ -216,8 +205,9 @@ ThemeData _defaultShadThemeBuilder(ArcaneTheme theme, Brightness brightness) =>
       surfaceOpacity: brightness == Brightness.light
           ? theme.surfaceOpacityLight
           : theme.surfaceOpacity,
-      surfaceBlur:
-          theme.blurMode == ArcaneBlurMode.disabled ? 0 : theme.surfaceBlur,
+      surfaceBlur: theme.surfaceEffect.compatible
+          ? theme.surfaceEffect.calcRadius
+          : theme.backupSurfaceEffect.calcRadius,
     );
 
 class ArcaneShimmerTheme {

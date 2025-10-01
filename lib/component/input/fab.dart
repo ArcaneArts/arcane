@@ -144,9 +144,21 @@ class Fab extends StatelessWidget {
 
     double width = MediaQuery.of(context).size.width;
     if (leading == null || width >= threshold) {
+      final theme = Theme.of(context);
+      final compTheme = ComponentTheme.maybeOf<CardTheme>(context);
+      final borderRadius = styleValue(
+        themeValue: compTheme?.borderRadius,
+        defaultValue: theme.borderRadiusLg,
+      );
       return PaddingAll(
         padding: 8,
         child: Glass(
+          borderRadius: borderRadius?.resolve(TextDirection.ltr) ??
+              BorderRadius.circular(0),
+          tint: Theme.of(context)
+              .colorScheme
+              .background
+              .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
           ignoreContextSignals: true,
           child: Card(
             surfaceOpacity: 0,

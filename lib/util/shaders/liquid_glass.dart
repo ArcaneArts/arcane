@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:arcane/arcane.dart';
 import 'package:flutter/rendering.dart';
 
 LiquidGlassRenderPusher globalLiquidGlassPusher = LiquidGlassRenderPusher();
@@ -286,7 +286,7 @@ class _LiquidGlassGroupRenderObject extends SingleChildRenderObjectWidget {
 /// with realistic refraction, blur, and lighting effects.
 class _RenderLiquidGlassGroup extends RenderProxyBox {
   static const int maxRects = 4; // Maximum number of glass shapes supported
-
+  String? _phase;
   Listenable? _routeAnimations;
   ScrollPosition? _scrollPosition;
 
@@ -493,15 +493,37 @@ class _RenderLiquidGlassGroup extends RenderProxyBox {
           ;
     }
 
-    // STEP 4: Apply the shader as a backdrop filter
-    // This creates a layer that processes the background through the shader
-    context.pushLayer(
-      BackdropFilterLayer(
-        filter: ImageFilter.shader(sh), // Apply our glass shader
-      ),
-      super.paint,
-      offset,
-    );
+    if (identityHash == globalGroup?.identityHash) {
+      _phase = 'background';
+      final bounds = offset & size;
+      context.canvas.drawRect(bounds, Paint()..color = Colors.red);
+
+      context.canvas
+          .saveLayer(bounds, Paint()..imageFilter = ImageFilter.shader(sh));
+      super.paint(context, offset);
+      context.canvas.restore();
+
+      _phase = 'foreground';
+      for (final shape in registeredShapes) {
+        if (shape.child == null) continue;
+        final Matrix4 transform = shape.getTransformTo(this);
+        final double tx = transform[12];
+        final double ty = transform[13];
+        final Offset relative = Offset(tx, ty);
+        context.paintChild(shape.child!, offset + relative);
+      }
+      _phase = null;
+    } else {
+      // STEP 4: Apply the shader as a backdrop filter
+      // This creates a layer that processes the background through the shader
+      context.pushLayer(
+        BackdropFilterLayer(
+          filter: ImageFilter.shader(sh), // Apply our glass shader
+        ),
+        super.paint,
+        offset,
+      );
+    }
 
     // if (child != null) {
     //   context.paintChild(child!, offset);
@@ -651,6 +673,22 @@ class RenderLiquidGlass extends RenderProxyBox {
   }
 
   @override
+  void paint(PaintingContext context, Offset offset) {
+    final layer = _findLayer();
+    if (layer == null || !enabled) {
+      super.paint(context, offset);
+      return;
+    }
+    final phase = layer._phase;
+    if (phase == 'background') {
+      // Skip painting content
+      return;
+    }
+    // Paint normally (foreground or non-global)
+    super.paint(context, offset);
+  }
+
+  @override
   void detach() {
     // Unregister this shape when removed from tree
     _findLayer()?.registeredShapes.remove(this);
@@ -663,9 +701,9 @@ class RenderLiquidGlass extends RenderProxyBox {
   /// Searches up the render tree to find the LiquidGlassLayer that manages the shader.
   /// This allows individual glass shapes to register themselves with the system.
   _RenderLiquidGlassGroup? _findLayer() {
-    if (globalGroup != null) {
-      return globalGroup;
-    }
+    // if (globalGroup != null) {
+    //   return globalGroup;
+    // }
 
     var pr = parent;
     while (pr != null && pr is! _RenderLiquidGlassGroup) {

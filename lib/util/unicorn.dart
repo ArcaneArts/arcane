@@ -7,25 +7,6 @@ import 'package:mesh_gradient/mesh_gradient.dart';
 import 'package:thumbhash/thumbhash.dart' as th;
 import 'package:tinycolor2/tinycolor2.dart';
 
-class TranslucentBackground {
-  final bool translucent;
-
-  const TranslucentBackground({this.translucent = false});
-}
-
-extension XTranslucentBackground on BuildContext {
-  bool get isTranslucent =>
-      pylonOr<TranslucentBackground>()?.translucent ?? false;
-}
-
-const TranslucentBackground _tt = TranslucentBackground(translucent: true);
-const TranslucentBackground _tf = TranslucentBackground(translucent: false);
-
-extension XTrWidget on Widget {
-  Widget withTranslucentBackground(bool translucent) =>
-      Pylon(value: translucent ? _tt : _tf, builder: (context) => this);
-}
-
 Iterable<Offset> randomNormalPositions(int seed) sync* {
   Random r = Random(seed);
 

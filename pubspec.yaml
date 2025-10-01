@@ -94,6 +94,7 @@ flutter:
     - packages/arcane/resources/shaders/edge.frag
     - packages/arcane/resources/shaders/arcane_blur.frag
     - packages/arcane/resources/shaders/liquid_glass.frag
+    - packages/arcane/resources/shaders/ice.frag
     - packages/mesh_gradient/shaders/point_mesh_gradient.frag
   uses-material-design: true
   fonts:

@@ -230,58 +230,56 @@ class Bar extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? barHeader = this.barHeader ??
         context.pylonOr<InjectBarHeader>()?.header.call(context);
-    return Stack(
-      children: [
-        Glass(
-            ignoreContextSignals: ignoreContextSignals,
-            disabled: !useGlass,
-            disabledColor: (context.isTranslucent
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.background),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (barHeader != null) barHeader!,
-                SafeBar.withSafety(
-                    context,
-                    NoIntrinsicAppBar(
-                      leading: InjectBarLeading.mutate(context, [
-                        if ((backButton == BarBackButtonMode.always ||
-                                (backButton == BarBackButtonMode.whenPinned &&
-                                    !GlassStopper.isStopping(context))) &&
-                            Navigator.canPop(context) &&
-                            !BlockBackButton.isBlocking(context))
-                          GhostButton(
-                              density: ButtonDensity.icon,
-                              child: context.inSheet
-                                  ? const Icon(PhosphorIcons.x_bold)
-                                  : const Icon(PhosphorIcons.caret_left_bold),
-                              onPressed: () => Arcane.pop(context)),
-                        ...leading
-                      ]),
-                      surfaceOpacity: 0,
-                      trailing: InjectBarTrailing.mutate(context,
-                          [...trailing, if (actions != null) actions!]),
-                      title: (titleText?.text ?? title)?.ast(2),
-                      header: (headerText?.text ?? header)?.ast(1),
-                      subtitle: (subtitleText?.text ?? subtitle)?.ast(1),
-                      trailingExpanded: trailingExpanded,
-                      alignment: alignment,
-                      padding: padding,
-                      backgroundColor: backgroundColor,
-                      leadingGap: leadingGap,
-                      trailingGap: trailingGap,
-                      height: height,
-                      surfaceBlur: 0,
-                      child: child,
-                    )),
-                if (barFooter != null) barFooter!,
-              ],
-            ))
-      ],
-    );
+    return Glass(
+        tint: Theme.of(context)
+            .colorScheme
+            .background
+            .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
+        ignoreContextSignals: ignoreContextSignals,
+        disabled: !useGlass,
+        disabledColor: Theme.of(context).colorScheme.background,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (barHeader != null) barHeader!,
+            SafeBar.withSafety(
+                context,
+                NoIntrinsicAppBar(
+                  leading: InjectBarLeading.mutate(context, [
+                    if ((backButton == BarBackButtonMode.always ||
+                            (backButton == BarBackButtonMode.whenPinned &&
+                                !GlassStopper.isStopping(context))) &&
+                        Navigator.canPop(context) &&
+                        !BlockBackButton.isBlocking(context))
+                      GhostButton(
+                          density: ButtonDensity.icon,
+                          child: context.inSheet
+                              ? const Icon(PhosphorIcons.x_bold)
+                              : const Icon(PhosphorIcons.caret_left_bold),
+                          onPressed: () => Arcane.pop(context)),
+                    ...leading
+                  ]),
+                  surfaceOpacity: 0,
+                  trailing: InjectBarTrailing.mutate(
+                      context, [...trailing, if (actions != null) actions!]),
+                  title: (titleText?.text ?? title)?.ast(2),
+                  header: (headerText?.text ?? header)?.ast(1),
+                  subtitle: (subtitleText?.text ?? subtitle)?.ast(1),
+                  trailingExpanded: trailingExpanded,
+                  alignment: alignment,
+                  padding: padding,
+                  backgroundColor: backgroundColor,
+                  leadingGap: leadingGap,
+                  trailingGap: trailingGap,
+                  height: height,
+                  surfaceBlur: 0,
+                  child: child,
+                )),
+            if (barFooter != null) barFooter!,
+          ],
+        ));
   }
 }
 

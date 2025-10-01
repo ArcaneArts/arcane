@@ -4027,7 +4027,6 @@ class _ArcaneUsageExampleState extends State<ArcaneUsageExample> {
         themeMode: sh.Theme.of(context).brightness == Brightness.light
             ? ThemeMode.light
             : ThemeMode.dark,
-        surfaceBlur: sh.Theme.of(context).surfaceBlur ?? 18,
         scaling: sh.Theme.of(context).scaling,
         surfaceOpacity: sh.Theme.of(context).surfaceOpacity ?? 0.66,
         scheme: ContrastedColorScheme(

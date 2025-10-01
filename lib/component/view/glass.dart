@@ -253,9 +253,6 @@ class Glass extends StatelessWidget {
   /// useful for critical UI elements in [SliverScreen] that must remain frosted.
   final bool ignoreContextSignals;
 
-  final double? blurRadius;
-  final double? opacity;
-
   /// Creates a [Glass] widget for applying frosted glass effects.
   ///
   /// The [child] is required as the content to blur. Use named parameters for
@@ -270,8 +267,6 @@ class Glass extends StatelessWidget {
       {super.key,
       this.ignoreContextSignals = false,
       this.disabledColor,
-      this.blurRadius,
-      this.opacity,
       this.under,
       this.tint,
       this.disabled = false,
@@ -280,21 +275,18 @@ class Glass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool disabled = this.disabled ||
-        (GlassStopper.isStopping(context) && !ignoreContextSignals);
+    bool disabled = (this.disabled ||
+        (GlassStopper.isStopping(context) && !ignoreContextSignals));
+
     Widget b = disabled
         ? Container(
             color: kShowStoppedGlass
                 ? Colors.red
-                : disabledColor ??
-                    (context.isTranslucent
-                            ? Colors.transparent
-                            : Theme.of(context).colorScheme.background)
-                        .withOpacity(opacity ?? 1),
+                : disabledColor ?? Colors.transparent,
             child: child,
           )
         : ArcaneBlur(
-            intensity: blurRadius ?? Theme.of(context).surfaceBlur ?? 24,
+            borderRadius: borderRadius,
             child: child,
           );
 
@@ -309,11 +301,7 @@ class Glass extends StatelessWidget {
     }
 
     b = Container(
-      color: tint ??
-          Theme.of(context)
-              .colorScheme
-              .background
-              .withOpacity(Theme.of(context).surfaceOpacity ?? 0.5),
+      decoration: BoxDecoration(color: tint, borderRadius: borderRadius),
       child: b,
     );
 

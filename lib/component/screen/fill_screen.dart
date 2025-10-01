@@ -101,10 +101,8 @@ class FillScreen extends AbstractStatelessScreen {
                                                           .gutter
                                                           .enabled,
                                                   child: footer != null
-                                                      ? BackdropGroup(
-                                                          child: child)
-                                                      : BackdropGroup(
-                                                          child: child))))),
+                                                      ? child
+                                                      : child)))),
                                   if (fab != null)
                                     FabSocket(
                                         child: PylonRemove<InjectScreenFooter>(
@@ -140,12 +138,7 @@ class FillScreen extends AbstractStatelessScreen {
       ],
     );
 
-    s = LiquidGlassGroup(
-        global: true,
-        repaint: globalLiquidGlassPusher,
-        settings: ArcaneTheme.of(context).liquidGlassSettings,
-        child: s);
-
+    s = BackdropGroup(backdropKey: globalBlurBackdropKey, child: s);
     return s;
   }
 }

@@ -31,7 +31,6 @@ class GlassSection extends StatelessWidget {
         builder: (context, state) => Glass(
           ignoreContextSignals: true,
           disabled: !state.isPinned,
-          disabledColor: context.isTranslucent ? Colors.transparent : null,
           child: header,
         ),
         sliver: sliver,

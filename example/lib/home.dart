@@ -43,10 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSpacing: 8,
               builder: (context, index) => ContextMenu(
                   child: Card(
+                    filled: true,
+                    fillColor: randomColor(index),
                     child: Center(
                       child: Basic(
                         title: Text("Item s1 $index"),
-                        subtitle: Text("Subtitle or something"),
+                        subtitle: Text(
+                          "Subtitle or something",
+                        ),
                       ),
                     ),
                   ),
@@ -74,7 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   childCount: 24,
                   builder: (context, index) => MagicTile(
                     leadingIcon: Icons.activity_light,
-                    title: Text("Item $index"),
+                    title: Text(
+                      "Item $index",
+                      style:
+                          TextStyle(color: randomColor(index, radiant: true)),
+                    ),
                     subtitle: Text("Subtitle or something"),
                   ),
                 ),

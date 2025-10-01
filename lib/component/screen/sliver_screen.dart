@@ -258,8 +258,7 @@ class _SliverScreenState extends State<SliverScreen> {
                         sliver: Pylon<ArbitraryHeaderSpace?>(
                           value: ArbitraryHeaderSpace(headerSize),
                           local: true,
-                          builder: (context) =>
-                              BackdropGroup(child: widget.sliver),
+                          builder: (context) => widget.sliver,
                         ))))),
         SliverToBoxAdapter(
           child: SizedBox(
@@ -368,11 +367,7 @@ class _SliverScreenState extends State<SliverScreen> {
           ],
         ));
 
-    s = LiquidGlassGroup(
-        global: true,
-        repaint: globalLiquidGlassPusher,
-        settings: ArcaneTheme.of(context).liquidGlassSettings,
-        child: s);
+    s = BackdropGroup(backdropKey: globalBlurBackdropKey, child: s);
 
     return s;
   }

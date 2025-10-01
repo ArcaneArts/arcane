@@ -101,7 +101,10 @@ class ArcaneShader {
 
   static Future<FragmentProgram> loadShader(String name) async {
     try {
-      return await FragmentProgram.fromAsset(assetKey(name));
+      return await FragmentProgram.fromAsset(
+          name.startsWith("packages/arcane/resources/shaders/")
+              ? name
+              : assetKey(name));
     } catch (e) {
       error("Failed to load shader: $name");
       error(e);
