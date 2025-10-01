@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/component/dialog/command.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:docs/pages/docs_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';

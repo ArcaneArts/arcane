@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
 import 'package:arcane/generated/arcane_shadcn/src/events.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:fast_log/fast_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as m;

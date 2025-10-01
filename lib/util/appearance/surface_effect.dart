@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:fast_log/fast_log.dart';
 
 BackdropKey globalBlurBackdropKey = BackdropKey();

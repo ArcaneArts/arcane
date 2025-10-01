@@ -1,34 +1,37 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
-const String _name = "edge";
+const String _name = "rgb";
 Future<FragmentProgram> _loadShader() => ArcaneShader.loadShader(_name);
 
-class EdgeShader extends ArcaneShader {
-  const EdgeShader({super.programProvider = _loadShader, super.name = _name});
+class RGBShader extends ArcaneShader {
+  const RGBShader({super.programProvider = _loadShader, super.name = _name});
 }
 
-extension XWidgetEdge on Widget {
-  Widget shadeEdge(double radius) => EdgeFilter(radius: radius, child: this);
+extension XWidgetRGB on Widget {
+  Widget shadeRGB({double radius = 5, double spin = 1}) =>
+      RGBFilter(radius: radius, spin: spin, child: this);
 }
 
-class EdgeFilter extends StatelessWidget with BoxSignal {
-  final Widget child;
+class RGBFilter extends StatelessWidget with BoxSignal {
   final double radius;
+  final double spin;
+  final Widget child;
 
-  const EdgeFilter({super.key, required this.child, this.radius = 4});
+  const RGBFilter(
+      {super.key, required this.child, this.radius = 5, this.spin = 1});
 
   @override
-  Widget build(BuildContext context) => (const EdgeShader().program).build(
+  Widget build(BuildContext context) => (const RGBShader().program).build(
       (context) => ShaderBuilder(
           (context, shader, child) => AnimatedSampler((image, size, canvas) {
                 shader.setFloatUniforms((uniforms) {
                   uniforms
+                    ..setSize(size)
                     ..setFloat(radius)
-                    ..setSize(size);
+                    ..setFloat(spin);
                 });
 
                 shader.setImageSampler(0, image);

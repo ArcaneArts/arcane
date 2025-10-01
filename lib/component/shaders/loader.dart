@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 const String _name = "loader";

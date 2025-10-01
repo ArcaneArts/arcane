@@ -1,30 +1,27 @@
 import 'dart:ui';
 
 import 'package:arcane/arcane.dart';
-import 'package:arcane/util/shaders.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
-const String _name = "pixelate";
+const String _name = "edge";
 Future<FragmentProgram> _loadShader() => ArcaneShader.loadShader(_name);
 
-class PixelateShader extends ArcaneShader {
-  const PixelateShader(
-      {super.programProvider = _loadShader, super.name = _name});
+class EdgeShader extends ArcaneShader {
+  const EdgeShader({super.programProvider = _loadShader, super.name = _name});
 }
 
-extension XWidgetPixelate on Widget {
-  Widget shadePixelate(double radius) =>
-      PixelateFilter(radius: radius, child: this);
+extension XWidgetEdge on Widget {
+  Widget shadeEdge(double radius) => EdgeFilter(radius: radius, child: this);
 }
 
-class PixelateFilter extends StatelessWidget with BoxSignal {
+class EdgeFilter extends StatelessWidget with BoxSignal {
   final Widget child;
   final double radius;
 
-  const PixelateFilter({super.key, required this.child, this.radius = 4});
+  const EdgeFilter({super.key, required this.child, this.radius = 4});
 
   @override
-  Widget build(BuildContext context) => (const PixelateShader().program).build(
+  Widget build(BuildContext context) => (const EdgeShader().program).build(
       (context) => ShaderBuilder(
           (context, shader, child) => AnimatedSampler((image, size, canvas) {
                 shader.setFloatUniforms((uniforms) {
