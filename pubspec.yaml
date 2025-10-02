@@ -78,7 +78,6 @@ dependencies:
   throttled: ">=1.0.1 <2.0.0"
   artifact: ^1.0.15
 dev_dependencies:
-  json_dynamic_widget_codegen: ^3.0.0
   flutter_lints: ^6.0.0
   artifact_gen: ^1.0.15
   build_runner: ^2.5.4
@@ -158,6 +157,7 @@ topics:
   - components
   - shadcn-ui
 scripts:
+  build_runner: dart run build_runner build --delete-conflicting-outputs
   sync_upstream: sh ./script_sync_shadcn.sh
   hotload_docs: sh ./script_sync_docs_live.sh
   deploy_docs: sh ./script_deploy_docs_fast.sh
