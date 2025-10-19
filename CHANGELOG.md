@@ -1,3 +1,6 @@
+# 6.5.1
+* Updated `desktop_drop: ">=0.5.0 <0.8.0"` to support Android SDK 34+ without breaking builds. Thanks [@OthmanShaker](https://github.com/OthmanShaker) see [#22](https://github.com/ArcaneArts/arcane/issues/22)
+
 # 6.5.0
 * BREAKING: Reworked theme surface options
 * Added `BlurSurfaceEffect`, `IceSurfaceEffect`, `FrostedSurfaceEffect` and `LiquidGlassSurfaceEffect` instead of using `ArcaneBlurMode` enums

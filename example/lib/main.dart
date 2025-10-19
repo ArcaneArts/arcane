@@ -23,5 +23,5 @@ class ExampleArcaneApp extends StatelessWidget {
       home: HomeScreen(),
       showPerformanceOverlay: false,
       theme: ArcaneTheme(
-          themeMode: ThemeMode.dark, surfaceEffect: BlurSurfaceEffect()));
+          themeMode: ThemeMode.system, surfaceEffect: BlurSurfaceEffect()));
 }
