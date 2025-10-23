@@ -1,3 +1,11 @@
+# 6.5.2
+* Sync Upstream
+  * fix: Auto-focus first command item in Command palette
+  * Prevent the possibility of other platforms (TargetPlatform.ohos)
+  * min flutter sdk
+  * Set calendar body rows to use min size
+  * feat: add option to configure unchecked background color in Checkbox widget
+
 # 6.5.1
 * Updated `desktop_drop: ">=0.5.0 <0.8.0"` to support Android SDK 34+ without breaking builds. Thanks [@OthmanShaker](https://github.com/OthmanShaker) see [#22](https://github.com/ArcaneArts/arcane/issues/22)
 
