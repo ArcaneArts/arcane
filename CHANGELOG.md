@@ -1,3 +1,6 @@
+# 6.5.3
+* Fixes & added Arcane.pushWith(context, child, pylonData);
+
 # 6.5.2
 * Sync Upstream
   * fix: Auto-focus first command item in Command palette
