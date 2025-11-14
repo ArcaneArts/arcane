@@ -3709,7 +3709,7 @@ Widget get exampleScreenArcane => ArcaneUsageExample(
       padding: 0,
       title: 'Arcane Screens',
       code: """
-ArcaneScreen(
+Screen(
   header: Bar(
     titleText: "Header",
     trailing: [
@@ -3740,7 +3740,7 @@ Widget get exampleScreenSections => ArcaneUsageExample(
       padding: 0,
       title: 'Collections & Sections',
       code: """
-ArcaneScreen(
+Screen(
   header: Bar(titleText: "Header", trailing: [
     IconButton(
       icon: Icon(Icons.activity),
