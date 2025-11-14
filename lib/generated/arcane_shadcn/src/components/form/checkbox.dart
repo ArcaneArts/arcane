@@ -9,12 +9,6 @@ import '../../../shadcn_flutter.dart';
 /// Can be applied globally through [ComponentTheme] or used to override
 /// specific checkbox instances with custom styling.
 class CheckboxTheme {
-  /// Color of the checkbox background when in unchecked state.
-  ///
-  /// Applied as the background color when the checkbox is unchecked.
-  /// When null, uses a semi-transparent version of the theme's input background color.
-  final Color? backgroundColor;
-
   /// Color of the checkbox background when in checked state.
   ///
   /// Applied as both background and border color when the checkbox is checked.
@@ -53,7 +47,6 @@ class CheckboxTheme {
   /// The theme can be applied to individual checkboxes or globally through
   /// the component theme system.
   const CheckboxTheme({
-    this.backgroundColor,
     this.activeColor,
     this.borderColor,
     this.size,
@@ -74,7 +67,6 @@ class CheckboxTheme {
   /// );
   /// ```
   CheckboxTheme copyWith({
-    ValueGetter<Color?>? backgroundColor,
     ValueGetter<Color?>? activeColor,
     ValueGetter<Color?>? borderColor,
     ValueGetter<double?>? size,
@@ -82,8 +74,6 @@ class CheckboxTheme {
     ValueGetter<BorderRadiusGeometry?>? borderRadius,
   }) {
     return CheckboxTheme(
-      backgroundColor:
-          backgroundColor == null ? this.backgroundColor : backgroundColor(),
       activeColor: activeColor == null ? this.activeColor : activeColor(),
       borderColor: borderColor == null ? this.borderColor : borderColor(),
       size: size == null ? this.size : size(),
@@ -96,7 +86,6 @@ class CheckboxTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is CheckboxTheme &&
-        other.backgroundColor == backgroundColor &&
         other.activeColor == activeColor &&
         other.borderColor == borderColor &&
         other.size == size &&
@@ -106,7 +95,6 @@ class CheckboxTheme {
 
   @override
   int get hashCode => Object.hash(
-        backgroundColor,
         activeColor,
         borderColor,
         size,
@@ -127,12 +115,12 @@ class CheckboxTheme {
 /// Example:
 /// ```dart
 /// final controller = CheckboxController(CheckboxState.unchecked);
-///
+/// 
 /// // React to changes
 /// controller.addListener(() {
 ///   print('Checkbox is now: ${controller.value}');
 /// });
-///
+/// 
 /// // Programmatic control
 /// controller.toggle(); // unchecked -> checked
 /// controller.indeterminate(); // -> indeterminate
@@ -217,7 +205,7 @@ class CheckboxController extends ValueNotifier<CheckboxState>
 /// **Controller-based (recommended for complex state management):**
 /// ```dart
 /// final controller = CheckboxController(CheckboxState.unchecked);
-///
+/// 
 /// ControlledCheckbox(
 ///   controller: controller,
 ///   tristate: true,
@@ -228,7 +216,7 @@ class CheckboxController extends ValueNotifier<CheckboxState>
 /// **Callback-based (simple state management):**
 /// ```dart
 /// bool checked = false;
-///
+/// 
 /// ControlledCheckbox(
 ///   initialValue: checked ? CheckboxState.checked : CheckboxState.unchecked,
 ///   onChanged: (state) => setState(() {
@@ -294,11 +282,6 @@ class ControlledCheckbox extends StatelessWidget
   /// When null, uses the theme gap or framework default (8px scaled).
   final double? gap;
 
-  /// Override color of the checkbox background when in unchecked state.
-  ///
-  /// When null, uses a semi-transparent version of the theme's input background color.
-  final Color? backgroundColor;
-
   /// Override color of the checkbox when checked.
   ///
   /// When null, uses the theme active color or primary color.
@@ -330,7 +313,6 @@ class ControlledCheckbox extends StatelessWidget
   /// - [tristate] (bool, default: false): whether to support indeterminate state
   /// - [size] (double?, optional): override checkbox square size
   /// - [gap] (double?, optional): override spacing around checkbox
-  /// - [backgroundColor] (Color?, optional): override unchecked state color
   /// - [activeColor] (Color?, optional): override checked state color
   /// - [borderColor] (Color?, optional): override border color
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override corner radius
@@ -355,7 +337,6 @@ class ControlledCheckbox extends StatelessWidget
     this.tristate = false,
     this.size,
     this.gap,
-    this.backgroundColor,
     this.activeColor,
     this.borderColor,
     this.borderRadius,
@@ -377,7 +358,6 @@ class ControlledCheckbox extends StatelessWidget
           tristate: tristate,
           size: size,
           gap: gap,
-          backgroundColor: backgroundColor,
           activeColor: activeColor,
           borderColor: borderColor,
           borderRadius: borderRadius,
@@ -468,7 +448,7 @@ class Checkbox extends StatefulWidget {
   ///
   /// Called with the new [CheckboxState] that should be applied. When null,
   /// the checkbox becomes non-interactive and visually disabled.
-  ///
+  /// 
   /// The callback is responsible for updating the parent widget's state
   /// to reflect the change - this widget does not manage its own state.
   final ValueChanged<CheckboxState>? onChanged;
@@ -515,12 +495,6 @@ class Checkbox extends StatefulWidget {
   /// widgets are present. When null, uses [CheckboxTheme.gap] or framework default.
   final double? gap;
 
-  /// Color of the checkbox background when in unchecked state.
-  ///
-  /// Overrides the theme default. Applied as the background color when unchecked.
-  /// When null, uses a semi-transparent version of the theme's input background color.
-  final Color? backgroundColor;
-
   /// Color used for the checkbox when in checked state.
   ///
   /// Overrides the theme default. Applied as both background and border color
@@ -549,12 +523,11 @@ class Checkbox extends StatefulWidget {
   /// - [state] (CheckboxState, required): current checkbox state to display
   /// - [onChanged] (ValueChanged<CheckboxState>?, required): interaction callback
   /// - [leading] (Widget?, optional): widget displayed before checkbox
-  /// - [trailing] (Widget?, optional): widget displayed after checkbox
+  /// - [trailing] (Widget?, optional): widget displayed after checkbox  
   /// - [tristate] (bool, default: false): enable indeterminate state cycling
   /// - [enabled] (bool?, optional): override interactivity (null = auto-detect)
   /// - [size] (double?, optional): override checkbox square size
   /// - [gap] (double?, optional): override spacing around checkbox
-  /// - [backgroundColor] (Color?, optional): override unchecked state color
   /// - [activeColor] (Color?, optional): override checked state color
   /// - [borderColor] (Color?, optional): override border color
   /// - [borderRadius] (BorderRadiusGeometry?, optional): override corner radius
@@ -580,7 +553,6 @@ class Checkbox extends StatefulWidget {
     this.enabled,
     this.size,
     this.gap,
-    this.backgroundColor,
     this.activeColor,
     this.borderColor,
     this.borderRadius,
@@ -658,10 +630,6 @@ class _CheckboxState extends State<Checkbox>
         widgetValue: widget.gap,
         themeValue: compTheme?.gap,
         defaultValue: 8 * scaling);
-    final backgroundColor = styleValue(
-        widgetValue: widget.backgroundColor,
-        themeValue: compTheme?.backgroundColor,
-        defaultValue: theme.colorScheme.input.scaleAlpha(0.3));
     final activeColor = styleValue(
         widgetValue: widget.activeColor,
         themeValue: compTheme?.activeColor,
@@ -694,7 +662,7 @@ class _CheckboxState extends State<Checkbox>
             decoration: BoxDecoration(
               color: widget.state == CheckboxState.checked
                   ? activeColor
-                  : backgroundColor,
+                  : theme.colorScheme.input.scaleAlpha(0.3),
               borderRadius:
                   optionallyResolveBorderRadius(context, borderRadius) ??
                       BorderRadius.circular(theme.radiusSm),
@@ -797,7 +765,7 @@ class AnimatedCheckPainter extends CustomPainter {
   ///
   /// Parameters:
   /// - [progress] (double, required): animation progress 0.0-1.0
-  /// - [color] (Color, required): checkmark stroke color
+  /// - [color] (Color, required): checkmark stroke color  
   /// - [strokeWidth] (double, required): stroke thickness in logical pixels
   ///
   /// Example usage within CustomPaint:

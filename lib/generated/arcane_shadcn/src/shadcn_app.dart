@@ -216,13 +216,6 @@ class ShadcnScrollBehavior extends ScrollBehavior {
           case TargetPlatform.fuchsia:
           case TargetPlatform.iOS:
             return child;
-          default:
-            // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
-            // TODO: ohos.mobile
-            return Scrollbar(
-              controller: details.controller,
-              child: child,
-            );
         }
     }
   }
@@ -246,10 +239,6 @@ class ShadcnScrollBehavior extends ScrollBehavior {
         );
       case TargetPlatform.fuchsia:
         break;
-      default:
-        // TODO: Other platforms. For TargetPlatform.ohos.pc2in1
-        // TODO: ohos.mobile
-        return child;
     }
     return GlowingOverscrollIndicator(
       axisDirection: details.direction,

@@ -1688,11 +1688,6 @@ class TextFieldState extends State<TextField>
         if (cause == SelectionChangedCause.longPress) {
           _editableText.bringIntoView(selection.extent);
         }
-      default:
-        // TODO: Other platforms. For TargetPlatform.ohos
-        if (cause == SelectionChangedCause.longPress) {
-          _editableText.bringIntoView(selection.extent);
-        }
     }
 
     switch (defaultTargetPlatform) {
@@ -1703,11 +1698,6 @@ class TextFieldState extends State<TextField>
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
-        if (cause == SelectionChangedCause.drag) {
-          _editableText.hideToolbar();
-        }
-      default:
-        // TODO: Other platforms. For TargetPlatform.ohos
         if (cause == SelectionChangedCause.drag) {
           _editableText.hideToolbar();
         }
@@ -2023,19 +2013,6 @@ class TextFieldState extends State<TextField>
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        textSelectionControls ??= cupertinoDesktopTextSelectionHandleControls;
-        handleDidGainAccessibilityFocus = () {
-          // Automatically activate the TextField when it receives accessibility focus.
-          if (!_effectiveFocusNode.hasFocus &&
-              _effectiveFocusNode.canRequestFocus) {
-            _effectiveFocusNode.requestFocus();
-          }
-        };
-        handleDidLoseAccessibilityFocus = () {
-          _effectiveFocusNode.unfocus();
-        };
-      default:
-        // TODO: Other platforms. For TargetPlatform.ohos
         textSelectionControls ??= cupertinoDesktopTextSelectionHandleControls;
         handleDidGainAccessibilityFocus = () {
           // Automatically activate the TextField when it receives accessibility focus.

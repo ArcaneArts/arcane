@@ -79,6 +79,10 @@ class Arcane {
   static void pop<T extends Object?>(BuildContext context, [T? result]) =>
       Navigator.pop(context, result);
 
+  static Future<T?> pushWith<T extends Object?, P>(
+          BuildContext context, Widget child, P pylonData) =>
+      push(context, Pylon<P>(value: pylonData, builder: (context) => child));
+
   static Future<T?> push<T extends Object?>(
           BuildContext context, Widget child) =>
       Pylon.push<T?>(context, child,
