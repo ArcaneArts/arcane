@@ -1,3 +1,6 @@
+# 6.5.4
+* Added `MasterDetailDialog`
+
 # 6.5.3
 * Fixes & added Arcane.pushWith(context, child, pylonData);
 
