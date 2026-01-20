@@ -187,6 +187,7 @@ class _MutableTextState extends State<MutableText> {
           ? buildText(context)
           : switch (widget.buttonType) {
               EditButtonType.ghost => GhostButton(
+                  density: ButtonDensity.icon,
                   child: buildText(context),
                   onPressed: () => setState(() {
                         _controller = TextEditingController(text: widget.value);

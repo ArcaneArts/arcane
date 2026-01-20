@@ -9,20 +9,28 @@ import 'package:flutter/material.dart';
 class FutureImageProvider<T, X extends Object> extends ImageProvider<X> {
   /// The future that must resolve before the image can be loaded.
   final Future<T> future;
+  final bool ignoreErrors;
 
   /// A builder that creates the actual ImageProvider once the future resolves.
   final ImageProvider Function(T result) providerBuilder;
 
   const FutureImageProvider({
     required this.future,
+    this.ignoreErrors = false,
     required this.providerBuilder,
   });
 
   @override
   Future<X> obtainKey(ImageConfiguration configuration) async {
-    final result = await future;
-    final provider = providerBuilder(result);
-    return provider.obtainKey(configuration).then((key) => key as X);
+    try {
+      final result = await future;
+      final provider = providerBuilder(result);
+      // We must cast the result because the specific provider type isn't known statically here
+      return await provider.obtainKey(configuration) as X;
+    } catch (e) {
+      if (ignoreErrors) {}
+      rethrow;
+    }
   }
 
   @override

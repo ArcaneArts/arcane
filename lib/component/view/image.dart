@@ -32,6 +32,7 @@ class ImageView extends StatefulWidget with BoxSignal {
   final String? cacheKey;
   final ImageStyle style;
   final Duration? fadeOutDuration;
+  final bool hideOnError;
 
   const ImageView(
       {super.key,
@@ -40,6 +41,7 @@ class ImageView extends StatefulWidget with BoxSignal {
       this.style = const ImageStyle(),
       this.thumbHash,
       this.blurHash,
+      this.hideOnError = true,
       this.cacheKey});
 
   @override
@@ -47,6 +49,20 @@ class ImageView extends StatefulWidget with BoxSignal {
 }
 
 class _ImageViewState extends State<ImageView> {
+  late ImageProvider provider;
+
+  @override
+  void initState() {
+    provider = FutureImageProvider<String, CachedNetworkImageProvider>(
+        ignoreErrors: true,
+        future: widget.url,
+        providerBuilder: (url) => CachedNetworkImageProvider(
+              url,
+              cacheKey: widget.cacheKey,
+            ));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => OctoImage(
       fit: widget.style.fit,
@@ -57,23 +73,20 @@ class _ImageViewState extends State<ImageView> {
       colorBlendMode: widget.style.colorBlendMode,
       fadeOutDuration: widget.fadeOutDuration,
       fadeOutCurve: Curves.easeIn,
-      errorBuilder: (context, e, es) => ImagePlaceholderView(
-            isError: true,
-            style: widget.style,
-            blurHash: widget.blurHash,
-            thumbHash: widget.thumbHash,
-          ),
+      errorBuilder: (context, e, es) => widget.hideOnError
+          ? Container()
+          : ImagePlaceholderView(
+              isError: true,
+              style: widget.style,
+              blurHash: widget.blurHash,
+              thumbHash: widget.thumbHash,
+            ),
       placeholderBuilder: (w) => ImagePlaceholderView(
             style: widget.style,
             blurHash: widget.blurHash,
             thumbHash: widget.thumbHash,
           ),
-      image: FutureImageProvider<String, CachedNetworkImageProvider>(
-          future: widget.url,
-          providerBuilder: (url) => CachedNetworkImageProvider(
-                url,
-                cacheKey: widget.cacheKey,
-              )));
+      image: provider);
 }
 
 /// An internal image provider that's used as a placeholder while waiting for a URL.

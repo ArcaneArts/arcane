@@ -1,3 +1,16 @@
+# 6.5.8
+* Fixes for `MutableText` using ghost button padding
+
+# 6.5.7
+* Fixed provider state loss issues in `ImageView`
+
+# 6.5.6
+* Allow `ImageView` to not show errors
+
+# 6.5.5
+* Fix `ImageView` throwing on missing data incorrectly
+* Support `ignoreErrors` in `FutureImageProviderBuilder`
+
 # 6.5.4
 * Added `MasterDetailDialog`
 
