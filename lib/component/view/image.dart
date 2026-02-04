@@ -73,14 +73,16 @@ class _ImageViewState extends State<ImageView> {
       colorBlendMode: widget.style.colorBlendMode,
       fadeOutDuration: widget.fadeOutDuration,
       fadeOutCurve: Curves.easeIn,
-      errorBuilder: (context, e, es) => widget.hideOnError
-          ? Container()
-          : ImagePlaceholderView(
-              isError: true,
-              style: widget.style,
-              blurHash: widget.blurHash,
-              thumbHash: widget.thumbHash,
-            ),
+      errorBuilder: (context, e, es) {
+        return widget.hideOnError
+            ? Container()
+            : ImagePlaceholderView(
+                isError: true,
+                style: widget.style,
+                blurHash: widget.blurHash,
+                thumbHash: widget.thumbHash,
+              );
+      },
       placeholderBuilder: (w) => ImagePlaceholderView(
             style: widget.style,
             blurHash: widget.blurHash,

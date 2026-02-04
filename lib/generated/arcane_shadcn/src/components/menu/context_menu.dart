@@ -1,6 +1,6 @@
+import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:arcane/generated/arcane_shadcn/shadcn_flutter.dart';
 
 /// Theme for [ContextMenuPopup] and context menu widgets.
 class ContextMenuTheme {
@@ -449,7 +449,7 @@ class ContextMenu extends StatefulWidget {
       {super.key,
       required this.child,
       required this.items,
-      this.behavior = HitTestBehavior.translucent,
+      this.behavior = HitTestBehavior.opaque,
       this.direction = Axis.vertical,
       this.enabled = true});
 
@@ -459,6 +459,7 @@ class ContextMenu extends StatefulWidget {
 
 class _ContextMenuState extends State<ContextMenu> {
   late ValueNotifier<List<MenuItem>> _children;
+  late TapDownDetails? _lastTapDownDetails;
 
   @override
   void initState() {
@@ -471,7 +472,7 @@ class _ContextMenuState extends State<ContextMenu> {
     super.didUpdateWidget(oldWidget);
     if (!listEquals(widget.items, oldWidget.items)) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if(mounted) _children.value = widget.items;
+        if (mounted) _children.value = widget.items;
       });
     }
   }
@@ -490,12 +491,17 @@ class _ContextMenuState extends State<ContextMenu> {
         platform == TargetPlatform.fuchsia;
     return GestureDetector(
       behavior: widget.behavior,
-      onSecondaryTapDown: !widget.enabled
+      onSecondaryTap: !widget.enabled
           ? null
-          : (details) {
+          : () {
               _showContextMenu(
-                  context, details.globalPosition, _children, widget.direction);
+                  context,
+                  _lastTapDownDetails?.globalPosition ?? Offset.zero,
+                  _children,
+                  widget.direction);
             },
+      onSecondaryTapDown:
+          !widget.enabled ? null : (details) => _lastTapDownDetails = details,
       onLongPressStart: enableLongPress && widget.enabled
           ? (details) {
               _showContextMenu(

@@ -1,3 +1,13 @@
+# 6.5.9
+* Added `Dialogs.deleteConfirmation` and `Dialogs.createNamedDialog` for convenience
+* Added `Menus.deleteConfirmMenu` for convenience
+* Added `ConstrainedAnimatedReorderableListView` for an animated list view in a shrink-wrapped context
+* Added `FixedTabs` for fixed size containers needing tabs
+* Added `ForceMarkdown` which is wildly more aggressive at forcing text style objects and the arcane theme into the markdown style
+* Added `GlassMagicTile` which puts a `MagicTile` on a glass surface
+* Added `ParallaxFlowDelegate` which computes the parallax shift by an amount for view pagers
+* Added `AdaptiveMenu`, `AdaptiveMenuGroup`, `AdaptiveMenuOverride`, and `ShortcutItem` for creating context aware shortcuts that translate to regular flutter, unless you are on MacOS in which case it uses the native MacOS menubar instead.
+
 # 6.5.8
 * Fixes for `MutableText` using ghost button padding
 
