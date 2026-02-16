@@ -18,7 +18,7 @@ class Dialogs {
         onConfirm: onDelete,
       ).open(context);
 
-  static Future<String?> createNamedDialog({
+  static Future<void> createNamedDialog({
     required BuildContext context,
     required String type,
     String? description,

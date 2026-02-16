@@ -1,3 +1,6 @@
+# 6.5.10
+* Fixes
+
 # 6.5.9
 * Added `Dialogs.deleteConfirmation` and `Dialogs.createNamedDialog` for convenience
 * Added `Menus.deleteConfirmMenu` for convenience
