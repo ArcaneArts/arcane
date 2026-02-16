@@ -23,7 +23,8 @@ export 'package:flutter/widgets.dart'
         TableRow,
         TableCell,
         FormField,
-        RadioGroup;
+        RadioGroup,
+        RepeatMode;
 // bundle from gap
 export 'package:gap/gap.dart';
 // hide pixel_snap overriden widgets
@@ -129,8 +130,12 @@ export 'src/components/form/form_field.dart';
 export 'src/components/form/formatted_input.dart';
 export 'src/components/form/formatter.dart';
 export 'src/components/form/image.dart';
+export 'src/components/form/input.dart';
 export 'src/components/form/input_otp.dart';
+export 'src/components/form/item_picker.dart';
+export 'src/components/form/multiple_choice.dart';
 export 'src/components/form/number_input.dart';
+export 'src/components/form/object_input.dart';
 export 'src/components/form/phone_input.dart';
 export 'src/components/form/radio_group.dart';
 export 'src/components/form/select.dart';
@@ -152,6 +157,7 @@ export 'src/components/layout/card.dart';
 export 'src/components/layout/card_image.dart';
 export 'src/components/layout/collapsible.dart';
 export 'src/components/layout/dialog/alert_dialog.dart';
+export 'src/components/layout/focus_outline.dart';
 export 'src/components/layout/media_query.dart';
 export 'src/components/layout/outlined_container.dart';
 export 'src/components/layout/overflow_marquee.dart';
@@ -175,6 +181,8 @@ export 'src/components/menu/navigation_menu.dart';
 export 'src/components/menu/popup.dart';
 export 'src/components/navigation/navigation_bar.dart';
 export 'src/components/navigation/pagination.dart';
+export 'src/components/navigation/subfocus.dart';
+export 'src/components/navigation/switcher.dart';
 export 'src/components/navigation/tabs/tab_container.dart';
 export 'src/components/navigation/tabs/tab_list.dart';
 export 'src/components/navigation/tabs/tab_pane.dart';
@@ -190,6 +198,7 @@ export 'src/components/overlay/toast.dart';
 export 'src/components/overlay/tooltip.dart';
 export 'src/components/text/selectable.dart';
 export 'src/components/text/text.dart';
+export 'src/components/wrapper.dart';
 export 'src/icons/bootstrap_icons.dart';
 export 'src/icons/lucide_icons.dart';
 export 'src/icons/radix_icons.dart';
@@ -201,11 +210,3 @@ export 'src/theme/legacy_generated_themes.dart';
 export 'src/theme/theme.dart';
 export 'src/theme/typography.dart';
 export 'src/util.dart';
-export 'src/components/form/input.dart';
-export 'src/components/form/object_input.dart';
-export 'src/components/form/item_picker.dart';
-export 'src/components/form/multiple_choice.dart';
-export 'src/components/wrapper.dart';
-export 'src/components/navigation/subfocus.dart';
-export 'src/components/navigation/switcher.dart';
-export 'src/components/layout/focus_outline.dart';

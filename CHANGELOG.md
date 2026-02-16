@@ -1,3 +1,6 @@
+# 6.5.11
+* Support flutter 3.41.x and up
+
 # 6.5.10
 * Fixes
 
