@@ -324,6 +324,7 @@ class NavigationScreen extends AbstractStatelessScreen {
         value: type ?? ArcaneTheme.of(context).navigationScreen.type,
         local: false,
         builder: (context) => MutablePylon<ArcaneSidebarState>(
+          local: true,
           value: ArcaneSidebarState.expanded,
           builder: (context) => IndexedStack(
             index: index,
@@ -352,6 +353,7 @@ class NavigationScreen extends AbstractStatelessScreen {
                                       context: context,
                                       builder: (context) =>
                                           MutablePylon<ArcaneSidebarState>(
+                                              local: true,
                                               value:
                                                   ArcaneSidebarState.expanded,
                                               builder: (context) =>

@@ -1,4 +1,5 @@
 import 'package:arcane/arcane.dart';
+import 'package:fast_log/fast_log.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 List<Widget> _defWList(BuildContext context) => [];
@@ -64,10 +65,10 @@ class _MasterDetailDialogState extends State<MasterDetailDialog> {
     double sidebarPrefixPadding = 8;
     Widget sidebarFooter(BuildContext context) => ArcaneSidebarFooter();
     Widget sidebarHeader(BuildContext context) => GhostButton(
-      onPressed: () => Arcane.pop(context),
-      leading: Icon(Icons.check),
-      child: context.isSidebarExpanded ? Text("Done") : Container(),
-    );
+          onPressed: () => Arcane.pop(context),
+          leading: Icon(Icons.check),
+          child: context.isSidebarExpanded ? Text("Done") : Container(),
+        );
 
     return ClipRRect(
       borderRadius: Theme.of(context).borderRadiusLg,
@@ -84,11 +85,10 @@ class _MasterDetailDialogState extends State<MasterDetailDialog> {
             value: ArcaneSidebarInjector(
               (context) => _MasterDetailSidebar(
                 width: widget.sidebarWidth,
-                children: (context) =>
-                    [
-                      if (sidebarPrefixPadding > 0)
-                        SizedBox(height: sidebarPrefixPadding),
-                      ...nTabs.whereType<NavTab>().mapIndexed(
+                children: (context) => [
+                  if (sidebarPrefixPadding > 0)
+                    SizedBox(height: sidebarPrefixPadding),
+                  ...nTabs.whereType<NavTab>().mapIndexed(
                         (e, i) => _MasterDetailSidebarButton(
                           trailing: widget.tabs[i].trailing,
                           icon: Icon(
@@ -104,13 +104,13 @@ class _MasterDetailDialogState extends State<MasterDetailDialog> {
                           },
                         ),
                       ),
-                    ].joinSeparator(
-                      SizedBox(
-                        height: ArcaneTheme.of(
-                          context,
-                        ).navigationScreen.sidebarSpacing,
-                      ),
-                    ),
+                ].joinSeparator(
+                  SizedBox(
+                    height: ArcaneTheme.of(
+                      context,
+                    ).navigationScreen.sidebarSpacing,
+                  ),
+                ),
                 header: sidebarHeader,
                 footer: sidebarFooter,
               ),
@@ -125,8 +125,8 @@ class _MasterDetailDialogState extends State<MasterDetailDialog> {
               }
 
               return nav.tabs.whereType<NavTab>().toList()[trueIndex].builder(
-                context,
-              );
+                    context,
+                  );
             },
           ),
         ),
@@ -188,8 +188,8 @@ class _MasterDetailSidebar extends StatefulWidget {
     this.collapsedWidth = 52,
     this.sidebarDivider = true,
     required this.children,
-  }) : _isSliver = false,
-       sliver = _defSliver;
+  })  : _isSliver = false,
+        sliver = _defSliver;
 
   const _MasterDetailSidebar.sliver({
     super.key,
@@ -201,8 +201,8 @@ class _MasterDetailSidebar extends StatefulWidget {
     this.footer,
     this.collapsedWidth = 50,
     required this.sliver,
-  }) : _isSliver = true,
-       children = _defWList;
+  })  : _isSliver = true,
+        children = _defWList;
 
   @override
   State<_MasterDetailSidebar> createState() => _MasterDetailSidebarState();
@@ -258,12 +258,22 @@ class _MasterDetailSidebarState extends State<_MasterDetailSidebar> {
       }
     });
 
+    Stream<ArcaneSidebarState> asa() {
+      try {
+        return context.streamPylon<ArcaneSidebarState>();
+      } catch (e) {
+        warn("Couldnt find stream for ArcaneSidebarState!");
+        return Stream.value(ArcaneSidebarState.expanded);
+      }
+    }
+
     return AnimatedSize(
       alignment: Alignment.centerLeft,
       duration: widget.expansionAnimationDuration,
       curve: widget.expansionAnimationCurve,
-      child: context.streamPylon<ArcaneSidebarState>().build(
+      child: asa().build(
         (sbs) => Pylon<ArcaneSidebarState>(
+          local: true,
           value: sbs,
           builder: (context) => Stack(
             children: [
@@ -272,9 +282,8 @@ class _MasterDetailSidebarState extends State<_MasterDetailSidebar> {
                     ? widget.width
                     : widget.collapsedWidth,
                 child: CustomScrollView(
-                  controller: context
-                      .pylonOr<SidebarScrollController>()
-                      ?.controller,
+                  controller:
+                      context.pylonOr<SidebarScrollController>()?.controller,
                   slivers: [
                     SliverStickyHeader.builder(
                       builder: (context, _) => widget.header != null
@@ -346,27 +355,28 @@ class _MasterDetailSidebarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AnimatedPadding(
-    key: ValueKey("mdte_$label"),
-    padding: EdgeInsets.symmetric(horizontal: 0),
-    duration: const Duration(milliseconds: 333),
-    curve: Curves.easeOutCirc,
-    child: AnimatedContainer(
-      decoration: BoxDecoration(
-        color: selected ? Theme.of(context).colorScheme.muted : null,
-        borderRadius: Theme.of(context).borderRadiusMd,
-      ),
-      duration: const Duration(milliseconds: 333),
-      curve: Curves.easeOutCirc,
-      child: context.isSidebarExpanded
-          ? GhostButton(
-              density: ButtonDensity.compact,
-              onPressed: onTap,
-              trailing: trailing,
-              child: Row(
-                children: [icon.pad(8), Text(label!).normal()],
-              ).padLeft(8),
-            )
-          : IconButton(icon: icon, onPressed: onTap).withTooltip(label ?? ''),
-    ),
-  );
+        key: ValueKey("mdte_$label"),
+        padding: EdgeInsets.symmetric(horizontal: 0),
+        duration: const Duration(milliseconds: 333),
+        curve: Curves.easeOutCirc,
+        child: AnimatedContainer(
+          decoration: BoxDecoration(
+            color: selected ? Theme.of(context).colorScheme.muted : null,
+            borderRadius: Theme.of(context).borderRadiusMd,
+          ),
+          duration: const Duration(milliseconds: 333),
+          curve: Curves.easeOutCirc,
+          child: context.isSidebarExpanded
+              ? GhostButton(
+                  density: ButtonDensity.compact,
+                  onPressed: onTap,
+                  trailing: trailing,
+                  child: Row(
+                    children: [icon.pad(8), Text(label!).normal()],
+                  ).padLeft(8),
+                )
+              : IconButton(icon: icon, onPressed: onTap)
+                  .withTooltip(label ?? ''),
+        ),
+      );
 }
