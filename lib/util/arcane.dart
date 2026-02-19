@@ -115,7 +115,7 @@ class _MenuBackdrop {
 class ArcaneShadEvents implements ShadcnEvents {
   @override
   Widget onBuildInterceptPopoverOverlay(BuildContext context, Widget child) =>
-      ArcaneTheme.of(context).barrierColors.menu.alpha == 0
+      Arcane.globalTheme.barrierColors.menu.alpha == 0
           ? child
           : (context.pylonOr<_MenuBackdrop>()?.visible ?? false)
               ? child
@@ -125,7 +125,7 @@ class ArcaneShadEvents implements ShadcnEvents {
                     children: [
                       IgnorePointer(
                         child: Container(
-                          color: ArcaneTheme.of(context).barrierColors.menu,
+                          color: Arcane.globalTheme.barrierColors.menu,
                         ),
                       ).animate().fadeIn(
                           begin: 0,
