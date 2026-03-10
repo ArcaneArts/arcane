@@ -50,7 +50,7 @@ class ParallaxFlowDelegate extends FlowDelegate {
               ? scrollFraction * (scrollableBox.size.width * parallaxIntensity)
               : 0.0,
           axis == Axis.vertical
-              ? scrollFraction * (scrollableBox.size.width * parallaxIntensity)
+              ? scrollFraction * (scrollableBox.size.height * parallaxIntensity)
               : 0.0,
         ),
       ).transform,
