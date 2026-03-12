@@ -16,11 +16,9 @@ double mMinShaderRS = 0.5;
 double mMaxShaderRS = 1;
 double cShaderFPS = mMaxShaderFPS;
 double cShaderRS = mMaxShaderRS;
-late PrecisionStopwatch _wallClock;
 
 Future<void> loadArcaneShaders(List<ArcaneShader> shaders) async {
   WidgetsFlutterBinding.ensureInitialized();
-  _wallClock = PrecisionStopwatch.start();
 
   void _processTimings(List<FrameTiming> timings) {
     for (final frame in timings) {
@@ -57,6 +55,7 @@ Future<void> loadArcaneShaders(List<ArcaneShader> shaders) async {
       error("Failed to compile shader: ${shader.name}");
       error(es);
       failures.add(shader.name);
+      return Future<FragmentProgram>.error(e, es);
     });
     shaderFutures.add(f);
     arcaneShaderPrograms[shader.name] = f;

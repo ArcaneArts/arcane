@@ -1,3 +1,10 @@
+# 6.5.14
+* Fixed `ImageView` not refreshing its provider when `url` or `cacheKey` changes during widget updates
+* Fixed shader compile failure handling to preserve typed futures in `loadArcaneShaders`
+* Removed a few no-op/null-aware paths in `Fab` and `FabGroup` cleanup logic
+* Removed dead/internal no-op code in markdown table and image view internals
+* Fixed docs install snippet typo from `package:arcame/arcame.dart` to `package:arcane/arcane.dart`
+
 # 6.5.12
 * Fixed a menu theme grab issue context up deactivated widget tree nonsense
 

@@ -51,16 +51,27 @@ class ImageView extends StatefulWidget with BoxSignal {
 class _ImageViewState extends State<ImageView> {
   late ImageProvider provider;
 
+  ImageProvider _createProvider() =>
+      FutureImageProvider<String, CachedNetworkImageProvider>(
+          ignoreErrors: true,
+          future: widget.url,
+          providerBuilder: (url) => CachedNetworkImageProvider(
+                url,
+                cacheKey: widget.cacheKey,
+              ));
+
   @override
   void initState() {
-    provider = FutureImageProvider<String, CachedNetworkImageProvider>(
-        ignoreErrors: true,
-        future: widget.url,
-        providerBuilder: (url) => CachedNetworkImageProvider(
-              url,
-              cacheKey: widget.cacheKey,
-            ));
+    provider = _createProvider();
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ImageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.url != widget.url || oldWidget.cacheKey != widget.cacheKey) {
+      provider = _createProvider();
+    }
   }
 
   @override
@@ -89,16 +100,6 @@ class _ImageViewState extends State<ImageView> {
             thumbHash: widget.thumbHash,
           ),
       image: provider);
-}
-
-/// An internal image provider that's used as a placeholder while waiting for a URL.
-class _DummyImageProvider extends ImageProvider<CachedNetworkImageProvider> {
-  @override
-  Future<CachedNetworkImageProvider> obtainKey(
-      ImageConfiguration configuration) async {
-    await Future.delayed(Duration(hours: 1));
-    throw "Waited for url?";
-  }
 }
 
 class ImagePlaceholderView extends StatelessWidget {

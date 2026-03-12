@@ -183,10 +183,6 @@ class Markdown extends StatelessWidget {
 /// ```dart
 /// ArcaneTableMd() can be used within [Section], [BasicCard], [FillScreen], or [SliverScreen]```
 class ArcaneTableMd extends BlockMd {
-  void test() {
-    TableMd();
-  }
-
   /// Regular expression pattern for detecting Markdown table syntax in block text.
   @override
   String get expString =>

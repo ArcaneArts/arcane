@@ -59,7 +59,7 @@ class _InstallationPageState extends State<InstallationPage> {
                           'Now, you can import the package in your Dart code.')
                       .p(),
                   const CodeSnippet(
-                    code: 'import \'package:arcame/arcame.dart\';',
+                    code: 'import \'package:arcane/arcane.dart\';',
                     mode: 'dart',
                   ).p(),
                 ],

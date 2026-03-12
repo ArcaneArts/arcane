@@ -153,8 +153,7 @@ class Fab extends StatelessWidget {
       return PaddingAll(
         padding: 8,
         child: Glass(
-          borderRadius: borderRadius?.resolve(TextDirection.ltr) ??
-              BorderRadius.circular(0),
+          borderRadius: borderRadius.resolve(TextDirection.ltr),
           tint: Theme.of(context)
               .colorScheme
               .background
@@ -301,7 +300,7 @@ extension XPrefFabGroupContext on BuildContext {
   /// without user interaction.
   void dismissFabGroup() {
     Pylon.visiblePylons(this).whereType<Pylon<_PopRef>>().forEach((element) {
-      element.value?.completer?.remove();
+      element.value.completer?.remove();
     });
 
     pylonOr<_PopRef>()?.completer?.remove();
